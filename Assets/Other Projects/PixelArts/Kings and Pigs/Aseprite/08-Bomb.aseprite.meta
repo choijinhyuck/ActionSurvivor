@@ -1,0 +1,444 @@
+fileFormatVersion: 2
+guid: f91bb9705927ce645965b7a07e1ab396
+ScriptedImporter:
+  internalIDToNameTable: []
+  externalObjects: {}
+  serializedVersion: 2
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+  script: {fileID: 11500000, guid: 62a9f0aa5b59740cfbadc7e5f9823bb0, type: 3}
+  textureImporterSettings:
+    alphaSource: 1
+    mipMapMode: 0
+    enableMipMap: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+    convertToNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+    swizzle: 50462976
+    isReadable: 0
+    streamingMipmaps: 0
+    streamingMipmapsPriority: 0
+    vTOnly: 0
+    ignoreMipmapLimit: 0
+    nPOTScale: 1
+    sRGBTexture: 1
+    spriteMode: 2
+    spriteExtrude: 1
+    spriteMeshType: 1
+    alignment: 0
+    spritePivot: {x: 0.5, y: 0.5}
+    spritePixelsToUnits: 100
+    spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+    spriteGenerateFallbackPhysicsShape: 0
+    generateCubemap: 6
+    cubemapConvolution: 0
+    seamlessCubemap: 0
+    alphaIsTransparency: 1
+    spriteTessellationDetail: -1
+    textureType: 8
+    textureShape: 1
+    singleChannelComponent: 0
+    flipbookRows: 0
+    flipbookColumns: 0
+    ignorePngGamma: 0
+    cookieMode: 0
+    filterMode: 0
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+    normalMap: 0
+    textureFormat: 0
+    maxTextureSize: 0
+    lightmap: 0
+    compressionQuality: 0
+    linearTexture: 0
+    grayScaleToAlpha: 0
+    rGBM: 0
+    cubemapConvolutionSteps: 0
+    cubemapConvolutionExponent: 0
+    maxTextureSizeSet: 0
+    compressionQualitySet: 0
+    textureFormatSet: 0
+    applyGammaDecoding: 0
+  previousAsepriteImporterSettings:
+    fileImportMode: 1
+    importHiddenLayers: 0
+    layerImportMode: 1
+    defaultPivotSpace: 0
+    defaultPivotAlignment: 7
+    customPivotPosition: {x: 0.5, y: 0.5}
+    spritePadding: 0
+    generateModelPrefab: 1
+    generateAnimationClips: 1
+    addSortingGroup: 1
+    addShadowCasters: 0
+  asepriteImporterSettings:
+    fileImportMode: 1
+    importHiddenLayers: 0
+    layerImportMode: 1
+    defaultPivotSpace: 0
+    defaultPivotAlignment: 7
+    customPivotPosition: {x: 0.5, y: 0.5}
+    spritePadding: 0
+    generateModelPrefab: 1
+    generateAnimationClips: 1
+    addSortingGroup: 1
+    addShadowCasters: 0
+  importFileNodeState: 1
+  platformSettingsDirtyTick: 0
+  textureAssetName: 
+  singleSpriteImportData:
+  - name: 
+    originalName: 
+    pivot: {x: 0, y: 0}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 0
+      y: 0
+      width: 0
+      height: 0
+    spriteID: 
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 0, y: 0}
+  animatedSpriteImportData:
+  - name: 08-Bomb_Frame_0
+    originalName: 
+    pivot: {x: 0.4615384, y: -2}
+    alignment: 9
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 64
+      y: 148
+      width: 13
+      height: 16
+    spriteID: 99f6b44716273654fb7aaee0cb95617a
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 64, y: 148}
+  - name: 08-Bomb_Frame_1
+    originalName: 
+    pivot: {x: 0.37499994, y: -1.6842107}
+    alignment: 9
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 64
+      y: 92
+      width: 16
+      height: 19
+    spriteID: 7eb41b8cf6761a04588a9522d770c60e
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 64, y: 92}
+  - name: 08-Bomb_Frame_2
+    originalName: 
+    pivot: {x: 0.35294113, y: -1.5238096}
+    alignment: 9
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 64
+      y: 34
+      width: 17
+      height: 21
+    spriteID: c49fce758590cfc4995eb38b7ccd4d1f
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 64, y: 34}
+  - name: 08-Bomb_Frame_3
+    originalName: 
+    pivot: {x: 0.4666667, y: -1.5238096}
+    alignment: 9
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 64
+      y: 63
+      width: 15
+      height: 21
+    spriteID: 2c232efd1ec8de246a047c9ddef5f97a
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 64, y: 63}
+  - name: 08-Bomb_Frame_4
+    originalName: 
+    pivot: {x: 0.42857137, y: -1.5238096}
+    alignment: 9
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 64
+      y: 119
+      width: 14
+      height: 21
+    spriteID: 7b959ddd20ec46249ac2058fba9d8fc4
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 64, y: 119}
+  - name: 08-Bomb_Frame_5
+    originalName: 
+    pivot: {x: 0.49999997, y: -1.3636364}
+    alignment: 9
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 64
+      y: 4
+      width: 22
+      height: 22
+    spriteID: 19a8a1d52e5c0d746b6cc3ca96f7805c
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 64, y: 4}
+  - name: 08-Bomb_Frame_6
+    originalName: 
+    pivot: {x: 0.5, y: -0.525}
+    alignment: 9
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 4
+      y: 119
+      width: 40
+      height: 40
+    spriteID: 4474f38724826654f81baf5e86b3f25a
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 4, y: 119}
+  - name: 08-Bomb_Frame_7
+    originalName: 
+    pivot: {x: 0.5, y: -0.36170214}
+    alignment: 9
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 4
+      y: 64
+      width: 48
+      height: 47
+    spriteID: 13b7541fff6007f4c8699365191c72b8
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 4, y: 64}
+  - name: 08-Bomb_Frame_8
+    originalName: 
+    pivot: {x: 0.5, y: -0.28846154}
+    alignment: 9
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 4
+      y: 4
+      width: 52
+      height: 52
+    spriteID: 677604e0a4eda8345867c58ad477a765
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 4, y: 4}
+  - name: 08-Bomb_Frame_9
+    originalName: 
+    pivot: {x: 0.46666664, y: -0.97142863}
+    alignment: 9
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 4
+      y: 167
+      width: 45
+      height: 35
+    spriteID: e28b7786bcb1a5a46bf225bf18e9841f
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 4, y: 167}
+  - name: 08-Bomb_Frame_10
+    originalName: 
+    pivot: {x: 0.4888889, y: -1.1212121}
+    alignment: 9
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 4
+      y: 210
+      width: 45
+      height: 33
+    spriteID: f68345c1fda1aa14dbbc0e33afe0f401
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 4, y: 210}
+  spriteSheetImportData: []
+  asepriteLayers:
+  - layerIndex: 0
+    guid: 1829446307
+    name: 08-Bomb
+    layerFlags: 0
+    layerType: 0
+    blendMode: 0
+    cells:
+    - name: 08-Bomb_Frame_0
+      frameIndex: 0
+      cellRect:
+        x: 34
+        y: 32
+        width: 13
+        height: 16
+      spriteId: 99f6b44716273654fb7aaee0cb95617a
+    - name: 08-Bomb_Frame_1
+      frameIndex: 1
+      cellRect:
+        x: 34
+        y: 32
+        width: 16
+        height: 19
+      spriteId: 7eb41b8cf6761a04588a9522d770c60e
+    - name: 08-Bomb_Frame_2
+      frameIndex: 2
+      cellRect:
+        x: 34
+        y: 32
+        width: 17
+        height: 21
+      spriteId: c49fce758590cfc4995eb38b7ccd4d1f
+    - name: 08-Bomb_Frame_3
+      frameIndex: 3
+      cellRect:
+        x: 33
+        y: 32
+        width: 15
+        height: 21
+      spriteId: 2c232efd1ec8de246a047c9ddef5f97a
+    - name: 08-Bomb_Frame_4
+      frameIndex: 4
+      cellRect:
+        x: 34
+        y: 32
+        width: 14
+        height: 21
+      spriteId: 7b959ddd20ec46249ac2058fba9d8fc4
+    - name: 08-Bomb_Frame_5
+      frameIndex: 5
+      cellRect:
+        x: 29
+        y: 30
+        width: 22
+        height: 22
+      spriteId: 19a8a1d52e5c0d746b6cc3ca96f7805c
+    - name: 08-Bomb_Frame_6
+      frameIndex: 6
+      cellRect:
+        x: 20
+        y: 21
+        width: 40
+        height: 40
+      spriteId: 4474f38724826654f81baf5e86b3f25a
+    - name: 08-Bomb_Frame_7
+      frameIndex: 7
+      cellRect:
+        x: 16
+        y: 17
+        width: 48
+        height: 47
+      spriteId: 13b7541fff6007f4c8699365191c72b8
+    - name: 08-Bomb_Frame_8
+      frameIndex: 8
+      cellRect:
+        x: 14
+        y: 15
+        width: 52
+        height: 52
+      spriteId: 677604e0a4eda8345867c58ad477a765
+    - name: 08-Bomb_Frame_9
+      frameIndex: 9
+      cellRect:
+        x: 19
+        y: 34
+        width: 45
+        height: 35
+      spriteId: e28b7786bcb1a5a46bf225bf18e9841f
+    - name: 08-Bomb_Frame_10
+      frameIndex: 10
+      cellRect:
+        x: 18
+        y: 37
+        width: 45
+        height: 33
+      spriteId: f68345c1fda1aa14dbbc0e33afe0f401
+    linkedCells: []
+    parentIndex: -1
+  platformSettings: []
+  secondarySpriteTextures: []
+  spritePackingTag: 
+  canvasSize: {x: 80, y: 80}
