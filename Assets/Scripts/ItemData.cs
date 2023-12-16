@@ -5,23 +5,26 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "Item", menuName = "Scriptable Object/ItemData")]
 public class ItemData : ScriptableObject
 {
-public enum ItemType { Melee, Range, Glove, Shoe, Heal}
+public enum ItemType { Melee, Range, Shoes, Necklace, Scroll, Potion}
 
     [Header("# Main Info")]
     public ItemType itemType;
-    public int itemId;
     public string itemName;
     [TextArea]
     public string itemDesc;
-    public Sprite ItemIcon;
+    [TextArea]
+    public string itemEffet;
+    public Sprite itemIcon;
 
     [Header("# Level Data")]
-    public float baseDamage;
-    public int baseCount;
-    public float[] damage;
-    public int[] count;
+    // 무기면 damage, 회복제면 heal.
+    public float baseAmount;
 
-    [Header("# Weapon")]
+    //관통
+    public bool canPierce = false;
+    public int pierceCount = 0;
+
+
+    [Header("# Check for Pool")]
     public GameObject projectile;
-    public Sprite hand;
 }

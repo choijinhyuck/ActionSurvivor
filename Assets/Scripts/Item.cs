@@ -16,7 +16,7 @@ public class Item : MonoBehaviour
     private void Awake()
     {
         icon = GetComponentsInChildren<Image>()[1];
-        icon.sprite = data.ItemIcon;
+        icon.sprite = data.itemIcon;
 
         Text[] texts = GetComponentsInChildren<Text>();
         textLevel = texts[0];
@@ -33,11 +33,11 @@ public class Item : MonoBehaviour
         {
             case ItemData.ItemType.Melee:
             case ItemData.ItemType.Range:
-                textDesc.text = string.Format(data.itemDesc, data.damage[level] * 100, data.count[level]);
+                //textDesc.text = string.Format(data.itemDesc, data.damage[level] * 100, data.count[level]);
                 break;
-            case ItemData.ItemType.Glove:
-            case ItemData.ItemType.Shoe:
-                textDesc.text = string.Format(data.itemDesc, data.damage[level] * 100);
+            //case ItemData.ItemType.Gloves:
+            case ItemData.ItemType.Shoes:
+                //textDesc.text = string.Format(data.itemDesc, data.damage[level] * 100);
                 break;
             default:
                 textDesc.text = string.Format(data.itemDesc);
@@ -60,18 +60,18 @@ public class Item : MonoBehaviour
                 }
                 else
                 {
-                    float nextDamage = data.baseDamage;
+                    float nextDamage = data.baseAmount;
                     int nextCount = 0;
 
-                    nextDamage += data.baseDamage * data.damage[level];
-                    nextCount += data.count[level];
+                    //nextDamage += data.baseAmount * data.damage[level];
+                    //nextCount += data.count[level];
 
                     weapon.LevelUp(nextDamage, nextCount);
                 }
                 level++;
                 break;
-            case ItemData.ItemType.Glove:
-            case ItemData.ItemType.Shoe:
+            //case ItemData.ItemType.Gloves:
+            case ItemData.ItemType.Shoes:
                 if (level == 0)
                 {
                     GameObject newGear = new GameObject();
@@ -80,20 +80,20 @@ public class Item : MonoBehaviour
                 }
                 else
                 {
-                    float nextRate = data.damage[level];
-                    gear.LevelUp(nextRate);
+                    //float nextRate = data.damage[level];
+                    //gear.LevelUp(/*nextRate*/);
 
                 }
                 level++;
                 break;
-            case ItemData.ItemType.Heal:
+            case ItemData.ItemType.Potion:
                 //GameManager.Instance.health = GameManager.Instance.maxHealth;
                 break;
         }
 
-        if (level == data.damage.Length)
-        {
-            GetComponent<Button>().interactable = false;
-        }
+        //if (level == data.damage.Length)
+        //{
+        //    GetComponent<Button>().interactable = false;
+        //}
     }
 }

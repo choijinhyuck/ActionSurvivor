@@ -7,12 +7,12 @@ public class Gear : MonoBehaviour
 
     public void Init(ItemData data)
     {
-        name = "Gear " + data.itemId;
+        //name = "Gear " + data.itemId;
         transform.parent = GameManager.Instance.player.transform;
         transform.localPosition = Vector3.zero;
 
         type = data.itemType;
-        rate = data.damage[0];
+        //rate = data.damage[0];
         ApplyGear();
     }
 
@@ -26,10 +26,10 @@ public class Gear : MonoBehaviour
     {
         switch (type)
         {
-            case ItemData.ItemType.Glove:
-                RateUp();
-                break;
-            case ItemData.ItemType.Shoe:
+            ////case ItemData.ItemType.Gloves:
+            //    RateUp();
+            //    break;
+            case ItemData.ItemType.Shoes:
                 SpeedUp();
                 break;
         }

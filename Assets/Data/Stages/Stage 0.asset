@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 30bf7cf748dbbb344b4af6c3c38165f1, type: 3}
+  m_Name: Stage 0
+  m_EditorClassIdentifier: 
+  stageNumber: 0
+  stageName: "\uC232"
+  gameTime: 120
+  flyEnemy: 1
+  waveData:
+  - startTime: 0
+    mobArr: 00000000
+  - startTime: 30
+    mobArr: 0000000005000000
+  - startTime: 60
+    mobArr: 000000000500000006000000
+  boss: 0

@@ -53,13 +53,13 @@ public class Weapon : MonoBehaviour
 
     public void Init(ItemData data)
     {
-        name = "Weapon " + data.itemId;
+        //name = "Weapon " + data.itemId;
         transform.parent = player.transform;
         transform.localPosition = Vector3.zero;
 
-        id = data.itemId;
-        damage = data.baseDamage * Character.Damage;
-        count = data.baseCount + Character.Count;
+        //id = data.itemId;
+        damage = data.baseAmount * Character.Damage;
+        
 
         for (int i = 0; i < GameManager.Instance.pool.prefabs.Length; i++)
         {
@@ -109,7 +109,7 @@ public class Weapon : MonoBehaviour
             bullet.Rotate(rotVec);
             bullet.Translate(bullet.up * 1.5f, Space.World);
 
-            bullet.GetComponent<Bullet>().Init(damage, -100, Vector3.zero); // -1 is Infinity Per.
+            bullet.GetComponent<Projectile>().Init(damage, -100, Vector3.zero); // -1 is Infinity Per.
         }
 
     }
@@ -125,7 +125,7 @@ public class Weapon : MonoBehaviour
         Transform bullet = GameManager.Instance.pool.Get(prefabId).transform;
         bullet.position = transform.position;
         bullet.rotation = Quaternion.FromToRotation(Vector3.up, dir);
-        bullet.GetComponent<Bullet>().Init(damage, count, dir);
+        bullet.GetComponent<Projectile>().Init(damage, count, dir);
 
         AudioManager.instance.PlaySfx(AudioManager.Sfx.Range);
     }

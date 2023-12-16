@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2dfd799c508611a428f05da3c10fa016, type: 3}
+  m_Name: 1 Melee Sword 2
+  m_EditorClassIdentifier: 
+  itemType: 0
+  itemName: "\uC2E4\uBC84 \uC18C\uB4DC"
+  itemDesc: "\uC720\uBA85 \uB300\uC7A5\uC7A5\uC774\uAC00 \uC740\uC73C\uB85C \uC81C\uC791\uD55C
+    \uC608\uB9AC\uD55C \uAC80\uC774\uB2E4."
+  itemEffet: 
+  itemIcon: {fileID: 237433866, guid: 13f6535ee6958b54188a2f5095516d88, type: 3}
+  baseAmount: 4
+  canPierce: 0
+  pierceCount: 0
+  projectile: {fileID: 0}

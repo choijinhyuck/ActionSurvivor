@@ -113,7 +113,7 @@ public class Enemy : MonoBehaviour
 
         if (collision.CompareTag("Bullet"))
         {
-            health -= collision.GetComponent<Bullet>().damage;
+            health -= collision.GetComponent<Projectile>().damage;
             StartCoroutine(KnockBack(3));
         }
         else if (collision.CompareTag("Skill"))

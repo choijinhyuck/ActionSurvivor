@@ -54,14 +54,14 @@ public class LevelUp : MonoBehaviour
         {
             Item ranItem = items[ran[i]];
 
-            if (ranItem.level == ranItem.data.damage.Length)
-            {
-                items[4].gameObject.SetActive(true);
-            }
-            else
-            {
-                ranItem.gameObject.SetActive(true);
-            }
+            //if (ranItem.level == ranItem.data.damage.Length)
+            //{
+            //    items[4].gameObject.SetActive(true);
+            //}
+            //else
+            //{
+            //    ranItem.gameObject.SetActive(true);
+            //}
         }
 
     }
