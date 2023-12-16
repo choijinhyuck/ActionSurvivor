@@ -45,8 +45,6 @@ public class Weapon : MonoBehaviour
         this.damage = damage * Character.Damage;
         this.count += count;
 
-        if (id == 0) Batch();
-
         // Damage 증가 Gear 효과 적용을 위해
         player.BroadcastMessage("ApplyGear", SendMessageOptions.DontRequireReceiver);
     }
@@ -70,48 +68,8 @@ public class Weapon : MonoBehaviour
             }
         }
 
-        switch (id)
-        {
-            case 0:
-                speed = 150 * Character.WeaponSpeed;
-                Batch();
-                break;
-            default:
-                speed = 0.5f * Character.WeaponRate;
-                Fire();
-                break;
-        }
 
         player.BroadcastMessage("ApplyGear", SendMessageOptions.DontRequireReceiver);
-    }
-
-    void Batch()
-    {
-        for (int i = 0; i < count; i++)
-        {
-            Transform bullet;
-
-            if (i < transform.childCount)
-            {
-                bullet = transform.GetChild(i);
-            }
-            else
-            {
-                bullet = GameManager.Instance.pool.Get(prefabId).transform;
-                bullet.parent = transform;
-            }
-
-
-            bullet.localPosition = Vector3.zero;
-            bullet.localRotation = Quaternion.identity;
-
-            Vector3 rotVec = Vector3.forward * 360 * i / count;
-            bullet.Rotate(rotVec);
-            bullet.Translate(bullet.up * 1.5f, Space.World);
-
-            bullet.GetComponent<Projectile>().Init(damage, -100, Vector3.zero); // -1 is Infinity Per.
-        }
-
     }
     void Fire()
     {
@@ -125,7 +83,7 @@ public class Weapon : MonoBehaviour
         Transform bullet = GameManager.Instance.pool.Get(prefabId).transform;
         bullet.position = transform.position;
         bullet.rotation = Quaternion.FromToRotation(Vector3.up, dir);
-        bullet.GetComponent<Projectile>().Init(damage, count, dir);
+        bullet.GetComponent<Projectile>().Init(damage, count, dir, 15f);
 
         AudioManager.instance.PlaySfx(AudioManager.Sfx.Range);
     }

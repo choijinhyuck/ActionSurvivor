@@ -9,6 +9,13 @@ public class PoolManager : MonoBehaviour
 
     private void Awake()
     {
+        PoolManager[] scripts = GameObject.FindObjectsByType<PoolManager>(FindObjectsSortMode.None);
+        if (scripts.Length > 1)
+        {
+            Destroy(this.gameObject);
+        }
+        DontDestroyOnLoad(this.gameObject);
+
         pools = new List<GameObject>[prefabs.Length];
 
         for (int i = 0; i < pools.Length; i++)

@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 190512322421667657}
   m_Layer: 0
   m_Name: Kunai
-  m_TagString: Bullet
+  m_TagString: Projectile
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -120,7 +120,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damage: 0
-  per: 0
 --- !u!1 &475170311270051359
 GameObject:
   m_ObjectHideFlags: 0

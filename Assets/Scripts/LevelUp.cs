@@ -7,6 +7,14 @@ public class LevelUp : MonoBehaviour
 
     private void Awake()
     {
+        LevelUp[] scripts = GameObject.FindObjectsByType<LevelUp>(FindObjectsSortMode.None);
+        Debug.Log(scripts.Length);
+        if (scripts.Length > 1)
+        {
+            Destroy(this.gameObject);
+        }
+        DontDestroyOnLoad(this.gameObject);
+
         rect = GetComponent<RectTransform>();
         items = GetComponentsInChildren<Item>(true);
     }

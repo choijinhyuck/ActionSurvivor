@@ -16,13 +16,14 @@ public enum ItemType { Melee, Range, Shoes, Necklace, Scroll, Potion}
     public string itemEffet;
     public Sprite itemIcon;
 
-    [Header("# Level Data")]
+    [Header("# Item info")]
     // 무기면 damage, 회복제면 heal.
     public float baseAmount;
 
     //관통
-    public bool canPierce = false;
     public int pierceCount = 0;
+    //투척 스피드
+    public float speed = 0;
 
 
     [Header("# Check for Pool")]

@@ -7,7 +7,7 @@ public class GameManager : MonoBehaviour
     public static GameManager Instance;
 
     [Header("# Game Control")]
-    public Stage stage;
+    public StageManager stage;
     public int stageId;
     public bool isLive;
     public float gameTime;
@@ -28,21 +28,59 @@ public class GameManager : MonoBehaviour
     public float chargeTime;
     public float chargeCooltime;
 
+    [Header("# Item Info")]
+    public ItemManager item;
+
+    [Header("# Equipment ")]
+    // -1 ÀÌ¸é ¹«ÀåÂø
+    public int[] mainWeaponItem;
+    public int[] rangeWeaponItem;
+    public int[] magicItem;
+    public int[] shoesItem;
+
     [Header("# Game Object")]
     public PoolManager pool;
     public Player player;
     public LevelUp uiLevelUp;
     public Result uiResult;
-    public GameObject enemyCleaner;
+
+    GameObject enemyCleaner;
 
 
     private void Awake()
     {
-        Instance = this;
+        if (Instance == null)
+        {
+            Instance = this;
+        }
+        else if (Instance != this)
+        {
+            Destroy(this.gameObject);
+        }
+
+        DontDestroyOnLoad(this.gameObject);
         Application.targetFrameRate = 60;
+
+        mainWeaponItem = new int[maxHealth.Length];
+        rangeWeaponItem = new int[maxHealth.Length];
+        magicItem = new int[maxHealth.Length];
+        shoesItem = new int[maxHealth.Length];
+        for (int i = 0; i < maxHealth.Length; i++)
+        {
+            mainWeaponItem[i] = -1;
+            rangeWeaponItem[i] = -1;
+            magicItem[i] = -1;
+            shoesItem[i] = -1;
+        }
     }
 
-    private void Start()
+    private void OnEnable()
+    {
+        SceneManager.sceneLoaded += OnSceneLoaded;
+
+    }
+
+    void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
         GameStart();
     }
@@ -74,6 +112,7 @@ public class GameManager : MonoBehaviour
 
         AudioManager.instance.PlayBgm(true);
         AudioManager.instance.PlaySfx(AudioManager.Sfx.Select);
+        
     }
 
     public void GameOver()
@@ -100,6 +139,7 @@ public class GameManager : MonoBehaviour
 
     IEnumerator GameVictoryRoutine()
     {
+        enemyCleaner = GameObject.FindObjectsByType<EnemyCleaner>(FindObjectsInactive.Include, FindObjectsSortMode.None)[0].gameObject;
         isLive = false;
         enemyCleaner.SetActive(true);
         yield return new WaitForSeconds(0.5f);

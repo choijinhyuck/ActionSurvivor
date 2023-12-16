@@ -7,8 +7,9 @@ TagManager:
   - Ground
   - Area
   - Enemy
-  - Bullet
   - Skill
+  - Projectile
+  - Bullet
   layers:
   - Default
   - TransparentFX

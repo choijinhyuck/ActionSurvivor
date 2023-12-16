@@ -43,6 +43,12 @@ public class Player : MonoBehaviour
 
     private void Awake()
     {
+        Player[] scripts = GameObject.FindObjectsByType<Player>(FindObjectsSortMode.None);
+        if (scripts.Length > 1)
+        {
+            Destroy(this.gameObject);
+        }
+        DontDestroyOnLoad(this.gameObject);
         //Key 입력 처리
 
         // 코루틴 사용하여 chargeTimer 누적 시킨 후 
