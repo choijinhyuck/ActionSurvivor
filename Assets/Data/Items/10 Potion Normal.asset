@@ -18,6 +18,8 @@ MonoBehaviour:
   itemEffet: "\uD558\uD2B8 x 2 \uD68C\uBCF5"
   itemIcon: {fileID: -1490006355, guid: 295b2edbe94e7ed4aab5e93688a46348, type: 3}
   baseAmount: 2
-  canPierce: 0
+  coolTime: 0
   pierceCount: 0
+  speed: 0
   projectile: {fileID: 0}
+  dropItem: {fileID: 6793014896987348594, guid: c3a30c424beef6445a9f8ce4297381e4, type: 3}

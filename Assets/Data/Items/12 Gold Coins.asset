@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2dfd799c508611a428f05da3c10fa016, type: 3}
+  m_Name: 12 Gold Coins
+  m_EditorClassIdentifier: 
+  itemType: 6
+  itemName: "\uC9E4\uC9E4\uC774"
+  itemDesc: "6\uACE8\uB4DC \uBBF8\uB9CC"
+  itemEffet: 
+  itemIcon: {fileID: 0}
+  baseAmount: 0
+  coolTime: 0
+  pierceCount: 0
+  speed: 0
+  projectile: {fileID: 0}
+  dropItem: {fileID: 5174621037227917081, guid: 5b134f736b9797a499688ed3d35f6a91, type: 3}

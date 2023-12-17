@@ -19,6 +19,8 @@ MonoBehaviour:
   itemEffet: 
   itemIcon: {fileID: 237433866, guid: 13f6535ee6958b54188a2f5095516d88, type: 3}
   baseAmount: 4
-  canPierce: 0
+  coolTime: 0
   pierceCount: 0
+  speed: 0
   projectile: {fileID: 0}
+  dropItem: {fileID: 494569046473333092, guid: efe581231033f2b409b86d79226fa449, type: 3}

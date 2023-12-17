@@ -5,7 +5,7 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "Item", menuName = "Scriptable Object/ItemData")]
 public class ItemData : ScriptableObject
 {
-public enum ItemType { Melee, Range, Shoes, Necklace, Scroll, Potion}
+public enum ItemType { Melee, Range, Shoes, Necklace, Scroll, Potion, Gold}
 
     [Header("# Main Info")]
     public ItemType itemType;
@@ -28,4 +28,5 @@ public enum ItemType { Melee, Range, Shoes, Necklace, Scroll, Potion}
 
     [Header("# Check for Pool")]
     public GameObject projectile;
+    public GameObject dropItem;
 }

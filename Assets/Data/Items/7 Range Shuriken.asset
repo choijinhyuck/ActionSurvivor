@@ -25,3 +25,4 @@ MonoBehaviour:
   pierceCount: 1
   speed: 0
   projectile: {fileID: 145763860950815899, guid: 320660b7ae9c6d14a9b70642f7921aaf, type: 3}
+  dropItem: {fileID: 8976259790172440254, guid: 7ec44725cdefd6640ba8188d5abe4313, type: 3}
