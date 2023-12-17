@@ -1,11 +1,14 @@
+using System.Collections;
 using UnityEngine;
 
 public class Projectile : MonoBehaviour
 {
+    public TrailRenderer trail;
     public float damage;
     int pierceCount;
 
     Rigidbody2D rigid;
+    
     
     private void Awake()
     {
@@ -21,7 +24,10 @@ public class Projectile : MonoBehaviour
         {
             rigid.velocity = dir * speed;
         }
+
+
     }
+    
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
@@ -33,6 +39,7 @@ public class Projectile : MonoBehaviour
         if (pierceCount < 0)
         {
             rigid.velocity = Vector3.zero;
+            trail.Clear();
             gameObject.SetActive(false);
         }
     }
@@ -43,6 +50,7 @@ public class Projectile : MonoBehaviour
             return;
 
         rigid.velocity = Vector3.zero;
+        trail.Clear();
         gameObject.SetActive(false);
     }
 }

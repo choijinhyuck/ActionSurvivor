@@ -20,6 +20,7 @@ MonoBehaviour:
   itemEffet: "\uACF5\uACA9\uB825 3"
   itemIcon: {fileID: 2110914771, guid: 907b325dd69730047ba8350f6aff5765, type: 3}
   baseAmount: 6
-  canPierce: 1
+  coolTime: 3
   pierceCount: 2
-  projectile: {fileID: 0}
+  speed: 0
+  projectile: {fileID: 145763860950815899, guid: b4954b308fcee2348a64e03892b45d1b, type: 3}

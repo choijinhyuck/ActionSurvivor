@@ -19,7 +19,7 @@ public enum ItemType { Melee, Range, Shoes, Necklace, Scroll, Potion}
     [Header("# Item info")]
     // 무기면 damage, 회복제면 heal.
     public float baseAmount;
-
+    public float coolTime;
     //관통
     public int pierceCount = 0;
     //투척 스피드

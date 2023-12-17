@@ -4,17 +4,23 @@ using UnityEngine;
 
 public class ItemManager : MonoBehaviour
 {
+    public static ItemManager Instance;
     public ItemData[] itemDataArr;
 
     private void Awake()
     {
-        ItemManager[] scripts = GameObject.FindObjectsByType<ItemManager>(FindObjectsSortMode.None);
-        if (scripts.Length > 1)
+        if (Instance == null)
+        {
+            Instance = this;
+        }
+        else if (Instance != this)
         {
             Destroy(this.gameObject);
         }
+
         DontDestroyOnLoad(this.gameObject);
     }
     
     
+
 }

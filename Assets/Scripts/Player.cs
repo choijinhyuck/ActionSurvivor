@@ -11,23 +11,28 @@ public class Player : MonoBehaviour
     public Hand[] hands;
     public RuntimeAnimatorController[] animCon;
     public Transform shadow;
+    public RangeWeapon rangeWeapon;
     public Collider2D[] attackColl;
     public InputActionAsset actions;
     public ParticleSystem[] chargeEffects;
     public ParticleSystemRenderer[] dodgeEffects;
     public GameObject[] skills;
     public GameObject skillArrow;
+    public GameObject rangeArrow;
 
 
     InputAction moveAction;
     InputAction fireAction;
     InputAction dodgeAction;
+    InputAction rangeWeaponAction;
     Rigidbody2D rigid;
     Animator anim;
     SpriteRenderer spriteRenderer;
     WaitForSeconds waitSec;
     WaitForFixedUpdate waitFix;
 
+    Vector3 skillDir;
+    Vector3 rangeDir;
     public float chargeTimer;
     float chargeTime; // Gamanager 값을 할당
     public int chargeCount; // 현재 사용가능한 스킬 카운트와 다름. 실제 플레이어가 차지한 스킬 수.
@@ -39,6 +44,7 @@ public class Player : MonoBehaviour
     public bool isHit;
     public bool readyDodge;
     Rigidbody2D target;
+    bool canRangeFire;
 
 
     private void Awake()
@@ -55,13 +61,17 @@ public class Player : MonoBehaviour
         moveAction = actions.FindActionMap("Player").FindAction("Move");
         fireAction = actions.FindActionMap("Player").FindAction("Fire");
         dodgeAction = actions.FindActionMap("Player").FindAction("Dodge");
+        rangeWeaponAction = actions.FindActionMap("Player").FindAction("RangeWeapon");
 
         fireAction.started += _ => StartCharging();
         fireAction.performed += _ => ChargedFire(0);
         fireAction.canceled += _ => ChargedFire(1);
 
-        dodgeAction.performed += _ => { OnDodge(); };
+        dodgeAction.performed += _ => OnDodge();
 
+        rangeWeaponAction.started += _ => StartRangeWeapon();
+        rangeWeaponAction.performed += _ => OnRangeWeapon(canRangeFire);
+        rangeWeaponAction.canceled += _ => OnRangeWeapon(canRangeFire);
 
         chargeTimer = 0f;
 
@@ -312,7 +322,7 @@ public class Player : MonoBehaviour
 
         while (true)
         {
-            chargeStartTimer += Time.deltaTime;
+            chargeStartTimer += Time.fixedDeltaTime;
             if (chargeStartTimer > .3f) break;
             yield return waitFix;
         }
@@ -340,12 +350,16 @@ public class Player : MonoBehaviour
         for (int i = 0; i < 3; i++)
         {
             transform.localPosition += deltaVec;
+            rigid.velocity = Vector2.zero;
             yield return waitFix;
             transform.localPosition -= deltaVec;
+            rigid.velocity = Vector2.zero;
             yield return waitFix;
             transform.localPosition -= deltaVec;
+            rigid.velocity = Vector2.zero;
             yield return waitFix;
             transform.localPosition += deltaVec;
+            rigid.velocity = Vector2.zero;
             yield return waitFix;
         }
     }
@@ -480,8 +494,8 @@ public class Player : MonoBehaviour
             }
 
             yield return waitFix;
-            chargeTimer += Time.deltaTime;
-            totalTime += Time.deltaTime;
+            chargeTimer += Time.fixedDeltaTime;
+            totalTime += Time.fixedDeltaTime;
         }
     }
 
@@ -552,25 +566,24 @@ public class Player : MonoBehaviour
     // 스킬 방향 화살표 부드러운 전환 위해 매 프레임당 회전 설정
     IEnumerator SkillArrow()
     {
-        Vector3 dirAttack;
         skillArrow.SetActive(true);
 
         while (true)
         {
             if (inputVector.magnitude > 0)
             {
-                dirAttack = inputVector;
+                skillDir = inputVector;
             }
             else if (spriteRenderer.flipX)
             {
-                dirAttack = Vector3.left;
+                skillDir = Vector3.left;
             }
             else
             {
-                dirAttack = Vector3.right;
+                skillDir = Vector3.right;
             }
 
-            skillArrow.transform.localRotation = Quaternion.FromToRotation(Vector3.right, dirAttack);
+            skillArrow.transform.localRotation = Quaternion.FromToRotation(Vector3.right, skillDir);
             yield return waitFix;
         }
     }
@@ -578,30 +591,12 @@ public class Player : MonoBehaviour
 
     void AttackSkill(int level)
     {
-
-
         Rigidbody2D skillRigid;
         skillRigid = skills[GameManager.Instance.playerId].GetComponentsInChildren<Rigidbody2D>(true)[level];
-
-        Vector3 dirAttack;
-        if (inputVector.magnitude > 0)
-        {
-            dirAttack = inputVector;
-        }
-        else if (spriteRenderer.flipX)
-        {
-            dirAttack = Vector3.left;
-        }
-        else
-        {
-            dirAttack = Vector3.right;
-        }
-
-        skillRigid.transform.localRotation = Quaternion.FromToRotation(Vector3.right, dirAttack);
-
+        skillRigid.transform.localRotation = Quaternion.FromToRotation(Vector3.right, skillDir);
 
         skillRigid.gameObject.SetActive(true);
-        skillRigid.velocity = dirAttack * 10;
+        skillRigid.velocity = skillDir * 10;
         StartCoroutine(StopSkill(skillRigid));
 
     }
@@ -613,5 +608,71 @@ public class Player : MonoBehaviour
         skillRigid.gameObject.SetActive(false);
         skillRigid.transform.localPosition = Vector3.zero;
         skillRigid.transform.localRotation = Quaternion.identity;
+    }
+
+    
+    void StartRangeWeapon()
+    {
+        if (anim.GetCurrentAnimatorStateInfo(0).IsName("Attack") || anim.GetCurrentAnimatorStateInfo(0).IsName("Dead") || isHit)
+            return;
+        // 장비하고 있으면 실행
+        if (GameManager.Instance.rangeWeaponItem[GameManager.Instance.playerId] == -1)
+            return;
+        // 차징 캔슬 가능하도록 start Action으로 옮기도록. 조준만 해도 차징 취소.
+        if (isCharging)
+        {
+            ChargedFire(1);
+        }
+
+        if (rangeWeapon.readyRangeWeapon)
+        {
+            canRangeFire = true;
+            //궤적 생성
+            StartCoroutine("RangeArrow");
+            //궤적 중 다른 키입력 오면 취소 (공격버튼, 마법버튼.)
+            
+        }
+        else
+        {
+            StartCoroutine(FailMotion());
+            // 준비 안 됐으면 실패모션 띄우고 리턴
+        }
+
+    }
+
+    IEnumerator RangeArrow()
+    {
+        rangeArrow.SetActive(true);
+
+        while (true)
+        {
+            if (inputVector.magnitude > 0)
+            {
+                rangeDir = inputVector;
+            }
+            else if (spriteRenderer.flipX)
+            {
+                rangeDir = Vector3.left;
+            }
+            else
+            {
+                rangeDir = Vector3.right;
+            }
+
+            rangeArrow.transform.localRotation = Quaternion.FromToRotation(Vector3.right, rangeDir);
+            yield return waitFix;
+        }
+    }
+
+    void OnRangeWeapon(bool ready)
+    {
+        if (ready)
+        {
+            rangeWeapon.Fire(rangeDir);
+            canRangeFire = false;
+        }
+        StopCoroutine("RangeArrow");
+        rangeArrow.transform.localRotation = Quaternion.identity;
+        rangeArrow.SetActive(false);
     }
 }
