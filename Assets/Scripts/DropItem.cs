@@ -5,14 +5,18 @@ using UnityEngine;
 public class DropItem : MonoBehaviour
 {
     public Transform shadow;
+    public int itemId;
+    public bool isDropping;
 
     float targetY;
     float timeScale;
     float shadowScale;
     float accumulatedDelta;
     float deltaY;
+
     Vector3 shadowOriginLocalPos;
     Vector3 shadowOriginLocalScale;
+    WaitForFixedUpdate waitFix;
 
 
     private void Awake()
@@ -22,6 +26,7 @@ public class DropItem : MonoBehaviour
         shadowScale = 2;
         shadowOriginLocalPos = shadow.localPosition;
         shadowOriginLocalScale = shadow.localScale;
+        waitFix = new WaitForFixedUpdate();
     }
 
     private void OnEnable()
@@ -30,9 +35,11 @@ public class DropItem : MonoBehaviour
         shadow.localPosition = shadowOriginLocalPos;
         deltaY = targetY;
         accumulatedDelta = 0f;
+        isDropping = true;
     }
     private void FixedUpdate()
     {
+        if (isDropping) return;
 
         accumulatedDelta += deltaY * Time.fixedDeltaTime * timeScale;
         if (accumulatedDelta >= targetY)
@@ -68,5 +75,46 @@ public class DropItem : MonoBehaviour
 
             deltaY = tempDeltaY;
         }
+    }
+
+    public void Init()
+    {
+        StartCoroutine(Dropping());
+    }
+
+    IEnumerator Dropping()
+    {
+        isDropping = true;
+        var originScale = transform.localScale;
+        var originPos = transform.position;
+        Vector3 deltaPos = new Vector3(0f, 2f, 0f);
+        transform.localScale = Vector3.zero;
+        float timer = 0f;
+        float endTime = .3f;
+        
+        while (true)
+        {
+            if (!isDropping)
+                break;
+
+            yield return waitFix;
+            timer += Time.fixedDeltaTime;
+            if (timer > endTime)
+            {
+                transform.position = originPos;
+                break;
+            }
+            else if (timer > endTime / 2)
+            {
+                transform.position -= deltaPos * Time.fixedDeltaTime / endTime;
+                transform.localScale -= originScale * 0.5f * Time.fixedDeltaTime / endTime;
+                continue;
+            }
+
+            transform.position += deltaPos * Time.fixedDeltaTime / endTime;
+            transform.localScale += originScale * 2f * Time.fixedDeltaTime / endTime;
+        }
+        isDropping = false;
+        transform.localScale = originScale;
     }
 }

@@ -47,13 +47,6 @@ public class Spawner : MonoBehaviour
         }
     }
 
-    //void Spawn(int spawnIndex)
-    //{
-    //    // PoolManager의 0번 Prefab은 Enemy
-    //    GameObject enemy = GameManager.Instance.pool.Get(0);
-    //    enemy.transform.position = spawnPoint[Random.Range(1, spawnPoint.Length)].position;
-    //    enemy.GetComponent<Enemy>().Init(spawnData[spawnIndex]);
-    //}
     void Spawn(int spawnIndex)
     {
         // PoolManager의 0번 Prefab은 Enemy
@@ -111,6 +104,10 @@ public class SpawnData
     public float spawnTime;
     public int health;
     public float speed;
+    public int exp;
+    // 아래 두 배열은 같은 인덱스를 공유해야함.
+    public int[] dropItemsId;
+    public float[] dropProbability;
 
     [Header("# Collider Info")]
     public Vector2 collPos;

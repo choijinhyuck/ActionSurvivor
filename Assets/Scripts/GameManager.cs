@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -28,8 +29,12 @@ public class GameManager : MonoBehaviour
     public float chargeTime;
     public float chargeCooltime;
 
-    [Header("# Item Info")]
-    public ItemManager item;
+    [Header("# Inventory")]
+    public int gold;
+    public int maxInventory;
+    public List<int> inventoryItemsId;
+    public int storedGold;
+    public List<int> storedItemsId;
 
     [Header("# Equipment ")]
     // -1 ÀÌ¸é ¹«ÀåÂø
@@ -60,6 +65,11 @@ public class GameManager : MonoBehaviour
 
         DontDestroyOnLoad(this.gameObject);
         Application.targetFrameRate = 60;
+
+        gold = 0;
+        inventoryItemsId = new List<int>();
+        storedGold = 0;
+        storedItemsId = new List<int>();
 
         mainWeaponItem = new int[maxHealth.Length];
         rangeWeaponItem = new int[maxHealth.Length];
@@ -162,11 +172,11 @@ public class GameManager : MonoBehaviour
 
 
 
-    public void GetExp()
+    public void GetExp(int enemyExp)
     {
         if (!isLive) return;
 
-        exp++;
+        exp += enemyExp;
 
         if (exp == nextExp[Mathf.Min(level, nextExp.Length - 1)])
         {

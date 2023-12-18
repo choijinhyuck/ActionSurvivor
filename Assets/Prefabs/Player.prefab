@@ -15055,6 +15055,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9cfd7e30b280c9641982b121d8984613, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  projectilePool: {fileID: 0}
   readyRangeWeapon: 0
 --- !u!1 &4036370201646567990
 GameObject:
@@ -25029,13 +25030,14 @@ GameObject:
   - component: {fileID: 1883881264296609098}
   - component: {fileID: 6809121563169130220}
   - component: {fileID: 9108079268977488034}
+  - component: {fileID: 628140833691418785}
   m_Layer: 3
   m_Name: Player
   m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &8116372295632165146
 Transform:
   m_ObjectHideFlags: 0
@@ -25256,6 +25258,22 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 64
   nearestTarget: {fileID: 0}
+--- !u!114 &628140833691418785
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6706167564352726105}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ce1fdb3429ba8b54f9f0dac4a1ae77a6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  scanRange: 2
+  targetLayer:
+    serializedVersion: 2
+    m_Bits: 1024
 --- !u!1 &6961540597718487277
 GameObject:
   m_ObjectHideFlags: 0

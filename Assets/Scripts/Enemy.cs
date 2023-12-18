@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Threading;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class Enemy : MonoBehaviour
@@ -14,6 +15,9 @@ public class Enemy : MonoBehaviour
     bool isLive;
     bool lookLeft;
     bool isHit;
+    int exp;
+    int[] dropItemsId;
+    float[] dropProbability;
     Vector2 shadowOrigin;
     Vector2 shadowFlip;
 
@@ -37,6 +41,7 @@ public class Enemy : MonoBehaviour
         wait = new WaitForFixedUpdate();
         waitSec = new WaitForSeconds(.1f);
         isHit = false;
+
     }
 
     private void FixedUpdate()
@@ -93,6 +98,7 @@ public class Enemy : MonoBehaviour
         rigid.simulated = true;
         spriter.sortingOrder = 2;
         health = maxHealth;
+        dropItemsId = new int[] { };
     }
 
     public void Init(SpawnData data)
@@ -102,7 +108,10 @@ public class Enemy : MonoBehaviour
         speed = data.speed;
         maxHealth = data.health;
         health = data.health;
+        exp = data.exp;
         Positioning(data);
+        dropItemsId = data.dropItemsId;
+        dropProbability = data.dropProbability;
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -136,7 +145,7 @@ public class Enemy : MonoBehaviour
             spriter.sortingOrder = 1;
             StartCoroutine(Dead());
             GameManager.Instance.kill++;
-            GameManager.Instance.GetExp();
+            GameManager.Instance.GetExp(exp);
 
             if (GameManager.Instance.isLive)
             {
@@ -180,15 +189,18 @@ public class Enemy : MonoBehaviour
         currColor.a = .6f;
         spriter.color = currColor;
         yield return waitSec;
+
+        DropItem();
         currColor.a = .4f;
         spriter.color = currColor;
         yield return waitSec;
         currColor.a = .2f;
         spriter.color = currColor;
         yield return waitSec;
-        gameObject.SetActive(false);
         currColor.a = 1f;
         spriter.color = currColor;
+        gameObject.SetActive(false);
+        
     }
 
     void Positioning(SpawnData data)
@@ -203,5 +215,45 @@ public class Enemy : MonoBehaviour
         
         coll.size = data.collSize;
         coll.offset = data.collPos;
+    }
+
+    void DropItem()
+    {
+        if (dropItemsId.Length == 0)
+            return;
+
+        float randValue = Random.value;
+        float accumulatedValue = 0f;
+        int selectedItemId = -1;
+        for (int i = 0;  i < dropItemsId.Length; i++)
+        {
+            accumulatedValue += dropProbability[i];
+            if (randValue < accumulatedValue)
+            {
+                selectedItemId = dropItemsId[i];
+                break;
+            }
+        }
+        if (selectedItemId == -1) return;
+        int prefabId = -1;
+        for (int i = 0; i < GameManager.Instance.pool.prefabs.Length; i++)
+        {
+            if (GameManager.Instance.pool.prefabs[i] == ItemManager.Instance.itemDataArr[selectedItemId].dropItem)
+            {
+                prefabId = i;
+                break;
+            }
+        }
+        if (prefabId == -1)
+        {
+            Debug.Log("드랍 아이템에 해당하는 PrefabId를 Pool에서 찾을 수 없습니다.");
+            return;
+        }
+
+        GameObject selectedItem = GameManager.Instance.pool.Get(prefabId);
+        selectedItem.transform.parent = GameManager.Instance.pool.dropItemsPool;
+        selectedItem.transform.position = transform.position;
+        selectedItem.GetComponent<DropItem>().itemId = selectedItemId;
+        selectedItem.GetComponent<DropItem>().Init();
     }
 }

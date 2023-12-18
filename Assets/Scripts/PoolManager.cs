@@ -4,6 +4,7 @@ using UnityEngine;
 public class PoolManager : MonoBehaviour
 {
     public GameObject[] prefabs;
+    public Transform dropItemsPool;
 
     List<GameObject>[] pools;
 
