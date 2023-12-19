@@ -1,11 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
+
+    [Header("# Input System")]
+    public InputActionAsset actions;
 
     [Header("# Game Control")]
     public StageManager stage;
@@ -30,6 +34,7 @@ public class GameManager : MonoBehaviour
     public float chargeCooltime;
 
     [Header("# Inventory")]
+    public InventoryUI inventoryUI;
     public int gold;
     public int maxInventory;
     public List<int> inventoryItemsId;
@@ -46,10 +51,11 @@ public class GameManager : MonoBehaviour
     [Header("# Game Object")]
     public PoolManager pool;
     public Player player;
-    public LevelUp uiLevelUp;
     public Result uiResult;
 
     GameObject enemyCleaner;
+    InputAction inventoryAction;
+    bool workingInventory;
 
 
     private void Awake()
@@ -83,13 +89,24 @@ public class GameManager : MonoBehaviour
             magicItem[i] = -1;
             shoesItem[i] = -1;
         }
+
+        inventoryAction = actions.FindActionMap("UI").FindAction("Inventory");
+
+        inventoryAction.performed += _ => OnInventory();
     }
 
     private void OnEnable()
     {
         SceneManager.sceneLoaded += OnSceneLoaded;
 
+        actions.Enable();
+        if (inventoryUI.gameObject.activeSelf)
+        {
+            inventoryUI.gameObject.SetActive(false);
+        }
+        workingInventory = false;
     }
+
 
     void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
@@ -107,6 +124,27 @@ public class GameManager : MonoBehaviour
         {
             gameTime = maxGameTime;
             GameVictory();
+        }
+    }
+
+    void OnInventory()
+    {
+        if (workingInventory)
+        {
+            //AudioManager.instance.PlaySfx(AudioManager.Sfx.Select);
+            AudioManager.instance.EffectBgm(false);
+            workingInventory = false;
+            inventoryUI.gameObject.SetActive(false);
+            Resume();
+        }
+        else
+        {
+            //AudioManager.instance.PlaySfx(AudioManager.Sfx.LevelUp);
+            AudioManager.instance.EffectBgm(true);
+            workingInventory = true;
+            inventoryUI.gameObject.SetActive(true);
+            Stop();
+
         }
     }
 
@@ -183,7 +221,6 @@ public class GameManager : MonoBehaviour
         {
             level++;
             exp = 0;
-            uiLevelUp.Show();
         }
     }
 

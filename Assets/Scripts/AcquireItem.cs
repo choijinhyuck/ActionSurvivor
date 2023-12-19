@@ -7,34 +7,57 @@ public class AcquireItem : MonoBehaviour
     public float scanRange;
     public LayerMask targetLayer;
     RaycastHit2D[] targets;
+    List<GameObject> redundancies;
+    Vector3 offset;
     float speed;
     float acquireRange;
+
 
     private void Awake()
     {
         speed = 5;
-        acquireRange = .5f;
+        acquireRange = .1f;
+        offset = new Vector3(0f, .25f, 0f);
+        redundancies = new List<GameObject>();
+        StartCoroutine(redun());
+
     }
 
     private void FixedUpdate()
     {
-        targets = Physics2D.CircleCastAll(transform.position, scanRange, Vector2.up, 0.35f, targetLayer);
+
+
+        targets = Physics2D.CircleCastAll(transform.position, scanRange, Vector2.up, 0.25f, targetLayer);
 
         foreach (var target in targets)
         {
             target.transform.GetComponent<DropItem>().isDropping = false;
-            Vector3 dir = transform.position - target.transform.position;
+            Vector3 dir = transform.position + offset - target.transform.position;
             if (dir.magnitude < acquireRange)
             {
                 GoldOrItem(target);
-                continue;
             }
 
             dir = dir.normalized;
-            target.transform.position += dir * speed * Time.fixedDeltaTime;
+            if (redundancies.Contains(target.transform.gameObject))
+            {
+                continue;
+            }
+            else
+            {
+                target.transform.position += dir * speed * Time.fixedDeltaTime;
+            }
         }
     }
-    
+    IEnumerator redun()
+    {
+        while (true)
+        {
+            Debug.Log(redundancies.Count);
+            yield return new WaitForSeconds(1f);
+        }
+    }
+
     void GoldOrItem(RaycastHit2D target)
     {
         // 드랍된 골드 아이템 종류에 따라 획득하는 순간 랜덤한 골드 획득
@@ -94,7 +117,15 @@ public class AcquireItem : MonoBehaviour
                 // 인벤토리 가득차면 아이템을 획득하지 않고 비활성화도 시키지 않음
                 // 맵 상에 계속 두도록 함. 계속 따라오도록 할지 일단 멈추게 할지는 고민.
                 if (GameManager.Instance.maxInventory == GameManager.Instance.inventoryItemsId.Count)
+                {
+                    if (!redundancies.Contains(target.transform.gameObject))
+                    {
+                        redundancies.Add(target.transform.gameObject);
+                    }
                     return;
+                }
+
+                if (redundancies.Contains(target.transform.gameObject)) redundancies.Remove(target.transform.gameObject);
                 GameManager.Instance.inventoryItemsId.Add(target.transform.GetComponent<DropItem>().itemId);
                 target.transform.gameObject.SetActive(false);
                 break;

@@ -1,5 +1,5 @@
 {
-    "name": "DefaultInputActions",
+    "name": "UI Input",
     "maps": [
         {
             "name": "Player",
@@ -794,7 +794,7 @@
                     "path": "<Keyboard>/tab",
                     "interactions": "",
                     "processors": "",
-                    "groups": "",
+                    "groups": "Keyboard&Mouse",
                     "action": "Inventory",
                     "isComposite": false,
                     "isPartOfComposite": false

@@ -34,7 +34,6 @@ public class Player : MonoBehaviour
     Vector3 skillDir;
     Vector3 rangeDir;
     public float chargeTimer;
-    float chargeTime; // Gamanager 값을 할당
     public int chargeCount; // 현재 사용가능한 스킬 카운트와 다름. 실제 플레이어가 차지한 스킬 수.
     bool isRight;
     bool isAttack;
@@ -91,7 +90,6 @@ public class Player : MonoBehaviour
         isDodge = false;
         isAttack = false;
         isHit = false;
-        chargeTime = GameManager.Instance.chargeTime;
 
         actions.Enable();
 
@@ -379,13 +377,10 @@ public class Player : MonoBehaviour
         if (status == 1)
         {
             // 차징 중 interrupt로 인해 cancel 된 경우? performed와 동일한 작업
-            if (!isCharging)
-            {
-                StopCoroutine("StartCharge");
-                // 0.2 - 0.5 초 사이의 키 입력을 시도한 경우 - 한 번의 공격 나가도록
-                Fire();
-                return;
-            }
+            if (!isCharging) StopCoroutine("StartCharge");
+            if (GameManager.Instance.isLive) Fire();
+            // 0.2 - 0.5 초 사이의 키 입력을 시도한 경우 - 한 번의 공격 나가도록
+            return;
         }
 
         if (!isCharging)
@@ -394,7 +389,7 @@ public class Player : MonoBehaviour
             return;   // 공격중 차징을 시도하고 키를 뗐을 때 공격 한 번 나가는 것 방지,
         }
 
-        if (!isHit || GameManager.Instance.isLive)
+        if (!isHit && GameManager.Instance.isLive)
         {
             // 총 3 칸으로 구성된 기 카운트 사용
             switch (chargeCount)
@@ -451,7 +446,7 @@ public class Player : MonoBehaviour
         chargeTimer = 0;
         while (true)
         {
-            if (isHit || !GameManager.Instance.isLive)
+            if (isHit || (!GameManager.Instance.isLive))
             {
                 ChargedFire(0);
                 break;
@@ -464,7 +459,7 @@ public class Player : MonoBehaviour
                 {
                     chargeEffects[chargeCount].gameObject.SetActive(false);
                 }
-                yield return waitFix;
+                yield return null;
                 continue;
             }
 
@@ -473,7 +468,7 @@ public class Player : MonoBehaviour
                 chargeEffects[chargeCount].gameObject.SetActive(true);
             }
 
-            if (chargeTimer > chargeTime && chargeCount < GameManager.Instance.maxChargibleCount)
+            if (chargeTimer > GameManager.Instance.chargeTime && chargeCount < GameManager.Instance.maxChargibleCount)
             {
                 if (chargeCount < 2) chargeEffects[chargeCount].gameObject.SetActive(false);
                 chargeCount++;
@@ -493,12 +488,12 @@ public class Player : MonoBehaviour
 
             // 스킬 방향 설정 : 최소 0.5 초 이상 기모으는 시점부터 보이도록.
             // 일반 공격 시에도 방향 나오는 것 방지
-            if (totalTime > chargeTime)
+            if (totalTime > GameManager.Instance.chargeTime)
             {
                 StartCoroutine("SkillArrow");
             }
 
-            yield return waitFix;
+            yield return null;
             chargeTimer += Time.fixedDeltaTime;
             totalTime += Time.fixedDeltaTime;
         }
