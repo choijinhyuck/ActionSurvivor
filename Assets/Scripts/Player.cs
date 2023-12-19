@@ -81,7 +81,7 @@ public class Player : MonoBehaviour
         spriteRenderer = GetComponent<SpriteRenderer>();
         scanner = GetComponent<Scanner>();
         hands = GetComponentsInChildren<Hand>(true);
-        waitSec = new WaitForSeconds(.2f);
+        waitSec = new WaitForSeconds(.01f);
         waitFix = new WaitForFixedUpdate();
     }
 
@@ -171,20 +171,20 @@ public class Player : MonoBehaviour
 
         spriteRenderer.material.SetColor("_FlashColor", new Color(1, 1, 1, 0));
         spriteRenderer.material.SetFloat("_FlashAmount", 0.25f);
-        yield return waitFix; // 다음 하나의 물리 프레임
+        yield return waitSec;
         rigid.velocity = Vector2.zero;
         Vector2 dirVec = rigid.position - target.position;
         rigid.AddForce(dirVec.normalized * force, ForceMode2D.Impulse);
         spriteRenderer.material.SetFloat("_FlashAmount", 0.5f);
-        yield return waitFix; // 다음 하나의 물리 프레임
+        yield return waitSec;
         spriteRenderer.material.SetFloat("_FlashAmount", 0.75f);
-        yield return waitFix; // 다음 하나의 물리 프레임
+        yield return waitSec;
         spriteRenderer.material.SetFloat("_FlashAmount", 1.0f);
-        yield return waitFix;
+        yield return waitSec;
         spriteRenderer.material.SetFloat("_FlashAmount", 0.75f);
-        yield return waitFix;
+        yield return waitSec;
         spriteRenderer.material.SetFloat("_FlashAmount", 0.5f);
-        yield return waitFix;
+        yield return waitSec;
         spriteRenderer.material.SetFloat("_FlashAmount", 0f);
         rigid.velocity = Vector2.zero;
         yield return new WaitForSeconds(.1f);
@@ -351,16 +351,16 @@ public class Player : MonoBehaviour
         {
             transform.localPosition += deltaVec;
             rigid.velocity = Vector2.zero;
-            yield return waitFix;
+            yield return waitSec;
             transform.localPosition -= deltaVec;
             rigid.velocity = Vector2.zero;
-            yield return waitFix;
+            yield return waitSec;
             transform.localPosition -= deltaVec;
             rigid.velocity = Vector2.zero;
-            yield return waitFix;
+            yield return waitSec;
             transform.localPosition += deltaVec;
             rigid.velocity = Vector2.zero;
-            yield return waitFix;
+            yield return waitSec;
         }
     }
 
@@ -596,14 +596,14 @@ public class Player : MonoBehaviour
         skillRigid.transform.localRotation = Quaternion.FromToRotation(Vector3.right, skillDir);
 
         skillRigid.gameObject.SetActive(true);
-        skillRigid.velocity = skillDir * 10;
+        skillRigid.velocity = skillDir * 15;
         StartCoroutine(StopSkill(skillRigid));
 
     }
 
     IEnumerator StopSkill(Rigidbody2D skillRigid)
     {
-        yield return new WaitForSeconds(.9f);
+        yield return new WaitForSeconds(.6f);
         skillRigid.velocity = Vector3.zero;
         skillRigid.gameObject.SetActive(false);
         skillRigid.transform.localPosition = Vector3.zero;

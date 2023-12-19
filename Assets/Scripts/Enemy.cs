@@ -26,9 +26,9 @@ public class Enemy : MonoBehaviour
     Animator anim;
     SpriteRenderer spriter;
     Transform shadow;
-    WaitForFixedUpdate wait;
     WaitForSeconds waitSec;
-    
+    WaitForSeconds waitShortTime;
+    Coroutine knockbackCoroutine;
 
 
     private void Awake()
@@ -38,8 +38,8 @@ public class Enemy : MonoBehaviour
         anim = GetComponent<Animator>();
         spriter = GetComponent<SpriteRenderer>();
         shadow = GetComponentsInChildren<Transform>()[1];
-        wait = new WaitForFixedUpdate();
         waitSec = new WaitForSeconds(.1f);
+        waitShortTime = new WaitForSeconds(.01f);
         isHit = false;
 
     }
@@ -92,6 +92,7 @@ public class Enemy : MonoBehaviour
 
     private void OnEnable()
     {
+        isHit = false;
         target = GameManager.Instance.player.GetComponent<Rigidbody2D>();
         isLive = true;
         coll.enabled = true;
@@ -120,17 +121,18 @@ public class Enemy : MonoBehaviour
         if (!collision.CompareTag("Projectile") && !collision.CompareTag("Skill"))
             return;
 
+
         if (collision.CompareTag("Projectile"))
         {
             health -= collision.GetComponent<Projectile>().damage;
-            StartCoroutine(KnockBack(3));
         }
         else if (collision.CompareTag("Skill"))
         {
             health -= collision.GetComponent<Skill>().damage;
-            StartCoroutine(KnockBack(10));
         }
 
+        if (isHit) StopCoroutine(knockbackCoroutine);
+        knockbackCoroutine = StartCoroutine(KnockBack(10));
 
 
         if (health > 0)
@@ -150,7 +152,6 @@ public class Enemy : MonoBehaviour
             if (GameManager.Instance.isLive)
             {
                 AudioManager.instance.PlaySfx(AudioManager.Sfx.Dead);
-
             }
         }
     }
@@ -158,22 +159,21 @@ public class Enemy : MonoBehaviour
     IEnumerator KnockBack(int force)
     {
         isHit = true;
-
         spriter.material.SetFloat("_FlashAmount", 0.25f);
-        yield return wait; // 다음 하나의 물리 프레임
+        yield return waitShortTime; // 0.02초
         rigid.velocity = Vector2.zero;
         Vector2 dirVec = rigid.position - target.position;
         rigid.AddForce(dirVec.normalized * force, ForceMode2D.Impulse);
         spriter.material.SetFloat("_FlashAmount", 0.5f);
-        yield return wait; // 다음 하나의 물리 프레임
+        yield return waitShortTime;
         spriter.material.SetFloat("_FlashAmount", 0.75f);
-        yield return wait; // 다음 하나의 물리 프레임
+        yield return waitShortTime;
         spriter.material.SetFloat("_FlashAmount", 1.0f);
-        yield return wait;
+        yield return waitShortTime;
         spriter.material.SetFloat("_FlashAmount", 0.75f);
-        yield return wait;
+        yield return waitShortTime;
         spriter.material.SetFloat("_FlashAmount", 0.5f);
-        yield return wait;
+        yield return waitShortTime;
         spriter.material.SetFloat("_FlashAmount", 0f);
         rigid.velocity = Vector2.zero;
         yield return new WaitForSeconds(.1f);
