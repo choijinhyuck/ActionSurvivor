@@ -14904,6 +14904,9 @@ MonoBehaviour:
     spawnTime: 3
     health: 10
     speed: 1
+    exp: 0
+    dropItemsId: 
+    dropProbability: []
     collPos: {x: 0, y: 0.34}
     collSize: {x: 0.5, y: 0.5}
     shadowScale: 0.655
@@ -14915,6 +14918,9 @@ MonoBehaviour:
     spawnTime: 1
     health: 30
     speed: 4
+    exp: 0
+    dropItemsId: 
+    dropProbability: []
     collPos: {x: 0, y: 0.12}
     collSize: {x: 0.23, y: 0.29}
     shadowScale: 0.24
@@ -14926,6 +14932,9 @@ MonoBehaviour:
     spawnTime: 1
     health: 150
     speed: 1.5
+    exp: 0
+    dropItemsId: 
+    dropProbability: []
     collPos: {x: 0, y: 0.4}
     collSize: {x: 0.97, y: 0.58}
     shadowScale: 1
@@ -14937,6 +14946,9 @@ MonoBehaviour:
     spawnTime: 1
     health: 150
     speed: 1.5
+    exp: 0
+    dropItemsId: 
+    dropProbability: []
     collPos: {x: 0, y: 0.33}
     collSize: {x: 0.4, y: 0.5}
     shadowScale: 0.4
@@ -14948,6 +14960,9 @@ MonoBehaviour:
     spawnTime: 1
     health: 150
     speed: 1.5
+    exp: 0
+    dropItemsId: 
+    dropProbability: []
     collPos: {x: 0, y: 0.3}
     collSize: {x: 0.64, y: 0.5}
     shadowScale: 0.8
@@ -14959,6 +14974,9 @@ MonoBehaviour:
     spawnTime: 1
     health: 150
     speed: 1.5
+    exp: 0
+    dropItemsId: 
+    dropProbability: []
     collPos: {x: 0, y: 0.3}
     collSize: {x: 0.64, y: 0.5}
     shadowScale: 0.8
@@ -14970,6 +14988,9 @@ MonoBehaviour:
     spawnTime: 1
     health: 150
     speed: 1.5
+    exp: 0
+    dropItemsId: 
+    dropProbability: []
     collPos: {x: 0, y: 0.25}
     collSize: {x: 0.55, y: 0.55}
     shadowScale: 0.6
