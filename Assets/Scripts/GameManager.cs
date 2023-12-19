@@ -65,6 +65,7 @@ public class GameManager : MonoBehaviour
 
         DontDestroyOnLoad(this.gameObject);
         Application.targetFrameRate = 60;
+        //Cursor.lockState = CursorLockMode.Locked;
 
         gold = 0;
         inventoryItemsId = new List<int>();

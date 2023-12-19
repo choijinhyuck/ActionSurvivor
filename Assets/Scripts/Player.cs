@@ -112,7 +112,6 @@ public class Player : MonoBehaviour
             shadow.gameObject.SetActive(true);
         }
     }
-
     private void FixedUpdate()
     {
         if (!GameManager.Instance.isLive || isHit) return;
@@ -273,6 +272,7 @@ public class Player : MonoBehaviour
         //spriteRenderer.color = currColor;
 
         isDodge = false;
+        rigid.velocity = Vector2.zero;
         dodgeEffects[GameManager.Instance.playerId].gameObject.SetActive(false);
     }
 
@@ -310,6 +310,7 @@ public class Player : MonoBehaviour
 
     void StartCharging()
     {
+        if (!GameManager.Instance.isLive) return;
         if (anim.GetCurrentAnimatorStateInfo(0).IsName("Attack") || anim.GetCurrentAnimatorStateInfo(0).IsName("Dead") || isHit)
             return;
 
@@ -344,25 +345,31 @@ public class Player : MonoBehaviour
 
     IEnumerator FailMotion()
     {
-        Vector3 deltaVec = new Vector3(0.05f, 0f, 0f);
+        Vector3 deltaVec = new Vector3(.05f, 0f, 0f);
 
         AudioManager.instance.PlaySfx(AudioManager.Sfx.Fail);
         for (int i = 0; i < 3; i++)
         {
-            transform.localPosition += deltaVec;
-            rigid.velocity = Vector2.zero;
+            //transform.localPosition += deltaVec;
+            //yield return waitSec;
+            //transform.localPosition -= deltaVec;
+            //yield return waitSec;
+            //transform.localPosition -= deltaVec;
+            //yield return waitSec;
+            //transform.localPosition += deltaVec;
+            //yield return waitSec;
+
+            rigid.position = rigid.position + new Vector2(deltaVec.x, deltaVec.y);
             yield return waitSec;
-            transform.localPosition -= deltaVec;
-            rigid.velocity = Vector2.zero;
+            rigid.position = rigid.position - new Vector2(deltaVec.x, deltaVec.y);
             yield return waitSec;
-            transform.localPosition -= deltaVec;
-            rigid.velocity = Vector2.zero;
+            rigid.position = rigid.position - new Vector2(deltaVec.x, deltaVec.y);
             yield return waitSec;
-            transform.localPosition += deltaVec;
-            rigid.velocity = Vector2.zero;
+            rigid.position = rigid.position + new Vector2(deltaVec.x, deltaVec.y);
             yield return waitSec;
         }
     }
+
 
     /// <summary>
     /// 0 : performed, 1: canceled
@@ -372,7 +379,6 @@ public class Player : MonoBehaviour
         if (status == 1)
         {
             // 차징 중 interrupt로 인해 cancel 된 경우? performed와 동일한 작업
-
             if (!isCharging)
             {
                 StopCoroutine("StartCharge");
@@ -388,7 +394,7 @@ public class Player : MonoBehaviour
             return;   // 공격중 차징을 시도하고 키를 뗐을 때 공격 한 번 나가는 것 방지,
         }
 
-        if (!isHit)
+        if (!isHit || GameManager.Instance.isLive)
         {
             // 총 3 칸으로 구성된 기 카운트 사용
             switch (chargeCount)
@@ -401,7 +407,6 @@ public class Player : MonoBehaviour
                     AttackSkill(0);
                     AudioManager.instance.PlaySfx(AudioManager.Sfx.WarriorSkill);
                     GameManager.Instance.chargeCount--;
-                    Debug.Log(chargeCount);
                     break;
                 case 2:
 
@@ -446,7 +451,7 @@ public class Player : MonoBehaviour
         chargeTimer = 0;
         while (true)
         {
-            if (isHit)
+            if (isHit || !GameManager.Instance.isLive)
             {
                 ChargedFire(0);
                 break;
@@ -533,7 +538,7 @@ public class Player : MonoBehaviour
                     yield break;
             }
 
-            
+
             float flashAmountUnit = targetFlashAmount / frameCount;
             float currFlashAmount;
             spriteRenderer.material.SetColor("_FlashColor", applyColor);
@@ -542,7 +547,7 @@ public class Player : MonoBehaviour
                 if (chargeCount == 0) break;
                 currFlashAmount = flashAmountUnit * count;
                 spriteRenderer.material.SetFloat("_FlashAmount", currFlashAmount);
-                yield return waitFix;
+                yield return waitSec;
                 count++;
             }
             count -= 2;
@@ -551,13 +556,13 @@ public class Player : MonoBehaviour
                 if (chargeCount == 0) break;
                 currFlashAmount = flashAmountUnit * count;
                 spriteRenderer.material.SetFloat("_FlashAmount", currFlashAmount);
-                yield return waitFix;
+                yield return waitSec;
                 count--;
             }
 
             spriteRenderer.material.SetColor("_FlashColor", origin);
             spriteRenderer.material.SetFloat("_FlashAmount", 0f);
-            yield return waitFix;
+            yield return waitSec;
         }
     }
 
@@ -610,19 +615,22 @@ public class Player : MonoBehaviour
         skillRigid.transform.localRotation = Quaternion.identity;
     }
 
-    
+
     void StartRangeWeapon()
     {
         if (anim.GetCurrentAnimatorStateInfo(0).IsName("Attack") || anim.GetCurrentAnimatorStateInfo(0).IsName("Dead") || isHit)
             return;
+        if (!GameManager.Instance.isLive) return;
         // 장비하고 있으면 실행
         if (GameManager.Instance.rangeWeaponItem[GameManager.Instance.playerId] == -1)
             return;
         // 차징 캔슬 가능하도록 start Action으로 옮기도록. 조준만 해도 차징 취소.
-        if (isCharging)
-        {
-            ChargedFire(1);
-        }
+        // 일단 아래 기능 임시로 취소.
+        // 계속 스킬 차징을 유지하는 게 더 액션성을 강조할 수 있을 것이라 테스트 해보고 판단하게 됨.
+        //if (isCharging)
+        //{
+        //    ChargedFire(1);
+        //}
 
         if (rangeWeapon.readyRangeWeapon)
         {
@@ -630,7 +638,7 @@ public class Player : MonoBehaviour
             //궤적 생성
             StartCoroutine("RangeArrow");
             //궤적 중 다른 키입력 오면 취소 (공격버튼, 마법버튼.)
-            
+
         }
         else
         {
@@ -646,6 +654,7 @@ public class Player : MonoBehaviour
 
         while (true)
         {
+            if (!GameManager.Instance.isLive) break;
             if (inputVector.magnitude > 0)
             {
                 rangeDir = inputVector;
@@ -666,11 +675,11 @@ public class Player : MonoBehaviour
 
     void OnRangeWeapon(bool ready)
     {
-        if (ready)
+        if (ready && GameManager.Instance.isLive)
         {
             rangeWeapon.Fire(rangeDir);
-            canRangeFire = false;
         }
+        canRangeFire = false;
         StopCoroutine("RangeArrow");
         rangeArrow.transform.localRotation = Quaternion.identity;
         rangeArrow.SetActive(false);
