@@ -19,8 +19,6 @@ public class AcquireItem : MonoBehaviour
         acquireRange = .1f;
         offset = new Vector3(0f, .25f, 0f);
         redundancies = new List<GameObject>();
-        StartCoroutine(redun());
-
     }
 
     private void FixedUpdate()
@@ -49,14 +47,7 @@ public class AcquireItem : MonoBehaviour
             }
         }
     }
-    IEnumerator redun()
-    {
-        while (true)
-        {
-            Debug.Log(redundancies.Count);
-            yield return new WaitForSeconds(1f);
-        }
-    }
+
 
     void GoldOrItem(RaycastHit2D target)
     {

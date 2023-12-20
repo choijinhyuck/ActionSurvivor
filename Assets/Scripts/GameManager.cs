@@ -35,6 +35,7 @@ public class GameManager : MonoBehaviour
 
     [Header("# Inventory")]
     public InventoryUI inventoryUI;
+    public bool workingInventory;
     public int gold;
     public int maxInventory;
     public List<int> inventoryItemsId;
@@ -55,7 +56,8 @@ public class GameManager : MonoBehaviour
 
     GameObject enemyCleaner;
     InputAction inventoryAction;
-    bool workingInventory;
+    InputAction menuAction;
+    
 
 
     private void Awake()
@@ -91,8 +93,10 @@ public class GameManager : MonoBehaviour
         }
 
         inventoryAction = actions.FindActionMap("UI").FindAction("Inventory");
+        menuAction = actions.FindActionMap("UI").FindAction("Menu");
 
         inventoryAction.performed += _ => OnInventory();
+        menuAction.performed += _ => inventoryUI.OnMenu();
     }
 
     private void OnEnable()
@@ -127,7 +131,7 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    void OnInventory()
+    public void OnInventory()
     {
         if (workingInventory)
         {
