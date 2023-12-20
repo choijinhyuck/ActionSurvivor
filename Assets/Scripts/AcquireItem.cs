@@ -107,18 +107,29 @@ public class AcquireItem : MonoBehaviour
             default:
                 // 인벤토리 가득차면 아이템을 획득하지 않고 비활성화도 시키지 않음
                 // 맵 상에 계속 두도록 함. 계속 따라오도록 할지 일단 멈추게 할지는 고민.
-                if (GameManager.Instance.maxInventory == GameManager.Instance.inventoryItemsId.Count)
+                bool isFull = true;
+
+                for (int i = 0; i < GameManager.Instance.maxInventory; i++)
+                {
+                    if (GameManager.Instance.inventoryItemsId[i] == -1)
+                    {
+                        GameManager.Instance.inventoryItemsId[i] = target.transform.GetComponent<DropItem>().itemId;
+                        if (redundancies.Contains(target.transform.gameObject))
+                            redundancies.Remove(target.transform.gameObject);
+                        target.transform.gameObject.SetActive(false);
+                        isFull = false;
+                        break;
+                    }
+                }
+
+                if (isFull)
                 {
                     if (!redundancies.Contains(target.transform.gameObject))
                     {
                         redundancies.Add(target.transform.gameObject);
                     }
-                    return;
                 }
 
-                if (redundancies.Contains(target.transform.gameObject)) redundancies.Remove(target.transform.gameObject);
-                GameManager.Instance.inventoryItemsId.Add(target.transform.GetComponent<DropItem>().itemId);
-                target.transform.gameObject.SetActive(false);
                 break;
         }
     }

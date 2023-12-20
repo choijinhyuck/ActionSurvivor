@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Diagnostics.Tracing;
 using System.Linq;
 using System.Threading;
 using Unity.VisualScripting;
@@ -9,6 +10,8 @@ using UnityEngine.UI;
 
 public class InventoryUI : MonoBehaviour
 {
+    public Canvas baseUI;
+
     List<Button> buttons;
     Canvas[] canvases;
     Image[] itemImages;
@@ -18,11 +21,21 @@ public class InventoryUI : MonoBehaviour
 
     private void Awake()
     {
-        buttons = GetComponentsInChildren<Button>().ToList<Button>();
-        itemImages = new Image[buttons.Count];
-        canvases = new Canvas[buttons.Count];
+        buttons = GetComponentsInChildren<Button>(true).ToList<Button>();
+        itemImages = new Image[24];
+        canvases = new Canvas[24];
 
         for (int i = 0; i < buttons.Count; i++)
+        {
+            if (i > 23)
+            {
+                buttons[i].gameObject.SetActive(true);
+                continue;
+            }
+            buttons[i].gameObject.SetActive(false);
+        }
+
+        for (int i = 0; i < 24; i++)
         {
             canvases[i] = buttons[i].GetComponentInParent<Canvas>();
             itemImages[i] = buttons[i].GetComponentsInChildren<Image>()[1];
@@ -33,6 +46,11 @@ public class InventoryUI : MonoBehaviour
 
     void OnEnable()
     {
+        for (int i = 0; i < GameManager.Instance.maxInventory; i++)
+        {
+            buttons[i].gameObject.SetActive(true);
+        }
+        
         ChangeAlpha(1f);
         foreach (var canvas in canvases)
         {
@@ -41,9 +59,22 @@ public class InventoryUI : MonoBehaviour
         EventSystem.current.SetSelectedGameObject(buttons[0].gameObject);
         currentSelect = buttons[0].gameObject;
         canvases[0].sortingOrder = 2;
+        baseUI.sortingOrder = 0;
+
+        for (int i = 0; i < GameManager.Instance.maxInventory; i++)
+        {
+            if (GameManager.Instance.inventoryItemsId[i] == -1)
+            {
+                itemImages[i].sprite = null;
+            }
+            else
+            {
+                itemImages[i].sprite = ItemManager.Instance.itemDataArr[GameManager.Instance.inventoryItemsId[i]].itemIcon;
+            }
+        }
     }
 
-    private void Update()
+    private void LateUpdate()
     {
         if (currentSelect == EventSystem.current.currentSelectedGameObject)
         {
@@ -52,6 +83,7 @@ public class InventoryUI : MonoBehaviour
         currentSelect.GetComponentInParent<Canvas>().sortingOrder = 1;
         currentSelect = EventSystem.current.currentSelectedGameObject;
         currentSelect.GetComponentInParent<Canvas>().sortingOrder = 2;
+        baseUI.sortingOrder = 0;
     }
 
     void OnPress(int buttonIndex)
@@ -74,9 +106,9 @@ public class InventoryUI : MonoBehaviour
     {
         Color targetColor = new Color(1f, 1f, 1f, targetAlpha);
 
-        foreach (var itemImage in itemImages)
+        for (int i = 0; i < 24; i++)
         {
-            itemImage.color = targetColor;
+            itemImages[i].color = targetColor;
         }
     }
 }

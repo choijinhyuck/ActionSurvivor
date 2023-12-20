@@ -17,7 +17,7 @@ MonoBehaviour:
   itemDesc: "\uC77C\uBC18 \uB300\uC7A5\uC7A5\uC774\uAC00 \uAD6C\uB9AC\uB85C \uC81C\uC791\uD55C
     \uC77C\uBC18\uC801\uC778 \uB9DD\uCE58\uB2E4."
   itemEffet: "\uACF5\uACA9\uB825 4"
-  itemIcon: {fileID: 0}
+  itemIcon: {fileID: -1584203094, guid: 13f6535ee6958b54188a2f5095516d88, type: 3}
   baseAmount: 4
   coolTime: 0
   pierceCount: 0

@@ -38,7 +38,7 @@ public class GameManager : MonoBehaviour
     public bool workingInventory;
     public int gold;
     public int maxInventory;
-    public List<int> inventoryItemsId;
+    public int[] inventoryItemsId;
     public int storedGold;
     public List<int> storedItemsId;
 
@@ -76,7 +76,13 @@ public class GameManager : MonoBehaviour
         //Cursor.lockState = CursorLockMode.Locked;
 
         gold = 0;
-        inventoryItemsId = new List<int>();
+        inventoryItemsId = new int[24];
+        // -1 means an empty slot!
+        for (int i = 0; i < inventoryItemsId.Length; i++)
+        {
+            inventoryItemsId[i] = -1;
+        }
+
         storedGold = 0;
         storedItemsId = new List<int>();
 
