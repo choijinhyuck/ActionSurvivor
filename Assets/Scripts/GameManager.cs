@@ -45,9 +45,11 @@ public class GameManager : MonoBehaviour
     [Header("# Equipment ")]
     // -1 ÀÌ¸é ¹«ÀåÂø
     public int[] mainWeaponItem;
-    public int[] rangeWeaponItem;
-    public int[] magicItem;
+    public int[] necklaceItem;
     public int[] shoesItem;
+    public int rangeWeaponItem;
+    public int magicItem;
+    
 
     [Header("# Game Object")]
     public PoolManager pool;
@@ -57,6 +59,7 @@ public class GameManager : MonoBehaviour
     GameObject enemyCleaner;
     InputAction inventoryAction;
     InputAction menuAction;
+    InputAction cancelAction;
     
 
 
@@ -87,22 +90,26 @@ public class GameManager : MonoBehaviour
         storedItemsId = new List<int>();
 
         mainWeaponItem = new int[maxHealth.Length];
-        rangeWeaponItem = new int[maxHealth.Length];
-        magicItem = new int[maxHealth.Length];
+        necklaceItem = new int[maxHealth.Length];
         shoesItem = new int[maxHealth.Length];
+        rangeWeaponItem = -1;
+        magicItem = -1;
+        
         for (int i = 0; i < maxHealth.Length; i++)
         {
             mainWeaponItem[i] = -1;
-            rangeWeaponItem[i] = -1;
-            magicItem[i] = -1;
+            necklaceItem[i] = -1;
             shoesItem[i] = -1;
         }
 
         inventoryAction = actions.FindActionMap("UI").FindAction("Inventory");
         menuAction = actions.FindActionMap("UI").FindAction("Menu");
+        cancelAction = actions.FindActionMap("UI").FindAction("Cancel");
 
         inventoryAction.performed += _ => OnInventory();
         menuAction.performed += _ => inventoryUI.OnMenu();
+        cancelAction.performed += _ => inventoryUI.OnCancel();
+
     }
 
     private void OnEnable()

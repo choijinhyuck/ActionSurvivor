@@ -617,7 +617,7 @@ public class Player : MonoBehaviour
             return;
         if (!GameManager.Instance.isLive) return;
         // 장비하고 있으면 실행
-        if (GameManager.Instance.rangeWeaponItem[GameManager.Instance.playerId] == -1)
+        if (GameManager.Instance.rangeWeaponItem == -1)
             return;
         // 차징 캔슬 가능하도록 start Action으로 옮기도록. 조준만 해도 차징 취소.
         // 일단 아래 기능 임시로 취소.

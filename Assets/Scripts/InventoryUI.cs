@@ -11,20 +11,31 @@ using UnityEngine.UI;
 public class InventoryUI : MonoBehaviour
 {
     public Canvas baseUI;
+    public Text itemName;
+    public Text itemDesc;
 
     List<Button> buttons;
     Canvas[] canvases;
     Image[] itemImages;
     GameObject currentSelect;
+    bool isPressed;
+    int pressedId;
+    Color originAlpha;
+    Color blankAlpha;
+    Color halfAlpha;
 
     bool isFirstStart;
 
     private void Awake()
     {
         buttons = GetComponentsInChildren<Button>(true).ToList<Button>();
-        itemImages = new Image[24];
-        canvases = new Canvas[24];
+        itemImages = new Image[buttons.Count];
+        canvases = new Canvas[buttons.Count];
+        originAlpha = new Color(1f, 1f, 1f, 1f);
+        blankAlpha = new Color(1f, 1f, 1f, 0f);
+        halfAlpha = new Color(1f, 1f, 1f, .5f);
 
+        // buttons 0-23: Inventory, 24-26: Equipment, 27:Range, 28:Magic
         for (int i = 0; i < buttons.Count; i++)
         {
             if (i > 23)
@@ -35,7 +46,7 @@ public class InventoryUI : MonoBehaviour
             buttons[i].gameObject.SetActive(false);
         }
 
-        for (int i = 0; i < 24; i++)
+        for (int i = 0; i < buttons.Count; i++)
         {
             canvases[i] = buttons[i].GetComponentInParent<Canvas>();
             itemImages[i] = buttons[i].GetComponentsInChildren<Image>()[1];
@@ -46,12 +57,14 @@ public class InventoryUI : MonoBehaviour
 
     void OnEnable()
     {
+        isPressed = false;
+
         for (int i = 0; i < GameManager.Instance.maxInventory; i++)
         {
             buttons[i].gameObject.SetActive(true);
         }
         
-        ChangeAlpha(1f);
+        ChangeAlpha(originAlpha);
         foreach (var canvas in canvases)
         {
             canvas.sortingOrder = 1;
@@ -61,53 +74,111 @@ public class InventoryUI : MonoBehaviour
         canvases[0].sortingOrder = 2;
         baseUI.sortingOrder = 0;
 
+        Init();
+    }
+
+    private void LateUpdate()
+    {
+        currentSelect.GetComponentInParent<Canvas>().sortingOrder = 1;
+        currentSelect = EventSystem.current.currentSelectedGameObject;
+
+        if (currentSelect is null) return;
+        currentSelect.GetComponentInParent<Canvas>().sortingOrder = 2;
+        baseUI.sortingOrder = 0;
+
+        if (isPressed) return;
+        Init();
+
+        int selectedId = buttons.IndexOf(currentSelect.GetComponent<Button>());
+        if (GameManager.Instance.inventoryItemsId[selectedId] == -1)
+        {
+            itemName.text = "";
+            itemDesc.text = "";
+        }
+        else {
+            itemName.text = ItemManager.Instance.itemDataArr[GameManager.Instance.inventoryItemsId[selectedId]].itemName;
+            itemDesc.text = ItemManager.Instance.itemDataArr[GameManager.Instance.inventoryItemsId[selectedId]].itemDesc;
+        }
+
+        
+    }
+
+    void Init()
+    {
         for (int i = 0; i < GameManager.Instance.maxInventory; i++)
         {
             if (GameManager.Instance.inventoryItemsId[i] == -1)
             {
                 itemImages[i].sprite = null;
+                itemImages[i].color = blankAlpha;
             }
             else
             {
                 itemImages[i].sprite = ItemManager.Instance.itemDataArr[GameManager.Instance.inventoryItemsId[i]].itemIcon;
+                itemImages[i].color = originAlpha;
             }
         }
+        
+        foreach (var button in buttons)
+        {
+            button.GetComponent<Image>().color = originAlpha;
+        }
     }
-
-    private void LateUpdate()
+    void OnPress(int buttonIndex)
     {
-        if (currentSelect == EventSystem.current.currentSelectedGameObject)
+        if (isPressed)
+        {
+            var tempItemId = GameManager.Instance.inventoryItemsId[pressedId];
+            GameManager.Instance.inventoryItemsId[pressedId] = GameManager.Instance.inventoryItemsId[buttonIndex];
+            GameManager.Instance.inventoryItemsId[buttonIndex] = tempItemId;
+            isPressed = false;
+            return;
+        }
+        if (GameManager.Instance.inventoryItemsId[buttonIndex] == -1 )
         {
             return;
         }
-        currentSelect.GetComponentInParent<Canvas>().sortingOrder = 1;
-        currentSelect = EventSystem.current.currentSelectedGameObject;
-        currentSelect.GetComponentInParent<Canvas>().sortingOrder = 2;
-        baseUI.sortingOrder = 0;
-    }
-
-    void OnPress(int buttonIndex)
-    {
-        ChangeAlpha(.5f);
-        itemImages[buttonIndex].color = new Color(1f, 1f, 1f, 1f);
+        pressedId = buttonIndex;
+        isPressed = true;
+        ChangeAlpha(halfAlpha);
+        itemImages[buttonIndex].color = originAlpha;
+        buttons[buttonIndex].GetComponent<Image>().color = new Color(.7f, .7f, .7f, 1f);
     }
 
     // 인벤토리 창에서 아무 버튼도 선택되지 않은 경우에 Menu키 (키보드: Esc, 게임패드: Start)로 빠져나올 수 있도록.
     public void OnMenu()
-    {
-        if (buttons.Contains(EventSystem.current.currentSelectedGameObject?.GetComponent<Button>()))
+    { 
+        if (GameManager.Instance.workingInventory)
         {
-            // 인벤토리 창이 열려 있지 않은 경우는 메뉴 창을 띄워야 하기 때문에 인벤창이 켜져있는 경우만 끄는 작동하도록
-            if (GameManager.Instance.workingInventory) GameManager.Instance.OnInventory();
+            Debug.Log(isPressed);
+            if (!isPressed)
+            {
+                GameManager.Instance.OnInventory();
+            }
+            else
+            {
+                isPressed = false;
+            }
         }
     }
 
-    void ChangeAlpha(float targetAlpha)
+    public void OnCancel()
     {
-        Color targetColor = new Color(1f, 1f, 1f, targetAlpha);
-
-        for (int i = 0; i < 24; i++)
+        if (GameManager.Instance.workingInventory && isPressed)
         {
+            isPressed = false;
+        }
+    }
+
+    void ChangeAlpha(Color targetColor)
+    {
+        for (int i = 0; i < buttons.Count; i++)
+        {
+            if (i < 24 && GameManager.Instance.inventoryItemsId[i] == -1)
+            {
+                itemImages[i].color = blankAlpha;
+                continue;
+            }
             itemImages[i].color = targetColor;
         }
     }

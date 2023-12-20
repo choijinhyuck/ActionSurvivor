@@ -25,9 +25,9 @@ public class RangeWeapon : MonoBehaviour
             this.timer += Time.deltaTime;
         }
         // 장비가 변하면 원거리 장비의 아이템 Id 갱신
-        if (rangeId != GameManager.Instance.rangeWeaponItem[GameManager.Instance.playerId])
+        if (rangeId != GameManager.Instance.rangeWeaponItem)
         {
-            rangeId = GameManager.Instance.rangeWeaponItem[GameManager.Instance.playerId];
+            rangeId = GameManager.Instance.rangeWeaponItem;
             if (rangeId != -1)
             {
                 rangeData = ItemManager.Instance.itemDataArr[rangeId];
