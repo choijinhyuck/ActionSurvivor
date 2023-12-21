@@ -614,22 +614,22 @@
                 },
                 {
                     "name": "",
-                    "id": "82627dcc-3b13-4ba9-841d-e4b746d6553e",
-                    "path": "*/{Cancel}",
+                    "id": "a1016ace-161e-4411-876c-70f77caf3023",
+                    "path": "<Keyboard>/s",
                     "interactions": "",
                     "processors": "",
-                    "groups": "Keyboard&Mouse;Gamepad;Touch;Joystick;XR",
+                    "groups": "Keyboard&Mouse",
                     "action": "Cancel",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
                 {
                     "name": "",
-                    "id": "a1016ace-161e-4411-876c-70f77caf3023",
-                    "path": "<Keyboard>/s",
+                    "id": "165c3f3e-067e-4341-8a40-081924ec0213",
+                    "path": "<Gamepad>/buttonEast",
                     "interactions": "",
                     "processors": "",
-                    "groups": "Keyboard&Mouse",
+                    "groups": "Gamepad",
                     "action": "Cancel",
                     "isComposite": false,
                     "isPartOfComposite": false
