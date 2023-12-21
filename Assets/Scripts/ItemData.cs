@@ -13,7 +13,7 @@ public enum ItemType { Melee, Range, Shoes, Necklace, Magic, Potion, Gold}
     [TextArea]
     public string itemDesc;
     [TextArea]
-    public string itemEffet;
+    public string itemEffect;
     public Sprite itemIcon;
 
     [Header("# Item info")]

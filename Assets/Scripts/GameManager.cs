@@ -8,7 +8,6 @@ using UnityEngine.SceneManagement;
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
-    public enum StatusType { Damage, MaxHealth, Speed, DashLevel, SkillLevel }
 
     [Header("# Input System")]
     public InputActionAsset actions;
@@ -81,6 +80,7 @@ public class GameManager : MonoBehaviour
     InputAction inventoryAction;
     InputAction menuAction;
     InputAction cancelAction;
+    InputAction equipAction;
 
 
 
@@ -128,10 +128,12 @@ public class GameManager : MonoBehaviour
         inventoryAction = actions.FindActionMap("UI").FindAction("Inventory");
         menuAction = actions.FindActionMap("UI").FindAction("Menu");
         cancelAction = actions.FindActionMap("UI").FindAction("Cancel");
+        equipAction = actions.FindActionMap("UI").FindAction("Equip");
 
         inventoryAction.performed += _ => OnInventory();
         menuAction.performed += _ => inventoryUI.OnMenu();
         cancelAction.performed += _ => inventoryUI.OnCancel();
+        equipAction.performed += _ => inventoryUI.EquipUnequip();
 
     }
 

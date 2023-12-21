@@ -13,11 +13,11 @@ MonoBehaviour:
   m_Name: 16 Magic Ice
   m_EditorClassIdentifier: 
   itemType: 4
-  itemName: "\uB9C8\uBC95\uCC45 - \uC5BC\uC74C"
+  itemName: "\uB9C8\uBC95\uCC45 <size=6>- <color=blue>\uC5BC\uC74C</color></size>"
   itemDesc: "\uC5BC\uC74C \uB9C8\uBC95 \uBE44\uC804\uC774 \uB2F4\uACA8 \uC788\uB294
-    \uCC45\uC774\uB2E4.\n\uC5BC\uC74C \uB9C8\uBC95\uC744 \uC2DC\uC804\uD560 \uC218
-    \uC788\uB2E4. "
-  itemEffet: "\uB9C8\uBC95 \uACF5\uACA9\uB825 10    \uC7AC\uC0AC\uC6A9\uC2DC\uAC04
+    \uCC45\uC774\uB2E4.\n\uCC29\uC6A9 \uC2DC \uC5BC\uC74C \uB9C8\uBC95\uC744 \uC2DC\uC804\uD560
+    \uC218 \uC788\uB2E4. "
+  itemEffect: "\uB9C8\uBC95 \uACF5\uACA9\uB825 10    \uC7AC\uC0AC\uC6A9\uC2DC\uAC04
     20\uCD08"
   itemIcon: {fileID: 818490540, guid: 0676ad2b736a1dc47906c00c44152dcf, type: 3}
   baseAmount: 10

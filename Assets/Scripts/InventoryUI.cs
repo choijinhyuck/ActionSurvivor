@@ -9,6 +9,7 @@ public class InventoryUI : MonoBehaviour
     public Canvas baseUI;
     public Text itemName;
     public Text itemDesc;
+    public Text itemEffect;
 
     List<Button> buttons;
     Canvas[] canvases;
@@ -104,11 +105,13 @@ public class InventoryUI : MonoBehaviour
             {
                 itemName.text = "";
                 itemDesc.text = "";
+                itemEffect.text = "";
             }
             else
             {
                 itemName.text = ItemManager.Instance.itemDataArr[GameManager.Instance.inventoryItemsId[selectedId]].itemName;
                 itemDesc.text = ItemManager.Instance.itemDataArr[GameManager.Instance.inventoryItemsId[selectedId]].itemDesc;
+                itemEffect.text = ItemManager.Instance.itemDataArr[GameManager.Instance.inventoryItemsId[selectedId]].itemEffect;
             }
         }
         else
@@ -120,11 +123,13 @@ public class InventoryUI : MonoBehaviour
                     {
                         itemName.text = "";
                         itemDesc.text = "";
+                        itemEffect.text = "";
                     }
                     else
                     {
                         itemName.text = ItemManager.Instance.itemDataArr[GameManager.Instance.mainWeaponItem[GameManager.Instance.playerId]].itemName;
                         itemDesc.text = ItemManager.Instance.itemDataArr[GameManager.Instance.mainWeaponItem[GameManager.Instance.playerId]].itemDesc;
+                        itemEffect.text = ItemManager.Instance.itemDataArr[GameManager.Instance.mainWeaponItem[GameManager.Instance.playerId]].itemEffect;
                     }
                     break;
                 case 25:
@@ -132,11 +137,13 @@ public class InventoryUI : MonoBehaviour
                     {
                         itemName.text = "";
                         itemDesc.text = "";
+                        itemEffect.text = "";
                     }
                     else
                     {
                         itemName.text = ItemManager.Instance.itemDataArr[GameManager.Instance.necklaceItem[GameManager.Instance.playerId]].itemName;
                         itemDesc.text = ItemManager.Instance.itemDataArr[GameManager.Instance.necklaceItem[GameManager.Instance.playerId]].itemDesc;
+                        itemEffect.text = ItemManager.Instance.itemDataArr[GameManager.Instance.necklaceItem[GameManager.Instance.playerId]].itemEffect;
                     }
                     break;
                 case 26:
@@ -144,11 +151,13 @@ public class InventoryUI : MonoBehaviour
                     {
                         itemName.text = "";
                         itemDesc.text = "";
+                        itemEffect.text = "";
                     }
                     else
                     {
                         itemName.text = ItemManager.Instance.itemDataArr[GameManager.Instance.shoesItem[GameManager.Instance.playerId]].itemName;
                         itemDesc.text = ItemManager.Instance.itemDataArr[GameManager.Instance.shoesItem[GameManager.Instance.playerId]].itemDesc;
+                        itemEffect.text = ItemManager.Instance.itemDataArr[GameManager.Instance.shoesItem[GameManager.Instance.playerId]].itemEffect;
                     }
                     break;
                 case 27:
@@ -156,11 +165,13 @@ public class InventoryUI : MonoBehaviour
                     {
                         itemName.text = "";
                         itemDesc.text = "";
+                        itemEffect.text = "";
                     }
                     else
                     {
                         itemName.text = ItemManager.Instance.itemDataArr[GameManager.Instance.rangeWeaponItem].itemName;
                         itemDesc.text = ItemManager.Instance.itemDataArr[GameManager.Instance.rangeWeaponItem].itemDesc;
+                        itemEffect.text = ItemManager.Instance.itemDataArr[GameManager.Instance.rangeWeaponItem].itemEffect;
                     }
                     break;
                 case 28:
@@ -168,11 +179,13 @@ public class InventoryUI : MonoBehaviour
                     {
                         itemName.text = "";
                         itemDesc.text = "";
+                        itemEffect.text = "";
                     }
                     else
                     {
                         itemName.text = ItemManager.Instance.itemDataArr[GameManager.Instance.magicItem].itemName;
                         itemDesc.text = ItemManager.Instance.itemDataArr[GameManager.Instance.magicItem].itemDesc;
+                        itemEffect.text = ItemManager.Instance.itemDataArr[GameManager.Instance.magicItem].itemEffect;
                     }
                     break;
             }
@@ -790,6 +803,139 @@ public class InventoryUI : MonoBehaviour
                 continue;
             }
             itemImages[i].color = targetColor;
+        }
+    }
+
+    public void EquipUnequip()
+    {
+        if (!GameManager.Instance.workingInventory) return;
+        if (isPressed) return;
+        if (selectedId < 24)
+        {
+            int selectedItemId = GameManager.Instance.inventoryItemsId[selectedId];
+            if (selectedItemId == -1) return;
+            var selectedItemType = ItemManager.Instance.itemDataArr[selectedItemId].itemType;
+            switch (selectedItemType)
+            {
+                case ItemData.ItemType.Melee:
+                    int tempItemId = GameManager.Instance.mainWeaponItem[GameManager.Instance.playerId];
+                    GameManager.Instance.mainWeaponItem[GameManager.Instance.playerId] = selectedItemId;
+                    GameManager.Instance.inventoryItemsId[selectedId] = tempItemId;
+                    break;
+
+                case ItemData.ItemType.Necklace:
+                    tempItemId = GameManager.Instance.necklaceItem[GameManager.Instance.playerId];
+                    GameManager.Instance.necklaceItem[GameManager.Instance.playerId] = selectedItemId;
+                    GameManager.Instance.inventoryItemsId[selectedId] = tempItemId;
+                    break;
+
+                case ItemData.ItemType.Shoes:
+                    tempItemId = GameManager.Instance.shoesItem[GameManager.Instance.playerId];
+                    GameManager.Instance.shoesItem[GameManager.Instance.playerId] = selectedItemId;
+                    GameManager.Instance.inventoryItemsId[selectedId] = tempItemId;
+                    break;
+
+                case ItemData.ItemType.Range:
+                    tempItemId = GameManager.Instance.rangeWeaponItem;
+                    GameManager.Instance.rangeWeaponItem = selectedItemId;
+                    GameManager.Instance.inventoryItemsId[selectedId] = tempItemId;
+                    break;
+
+                case ItemData.ItemType.Magic:
+                    tempItemId = GameManager.Instance.magicItem;
+                    GameManager.Instance.magicItem = selectedItemId;
+                    GameManager.Instance.inventoryItemsId[selectedId] = tempItemId;
+                    break;
+
+                case ItemData.ItemType.Potion:
+                    if (Mathf.Abs(GameManager.Instance.maxHealth - GameManager.Instance.health) < 0.1f)
+                    {
+                        Debug.Log("이미 체력이 가득 차 있습니다.");
+                        // 에러 메시지 띄우기
+                        AudioManager.instance.PlaySfx(AudioManager.Sfx.Fail);
+                    }
+                    else
+                    {
+                        GameManager.Instance.health = Mathf.Clamp(GameManager.Instance.health +
+                            ItemManager.Instance.itemDataArr[selectedItemId].baseAmount, 0, GameManager.Instance.maxHealth);
+                        GameManager.Instance.inventoryItemsId[selectedId] = -1;
+                        // 물약 마시는 소리 추가
+                    }
+                    break;
+            }
+            GameManager.Instance.StatusUpdate();
+        }
+        else
+        {
+            
+
+            int selectedSlot = -1;
+            for (int i = 0; i < GameManager.Instance.maxInventory; i++)
+            {
+                if (GameManager.Instance.inventoryItemsId[i] == -1)
+                {
+                    selectedSlot = i;
+                    break;
+                }
+            }
+            // 인벤토리에 자리가 없는 경우
+            if (selectedSlot == -1)
+            {
+                switch (selectedId)
+                {
+                    case 24:
+                        if (GameManager.Instance.mainWeaponItem[GameManager.Instance.playerId] == -1) return;
+                        break;
+
+                    case 25:
+                        if (GameManager.Instance.necklaceItem[GameManager.Instance.playerId] == -1) return;
+                        break;
+
+                    case 26:
+                        if (GameManager.Instance.shoesItem[GameManager.Instance.playerId] == -1) return;
+                        break;
+
+                    case 27:
+                        if (GameManager.Instance.rangeWeaponItem == -1) return;
+                        break;
+
+                    case 28:
+                        if (GameManager.Instance.magicItem == -1) return;
+                        break;
+                }
+
+                AudioManager.instance.PlaySfx(AudioManager.Sfx.Fail);
+                return;
+            }
+            
+            switch(selectedId)
+            {
+                case 24:
+                    GameManager.Instance.inventoryItemsId[selectedSlot] = GameManager.Instance.mainWeaponItem[GameManager.Instance.playerId];
+                    GameManager.Instance.mainWeaponItem[GameManager.Instance.playerId] = -1;
+                    break;
+
+                case 25:
+                    GameManager.Instance.inventoryItemsId[selectedSlot] = GameManager.Instance.necklaceItem[GameManager.Instance.playerId];
+                    GameManager.Instance.necklaceItem[GameManager.Instance.playerId] = -1;
+                    break;
+
+                case 26:
+                    GameManager.Instance.inventoryItemsId[selectedSlot] = GameManager.Instance.shoesItem[GameManager.Instance.playerId];
+                    GameManager.Instance.shoesItem[GameManager.Instance.playerId] = -1;
+                    break;
+
+                case 27:
+                    GameManager.Instance.inventoryItemsId[selectedSlot] = GameManager.Instance.rangeWeaponItem;
+                    GameManager.Instance.rangeWeaponItem = -1;
+                    break;
+
+                case 28:
+                    GameManager.Instance.inventoryItemsId[selectedSlot] = GameManager.Instance.magicItem;
+                    GameManager.Instance.magicItem = -1;
+                    break;
+            }
+            GameManager.Instance.StatusUpdate();
         }
     }
 }

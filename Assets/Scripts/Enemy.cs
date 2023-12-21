@@ -128,6 +128,8 @@ public class Enemy : MonoBehaviour
         Positioning(data);
         dropItemsId = data.dropItemsId;
         dropProbability = data.dropProbability;
+        hpBar.GetComponent<RectTransform>().anchoredPosition = data.hpBarPos;
+        hpBar.GetComponent<RectTransform>().sizeDelta = data.hpBarSize;
     }
 
     private void OnTriggerEnter2D(Collider2D collision)

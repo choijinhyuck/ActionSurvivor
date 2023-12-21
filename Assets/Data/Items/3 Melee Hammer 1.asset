@@ -13,10 +13,12 @@ MonoBehaviour:
   m_Name: 3 Melee Hammer 1
   m_EditorClassIdentifier: 
   itemType: 0
-  itemName: "\uBE0C\uB860\uC988 \uD574\uBA38"
+  itemName: "\uBE0C\uB860\uC988 \uD574\uBA38 <size=6>- \uC8FC\uBB34\uAE30 (\uC57C\uB9CC\uC804\uC0AC
+    \uC804\uC6A9)</size>"
   itemDesc: "\uC77C\uBC18 \uB300\uC7A5\uC7A5\uC774\uAC00 \uAD6C\uB9AC\uB85C \uC81C\uC791\uD55C
     \uC77C\uBC18\uC801\uC778 \uB9DD\uCE58\uB2E4."
   itemEffet: "\uACF5\uACA9\uB825 +3"
+  itemEffect: "\uACF5\uACA9\uB825 +3"
   itemIcon: {fileID: -1584203094, guid: 13f6535ee6958b54188a2f5095516d88, type: 3}
   baseAmount: 3
   coolTime: 0

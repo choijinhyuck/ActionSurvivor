@@ -14,8 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemType: 5
   itemName: "\uBE45 \uD790\uB9C1\uD3EC\uC158"
-  itemDesc: "\uD558\uD2B8 x 3 \uC744 \uD68C\uBCF5\uD55C\uB2E4."
-  itemEffet: "\uD558\uD2B8 x 3 \uD68C\uBCF5"
+  itemDesc: "\uBCF5\uC6A9 \uC2DC \uD558\uD2B8 x 3 \uC744 \uD68C\uBCF5\uD55C\uB2E4."
+  itemEffect: 
   itemIcon: {fileID: -76190819, guid: 295b2edbe94e7ed4aab5e93688a46348, type: 3}
   baseAmount: 3
   coolTime: 0

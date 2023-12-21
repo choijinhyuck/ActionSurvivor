@@ -13,11 +13,13 @@ MonoBehaviour:
   m_Name: 8 Range Bow
   m_EditorClassIdentifier: 
   itemType: 1
-  itemName: "\uD65C"
+  itemName: "\uD65C <size=6>- \uD22C\uCC99\uBB34\uAE30</size>"
   itemDesc: "\uD65C\uC2DC\uC704\uC758 \uAC15\uD55C \uD0C4\uC131\uC73C\uB85C \uC801\uC5D0\uAC8C
     \uAC15\uB825\uD55C \uD654\uC0B4\uC744 \uB0A0\uB9B4 \uC218 \uC788\uB2E4.\n\uD654\uC0B4\uC740
     <color=red>1\uBA85</color>\uC758 \uC801\uC744 \uAD00\uD1B5\uD560 \uC218 \uC788\uB2E4."
   itemEffet: "\uD22C\uCC99 \uACF5\uACA9\uB825 2    \uC7AC\uC0AC\uC6A9\uC2DC\uAC04
+    3\uCD08"
+  itemEffect: "\uD22C\uCC99 \uACF5\uACA9\uB825 2    \uC7AC\uC0AC\uC6A9\uC2DC\uAC04
     3\uCD08"
   itemIcon: {fileID: 2110914771, guid: 907b325dd69730047ba8350f6aff5765, type: 3}
   baseAmount: 2

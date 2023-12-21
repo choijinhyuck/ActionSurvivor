@@ -13,10 +13,11 @@ MonoBehaviour:
   m_Name: 19 Shoes 2
   m_EditorClassIdentifier: 
   itemType: 2
-  itemName: "\uC740 \uC2E0\uBC1C"
+  itemName: "\uC2E4\uBC84 \uC288\uC988"
   itemDesc: "\uC720\uBA85 \uB300\uC7A5\uC7A5\uC774\uAC00 \uC740\uC73C\uB85C \uACBD\uB7C9\uD654\uD55C
     \uC2E0\uBC1C\uC774\uB2E4."
   itemEffet: "\uC774\uB3D9\uC18D\uB3C4 +4"
+  itemEffect: "\uC774\uB3D9\uC18D\uB3C4 +4"
   itemIcon: {fileID: 21300000, guid: eea190d14104e5c4a8bb789a3f8db804, type: 3}
   baseAmount: 4
   coolTime: 0

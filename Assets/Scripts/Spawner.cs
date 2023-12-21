@@ -123,4 +123,5 @@ public class SpawnData
 
     [Header("# UI")]
     public Vector2 hpBarPos;
+    public Vector2 hpBarSize;
 }
