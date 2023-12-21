@@ -5,35 +5,35 @@ public class Gear : MonoBehaviour
     public ItemData.ItemType type;
     public float rate;
 
-    public void Init(ItemData data)
-    {
-        //name = "Gear " + data.itemId;
-        transform.parent = GameManager.Instance.player.transform;
-        transform.localPosition = Vector3.zero;
+    //public void Init(ItemData data)
+    //{
+    //    //name = "Gear " + data.itemId;
+    //    transform.parent = GameManager.Instance.player.transform;
+    //    transform.localPosition = Vector3.zero;
 
-        type = data.itemType;
-        //rate = data.damage[0];
-        ApplyGear();
-    }
+    //    type = data.itemType;
+    //    //rate = data.damage[0];
+    //    ApplyGear();
+    //}
 
-    public void LevelUp(float rate)
-    {
-        this.rate = rate;
-        ApplyGear();
-    }
+    //public void LevelUp(float rate)
+    //{
+    //    this.rate = rate;
+    //    ApplyGear();
+    //}
 
-    void ApplyGear()
-    {
-        switch (type)
-        {
-            ////case ItemData.ItemType.Gloves:
-            //    RateUp();
-            //    break;
-            case ItemData.ItemType.Shoes:
-                SpeedUp();
-                break;
-        }
-    }
+    //void ApplyGear()
+    //{
+    //    switch (type)
+    //    {
+    //        ////case ItemData.ItemType.Gloves:
+    //        //    RateUp();
+    //        //    break;
+    //        case ItemData.ItemType.Shoes:
+    //            SpeedUp();
+    //            break;
+    //    }
+    //}
 
     void RateUp()
     {
@@ -55,9 +55,9 @@ public class Gear : MonoBehaviour
         }
     }
 
-    void SpeedUp()
-    {
-        float speed = 3 * Character.Speed;
-        GameManager.Instance.player.speed = speed + speed * rate;
-    }
+    //void SpeedUp()
+    //{
+    //    float speed = 3 * Character.Speed;
+    //    GameManager.Instance.player.speed = speed + speed * rate;
+    //}
 }

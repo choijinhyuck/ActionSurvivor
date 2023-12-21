@@ -16,9 +16,10 @@ MonoBehaviour:
   itemName: "\uC218\uB9AC\uAC80"
   itemDesc: "\uC801\uC744 \uD5A5\uD574 \uC2E0\uC18D\uD788 \uB358\uC9C8 \uC218 \uC788\uB294
     \uBFB0\uC871\uD55C \uD615\uD0DC\uC758 \uC554\uAE30\uB2E4.\n"
-  itemEffet: "\uACF5\uACA9\uB825 1"
+  itemEffet: "\uD22C\uCC99 \uACF5\uACA9\uB825 2    \uC7AC\uC0AC\uC6A9\uC2DC\uAC04
+    3\uCD08"
   itemIcon: {fileID: 21300000, guid: 526cee8fa0a7a284592d121e4d9aeddc, type: 3}
-  baseAmount: 1
+  baseAmount: 2
   coolTime: 3
   pierceCount: 0
   speed: 0

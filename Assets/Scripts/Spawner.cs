@@ -120,4 +120,7 @@ public class SpawnData
 
     [Header("# Look Where")]
     public bool lookLeft = true;
+
+    [Header("# UI")]
+    public Vector2 hpBarPos;
 }

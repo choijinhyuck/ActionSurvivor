@@ -2,6 +2,7 @@ using System.Collections;
 using System.Threading;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Enemy : MonoBehaviour
 {
@@ -11,6 +12,9 @@ public class Enemy : MonoBehaviour
     public float maxHealth;
     public RuntimeAnimatorController[] animCon;
     public Rigidbody2D target;
+    public Slider hpBar;
+    public Sprite[] barSprites;
+    public Image barImage;
 
     bool isLive;
     bool lookLeft;
@@ -29,7 +33,7 @@ public class Enemy : MonoBehaviour
     WaitForSeconds waitSec;
     WaitForSeconds waitShortTime;
     Coroutine knockbackCoroutine;
-
+    
 
     private void Awake()
     {
@@ -87,7 +91,16 @@ public class Enemy : MonoBehaviour
                 shadow.localPosition = shadowOrigin;
             }
         }
-        
+
+        hpBar.value = health / maxHealth;
+        if (hpBar.value < .3f)
+        {
+            barImage.sprite = barSprites[2];
+        }
+        else if (hpBar.value  < .6f)
+        {
+            barImage.sprite = barSprites[1];
+        }
     }
 
     private void OnEnable()
@@ -100,6 +113,8 @@ public class Enemy : MonoBehaviour
         spriter.sortingOrder = 2;
         health = maxHealth;
         dropItemsId = new int[] { };
+        if (hpBar.gameObject.activeSelf) hpBar.gameObject.SetActive(false);
+        barImage.sprite = barSprites[0];
     }
 
     public void Init(SpawnData data)
@@ -131,6 +146,8 @@ public class Enemy : MonoBehaviour
             health -= collision.GetComponent<Skill>().damage;
         }
 
+        if (!hpBar.gameObject.activeSelf) hpBar.gameObject.SetActive(true);
+
         if (isHit) StopCoroutine(knockbackCoroutine);
         knockbackCoroutine = StartCoroutine(KnockBack(10));
 
@@ -141,6 +158,7 @@ public class Enemy : MonoBehaviour
         }
         else
         {
+            hpBar.value = 0f;
             isLive = false;
             coll.enabled = false;
             rigid.simulated = false;

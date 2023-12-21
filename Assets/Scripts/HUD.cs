@@ -143,7 +143,7 @@ public class HUD : MonoBehaviour
     void InitHeart()
     {
         if (hearts.Count == 0) hearts.Add(transform.GetChild(0).GetComponent<Image>());
-        maxHealth = GameManager.Instance.maxHealth[GameManager.Instance.playerId];
+        maxHealth = GameManager.Instance.maxHealth;
         intMaxHealth = Mathf.FloorToInt(maxHealth);
 
         if (transform.childCount == intMaxHealth)

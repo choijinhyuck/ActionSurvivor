@@ -17,11 +17,12 @@ MonoBehaviour:
   itemDesc: "\uC5BC\uC74C \uB9C8\uBC95 \uBE44\uC804\uC774 \uB2F4\uACA8 \uC788\uB294
     \uCC45\uC774\uB2E4.\n\uC5BC\uC74C \uB9C8\uBC95\uC744 \uC2DC\uC804\uD560 \uC218
     \uC788\uB2E4. "
-  itemEffet: "\uB9C8\uBC95 \uACF5\uACA9\uB825 5"
+  itemEffet: "\uB9C8\uBC95 \uACF5\uACA9\uB825 10    \uC7AC\uC0AC\uC6A9\uC2DC\uAC04
+    20\uCD08"
   itemIcon: {fileID: 818490540, guid: 0676ad2b736a1dc47906c00c44152dcf, type: 3}
-  baseAmount: 5
-  coolTime: 5
+  baseAmount: 10
+  coolTime: 20
   pierceCount: 0
   speed: 0
   projectile: {fileID: 0}
-  dropItem: {fileID: 0}
+  dropItem: {fileID: 4028297425782732125, guid: dc5fd8d535da1ff42a57bb511c150935, type: 3}

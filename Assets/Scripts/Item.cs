@@ -76,7 +76,7 @@ public class Item : MonoBehaviour
                 {
                     GameObject newGear = new GameObject();
                     gear = newGear.AddComponent<Gear>();
-                    gear.Init(data);
+                    //gear.Init(data);
                 }
                 else
                 {

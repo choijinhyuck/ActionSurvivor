@@ -495,6 +495,7 @@ public class InventoryUI : MonoBehaviour
                             GameManager.Instance.inventoryItemsId[pressedId] = GameManager.Instance.mainWeaponItem[GameManager.Instance.playerId];
                             GameManager.Instance.mainWeaponItem[GameManager.Instance.playerId] = tempItemId;
                             isPressed = false;
+                            GameManager.Instance.StatusUpdate();
                         }
                         else
                         {
@@ -508,6 +509,7 @@ public class InventoryUI : MonoBehaviour
                             GameManager.Instance.inventoryItemsId[pressedId] = GameManager.Instance.necklaceItem[GameManager.Instance.playerId];
                             GameManager.Instance.necklaceItem[GameManager.Instance.playerId] = tempItemId;
                             isPressed = false;
+                            GameManager.Instance.StatusUpdate();
                         }
                         else
                         {
@@ -521,6 +523,7 @@ public class InventoryUI : MonoBehaviour
                             GameManager.Instance.inventoryItemsId[pressedId] = GameManager.Instance.shoesItem[GameManager.Instance.playerId];
                             GameManager.Instance.shoesItem[GameManager.Instance.playerId] = tempItemId;
                             isPressed = false;
+                            GameManager.Instance.StatusUpdate();
                         }
                         else
                         {
@@ -534,6 +537,7 @@ public class InventoryUI : MonoBehaviour
                             GameManager.Instance.inventoryItemsId[pressedId] = GameManager.Instance.rangeWeaponItem;
                             GameManager.Instance.rangeWeaponItem = tempItemId;
                             isPressed = false;
+                            GameManager.Instance.StatusUpdate();
                         }
                         else
                         {
@@ -547,6 +551,7 @@ public class InventoryUI : MonoBehaviour
                             GameManager.Instance.inventoryItemsId[pressedId] = GameManager.Instance.magicItem;
                             GameManager.Instance.magicItem = tempItemId;
                             isPressed = false;
+                            GameManager.Instance.StatusUpdate();
                         }
                         else
                         {
@@ -586,6 +591,7 @@ public class InventoryUI : MonoBehaviour
                                 GameManager.Instance.inventoryItemsId[buttonIndex] = GameManager.Instance.mainWeaponItem[GameManager.Instance.playerId];
                                 GameManager.Instance.mainWeaponItem[GameManager.Instance.playerId] = -1;
                                 isPressed = false;
+                                GameManager.Instance.StatusUpdate();
                             }
                             // 인벤토리 내 물품이 Melee 타입인 경우 (추후 플레이어 종류에 따른 사용 가능 무기 구분해야함)
                             else if ((int)ItemManager.Instance.itemDataArr[GameManager.Instance.inventoryItemsId[buttonIndex]].itemType == 0)
@@ -594,6 +600,7 @@ public class InventoryUI : MonoBehaviour
                                 GameManager.Instance.mainWeaponItem[GameManager.Instance.playerId] = GameManager.Instance.inventoryItemsId[buttonIndex];
                                 GameManager.Instance.inventoryItemsId[buttonIndex] = tempPressedId;
                                 isPressed = false;
+                                GameManager.Instance.StatusUpdate();
                             }
                             // 인벤토리 내 물품과 위치를 바꿀 수 없는 경우
                             else
@@ -611,6 +618,7 @@ public class InventoryUI : MonoBehaviour
                                 GameManager.Instance.inventoryItemsId[buttonIndex] = GameManager.Instance.necklaceItem[GameManager.Instance.playerId];
                                 GameManager.Instance.necklaceItem[GameManager.Instance.playerId] = -1;
                                 isPressed = false;
+                                GameManager.Instance.StatusUpdate();
                             }
                             // 인벤토리 내 물품이 Necklace 타입인 경우 (추후 플레이어 종류에 따른 사용 가능 무기 구분해야함)
                             else if ((int)ItemManager.Instance.itemDataArr[GameManager.Instance.inventoryItemsId[buttonIndex]].itemType == 3)
@@ -619,6 +627,7 @@ public class InventoryUI : MonoBehaviour
                                 GameManager.Instance.necklaceItem[GameManager.Instance.playerId] = GameManager.Instance.inventoryItemsId[buttonIndex];
                                 GameManager.Instance.inventoryItemsId[buttonIndex] = tempPressedId;
                                 isPressed = false;
+                                GameManager.Instance.StatusUpdate();
                             }
                             // 인벤토리 내 물품과 위치를 바꿀 수 없는 경우
                             else
@@ -636,6 +645,7 @@ public class InventoryUI : MonoBehaviour
                                 GameManager.Instance.inventoryItemsId[buttonIndex] = GameManager.Instance.shoesItem[GameManager.Instance.playerId];
                                 GameManager.Instance.shoesItem[GameManager.Instance.playerId] = -1;
                                 isPressed = false;
+                                GameManager.Instance.StatusUpdate();
                             }
                             // 인벤토리 내 물품이 Shoes 타입인 경우 (추후 플레이어 종류에 따른 사용 가능 무기 구분해야함)
                             else if ((int)ItemManager.Instance.itemDataArr[GameManager.Instance.inventoryItemsId[buttonIndex]].itemType == 2)
@@ -644,6 +654,7 @@ public class InventoryUI : MonoBehaviour
                                 GameManager.Instance.shoesItem[GameManager.Instance.playerId] = GameManager.Instance.inventoryItemsId[buttonIndex];
                                 GameManager.Instance.inventoryItemsId[buttonIndex] = tempPressedId;
                                 isPressed = false;
+                                GameManager.Instance.StatusUpdate();
                             }
                             // 인벤토리 내 물품과 위치를 바꿀 수 없는 경우
                             else
@@ -661,6 +672,7 @@ public class InventoryUI : MonoBehaviour
                                 GameManager.Instance.inventoryItemsId[buttonIndex] = GameManager.Instance.rangeWeaponItem;
                                 GameManager.Instance.rangeWeaponItem = -1;
                                 isPressed = false;
+                                GameManager.Instance.StatusUpdate();
                             }
                             // 인벤토리 내 물품이 Range 타입인 경우
                             else if ((int)ItemManager.Instance.itemDataArr[GameManager.Instance.inventoryItemsId[buttonIndex]].itemType == 1)
@@ -669,6 +681,7 @@ public class InventoryUI : MonoBehaviour
                                 GameManager.Instance.rangeWeaponItem = GameManager.Instance.inventoryItemsId[buttonIndex];
                                 GameManager.Instance.inventoryItemsId[buttonIndex] = tempPressedId;
                                 isPressed = false;
+                                GameManager.Instance.StatusUpdate();
                             }
                             // 인벤토리 내 물품과 위치를 바꿀 수 없는 경우
                             else
@@ -686,6 +699,7 @@ public class InventoryUI : MonoBehaviour
                                 GameManager.Instance.inventoryItemsId[buttonIndex] = GameManager.Instance.magicItem;
                                 GameManager.Instance.magicItem = -1;
                                 isPressed = false;
+                                GameManager.Instance.StatusUpdate();
                             }
                             // 인벤토리 내 물품이 Magic 타입인 경우
                             else if ((int)ItemManager.Instance.itemDataArr[GameManager.Instance.inventoryItemsId[buttonIndex]].itemType == 4)
@@ -694,6 +708,7 @@ public class InventoryUI : MonoBehaviour
                                 GameManager.Instance.magicItem = GameManager.Instance.inventoryItemsId[buttonIndex];
                                 GameManager.Instance.inventoryItemsId[buttonIndex] = tempPressedId;
                                 isPressed = false;
+                                GameManager.Instance.StatusUpdate();
                             }
                             // 인벤토리 내 물품과 위치를 바꿀 수 없는 경우
                             else

@@ -5,7 +5,6 @@ using UnityEngine.InputSystem;
 public class Player : MonoBehaviour
 {
 
-    public float speed;
     public Vector2 inputVector;
     public Scanner scanner;
     public Hand[] hands;
@@ -99,7 +98,6 @@ public class Player : MonoBehaviour
         }
 
 
-        speed *= Character.Speed;
         anim.runtimeAnimatorController = animCon[GameManager.Instance.playerId];
         if (GameManager.Instance.playerId == 0)
         {
@@ -117,7 +115,7 @@ public class Player : MonoBehaviour
         inputVector = moveAction.ReadValue<Vector2>();
 
         if (isDodge) return;
-        Vector2 nextVec = inputVector * speed * Time.fixedDeltaTime;
+        Vector2 nextVec = inputVector * GameManager.Instance.playerSpeed * Time.fixedDeltaTime;
         rigid.MovePosition(rigid.position + nextVec);
     }
     private void LateUpdate()
@@ -335,7 +333,7 @@ public class Player : MonoBehaviour
         isCharging = true;
         chargeEffects[0].gameObject.SetActive(true);
         // 이동속도 변경
-        speed /= 2;
+        GameManager.Instance.playerSpeed /= 2;
 
         // 기 모으는 Effect 추가
         StartCoroutine("Charging");
@@ -424,7 +422,7 @@ public class Player : MonoBehaviour
         isCharging = false;
         chargeTimer = 0;
         chargeCount = 0;
-        speed *= 2;
+        GameManager.Instance.playerSpeed *= 2;
         //스킬 방향 지시 중단
         StopCoroutine("SkillArrow");
         skillArrow.transform.localRotation = Quaternion.identity;

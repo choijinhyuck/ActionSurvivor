@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -7,6 +8,7 @@ using UnityEngine.SceneManagement;
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
+    public enum StatusType { Damage, MaxHealth, Speed, DashLevel, SkillLevel }
 
     [Header("# Input System")]
     public InputActionAsset actions;
@@ -21,17 +23,36 @@ public class GameManager : MonoBehaviour
     [Header("# Player Info")]
     public int playerId;
     public float health;
-    public float[] maxHealth;
+    public float maxHealth;
+    
     public int level;
     public int kill;
     public int exp;
     public int[] nextExp;
     public float dodgeTime;
-    public int maxChargeCount;
-    public int chargeCount; // How many skills you can use. Player 스크립트의 chargeCount와는 별개.
+    public int maxChargeCount; // 최대 번개 몇개?
+    public int chargeCount; // How many skills you can use, Right Now! Player 스크립트의 chargeCount와는 별개. 현재 번개 몇 개 충전?
+    public float chargeCooltime; // 1 번개 충전하는데 걸리는 시간
     public int maxChargibleCount; // 한 번에 얼마나 차지 가능?
-    public float chargeTime;
-    public float chargeCooltime;
+    public float chargeTime; // 1 차지 하는데 걸리는 시간
+    public float playerDamage;
+    public float playerSpeed;
+    public float playerCooltime;
+    public int playerDashLevel;
+    public int playerSkillLevel;
+    public int currDashLevel;
+    public int currSkillLevel;
+    public int playerSpeedLevel;
+    public int playerHealthLevel;
+    public int playerDamageLevel;
+
+    [Header("# Basic Player Info")]
+    public float[] playerBasicMaxHealth;
+    public float[] playerBasicDamage;
+    public float[] playerBasicSpeed;
+    public float[] playerBasicCooltime; // 폭탄맨은 투척과 마법의 쿨타임이 감소
+    public int[] playerBasicDashLevel;
+    public int[] playerBasicSkillLevel;
 
     [Header("# Inventory")]
     public InventoryUI inventoryUI;
@@ -49,7 +70,7 @@ public class GameManager : MonoBehaviour
     public int[] shoesItem;
     public int rangeWeaponItem;
     public int magicItem;
-    
+
 
     [Header("# Game Object")]
     public PoolManager pool;
@@ -60,7 +81,7 @@ public class GameManager : MonoBehaviour
     InputAction inventoryAction;
     InputAction menuAction;
     InputAction cancelAction;
-    
+
 
 
     private void Awake()
@@ -76,6 +97,8 @@ public class GameManager : MonoBehaviour
 
         DontDestroyOnLoad(this.gameObject);
         Application.targetFrameRate = 60;
+
+        //커서 잠금
         //Cursor.lockState = CursorLockMode.Locked;
 
         gold = 0;
@@ -89,13 +112,13 @@ public class GameManager : MonoBehaviour
         storedGold = 0;
         storedItemsId = new List<int>();
 
-        mainWeaponItem = new int[maxHealth.Length];
-        necklaceItem = new int[maxHealth.Length];
-        shoesItem = new int[maxHealth.Length];
+        mainWeaponItem = new int[playerBasicDamage.Length];
+        necklaceItem = new int[playerBasicDamage.Length];
+        shoesItem = new int[playerBasicDamage.Length];
         rangeWeaponItem = -1;
         magicItem = -1;
-        
-        for (int i = 0; i < maxHealth.Length; i++)
+
+        for (int i = 0; i < playerBasicDamage.Length; i++)
         {
             mainWeaponItem[i] = -1;
             necklaceItem[i] = -1;
@@ -144,6 +167,43 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    public void StatusUpdate()
+    {
+        // 나중에 곱연산이 필요한 경우 레벨에 비례하는 길이를 갖는 배열을 만들어 배율 적용
+        if (mainWeaponItem[playerId] == -1)
+        {
+            playerDamage = playerBasicDamage[playerId] + playerDamageLevel;
+        }
+        else
+        {
+            playerDamage = playerBasicDamage[playerId] + playerDamageLevel + ItemManager.Instance.itemDataArr[mainWeaponItem[playerId]].baseAmount;
+        }
+        if (necklaceItem[playerId] == -1)
+        {
+            maxHealth = playerBasicMaxHealth[playerId] + playerHealthLevel;
+        }
+        else
+        {
+            // 체력을 올려주는 목걸이 종류에 한해서 작동하도록 로직 추후 세우기.
+            maxHealth = playerBasicMaxHealth[playerId] + playerHealthLevel + ItemManager.Instance.itemDataArr[necklaceItem[playerId]].baseAmount;
+            // 체력 증가 아이템을 해제했을 때, 최대체력보다 현재체력이 넘어가는 현상을 방지하기 위해 MaxHeath로 현재 체력을 제한
+            health = Mathf.Clamp(health, 0, maxHealth);
+        }
+        
+        if (shoesItem[playerId] == -1)
+        {
+            playerSpeed = playerBasicSpeed[playerId] + playerSpeedLevel;
+        }
+        else
+        {
+            playerSpeed = playerBasicSpeed[playerId] + playerSpeedLevel + ItemManager.Instance.itemDataArr[shoesItem[playerId]].baseAmount;
+        }
+        
+        // 대시나 스킬을 올려주는 아이템을 추가하는 경우 로직 추가.
+        currDashLevel = playerBasicDashLevel[playerId] + playerDashLevel;
+        currSkillLevel = playerBasicSkillLevel[playerId] + playerSkillLevel;
+    }
+
     public void OnInventory()
     {
         if (workingInventory)
@@ -170,7 +230,17 @@ public class GameManager : MonoBehaviour
         gameTime = 0;
         maxGameTime = stage.stageDataArr[stageId].gameTime;
 
-        health = maxHealth[playerId];
+        playerHealthLevel = 0;
+        playerSpeedLevel = 0;
+        playerDashLevel = 0;
+        playerHealthLevel = 0;
+        playerDamageLevel = 0;
+        playerDashLevel = 0;
+        playerSkillLevel = 0;
+
+        StatusUpdate();
+
+        health = maxHealth;
         chargeCount = maxChargeCount;
 
         player.gameObject.SetActive(true);
@@ -178,7 +248,7 @@ public class GameManager : MonoBehaviour
 
         AudioManager.instance.PlayBgm(true);
         AudioManager.instance.PlaySfx(AudioManager.Sfx.Select);
-        
+
     }
 
     public void GameOver()
