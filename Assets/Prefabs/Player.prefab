@@ -14904,35 +14904,48 @@ MonoBehaviour:
     spawnTime: 3
     health: 10
     speed: 1
-    exp: 0
-    dropItemsId: 
-    dropProbability: []
+    exp: 1
+    dropItemsId: 0c000000000000000300000006000000070000000800000009000000
+    dropProbability:
+    - 0.7
+    - 0.01
+    - 0.01
+    - 0.02
+    - 0.02
+    - 0.02
+    - 0.02
     collPos: {x: 0, y: 0.34}
     collSize: {x: 0.5, y: 0.5}
     shadowScale: 0.655
     shadowOrigin: {x: 0.009, y: 0.037}
     shadowFlip: {x: 0.009, y: 0.037}
     lookLeft: 1
+    hpBarPos: {x: 0, y: 91.3}
+    hpBarSize: {x: 63.69, y: 10}
   - name: Bat
     spriteType: 1
-    spawnTime: 1
+    spawnTime: 3
     health: 30
-    speed: 4
-    exp: 0
-    dropItemsId: 
-    dropProbability: []
+    speed: 2
+    exp: 1
+    dropItemsId: 0c00000009000000
+    dropProbability:
+    - 0.5
+    - 0.01
     collPos: {x: 0, y: 0.12}
     collSize: {x: 0.23, y: 0.29}
     shadowScale: 0.24
     shadowOrigin: {x: 0.028, y: -0.029}
     shadowFlip: {x: -0.02, y: -0.029}
     lookLeft: 1
+    hpBarPos: {x: 0, y: 43.46}
+    hpBarSize: {x: 41.19, y: 8}
   - name: Rhino
     spriteType: 2
-    spawnTime: 1
+    spawnTime: 3
     health: 150
     speed: 1.5
-    exp: 0
+    exp: 1
     dropItemsId: 
     dropProbability: []
     collPos: {x: 0, y: 0.4}
@@ -14941,12 +14954,14 @@ MonoBehaviour:
     shadowOrigin: {x: 0.205, y: 0.042}
     shadowFlip: {x: -0.212, y: 0.042}
     lookLeft: 1
+    hpBarPos: {x: 0, y: 97.1}
+    hpBarSize: {x: 96.9, y: 10}
   - name: BlueBird
     spriteType: 3
     spawnTime: 1
     health: 150
     speed: 1.5
-    exp: 0
+    exp: 1
     dropItemsId: 
     dropProbability: []
     collPos: {x: 0, y: 0.33}
@@ -14955,12 +14970,14 @@ MonoBehaviour:
     shadowOrigin: {x: 0.037, y: -0.01}
     shadowFlip: {x: -0.037, y: -0.01}
     lookLeft: 1
+    hpBarPos: {x: 0, y: 68.8}
+    hpBarSize: {x: 52.4, y: 10}
   - name: Snail
     spriteType: 4
     spawnTime: 1
     health: 150
     speed: 1.5
-    exp: 0
+    exp: 1
     dropItemsId: 
     dropProbability: []
     collPos: {x: 0, y: 0.3}
@@ -14969,34 +14986,58 @@ MonoBehaviour:
     shadowOrigin: {x: 0.05, y: 0.004}
     shadowFlip: {x: -0.05, y: 0.004}
     lookLeft: 1
+    hpBarPos: {x: 0, y: 72.3}
+    hpBarSize: {x: 80, y: 10}
   - name: Mushroom
     spriteType: 5
     spawnTime: 1
     health: 150
     speed: 1.5
-    exp: 0
-    dropItemsId: 
-    dropProbability: []
+    exp: 1
+    dropItemsId: 0c0000000d0000000000000003000000060000000700000008000000090000000a000000
+    dropProbability:
+    - 0.6
+    - 0.1
+    - 0.015
+    - 0.015
+    - 0.03
+    - 0.03
+    - 0.03
+    - 0.02
+    - 0.01
     collPos: {x: 0, y: 0.3}
     collSize: {x: 0.64, y: 0.5}
     shadowScale: 0.8
     shadowOrigin: {x: 0, y: 0.029}
     shadowFlip: {x: 0, y: 0.029}
     lookLeft: 1
+    hpBarPos: {x: 0, y: 80.5}
+    hpBarSize: {x: 75, y: 10}
   - name: Rock
     spriteType: 6
     spawnTime: 1
     health: 150
     speed: 1.5
-    exp: 0
-    dropItemsId: 
-    dropProbability: []
+    exp: 1
+    dropItemsId: 0c0000000d0000000000000003000000060000000700000008000000090000000a000000
+    dropProbability:
+    - 0.6
+    - 0.1
+    - 0.015
+    - 0.015
+    - 0.03
+    - 0.03
+    - 0.03
+    - 0.02
+    - 0.01
     collPos: {x: 0, y: 0.25}
     collSize: {x: 0.55, y: 0.55}
     shadowScale: 0.6
     shadowOrigin: {x: 0, y: 0.018}
     shadowFlip: {x: 0, y: 0.018}
     lookLeft: 1
+    hpBarPos: {x: 0, y: 73.2}
+    hpBarSize: {x: 65, y: 10}
   stage: {fileID: 0}
   RightUp: {fileID: 7415687105838511171}
   enemyParent: {fileID: 0}
@@ -24944,7 +24985,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a2d14980905b68d4db358b7b75135983, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damage: 20
+  damage: 1000
 --- !u!1 &5972372787491421347
 GameObject:
   m_ObjectHideFlags: 0
@@ -25096,7 +25137,7 @@ Rigidbody2D:
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
-  m_Mass: 5
+  m_Mass: 1000
   m_LinearDrag: 0
   m_AngularDrag: 0.05
   m_GravityScale: 0
@@ -25231,7 +25272,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6eff8eefee613e640a838ed70cdc2cee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 3
   inputVector: {x: 0, y: 0}
   scanner: {fileID: 0}
   hands: []
@@ -25291,7 +25331,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ce1fdb3429ba8b54f9f0dac4a1ae77a6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  scanRange: 2
+  scanRange: 1
   targetLayer:
     serializedVersion: 2
     m_Bits: 1024
@@ -25402,8 +25442,8 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 4
-  m_Sprite: {fileID: 21300000, guid: 46f76b54d71c09548a30fa9e5f88e695, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Sprite: {fileID: 21300000, guid: 1b59674555bf28749ab7637c5940fdee, type: 3}
+  m_Color: {r: 1, g: 1, b: 1, a: 0.8666667}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0

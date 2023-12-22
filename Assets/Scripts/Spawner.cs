@@ -105,6 +105,7 @@ public class SpawnData
     public int health;
     public float speed;
     public int exp;
+    public float mass = 1;
     // 아래 두 배열은 같은 인덱스를 공유해야함.
     public int[] dropItemsId;
     public float[] dropProbability;

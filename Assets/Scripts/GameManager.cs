@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 
@@ -81,6 +82,7 @@ public class GameManager : MonoBehaviour
     InputAction menuAction;
     InputAction cancelAction;
     InputAction equipAction;
+    InputAction destroyAction;
 
 
 
@@ -129,11 +131,13 @@ public class GameManager : MonoBehaviour
         menuAction = actions.FindActionMap("UI").FindAction("Menu");
         cancelAction = actions.FindActionMap("UI").FindAction("Cancel");
         equipAction = actions.FindActionMap("UI").FindAction("Equip");
+        destroyAction = actions.FindActionMap("UI").FindAction("Destroy");
 
         inventoryAction.performed += _ => OnInventory();
         menuAction.performed += _ => inventoryUI.OnMenu();
         cancelAction.performed += _ => inventoryUI.OnCancel();
         equipAction.performed += _ => inventoryUI.EquipUnequip();
+        destroyAction.performed += _ => inventoryUI.DestroyItem();
 
     }
 
@@ -145,6 +149,7 @@ public class GameManager : MonoBehaviour
         if (inventoryUI.gameObject.activeSelf)
         {
             inventoryUI.gameObject.SetActive(false);
+            inventoryUI.destroyDesc.transform.parent.gameObject.SetActive(false);
         }
         workingInventory = false;
     }
@@ -214,6 +219,7 @@ public class GameManager : MonoBehaviour
             AudioManager.instance.EffectBgm(false);
             workingInventory = false;
             inventoryUI.gameObject.SetActive(false);
+            inventoryUI.destroyDesc.transform.parent.gameObject.SetActive(false);
             Resume();
         }
         else

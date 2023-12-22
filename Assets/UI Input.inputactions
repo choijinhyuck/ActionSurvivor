@@ -376,6 +376,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "Destroy",
+                    "type": "Button",
+                    "id": "b916e5ca-e54c-4bed-9382-c4328eda267f",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -838,6 +847,28 @@
                     "processors": "",
                     "groups": "Gamepad",
                     "action": "Equip",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "9cecda8b-de9a-489a-a1ef-cf47d402cd32",
+                    "path": "<Keyboard>/q",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard&Mouse",
+                    "action": "Destroy",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "f507aa68-9d00-4177-ab70-a3d22bc132e8",
+                    "path": "<Gamepad>/rightShoulder",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Gamepad",
+                    "action": "Destroy",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

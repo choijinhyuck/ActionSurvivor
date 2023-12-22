@@ -10,11 +10,14 @@ public class InventoryUI : MonoBehaviour
     public Text itemName;
     public Text itemDesc;
     public Text itemEffect;
-
+    public Text destroyDesc;
+    public Button confirmNo;
+    
     List<Button> buttons;
     Canvas[] canvases;
     Image[] itemImages;
     GameObject currentSelect;
+    bool isDestroying;
     bool isPressed;
     int pressedId;
     int selectedId;
@@ -60,6 +63,12 @@ public class InventoryUI : MonoBehaviour
 
     void OnEnable()
     {
+        isDestroying = false;
+
+        if (destroyDesc.transform.parent.gameObject.activeSelf)
+        {
+            destroyDesc.transform.parent.gameObject.SetActive(false);
+        }
         if (isPressed)
         {
             isPressed = false;
@@ -87,12 +96,22 @@ public class InventoryUI : MonoBehaviour
 
     private void LateUpdate()
     {
+        if (isDestroying)
+        {
+            //  destroy canvas sortig order =3 으로
+            destroyDesc.transform.parent.GetComponent<Canvas>().sortingOrder = 3;
+            baseUI.sortingOrder = 0;
+            return;
+        }
+
         currentSelect.GetComponentInParent<Canvas>().sortingOrder = 1;
         currentSelect = EventSystem.current.currentSelectedGameObject;
 
         if (currentSelect is null) return;
         currentSelect.GetComponentInParent<Canvas>().sortingOrder = 2;
         baseUI.sortingOrder = 0;
+
+
 
         selectedId = buttons.IndexOf(currentSelect.GetComponent<Button>());
 
@@ -191,6 +210,31 @@ public class InventoryUI : MonoBehaviour
             }
 
         }
+    }
+
+    public void DestroyItem()
+    {
+        if (isPressed) return;
+        if (!GameManager.Instance.workingInventory) return;
+        if (selectedId > 23) return;
+        if (GameManager.Instance.inventoryItemsId[selectedId] == -1) return;
+        // 위 조건에 해당되지 않으면 파괴 버튼 도움말 팝업 띄우기
+
+        EventSystem.current.SetSelectedGameObject(confirmNo.gameObject);
+        isDestroying = true;
+        destroyDesc.transform.parent.gameObject.SetActive(true);
+        destroyDesc.text = string.Format("<color=green>{0}</color>\r\n을(를) 정말 <color=red>파괴</color>하시겠습니까?",
+            ItemManager.Instance.itemDataArr[GameManager.Instance.inventoryItemsId[selectedId]].itemName);
+        
+    }
+    
+    public void OnConfirm(bool confirm)
+    {
+        if (confirm) GameManager.Instance.inventoryItemsId[selectedId] = -1;
+
+        destroyDesc.transform.parent.gameObject.SetActive(false);
+        isDestroying = false;
+        EventSystem.current.SetSelectedGameObject(buttons[selectedId].gameObject);
     }
 
     void Init()
@@ -775,7 +819,16 @@ public class InventoryUI : MonoBehaviour
         {
             if (!isPressed)
             {
-                GameManager.Instance.OnInventory();
+                if (isDestroying)
+                {
+                    isDestroying = false;
+                    destroyDesc.transform.parent.gameObject.SetActive(false);
+                    EventSystem.current.SetSelectedGameObject(buttons[selectedId].gameObject);
+                }
+                else
+                {
+                    GameManager.Instance.OnInventory();
+                }
             }
             else
             {
@@ -786,10 +839,20 @@ public class InventoryUI : MonoBehaviour
 
     public void OnCancel()
     {
-        if (GameManager.Instance.workingInventory && isPressed)
+        if (GameManager.Instance.workingInventory)
         {
-            EventSystem.current.SetSelectedGameObject(buttons[pressedId].gameObject);
-            isPressed = false;
+            if (isPressed)
+            {
+                EventSystem.current.SetSelectedGameObject(buttons[pressedId].gameObject);
+                isPressed = false;
+
+            }
+            else if (isDestroying)
+            {
+                isDestroying = false;
+                destroyDesc.transform.parent.gameObject.SetActive(false);
+                EventSystem.current.SetSelectedGameObject(buttons[selectedId].gameObject);
+            }
         }
     }
 

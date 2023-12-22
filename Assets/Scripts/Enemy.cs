@@ -140,6 +140,7 @@ public class Enemy : MonoBehaviour
         maxHealth = data.health;
         health = data.health;
         exp = data.exp;
+        rigid.mass = data.mass;
         Positioning(data);
         dropItemsId = data.dropItemsId;
         dropProbability = data.dropProbability;
@@ -216,7 +217,7 @@ public class Enemy : MonoBehaviour
             selectId = hitText.Count - 1;
         }
         hitText[selectId].SetActive(true);
-        hitText[selectId].GetComponent<Text>().text = damage.ToString("N0");
+        hitText[selectId].GetComponent<Text>().text = damage.ToString("N0") + "<size=12> ÇÇÇØ</size>";
         hitText[selectId].GetComponent<Text>().color = Color.red;
         //hitText[selectId].transform.localScale = new Vector3(1f, 1f, 1f);
         Vector2 textPos = new Vector2(Random.Range(-hitTextPosXrange, hitTextPosXrange), hitTextPosYstart);
