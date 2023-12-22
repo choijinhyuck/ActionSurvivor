@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using System.Threading;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -15,10 +16,14 @@ public class Enemy : MonoBehaviour
     public Slider hpBar;
     public Sprite[] barSprites;
     public Image barImage;
+    public Text hitDamage;
 
     bool isLive;
     bool lookLeft;
     bool isHit;
+    float hitTextPosXrange;
+    float hitTextPosYstart;
+    float hitTextPosYend;
     int exp;
     int[] dropItemsId;
     float[] dropProbability;
@@ -32,7 +37,9 @@ public class Enemy : MonoBehaviour
     Transform shadow;
     WaitForSeconds waitSec;
     WaitForSeconds waitShortTime;
+    WaitForFixedUpdate waitFix;
     Coroutine knockbackCoroutine;
+    List<GameObject> hitText;
     
 
     private void Awake()
@@ -44,8 +51,9 @@ public class Enemy : MonoBehaviour
         shadow = GetComponentsInChildren<Transform>()[1];
         waitSec = new WaitForSeconds(.1f);
         waitShortTime = new WaitForSeconds(.01f);
+        waitFix = new WaitForFixedUpdate();
         isHit = false;
-
+        hitText = new List<GameObject>() {hitDamage.gameObject};
     }
 
     private void FixedUpdate()
@@ -115,6 +123,13 @@ public class Enemy : MonoBehaviour
         dropItemsId = new int[] { };
         if (hpBar.gameObject.activeSelf) hpBar.gameObject.SetActive(false);
         barImage.sprite = barSprites[0];
+        foreach (var hit in hitText)
+        {
+            if (hit.activeSelf)
+            {
+                hit.SetActive(false);
+            }
+        }
     }
 
     public void Init(SpawnData data)
@@ -130,6 +145,9 @@ public class Enemy : MonoBehaviour
         dropProbability = data.dropProbability;
         hpBar.GetComponent<RectTransform>().anchoredPosition = data.hpBarPos;
         hpBar.GetComponent<RectTransform>().sizeDelta = data.hpBarSize;
+        hitTextPosXrange = data.hpBarSize.x / 4;
+        hitTextPosYstart = data.hpBarPos.y / 2;
+        hitTextPosYend = data.hpBarPos.y * 0.85f;
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -142,16 +160,19 @@ public class Enemy : MonoBehaviour
         if (collision.CompareTag("Projectile"))
         {
             health -= collision.GetComponent<Projectile>().damage;
+            HitDamageText(collision.GetComponent<Projectile>().damage);
         }
         else if (collision.CompareTag("Skill"))
         {
             health -= collision.GetComponent<Skill>().damage;
+            HitDamageText(collision.GetComponent<Skill>().damage);
         }
 
         if (!hpBar.gameObject.activeSelf) hpBar.gameObject.SetActive(true);
 
         if (isHit) StopCoroutine(knockbackCoroutine);
         knockbackCoroutine = StartCoroutine(KnockBack(10));
+        
 
 
         if (health > 0)
@@ -176,11 +197,56 @@ public class Enemy : MonoBehaviour
         }
     }
 
+    void HitDamageText(float damage)
+    {
+        int selectId = -1;
+        for (int i = 0; i < hitText.Count; i++)
+        {
+            if (!hitText[i].activeSelf)
+            {
+                selectId = i;
+                break;
+            }
+        }
+        if (selectId == -1)
+        {
+            var newTextObject = Instantiate<GameObject>(hitText[0], hpBar.transform.parent);
+            hitText.Add(newTextObject);
+            //newTextObject.transform.parent = hpBar.transform.parent;
+            selectId = hitText.Count - 1;
+        }
+        hitText[selectId].SetActive(true);
+        hitText[selectId].GetComponent<Text>().text = damage.ToString("N0");
+        hitText[selectId].GetComponent<Text>().color = Color.red;
+        //hitText[selectId].transform.localScale = new Vector3(1f, 1f, 1f);
+        Vector2 textPos = new Vector2(Random.Range(-hitTextPosXrange, hitTextPosXrange), hitTextPosYstart);
+        hitText[selectId].GetComponent<RectTransform>().anchoredPosition = textPos;
+        StartCoroutine(MoveText(hitText[selectId]));
+    }
+
+    IEnumerator MoveText(GameObject targetObject)
+    {
+        float timer = 0f;
+        Color textColor = Color.red;
+        while (timer < 1f)
+        {
+            yield return waitFix;
+            timer += Time.fixedDeltaTime;
+            targetObject.GetComponent<RectTransform>().anchoredPosition += new Vector2(0f, (hitTextPosYend - hitTextPosYstart) * Time.fixedDeltaTime);
+            if (timer > .5f)
+            {
+                textColor.a -= Time.fixedDeltaTime * 2;
+                targetObject.GetComponent<Text>().color = textColor;
+            }
+        }
+        targetObject.SetActive(false);
+    }
+
     IEnumerator KnockBack(int force)
     {
         isHit = true;
         spriter.material.SetFloat("_FlashAmount", 0.25f);
-        yield return waitShortTime; // 0.02√ 
+        yield return waitShortTime;
         rigid.velocity = Vector2.zero;
         Vector2 dirVec = rigid.position - target.position;
         rigid.AddForce(dirVec.normalized * force, ForceMode2D.Impulse);
@@ -196,7 +262,7 @@ public class Enemy : MonoBehaviour
         yield return waitShortTime;
         spriter.material.SetFloat("_FlashAmount", 0f);
         rigid.velocity = Vector2.zero;
-        yield return new WaitForSeconds(.1f);
+        yield return waitSec;
         isHit = false;
     }
 
