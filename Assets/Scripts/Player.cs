@@ -1,6 +1,7 @@
 using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.UIElements;
 
 public class Player : MonoBehaviour
 {
@@ -136,12 +137,17 @@ public class Player : MonoBehaviour
     private void OnCollisionStay2D(Collision2D collision)
     {
         if (!GameManager.Instance.isLive || isHit || isDodge) return;
+        // 피해면역인 상태면?
+        if (isImmune) return;
 
         // Layer 6: Enemy
         if (collision.gameObject.layer == 6)
         {
             target = collision.rigidbody;
-            StartCoroutine(KnockBack(50));
+            // Player Mass 5 -> 1000 으로 변경
+            // 적을 적당히 밀어낼 수 있도록? 현재 난이도 너무 어려움
+            // Knockback에 사용되는 force는 Mass 의 10배가 적당 (Player 한정)
+            StartCoroutine(KnockBack(10000));
             AudioManager.instance.PlaySfx(AudioManager.Sfx.PlayerHit);
             GameManager.Instance.health -= 0.5f;
         }
@@ -158,12 +164,12 @@ public class Player : MonoBehaviour
         }
     }
 
-
-
+    bool isImmune;
+    // 넉백이 완료되고 나서도 일정시간 무적 부여
     IEnumerator KnockBack(int force)
     {
         isHit = true;
-
+        spriteRenderer.color = new Color(1f, 1f, 1f, .7f);
         spriteRenderer.material.SetColor("_FlashColor", new Color(1, 1, 1, 0));
         spriteRenderer.material.SetFloat("_FlashAmount", 0.25f);
         yield return waitSec;
@@ -184,6 +190,12 @@ public class Player : MonoBehaviour
         rigid.velocity = Vector2.zero;
         yield return new WaitForSeconds(.1f);
         isHit = false;
+
+        // 피해 면역 추가
+        isImmune = true;
+        yield return new WaitForSeconds(.3f);
+        spriteRenderer.color = Color.white;
+        isImmune = false;
     }
 
     void Shadow()
