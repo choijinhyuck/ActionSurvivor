@@ -1,7 +1,6 @@
 using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.UIElements;
 
 public class Player : MonoBehaviour
 {
@@ -193,7 +192,7 @@ public class Player : MonoBehaviour
 
         // 피해 면역 추가
         isImmune = true;
-        yield return new WaitForSeconds(.3f);
+        yield return new WaitForSeconds(.1f);
         spriteRenderer.color = Color.white;
         isImmune = false;
     }
@@ -240,8 +239,10 @@ public class Player : MonoBehaviour
     {
         if (!GameManager.Instance.isLive) return;
         if (inputVector.magnitude == 0) return;
-        if (anim.GetCurrentAnimatorStateInfo(0).IsName("Attack") || anim.GetCurrentAnimatorStateInfo(0).IsName("Dead") || isHit || isDodge)
+        if (anim.GetCurrentAnimatorStateInfo(0).IsName("Attack") || anim.GetCurrentAnimatorStateInfo(0).IsName("SkillMotion") || anim.GetCurrentAnimatorStateInfo(0).IsName("Dead") || isHit || isDodge)
             return;
+        //if (anim.GetCurrentAnimatorStateInfo(0).IsName("Dead") || isHit || isDodge)
+        //return;
         if (!readyDodge) return;
 
         StartCoroutine("Dodge");
@@ -319,7 +320,7 @@ public class Player : MonoBehaviour
     void StartCharging()
     {
         if (!GameManager.Instance.isLive) return;
-        if (anim.GetCurrentAnimatorStateInfo(0).IsName("Attack") || anim.GetCurrentAnimatorStateInfo(0).IsName("Dead") || isHit)
+        if (anim.GetCurrentAnimatorStateInfo(0).IsName("Attack") || anim.GetCurrentAnimatorStateInfo(0).IsName("SkillMotion") || anim.GetCurrentAnimatorStateInfo(0).IsName("Dead") || isHit)
             return;
 
         StartCoroutine("StartCharge");
@@ -410,6 +411,7 @@ public class Player : MonoBehaviour
                     break;
                 case 1:
                     AttackSkill(0);
+                    anim.SetTrigger("SkillMotion");
                     AudioManager.instance.PlaySfx(AudioManager.Sfx.WarriorSkill);
                     GameManager.Instance.chargeCount--;
                     break;
@@ -444,7 +446,7 @@ public class Player : MonoBehaviour
 
     void Fire()
     {
-        if (anim.GetCurrentAnimatorStateInfo(0).IsName("Attack") || anim.GetCurrentAnimatorStateInfo(0).IsName("Dead") || isHit)
+        if (anim.GetCurrentAnimatorStateInfo(0).IsName("Attack") || anim.GetCurrentAnimatorStateInfo(0).IsName("SkillMotion") || anim.GetCurrentAnimatorStateInfo(0).IsName("Dead") || isHit)
             return;
 
         anim.SetTrigger("Attack");
@@ -623,8 +625,10 @@ public class Player : MonoBehaviour
 
     void StartRangeWeapon()
     {
-        if (anim.GetCurrentAnimatorStateInfo(0).IsName("Attack") || anim.GetCurrentAnimatorStateInfo(0).IsName("Dead") || isHit)
+        if (anim.GetCurrentAnimatorStateInfo(0).IsName("Attack") || anim.GetCurrentAnimatorStateInfo(0).IsName("SkillMotion") || anim.GetCurrentAnimatorStateInfo(0).IsName("Dead") || isHit)
             return;
+        //if (anim.GetCurrentAnimatorStateInfo(0).IsName("Dead") || isHit)
+        //    return;
         if (!GameManager.Instance.isLive) return;
         // 장비하고 있으면 실행
         if (GameManager.Instance.rangeWeaponItem == -1)
