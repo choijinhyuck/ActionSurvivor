@@ -64,6 +64,7 @@ public class AcquireItem : MonoBehaviour
                     GameManager.Instance.gold += Random.Range(1, 4);
                 }
                 target.transform.gameObject.SetActive(false);
+                AudioManager.instance.PlaySfx(AudioManager.Sfx.Gold);
                 break;
             case 13:
                 if (Random.Range(1, 11) > 7)
@@ -82,6 +83,7 @@ public class AcquireItem : MonoBehaviour
                     }
                 }
                 target.transform.gameObject.SetActive(false);
+                AudioManager.instance.PlaySfx(AudioManager.Sfx.Gold);
                 break;
             case 14:
                 if (Random.Range(1, 11) > 9)
@@ -101,6 +103,7 @@ public class AcquireItem : MonoBehaviour
                     GameManager.Instance.gold += Random.Range(40, 50);
                 }
                 target.transform.gameObject.SetActive(false);
+                AudioManager.instance.PlaySfx(AudioManager.Sfx.Gold);
                 break;
 
             // 골드가 아닌 아이템을 획득한 경우 인벤토리에 넣음
@@ -117,6 +120,7 @@ public class AcquireItem : MonoBehaviour
                         if (redundancies.Contains(target.transform.gameObject))
                             redundancies.Remove(target.transform.gameObject);
                         target.transform.gameObject.SetActive(false);
+                        AudioManager.instance.PlaySfx(AudioManager.Sfx.AcquireItem);
                         isFull = false;
                         break;
                     }

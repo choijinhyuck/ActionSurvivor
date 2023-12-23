@@ -23,6 +23,6 @@ MonoBehaviour:
   baseAmount: 10
   coolTime: 20
   pierceCount: 0
-  speed: 0
+  speed: 1
   projectile: {fileID: 0}
   dropItem: {fileID: 4028297425782732125, guid: 0abdbc1045d2669499a33556d0979412, type: 3}

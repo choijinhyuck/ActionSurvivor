@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using UnityEditor.UI;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -21,6 +22,7 @@ public class InventoryUI : MonoBehaviour
     bool isPressed;
     int pressedId;
     int selectedId;
+    GameObject selectedObejctOnDestroy;
     Color originAlpha;
     Color blankAlpha;
     Color halfAlpha;
@@ -96,12 +98,23 @@ public class InventoryUI : MonoBehaviour
 
     private void LateUpdate()
     {
+        
         if (isDestroying)
         {
+            if (selectedObejctOnDestroy != EventSystem.current.currentSelectedGameObject)
+            {
+                AudioManager.instance.PlaySfx(AudioManager.Sfx.ButtonChange);
+                selectedObejctOnDestroy = EventSystem.current.currentSelectedGameObject;
+            }
             //  destroy canvas sortig order =3 으로
             destroyDesc.transform.parent.GetComponent<Canvas>().sortingOrder = 3;
             baseUI.sortingOrder = 0;
             return;
+        }
+
+        if (buttons[selectedId].gameObject != EventSystem.current.currentSelectedGameObject)
+        {
+            AudioManager.instance.PlaySfx(AudioManager.Sfx.ButtonChange);
         }
 
         currentSelect.GetComponentInParent<Canvas>().sortingOrder = 1;
@@ -221,6 +234,7 @@ public class InventoryUI : MonoBehaviour
         // 위 조건에 해당되지 않으면 파괴 버튼 도움말 팝업 띄우기
 
         EventSystem.current.SetSelectedGameObject(confirmNo.gameObject);
+        selectedObejctOnDestroy = confirmNo.gameObject;
         isDestroying = true;
         destroyDesc.transform.parent.gameObject.SetActive(true);
         destroyDesc.text = string.Format("<color=green>{0}</color>\r\n을(를) 정말 <color=red>파괴</color>하시겠습니까?",
@@ -230,8 +244,15 @@ public class InventoryUI : MonoBehaviour
     
     public void OnConfirm(bool confirm)
     {
-        if (confirm) GameManager.Instance.inventoryItemsId[selectedId] = -1;
-
+        if (confirm)
+        {
+            GameManager.Instance.inventoryItemsId[selectedId] = -1;
+            AudioManager.instance.PlaySfx(AudioManager.Sfx.Destroy);
+        }
+        else
+        {
+            AudioManager.instance.PlaySfx(AudioManager.Sfx.Cancel);
+        }
         destroyDesc.transform.parent.gameObject.SetActive(false);
         isDestroying = false;
         EventSystem.current.SetSelectedGameObject(buttons[selectedId].gameObject);
@@ -540,6 +561,7 @@ public class InventoryUI : MonoBehaviour
                     GameManager.Instance.inventoryItemsId[pressedId] = GameManager.Instance.inventoryItemsId[buttonIndex];
                     GameManager.Instance.inventoryItemsId[buttonIndex] = tempItemId;
                     isPressed = false;
+                    AudioManager.instance.PlaySfx(AudioManager.Sfx.ButtonPress);
                     return;
                 }
                 // 장비창 물품을 누른 경우
@@ -553,6 +575,7 @@ public class InventoryUI : MonoBehaviour
                             GameManager.Instance.mainWeaponItem[GameManager.Instance.playerId] = tempItemId;
                             isPressed = false;
                             GameManager.Instance.StatusUpdate();
+                            AudioManager.instance.PlaySfx(AudioManager.Sfx.Equip);
                         }
                         else
                         {
@@ -567,6 +590,7 @@ public class InventoryUI : MonoBehaviour
                             GameManager.Instance.necklaceItem[GameManager.Instance.playerId] = tempItemId;
                             isPressed = false;
                             GameManager.Instance.StatusUpdate();
+                            AudioManager.instance.PlaySfx(AudioManager.Sfx.Equip);
                         }
                         else
                         {
@@ -581,6 +605,7 @@ public class InventoryUI : MonoBehaviour
                             GameManager.Instance.shoesItem[GameManager.Instance.playerId] = tempItemId;
                             isPressed = false;
                             GameManager.Instance.StatusUpdate();
+                            AudioManager.instance.PlaySfx(AudioManager.Sfx.Equip);
                         }
                         else
                         {
@@ -595,6 +620,7 @@ public class InventoryUI : MonoBehaviour
                             GameManager.Instance.rangeWeaponItem = tempItemId;
                             isPressed = false;
                             GameManager.Instance.StatusUpdate();
+                            AudioManager.instance.PlaySfx(AudioManager.Sfx.Equip);
                         }
                         else
                         {
@@ -609,6 +635,7 @@ public class InventoryUI : MonoBehaviour
                             GameManager.Instance.magicItem = tempItemId;
                             isPressed = false;
                             GameManager.Instance.StatusUpdate();
+                            AudioManager.instance.PlaySfx(AudioManager.Sfx.Equip);
                         }
                         else
                         {
@@ -627,6 +654,7 @@ public class InventoryUI : MonoBehaviour
                     {
                         //nothing happened
                         isPressed = false;
+                        AudioManager.instance.PlaySfx(AudioManager.Sfx.Cancel);
                     }
                     else
                     {
@@ -649,6 +677,7 @@ public class InventoryUI : MonoBehaviour
                                 GameManager.Instance.mainWeaponItem[GameManager.Instance.playerId] = -1;
                                 isPressed = false;
                                 GameManager.Instance.StatusUpdate();
+                                AudioManager.instance.PlaySfx(AudioManager.Sfx.Unequip);
                             }
                             // 인벤토리 내 물품이 Melee 타입인 경우 (추후 플레이어 종류에 따른 사용 가능 무기 구분해야함)
                             else if ((int)ItemManager.Instance.itemDataArr[GameManager.Instance.inventoryItemsId[buttonIndex]].itemType == 0)
@@ -658,6 +687,7 @@ public class InventoryUI : MonoBehaviour
                                 GameManager.Instance.inventoryItemsId[buttonIndex] = tempPressedId;
                                 isPressed = false;
                                 GameManager.Instance.StatusUpdate();
+                                AudioManager.instance.PlaySfx(AudioManager.Sfx.Equip);
                             }
                             // 인벤토리 내 물품과 위치를 바꿀 수 없는 경우
                             else
@@ -676,6 +706,7 @@ public class InventoryUI : MonoBehaviour
                                 GameManager.Instance.necklaceItem[GameManager.Instance.playerId] = -1;
                                 isPressed = false;
                                 GameManager.Instance.StatusUpdate();
+                                AudioManager.instance.PlaySfx(AudioManager.Sfx.Equip);
                             }
                             // 인벤토리 내 물품이 Necklace 타입인 경우 (추후 플레이어 종류에 따른 사용 가능 무기 구분해야함)
                             else if ((int)ItemManager.Instance.itemDataArr[GameManager.Instance.inventoryItemsId[buttonIndex]].itemType == 3)
@@ -685,6 +716,7 @@ public class InventoryUI : MonoBehaviour
                                 GameManager.Instance.inventoryItemsId[buttonIndex] = tempPressedId;
                                 isPressed = false;
                                 GameManager.Instance.StatusUpdate();
+                                AudioManager.instance.PlaySfx(AudioManager.Sfx.Unequip);
                             }
                             // 인벤토리 내 물품과 위치를 바꿀 수 없는 경우
                             else
@@ -703,6 +735,7 @@ public class InventoryUI : MonoBehaviour
                                 GameManager.Instance.shoesItem[GameManager.Instance.playerId] = -1;
                                 isPressed = false;
                                 GameManager.Instance.StatusUpdate();
+                                AudioManager.instance.PlaySfx(AudioManager.Sfx.Equip);
                             }
                             // 인벤토리 내 물품이 Shoes 타입인 경우 (추후 플레이어 종류에 따른 사용 가능 무기 구분해야함)
                             else if ((int)ItemManager.Instance.itemDataArr[GameManager.Instance.inventoryItemsId[buttonIndex]].itemType == 2)
@@ -712,6 +745,7 @@ public class InventoryUI : MonoBehaviour
                                 GameManager.Instance.inventoryItemsId[buttonIndex] = tempPressedId;
                                 isPressed = false;
                                 GameManager.Instance.StatusUpdate();
+                                AudioManager.instance.PlaySfx(AudioManager.Sfx.Unequip);
                             }
                             // 인벤토리 내 물품과 위치를 바꿀 수 없는 경우
                             else
@@ -730,6 +764,7 @@ public class InventoryUI : MonoBehaviour
                                 GameManager.Instance.rangeWeaponItem = -1;
                                 isPressed = false;
                                 GameManager.Instance.StatusUpdate();
+                                AudioManager.instance.PlaySfx(AudioManager.Sfx.Equip);
                             }
                             // 인벤토리 내 물품이 Range 타입인 경우
                             else if ((int)ItemManager.Instance.itemDataArr[GameManager.Instance.inventoryItemsId[buttonIndex]].itemType == 1)
@@ -739,6 +774,7 @@ public class InventoryUI : MonoBehaviour
                                 GameManager.Instance.inventoryItemsId[buttonIndex] = tempPressedId;
                                 isPressed = false;
                                 GameManager.Instance.StatusUpdate();
+                                AudioManager.instance.PlaySfx(AudioManager.Sfx.Unequip);
                             }
                             // 인벤토리 내 물품과 위치를 바꿀 수 없는 경우
                             else
@@ -757,6 +793,7 @@ public class InventoryUI : MonoBehaviour
                                 GameManager.Instance.magicItem = -1;
                                 isPressed = false;
                                 GameManager.Instance.StatusUpdate();
+                                AudioManager.instance.PlaySfx(AudioManager.Sfx.Equip);
                             }
                             // 인벤토리 내 물품이 Magic 타입인 경우
                             else if ((int)ItemManager.Instance.itemDataArr[GameManager.Instance.inventoryItemsId[buttonIndex]].itemType == 4)
@@ -766,6 +803,7 @@ public class InventoryUI : MonoBehaviour
                                 GameManager.Instance.inventoryItemsId[buttonIndex] = tempPressedId;
                                 isPressed = false;
                                 GameManager.Instance.StatusUpdate();
+                                AudioManager.instance.PlaySfx(AudioManager.Sfx.Unequip);
                             }
                             // 인벤토리 내 물품과 위치를 바꿀 수 없는 경우
                             else
@@ -805,6 +843,7 @@ public class InventoryUI : MonoBehaviour
             return;
         }
 
+        AudioManager.instance.PlaySfx(AudioManager.Sfx.ButtonPress);
         pressedId = buttonIndex;
         isPressed = true;
         ChangeAlpha(halfAlpha);
@@ -824,6 +863,7 @@ public class InventoryUI : MonoBehaviour
                     isDestroying = false;
                     destroyDesc.transform.parent.gameObject.SetActive(false);
                     EventSystem.current.SetSelectedGameObject(buttons[selectedId].gameObject);
+                    AudioManager.instance.PlaySfx(AudioManager.Sfx.Cancel);
                 }
                 else
                 {
@@ -833,6 +873,7 @@ public class InventoryUI : MonoBehaviour
             else
             {
                 isPressed = false;
+                AudioManager.instance.PlaySfx(AudioManager.Sfx.Cancel);
             }
         }
     }
@@ -845,6 +886,7 @@ public class InventoryUI : MonoBehaviour
             {
                 EventSystem.current.SetSelectedGameObject(buttons[pressedId].gameObject);
                 isPressed = false;
+                AudioManager.instance.PlaySfx(AudioManager.Sfx.Cancel);
 
             }
             else if (isDestroying)
@@ -852,6 +894,7 @@ public class InventoryUI : MonoBehaviour
                 isDestroying = false;
                 destroyDesc.transform.parent.gameObject.SetActive(false);
                 EventSystem.current.SetSelectedGameObject(buttons[selectedId].gameObject);
+                AudioManager.instance.PlaySfx(AudioManager.Sfx.Cancel);
             }
         }
     }
@@ -884,30 +927,35 @@ public class InventoryUI : MonoBehaviour
                     int tempItemId = GameManager.Instance.mainWeaponItem[GameManager.Instance.playerId];
                     GameManager.Instance.mainWeaponItem[GameManager.Instance.playerId] = selectedItemId;
                     GameManager.Instance.inventoryItemsId[selectedId] = tempItemId;
+                    AudioManager.instance.PlaySfx(AudioManager.Sfx.Equip);
                     break;
 
                 case ItemData.ItemType.Necklace:
                     tempItemId = GameManager.Instance.necklaceItem[GameManager.Instance.playerId];
                     GameManager.Instance.necklaceItem[GameManager.Instance.playerId] = selectedItemId;
                     GameManager.Instance.inventoryItemsId[selectedId] = tempItemId;
+                    AudioManager.instance.PlaySfx(AudioManager.Sfx.Equip);
                     break;
 
                 case ItemData.ItemType.Shoes:
                     tempItemId = GameManager.Instance.shoesItem[GameManager.Instance.playerId];
                     GameManager.Instance.shoesItem[GameManager.Instance.playerId] = selectedItemId;
                     GameManager.Instance.inventoryItemsId[selectedId] = tempItemId;
+                    AudioManager.instance.PlaySfx(AudioManager.Sfx.Equip);
                     break;
 
                 case ItemData.ItemType.Range:
                     tempItemId = GameManager.Instance.rangeWeaponItem;
                     GameManager.Instance.rangeWeaponItem = selectedItemId;
                     GameManager.Instance.inventoryItemsId[selectedId] = tempItemId;
+                    AudioManager.instance.PlaySfx(AudioManager.Sfx.Equip);
                     break;
 
                 case ItemData.ItemType.Magic:
                     tempItemId = GameManager.Instance.magicItem;
                     GameManager.Instance.magicItem = selectedItemId;
                     GameManager.Instance.inventoryItemsId[selectedId] = tempItemId;
+                    AudioManager.instance.PlaySfx(AudioManager.Sfx.Equip);
                     break;
 
                 case ItemData.ItemType.Potion:
@@ -923,6 +971,7 @@ public class InventoryUI : MonoBehaviour
                             ItemManager.Instance.itemDataArr[selectedItemId].baseAmount, 0, GameManager.Instance.maxHealth);
                         GameManager.Instance.inventoryItemsId[selectedId] = -1;
                         // 물약 마시는 소리 추가
+                        AudioManager.instance.PlaySfx(AudioManager.Sfx.Healthy);
                     }
                     break;
             }
@@ -976,26 +1025,31 @@ public class InventoryUI : MonoBehaviour
                 case 24:
                     GameManager.Instance.inventoryItemsId[selectedSlot] = GameManager.Instance.mainWeaponItem[GameManager.Instance.playerId];
                     GameManager.Instance.mainWeaponItem[GameManager.Instance.playerId] = -1;
+                    AudioManager.instance.PlaySfx(AudioManager.Sfx.Unequip);
                     break;
 
                 case 25:
                     GameManager.Instance.inventoryItemsId[selectedSlot] = GameManager.Instance.necklaceItem[GameManager.Instance.playerId];
                     GameManager.Instance.necklaceItem[GameManager.Instance.playerId] = -1;
+                    AudioManager.instance.PlaySfx(AudioManager.Sfx.Unequip);
                     break;
 
                 case 26:
                     GameManager.Instance.inventoryItemsId[selectedSlot] = GameManager.Instance.shoesItem[GameManager.Instance.playerId];
                     GameManager.Instance.shoesItem[GameManager.Instance.playerId] = -1;
+                    AudioManager.instance.PlaySfx(AudioManager.Sfx.Unequip);
                     break;
 
                 case 27:
                     GameManager.Instance.inventoryItemsId[selectedSlot] = GameManager.Instance.rangeWeaponItem;
                     GameManager.Instance.rangeWeaponItem = -1;
+                    AudioManager.instance.PlaySfx(AudioManager.Sfx.Unequip);
                     break;
 
                 case 28:
                     GameManager.Instance.inventoryItemsId[selectedSlot] = GameManager.Instance.magicItem;
                     GameManager.Instance.magicItem = -1;
+                    AudioManager.instance.PlaySfx(AudioManager.Sfx.Unequip);
                     break;
             }
             GameManager.Instance.StatusUpdate();
