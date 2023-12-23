@@ -147,8 +147,8 @@ public class Enemy : MonoBehaviour
         hpBar.GetComponent<RectTransform>().anchoredPosition = data.hpBarPos;
         hpBar.GetComponent<RectTransform>().sizeDelta = data.hpBarSize;
         hitTextPosXrange = data.hpBarSize.x / 4;
-        hitTextPosYstart = data.hpBarPos.y / 2;
-        hitTextPosYend = data.hpBarPos.y * 0.85f;
+        hitTextPosYstart = data.hpBarPos.y * .9f;
+        hitTextPosYend = data.hpBarPos.y * 1.25f;
     }
 
     private void OnTriggerEnter2D(Collider2D collision)

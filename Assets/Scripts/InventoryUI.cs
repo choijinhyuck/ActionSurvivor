@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using UnityEditor.Search;
 using UnityEditor.UI;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -13,6 +14,7 @@ public class InventoryUI : MonoBehaviour
     public Text itemEffect;
     public Text destroyDesc;
     public Button confirmNo;
+    public InventoryControlHelp help;
     
     List<Button> buttons;
     Canvas[] canvases;
@@ -123,11 +125,11 @@ public class InventoryUI : MonoBehaviour
         if (currentSelect is null) return;
         currentSelect.GetComponentInParent<Canvas>().sortingOrder = 2;
         baseUI.sortingOrder = 0;
-
-
-
+                
         selectedId = buttons.IndexOf(currentSelect.GetComponent<Button>());
 
+        ShowHelp();
+        
         Init();
         if (isPressed) return;
 
@@ -222,6 +224,70 @@ public class InventoryUI : MonoBehaviour
                     break;
             }
 
+        }
+    }
+
+    void ShowHelp()
+    {
+        // 컨트롤 도움말
+        if (isPressed)
+        {
+            help.Show(InventoryControlHelp.ActionType.Pressed);
+        }
+        else if (selectedId > 23)
+        {
+            bool isEmpty = false;
+            switch (selectedId)
+            {
+                case 24:
+                    isEmpty = GameManager.Instance.mainWeaponItem[GameManager.Instance.playerId] == -1;
+                    break;
+
+                case 25:
+                    isEmpty = GameManager.Instance.necklaceItem[GameManager.Instance.playerId] == -1;
+                    break;
+
+                case 26:
+                    isEmpty = GameManager.Instance.shoesItem[GameManager.Instance.playerId] == -1;
+                    break;
+
+                case 27:
+                    isEmpty = GameManager.Instance.rangeWeaponItem == -1;
+                    break;
+
+                case 28:
+                    isEmpty = GameManager.Instance.magicItem == -1;
+                    break;
+            }
+            if (isEmpty)
+            {
+                help.Show(InventoryControlHelp.ActionType.Empty);
+            }
+            else
+            {
+                help.Show(InventoryControlHelp.ActionType.UnEquip);
+            }
+        }
+        else
+        {
+            int itemId = GameManager.Instance.inventoryItemsId[selectedId];
+            if (itemId == -1)
+            {
+                help.Show(InventoryControlHelp.ActionType.Empty);
+            }
+            else
+            {
+                switch (ItemManager.Instance.itemDataArr[itemId].itemType)
+                {
+                    case ItemData.ItemType.Potion:
+                        help.Show(InventoryControlHelp.ActionType.Use);
+                        break;
+
+                    default:
+                        help.Show(InventoryControlHelp.ActionType.Equip);
+                        break;
+                }
+            }
         }
     }
 
@@ -580,6 +646,7 @@ public class InventoryUI : MonoBehaviour
                         else
                         {
                             AudioManager.instance.PlaySfx(AudioManager.Sfx.Fail);
+                            help.Show(InventoryControlHelp.ActionType.WrongPosition);
                         }
                         return;
                     case 25:
@@ -595,6 +662,7 @@ public class InventoryUI : MonoBehaviour
                         else
                         {
                             AudioManager.instance.PlaySfx(AudioManager.Sfx.Fail);
+                            help.Show(InventoryControlHelp.ActionType.WrongPosition);
                         }
                         return;
                     case 26:
@@ -610,6 +678,7 @@ public class InventoryUI : MonoBehaviour
                         else
                         {
                             AudioManager.instance.PlaySfx(AudioManager.Sfx.Fail);
+                            help.Show(InventoryControlHelp.ActionType.WrongPosition);
                         }
                         return;
                     case 27:
@@ -625,6 +694,7 @@ public class InventoryUI : MonoBehaviour
                         else
                         {
                             AudioManager.instance.PlaySfx(AudioManager.Sfx.Fail);
+                            help.Show(InventoryControlHelp.ActionType.WrongPosition);
                         }
                         return;
                     case 28:
@@ -640,6 +710,7 @@ public class InventoryUI : MonoBehaviour
                         else
                         {
                             AudioManager.instance.PlaySfx(AudioManager.Sfx.Fail);
+                            help.Show(InventoryControlHelp.ActionType.WrongPosition);
                         }
                         return;
                 }
@@ -660,6 +731,7 @@ public class InventoryUI : MonoBehaviour
                     {
                         //fail
                         AudioManager.instance.PlaySfx(AudioManager.Sfx.Fail);
+                        help.Show(InventoryControlHelp.ActionType.WrongPosition);
                     }
                     return;
                 }
@@ -693,7 +765,9 @@ public class InventoryUI : MonoBehaviour
                             else
                             {
                                 //fail
+                                //클래스에 따른 사용할 수 없는 주무기인 경우도 추후 추가
                                 AudioManager.instance.PlaySfx(AudioManager.Sfx.Fail);
+                                help.Show(InventoryControlHelp.ActionType.WrongItem);
                             }
                             return;
 
@@ -723,6 +797,7 @@ public class InventoryUI : MonoBehaviour
                             {
                                 //fail
                                 AudioManager.instance.PlaySfx(AudioManager.Sfx.Fail);
+                                help.Show(InventoryControlHelp.ActionType.WrongItem);
                             }
                             return;
 
@@ -752,6 +827,7 @@ public class InventoryUI : MonoBehaviour
                             {
                                 //fail
                                 AudioManager.instance.PlaySfx(AudioManager.Sfx.Fail);
+                                help.Show(InventoryControlHelp.ActionType.WrongItem);
                             }
                             return;
 
@@ -781,6 +857,7 @@ public class InventoryUI : MonoBehaviour
                             {
                                 //fail
                                 AudioManager.instance.PlaySfx(AudioManager.Sfx.Fail);
+                                help.Show(InventoryControlHelp.ActionType.WrongItem);
                             }
                             return;
 
@@ -810,6 +887,7 @@ public class InventoryUI : MonoBehaviour
                             {
                                 //fail
                                 AudioManager.instance.PlaySfx(AudioManager.Sfx.Fail);
+                                help.Show(InventoryControlHelp.ActionType.WrongItem);
                             }
                             return;
                     }
@@ -896,6 +974,10 @@ public class InventoryUI : MonoBehaviour
                 EventSystem.current.SetSelectedGameObject(buttons[selectedId].gameObject);
                 AudioManager.instance.PlaySfx(AudioManager.Sfx.Cancel);
             }
+            else
+            {
+                GameManager.Instance.OnInventory();
+            }
         }
     }
 
@@ -964,6 +1046,7 @@ public class InventoryUI : MonoBehaviour
                         Debug.Log("이미 체력이 가득 차 있습니다.");
                         // 에러 메시지 띄우기
                         AudioManager.instance.PlaySfx(AudioManager.Sfx.Fail);
+                        help.Show(InventoryControlHelp.ActionType.FullHeart);
                     }
                     else
                     {
@@ -1017,6 +1100,7 @@ public class InventoryUI : MonoBehaviour
                 }
 
                 AudioManager.instance.PlaySfx(AudioManager.Sfx.Fail);
+                help.Show(InventoryControlHelp.ActionType.FullMsg);
                 return;
             }
             

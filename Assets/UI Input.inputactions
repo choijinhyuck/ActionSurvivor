@@ -830,6 +830,17 @@
                 },
                 {
                     "name": "",
+                    "id": "b23d79bc-ca42-4372-8d77-03a307d03988",
+                    "path": "<Keyboard>/r",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard&Mouse",
+                    "action": "Inventory",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "d1297333-e206-455c-86ce-563c40bca33e",
                     "path": "<Keyboard>/f",
                     "interactions": "",
