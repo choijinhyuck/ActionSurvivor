@@ -316,6 +316,8 @@ public class GameManager : MonoBehaviour
         {
             level++;
             exp = 0;
+            Stop();
+            LevelUp.instance.gameObject.SetActive(true);
         }
     }
 
