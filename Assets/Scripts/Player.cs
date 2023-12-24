@@ -18,6 +18,8 @@ public class Player : MonoBehaviour
     public GameObject[] skills;
     public GameObject skillArrow;
     public GameObject rangeArrow;
+    public GameObject rightBash;
+    public GameObject leftBash;
 
 
     InputAction moveAction;
@@ -416,7 +418,8 @@ public class Player : MonoBehaviour
                     GameManager.Instance.chargeCount--;
                     break;
                 case 2:
-
+                    anim.SetTrigger("SkillMotion");
+                    AttackSkill(1);
                     AudioManager.instance.PlaySfx(AudioManager.Sfx.WarriorSkill);
                     GameManager.Instance.chargeCount -= 2;
                     break;
@@ -498,11 +501,14 @@ public class Player : MonoBehaviour
                 if (chargeCount == 1) StartCoroutine("PlayerBlink");
             }
 
-            // 스킬 방향 설정 : 최소 0.5 초 이상 기모으는 시점부터 보이도록.
-            // 일반 공격 시에도 방향 나오는 것 방지
+            // 스킬 방향 설정 : 1회 기모으는 시점부터 보이도록.
+
             if (totalTime > GameManager.Instance.chargeTime)
             {
-                StartCoroutine("SkillArrow");
+                if (GameManager.Instance.playerId == 0 && chargeCount > 1)
+                {
+                    StartCoroutine("SkillArrow");
+                }
             }
 
             yield return null;
@@ -603,23 +609,45 @@ public class Player : MonoBehaviour
 
     void AttackSkill(int level)
     {
-        Rigidbody2D skillRigid;
-        skillRigid = skills[GameManager.Instance.playerId].GetComponentsInChildren<Rigidbody2D>(true)[level];
-        skillRigid.transform.localRotation = Quaternion.FromToRotation(Vector3.right, skillDir);
+        switch (level)
+        {
+            case 0:
+                rightBash.transform.parent.gameObject.SetActive(true);
+                if (!spriteRenderer.flipX)
+                {
+                    rightBash.SetActive(true);
+                }
+                else
+                {
+                    leftBash.SetActive(true);
+                }
+                break;
 
-        skillRigid.gameObject.SetActive(true);
-        skillRigid.velocity = skillDir * 15;
-        StartCoroutine(StopSkill(skillRigid));
+            case 1:
+                Rigidbody2D skillRigid;
+                skillRigid = skills[GameManager.Instance.playerId].transform.GetChild(level).GetComponentsInChildren<Rigidbody2D>(true)[0];
+                skillRigid.transform.parent.localRotation = Quaternion.FromToRotation(Vector3.right, skillDir);
+                skillRigid.transform.parent.gameObject.SetActive(true);
+                skillRigid.velocity = skillDir * 15;
+                StartCoroutine(StopSkill(skillRigid));
+                break;
+        }
+    }
 
+    public void StopBash()
+    {
+        if (rightBash.activeSelf) rightBash.SetActive(false);
+        if (leftBash.activeSelf) leftBash.SetActive(false);
+        rightBash.transform.parent.gameObject.SetActive(false);
     }
 
     IEnumerator StopSkill(Rigidbody2D skillRigid)
     {
         yield return new WaitForSeconds(.6f);
         skillRigid.velocity = Vector3.zero;
-        skillRigid.gameObject.SetActive(false);
+        skillRigid.transform.parent.gameObject.SetActive(false);
         skillRigid.transform.localPosition = Vector3.zero;
-        skillRigid.transform.localRotation = Quaternion.identity;
+        skillRigid.transform.parent.localRotation = Quaternion.identity;
     }
 
 

@@ -2,5 +2,5 @@ using UnityEngine;
 
 public class Skill : MonoBehaviour
 {
-    public int damage;
+    public float damageRate;
 }

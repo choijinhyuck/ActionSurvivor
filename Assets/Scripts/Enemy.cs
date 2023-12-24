@@ -165,15 +165,22 @@ public class Enemy : MonoBehaviour
         }
         else if (collision.CompareTag("Skill"))
         {
-            health -= collision.GetComponent<Skill>().damage;
-            HitDamageText(collision.GetComponent<Skill>().damage);
+            health -= collision.GetComponent<Skill>().damageRate * GameManager.Instance.playerDamage;
+            HitDamageText(collision.GetComponent<Skill>().damageRate * GameManager.Instance.playerDamage);
         }
 
         if (!hpBar.gameObject.activeSelf) hpBar.gameObject.SetActive(true);
 
         if (isHit) StopCoroutine(knockbackCoroutine);
-        knockbackCoroutine = StartCoroutine(KnockBack(10));
-        
+
+        if (collision.transform.parent.name == "Level 1")
+        {
+            knockbackCoroutine = StartCoroutine(KnockBack(15));
+        }
+        else
+        {
+            knockbackCoroutine = StartCoroutine(KnockBack(10));
+        }
 
 
         if (health > 0)

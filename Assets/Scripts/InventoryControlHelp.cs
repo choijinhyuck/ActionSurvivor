@@ -2,15 +2,19 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Net.WebSockets;
+using TMPro;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.EventSystems;
+using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.Users;
 using UnityEngine.UI;
-using UnityEngine.UIElements;
 
 public class InventoryControlHelp : MonoBehaviour
 {
     public enum ActionType {Empty, Equip, UnEquip, Pressed, Destroy, Use, FullMsg, FullHeart, NotEquippable, WrongPosition, WrongItem}
 
+    public PlayerInput playerInput;
     public GameObject message;
     public GameObject changeSlot;
     public GameObject unequip;
@@ -19,10 +23,13 @@ public class InventoryControlHelp : MonoBehaviour
     public GameObject cancel;
     public GameObject select;
     public GameObject close;
+    public Sprite[] keyboard;
+    public Sprite[] gamepad;
 
     GameObject[] objArr;
     Coroutine messageCoroutine;
     bool showMessage;
+    string currentControlScheme;
     
 
     private void Awake()
@@ -44,6 +51,34 @@ public class InventoryControlHelp : MonoBehaviour
         if (message.activeSelf) message.SetActive(false);
         showMessage = false;
         messageCoroutine = null;
+        currentControlScheme = "";
+    }
+
+    private void Update()
+    {
+        if (playerInput.currentControlScheme == currentControlScheme) return;
+        currentControlScheme = playerInput.currentControlScheme;
+        switch (currentControlScheme)
+        {
+            case "Keyboard&Mouse":
+                select.GetComponentInChildren<Image>().sprite = keyboard[0];
+                cancel.GetComponentInChildren<Image>().sprite = keyboard[1];
+                equipUse.GetComponentInChildren<Image>().sprite = keyboard[2];
+                unequip.GetComponentInChildren<Image>().sprite = keyboard[2];
+                destroy.GetComponentInChildren<Image>().sprite = keyboard[3];
+                close.GetComponentInChildren<Image>().sprite = keyboard[4];
+                break;
+
+            default:
+                select.GetComponentInChildren<Image>().sprite = gamepad[0];
+                cancel.GetComponentInChildren<Image>().sprite = gamepad[1];
+                equipUse.GetComponentInChildren<Image>().sprite = gamepad[2];
+                unequip.GetComponentInChildren<Image>().sprite = gamepad[2];
+                destroy.GetComponentInChildren<Image>().sprite = gamepad[3];
+                close.GetComponentInChildren<Image>().sprite = gamepad[4];
+                break;   
+        }
+
     }
 
     public void Show(ActionType actionType)
