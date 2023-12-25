@@ -195,8 +195,7 @@ public class Enemy : MonoBehaviour
             rigid.simulated = false;
             spriter.sortingOrder = 1;
             StartCoroutine(Dead());
-            GameManager.Instance.kill++;
-            GameManager.Instance.GetExp(exp);
+            
 
             if (GameManager.Instance.isLive)
             {
@@ -285,6 +284,8 @@ public class Enemy : MonoBehaviour
         yield return waitSec;
 
         DropItem();
+        GameManager.Instance.kill++;
+        GameManager.Instance.GetExp(exp);
         currColor.a = .4f;
         spriter.color = currColor;
         yield return waitSec;

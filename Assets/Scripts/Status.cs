@@ -8,16 +8,22 @@ public class Status : MonoBehaviour
     public Text className;
     public Text damageValue;
     public Text speedValue;
-    public Text dashValue;
-    public Text skillValue;
+    public Text damageLevel;
+    public Text speedLevel;
+    public Text healthLevel;
+    public Text skillLevel;
+    public Text dashLevel;
 
     private void Start()
     {
         className.text = GetClassName();
         damageValue.text = GameManager.Instance.playerDamage.ToString("N0");
         speedValue.text = GameManager.Instance.playerSpeed.ToString("N0"); ;
-        dashValue.text = $"LV. {GameManager.Instance.currDashLevel + 1}";
-        skillValue.text = $"Lv. {GameManager.Instance.playerSkillLevel + 1}";
+        damageLevel.text = string.Format("  Èû: Lv.{0} / Lv.3", GameManager.Instance.playerDamageLevel);
+        speedLevel.text = string.Format("¹ÎÃ¸: Lv.{0} / Lv.3", GameManager.Instance.playerSpeedLevel);
+        healthLevel.text = string.Format("°Ç°­: Lv.{0} / Lv.4", GameManager.Instance.playerHealthLevel);
+        skillLevel.text = string.Format("±â¼ú: Lv.{0} / Lv.6", GameManager.Instance.playerSkillLevel);
+        dashLevel.text = string.Format("´ë½Ã: Lv.{0} / Lv.4", GameManager.Instance.playerDashLevel);
     }
 
     private void LateUpdate()
@@ -25,8 +31,11 @@ public class Status : MonoBehaviour
         className.text = GetClassName();
         damageValue.text = GameManager.Instance.playerDamage.ToString("N0");
         speedValue.text = GameManager.Instance.playerSpeed.ToString("N0"); ;
-        dashValue.text = $"LV. {GameManager.Instance.currDashLevel + 1}";
-        skillValue.text = $"Lv. {GameManager.Instance.playerSkillLevel + 1}";
+        damageLevel.text = string.Format("  Èû: Lv.{0} / Lv.3", GameManager.Instance.playerDamageLevel);
+        speedLevel.text = string.Format("¹ÎÃ¸: Lv.{0} / Lv.3", GameManager.Instance.playerSpeedLevel);
+        healthLevel.text = string.Format("°Ç°­: Lv.{0} / Lv.4", GameManager.Instance.playerHealthLevel);
+        skillLevel.text = string.Format("±â¼ú: Lv.{0} / Lv.6", GameManager.Instance.playerSkillLevel);
+        dashLevel.text = string.Format("´ë½Ã: Lv.{0} / Lv.4", GameManager.Instance.playerDashLevel);
     }
 
     string GetClassName()

@@ -77,6 +77,18 @@ public class AudioManager : MonoBehaviour
             bgmPlayer.Stop();
         }
     }
+    
+    public void PauseBGM(bool pause)
+    {
+        if (pause)
+        {
+            bgmPlayer.Pause();
+        }
+        else
+        {
+            bgmPlayer.UnPause();
+        }
+    }
 
     public void EffectBgm(bool isPlay)
     {

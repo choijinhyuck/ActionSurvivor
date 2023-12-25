@@ -40,8 +40,6 @@ public class GameManager : MonoBehaviour
     public float playerCooltime;
     public int playerDashLevel;
     public int playerSkillLevel;
-    public int currDashLevel;
-    public int currSkillLevel;
     public int playerSpeedLevel;
     public int playerHealthLevel;
     public int playerDamageLevel;
@@ -50,9 +48,6 @@ public class GameManager : MonoBehaviour
     public float[] playerBasicMaxHealth;
     public float[] playerBasicDamage;
     public float[] playerBasicSpeed;
-    public float[] playerBasicCooltime; // 폭탄맨은 투척과 마법의 쿨타임이 감소
-    public int[] playerBasicDashLevel;
-    public int[] playerBasicSkillLevel;
 
     [Header("# Inventory")]
     public InventoryUI inventoryUI;
@@ -206,13 +201,12 @@ public class GameManager : MonoBehaviour
             playerSpeed = playerBasicSpeed[playerId] + playerSpeedLevel + ItemManager.Instance.itemDataArr[shoesItem[playerId]].baseAmount;
         }
         
-        // 대시나 스킬을 올려주는 아이템을 추가하는 경우 로직 추가.
-        currDashLevel = playerBasicDashLevel[playerId] + playerDashLevel;
-        currSkillLevel = playerBasicSkillLevel[playerId] + playerSkillLevel;
     }
 
     public void OnInventory()
     {
+        if (LevelUp.instance.isLevelUp) return;
+
         if (workingInventory)
         {
             //AudioManager.instance.PlaySfx(AudioManager.Sfx.Select);
@@ -238,13 +232,11 @@ public class GameManager : MonoBehaviour
         gameTime = 0;
         maxGameTime = stage.stageDataArr[stageId].gameTime;
 
-        playerHealthLevel = 0;
-        playerSpeedLevel = 0;
-        playerDashLevel = 0;
-        playerHealthLevel = 0;
-        playerDamageLevel = 0;
-        playerDashLevel = 0;
-        playerSkillLevel = 0;
+        playerDamageLevel = 1;
+        playerSpeedLevel = 1;
+        playerHealthLevel = 1;
+        playerSkillLevel = 1;
+        playerDashLevel = 1;
 
         StatusUpdate();
 
@@ -317,7 +309,7 @@ public class GameManager : MonoBehaviour
             level++;
             exp = 0;
             Stop();
-            LevelUp.instance.gameObject.SetActive(true);
+            LevelUp.instance.Do();
         }
     }
 
