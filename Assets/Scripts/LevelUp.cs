@@ -184,13 +184,22 @@ public class LevelUp : MonoBehaviour
     IEnumerator ShowText()
     {
         float timer = 0f;
+        firstText.transform.localEulerAngles = Vector3.zero;
         firstText.fontSize = 1;
         if (!firstText.gameObject.activeSelf) firstText.gameObject.SetActive(true);
         while (timer < 1f)
         {
             yield return null;
             timer += Time.unscaledDeltaTime;
-            firstText.fontSize = Mathf.Max(1, Mathf.FloorToInt(timer * 30f));
+            firstText.fontSize = Mathf.Max(1, Mathf.FloorToInt(timer * 20));
+            if (timer < .3f)
+            {
+                firstText.transform.localEulerAngles = new Vector3(0, 0, timer * 360 * 2 / .3f);
+            }
+            else
+            {
+                firstText.transform.localEulerAngles = Vector3.zero;
+            }
         }
         
         Show();
@@ -256,6 +265,7 @@ public class LevelUp : MonoBehaviour
         currentEvent = EventSystem.current.currentSelectedGameObject;
     }
 
+
     public void Up(int levelIndex)
     {
         switch(levelIndex)
@@ -280,6 +290,7 @@ public class LevelUp : MonoBehaviour
                 GameManager.Instance.playerDashLevel++;
                 break;
         }
+
         AudioManager.instance.PlaySfx(AudioManager.Sfx.ButtonPress);
         AudioManager.instance.PauseBGM(false);
         GameManager.Instance.Resume();
