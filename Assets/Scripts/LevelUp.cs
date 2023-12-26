@@ -294,7 +294,10 @@ public class LevelUp : MonoBehaviour
         }
 
         AudioManager.instance.PlaySfx(AudioManager.Sfx.ButtonPress);
-        AudioManager.instance.PauseBGM(false);
+        if (GameManager.Instance.health > 1.1f)
+        {
+            AudioManager.instance.PauseBGM(false);
+        }
         GameManager.Instance.Resume();
         isLevelUp = false;
         currentEvent = null;

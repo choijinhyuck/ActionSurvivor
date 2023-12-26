@@ -21,7 +21,7 @@ public class AudioManager : MonoBehaviour
     public enum Sfx
     {
         Dead, Hit, LevelUp = 3, Lose, Melee, Range = 7, Select, Win, WarriorSkill = 11, WarriorAttack, PlayerHit, Dodge = 14, Fail, Kunai, Arrow, Healthy,
-        ButtonChange, ButtonPress, Cancel, Equip, Unequip, Destroy, Gold, AcquireItem
+        ButtonChange, ButtonPress, Cancel, Equip, Unequip, Destroy, Gold, AcquireItem, HeartBeat
     }
 
     private void Awake()
