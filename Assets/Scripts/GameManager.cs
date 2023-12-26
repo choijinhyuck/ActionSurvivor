@@ -30,6 +30,7 @@ public class GameManager : MonoBehaviour
     public int exp;
     public int[] nextExp;
     public float dodgeTime;
+    public float dodgeSpeed;
     public int maxChargeCount; // 최대 번개 몇개?
     public int chargeCount; // How many skills you can use, Right Now! Player 스크립트의 chargeCount와는 별개. 현재 번개 몇 개 충전?
     public float chargeCooltime; // 1 번개 충전하는데 걸리는 시간
@@ -37,7 +38,7 @@ public class GameManager : MonoBehaviour
     public float chargeTime; // 1 차지 하는데 걸리는 시간
     public float playerDamage;
     public float playerSpeed;
-    public float playerCooltime;
+    public float playerImmuneTime;
     public int playerDashLevel;
     public int playerSkillLevel;
     public int playerSpeedLevel;
@@ -182,12 +183,12 @@ public class GameManager : MonoBehaviour
         }
         if (necklaceItem[playerId] == -1)
         {
-            maxHealth = playerBasicMaxHealth[playerId] + playerHealthLevel;
+            maxHealth = playerBasicMaxHealth[playerId] + MathF.Min(playerHealthLevel, 3);
         }
         else
         {
             // 체력을 올려주는 목걸이 종류에 한해서 작동하도록 로직 추후 세우기.
-            maxHealth = playerBasicMaxHealth[playerId] + playerHealthLevel + ItemManager.Instance.itemDataArr[necklaceItem[playerId]].baseAmount;
+            maxHealth = playerBasicMaxHealth[playerId] + MathF.Min(playerHealthLevel, 3) + ItemManager.Instance.itemDataArr[necklaceItem[playerId]].baseAmount;
             // 체력 증가 아이템을 해제했을 때, 최대체력보다 현재체력이 넘어가는 현상을 방지하기 위해 MaxHeath로 현재 체력을 제한
             health = Mathf.Clamp(health, 0, maxHealth);
         }
@@ -232,11 +233,20 @@ public class GameManager : MonoBehaviour
         gameTime = 0;
         maxGameTime = stage.stageDataArr[stageId].gameTime;
 
-        playerDamageLevel = 1;
-        playerSpeedLevel = 1;
-        playerHealthLevel = 1;
-        playerSkillLevel = 1;
-        playerDashLevel = 1;
+        playerImmuneTime = .15f;
+
+        chargeTime = 1f;
+        dodgeTime = 2f;
+        dodgeSpeed = 7f;
+
+        maxChargibleCount = 1;
+        maxChargeCount = 2;
+
+        playerDamageLevel = 0;
+        playerSpeedLevel = 0;
+        playerHealthLevel = 0;
+        playerSkillLevel = 0;
+        playerDashLevel = 0;
 
         StatusUpdate();
 

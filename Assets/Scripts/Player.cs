@@ -45,6 +45,7 @@ public class Player : MonoBehaviour
     public bool readyDodge;
     Rigidbody2D target;
     bool canRangeFire;
+    bool isImmune;
 
 
     private void Awake()
@@ -91,6 +92,7 @@ public class Player : MonoBehaviour
         isDodge = false;
         isAttack = false;
         isHit = false;
+        isImmune = false;
 
         actions.Enable();
 
@@ -117,7 +119,7 @@ public class Player : MonoBehaviour
         inputVector = moveAction.ReadValue<Vector2>();
 
         if (isDodge) return;
-        Vector2 nextVec = inputVector * GameManager.Instance.playerSpeed * Time.fixedDeltaTime;
+        Vector2 nextVec = inputVector * GameManager.Instance.playerSpeed / 5 * Time.fixedDeltaTime;
         rigid.MovePosition(rigid.position + nextVec);
     }
     private void LateUpdate()
@@ -165,7 +167,6 @@ public class Player : MonoBehaviour
         }
     }
 
-    bool isImmune;
     // 넉백이 완료되고 나서도 일정시간 무적 부여
     IEnumerator KnockBack(int force)
     {
@@ -194,7 +195,7 @@ public class Player : MonoBehaviour
 
         // 피해 면역 추가
         isImmune = true;
-        yield return new WaitForSeconds(.1f);
+        yield return new WaitForSeconds(GameManager.Instance.playerImmuneTime);
         spriteRenderer.color = Color.white;
         isImmune = false;
     }
@@ -252,9 +253,6 @@ public class Player : MonoBehaviour
 
     IEnumerator Dodge()
     {
-        float dodgeSpeed;
-        dodgeSpeed = 7f;
-
         readyDodge = false;
         isDodge = true;
         AudioManager.instance.PlaySfx(AudioManager.Sfx.Dodge);
@@ -274,7 +272,7 @@ public class Player : MonoBehaviour
         //currColor.a = .6f;
         //spriteRenderer.color = currColor;
 
-        rigid.velocity = inputVector * dodgeSpeed;
+        rigid.velocity = inputVector * GameManager.Instance.dodgeSpeed;
         // 0.2 초
         yield return new WaitForSeconds(.3f);
 
