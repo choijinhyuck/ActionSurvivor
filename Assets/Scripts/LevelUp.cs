@@ -185,13 +185,13 @@ public class LevelUp : MonoBehaviour
     {
         float timer = 0f;
         firstText.transform.localEulerAngles = Vector3.zero;
-        firstText.fontSize = 1;
+        firstText.transform.localScale = Vector3.zero;
         if (!firstText.gameObject.activeSelf) firstText.gameObject.SetActive(true);
         while (timer < 1f)
         {
             yield return null;
             timer += Time.unscaledDeltaTime;
-            firstText.fontSize = Mathf.Max(1, Mathf.FloorToInt(timer * 20));
+            firstText.transform.localScale = new Vector3(timer, timer, timer);
             if (timer < .3f)
             {
                 firstText.transform.localEulerAngles = new Vector3(0, 0, timer * 360 * 2 / .3f);
@@ -268,6 +268,8 @@ public class LevelUp : MonoBehaviour
 
     public void Up(int levelIndex)
     {
+        stats[levelIndex].GetComponent<Button>().interactable = false;
+
         switch(levelIndex)
         {
             case 0:
@@ -296,6 +298,7 @@ public class LevelUp : MonoBehaviour
         GameManager.Instance.Resume();
         isLevelUp = false;
         currentEvent = null;
+        stats[levelIndex].GetComponent<Button>().interactable = true;
 
         foreach (var element in GetComponentsInChildren<Transform>(true))
         {

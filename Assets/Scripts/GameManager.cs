@@ -300,17 +300,37 @@ public class GameManager : MonoBehaviour
 
     public void GetExp(int enemyExp)
     {
-        if (!isLive) return;
+        StartCoroutine(ExpCoroutine(enemyExp));
+    }
 
-        exp += enemyExp;
-
-        if (exp == nextExp[Mathf.Min(level, nextExp.Length - 1)])
+    IEnumerator ExpCoroutine(int enemyExp)
+    {
+        while (true)
         {
-            level++;
-            exp = 0;
-            Stop();
-            LevelUp.instance.Do();
+            if (LevelUp.instance.isLevelUp)
+            {
+                yield return null;
+                continue;
+            }
+            else if (!isLive)
+            {
+                yield break;
+            }
+            else
+            {
+                exp += enemyExp;
+
+                if (exp == nextExp[Mathf.Min(level, nextExp.Length - 1)])
+                {
+                    level++;
+                    exp = 0;
+                    Stop();
+                    LevelUp.instance.Do();
+                }
+                break;
+            }
         }
+        
     }
 
     public void Stop()
