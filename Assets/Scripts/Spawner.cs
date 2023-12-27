@@ -36,15 +36,19 @@ public class Spawner : MonoBehaviour
         }
 
         // Wave별 Enemy spawn timer array 정의
-        for (int i = 0; i < stage.waveData[wave].mobArr.Length; i++)
-        {
-            timer[i] += Time.deltaTime;
-            if (timer[i] > spawnData[stage.waveData[wave].mobArr[i]].spawnTime)
-            {
-                timer[i] = 0;
-                Spawn(stage.waveData[wave].mobArr[i]);
-            }
-        }
+        //for (int i = 0; i < stage.waveData[wave].mobArr.Length; i++)
+        //{
+        //    timer[i] += Time.deltaTime;
+        //    if (timer[i] > spawnData[stage.waveData[wave].mobArr[i]].spawnTime)
+        //    {
+        //        timer[i] = 0;
+
+        //        for (int count = 0; count < spawnData[stage.waveData[wave].mobArr[i]].enemyCount; count++)
+        //        {
+        //            Spawn(stage.waveData[wave].mobArr[i]);
+        //        }
+        //    }
+        //}
     }
 
     void Spawn(int spawnIndex)
@@ -105,6 +109,7 @@ public class SpawnData
     public int health;
     public float speed;
     public int exp;
+    public int enemyCount = 1;
     public float mass = 1;
     // 아래 두 배열은 같은 인덱스를 공유해야함.
     public int[] dropItemsId;

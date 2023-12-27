@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -5,21 +6,30 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "Stage", menuName = "Scriptable Object/StageData")]
 public class StageData : ScriptableObject
 {
+    public enum EnemyType { Chicken, Bat, Rhino, BlueBird, Snail, MushRoom, Rock}
+
     [Header("# Stage Info")]
     public int stageNumber;
     public string stageName;
     public int gameTime;
-    public int flyEnemy;
 
     public WaveData[] waveData;
 
-    public int boss;    
+    public int boss;
 }
 
-[System.Serializable]
+[Serializable]
 public class WaveData
 {
     [Header("# Wave")]
     public int startTime;
-    public int[] mobArr;
+    public EnemyInfo[] mobArr;
+}
+
+[Serializable]
+public struct EnemyInfo
+{
+    public StageData.EnemyType enemyType;
+    public int enemyCount;
+    public float spawnInterval;
 }

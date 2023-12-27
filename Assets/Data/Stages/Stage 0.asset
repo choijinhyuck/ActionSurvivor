@@ -14,13 +14,24 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   stageNumber: 0
   stageName: "\uC232"
-  gameTime: 120
-  flyEnemy: 1
+  gameTime: 300
   waveData:
   - startTime: 0
-    mobArr: 0000000001000000
-  - startTime: 30
-    mobArr: 0000000005000000
+    mobArr:
+    - enemyType: 4
+      enemyCount: 1
+      spawnInterval: 3
+    - enemyType: 1
+      enemyCount: 10
+      spawnInterval: 59.8
   - startTime: 60
-    mobArr: 000000000500000006000000
+    mobArr:
+    - enemyType: 0
+      enemyCount: 0
+      spawnInterval: 0
+  - startTime: 0
+    mobArr:
+    - enemyType: 0
+      enemyCount: 0
+      spawnInterval: 0
   boss: 0

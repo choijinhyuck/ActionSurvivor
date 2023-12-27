@@ -634,6 +634,7 @@ public class InventoryUI : MonoBehaviour
                 switch (buttonIndex)
                 {
                     case 24:
+                        // 주무기 장비
                         if ((int)ItemManager.Instance.itemDataArr[GameManager.Instance.inventoryItemsId[pressedId]].itemType == 0)
                         {
                             var tempItemId = GameManager.Instance.inventoryItemsId[pressedId];
@@ -650,6 +651,7 @@ public class InventoryUI : MonoBehaviour
                         }
                         return;
                     case 25:
+                        // 목걸이 장비
                         if ((int)ItemManager.Instance.itemDataArr[GameManager.Instance.inventoryItemsId[pressedId]].itemType == 3)
                         {
                             var tempItemId = GameManager.Instance.inventoryItemsId[pressedId];
@@ -666,6 +668,7 @@ public class InventoryUI : MonoBehaviour
                         }
                         return;
                     case 26:
+                        // 신발 장비
                         if ((int)ItemManager.Instance.itemDataArr[GameManager.Instance.inventoryItemsId[pressedId]].itemType == 2)
                         {
                             var tempItemId = GameManager.Instance.inventoryItemsId[pressedId];
@@ -682,6 +685,7 @@ public class InventoryUI : MonoBehaviour
                         }
                         return;
                     case 27:
+                        //투척 무기 장비
                         if ((int)ItemManager.Instance.itemDataArr[GameManager.Instance.inventoryItemsId[pressedId]].itemType == 1)
                         {
                             var tempItemId = GameManager.Instance.inventoryItemsId[pressedId];
@@ -698,6 +702,7 @@ public class InventoryUI : MonoBehaviour
                         }
                         return;
                     case 28:
+                        // 마법책 장비
                         if ((int)ItemManager.Instance.itemDataArr[GameManager.Instance.inventoryItemsId[pressedId]].itemType == 4)
                         {
                             var tempItemId = GameManager.Instance.inventoryItemsId[pressedId];

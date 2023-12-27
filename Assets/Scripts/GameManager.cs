@@ -199,7 +199,7 @@ public class GameManager : MonoBehaviour
         }
         else
         {
-            playerSpeed = playerBasicSpeed[playerId] + playerSpeedLevel + ItemManager.Instance.itemDataArr[shoesItem[playerId]].baseAmount;
+            playerSpeed = (playerBasicSpeed[playerId] + playerSpeedLevel) * (1 + ItemManager.Instance.itemDataArr[shoesItem[playerId]].baseAmount / 100);
         }
         
     }
@@ -240,7 +240,7 @@ public class GameManager : MonoBehaviour
         dodgeTime = 2f;
         dodgeSpeed = 7f;
 
-        maxChargibleCount = 3;
+        maxChargibleCount = 1;
         maxChargeCount = 2;
 
         playerDamageLevel = 0;
@@ -323,20 +323,28 @@ public class GameManager : MonoBehaviour
                 yield return null;
                 continue;
             }
-            else if (!isLive)
+            else if (level == 21)
             {
+                exp = 0;
                 yield break;
             }
             else
             {
                 exp += enemyExp;
 
-                if (exp == nextExp[Mathf.Min(level, nextExp.Length - 1)])
+                if (exp >= nextExp[Mathf.Min(level, nextExp.Length - 1)])
                 {
+                    int restExp = nextExp[Mathf.Min(level, nextExp.Length - 1)] - exp;
                     level++;
                     exp = 0;
                     Stop();
                     LevelUp.instance.Do();
+                    
+                    // 레벨업 후 잔여 Exp가 존재하는 경우 한 번 더 적을 쓰러뜨린 후 호출하는 코루틴을 호출
+                    if (restExp != 0)
+                    {
+                        StartCoroutine(ExpCoroutine(restExp));
+                    }
                 }
                 break;
             }

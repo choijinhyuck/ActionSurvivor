@@ -466,7 +466,7 @@ public class Player : MonoBehaviour
             }
 
 
-            if (GameManager.Instance.chargeCount == chargeCount)
+            if (GameManager.Instance.chargeCount == chargeCount || chargeCount == GameManager.Instance.maxChargibleCount)
             {
                 if (chargeCount < 3)
                 {
