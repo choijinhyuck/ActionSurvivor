@@ -235,11 +235,12 @@ public class GameManager : MonoBehaviour
 
         playerImmuneTime = .15f;
 
+        chargeCooltime = 4f;
         chargeTime = 1f;
         dodgeTime = 2f;
         dodgeSpeed = 7f;
 
-        maxChargibleCount = 1;
+        maxChargibleCount = 3;
         maxChargeCount = 2;
 
         playerDamageLevel = 0;

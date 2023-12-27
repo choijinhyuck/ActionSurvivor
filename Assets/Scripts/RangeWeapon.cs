@@ -1,5 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Mathematics;
+using UnityEditor.Build.Content;
 using UnityEngine;
 using UnityEngine.InputSystem.Controls;
 
@@ -47,7 +49,7 @@ public class RangeWeapon : MonoBehaviour
             timer = 0f;
         }
 
-        
+
     }
 
     public void Fire(Vector3 rangeDir)
@@ -69,21 +71,108 @@ public class RangeWeapon : MonoBehaviour
             return;
         }
 
-        GameObject projectile = GameManager.Instance.pool.Get(prefabId);
-        projectile.transform.parent = projectilePool;
-        projectile.transform.position = GameManager.Instance.player.rangeArrow.transform.GetChild(0).position;
-        projectile.transform.localRotation = Quaternion.FromToRotation(Vector3.right, rangeDir);
-        projectile.GetComponent<Projectile>().Init(rangeData.baseAmount, rangeData.pierceCount, rangeDir, rangeData.speed);
-        if (rangeId == 6 || rangeId == 7)
-        {
-            AudioManager.instance.PlaySfx(AudioManager.Sfx.Kunai);
-        }
-        else
-        {
-            AudioManager.instance.PlaySfx(AudioManager.Sfx.Arrow);
-        }
+        StartCoroutine(Shoot(rangeId, prefabId, rangeDir));
 
         readyRangeWeapon = false;
         timer = 0f;
+    }
+
+    IEnumerator Shoot(int rangeId, int prefabId, Vector3 rangeDir)
+    {
+        int count;
+        if (rangeId == 6)
+        {
+            count = 3;
+            GameObject[] projectiles = new GameObject[count];
+            Vector3 deltaPos = GameManager.Instance.player.rangeArrow.transform.GetChild(0).position - GameManager.Instance.player.transform.position;
+            Vector3 arrowSpritePos;
+            Vector3 arrowAngle = GameManager.Instance.player.rangeArrow.transform.localEulerAngles;
+            Vector3 newDir = rangeDir;
+            float rotAngle = 15f;
+
+            for (int i = 0; i < count; i++)
+            {
+                projectiles[i] = GameManager.Instance.pool.Get(prefabId);
+                projectiles[i].transform.parent = projectilePool;
+                arrowSpritePos = GameManager.Instance.player.transform.position + deltaPos;
+
+                switch (i)
+                {
+                    case 0:
+                        projectiles[i].transform.position = Quaternion.AngleAxis(rotAngle, Vector3.forward)
+                                                       * (arrowSpritePos - GameManager.Instance.player.rangeArrow.transform.position)
+                                                       + GameManager.Instance.player.rangeArrow.transform.position;
+                        projectiles[i].transform.localEulerAngles = arrowAngle + new Vector3(0, 0, rotAngle);
+                        newDir = Quaternion.AngleAxis(rotAngle, Vector3.forward) * rangeDir;
+                        break;
+
+                    case 1:
+                        projectiles[i].transform.position = arrowSpritePos;
+                        projectiles[i].transform.localEulerAngles = arrowAngle;
+                        newDir = rangeDir;
+                        break;
+
+                    case 2:
+                        projectiles[i].transform.position = Quaternion.AngleAxis(-rotAngle, Vector3.forward)
+                                                       * (arrowSpritePos - GameManager.Instance.player.rangeArrow.transform.position)
+                                                       + GameManager.Instance.player.rangeArrow.transform.position;
+                        projectiles[i].transform.localEulerAngles = arrowAngle + new Vector3(0, 0, -rotAngle);
+                        newDir = Quaternion.AngleAxis(-rotAngle, Vector3.forward) * rangeDir;
+                        break;
+                }
+
+                projectiles[i].GetComponent<Projectile>().Init(rangeData.baseAmount, rangeData.pierceCount, newDir, rangeData.speed, rangeId);
+                AudioManager.instance.PlaySfx(AudioManager.Sfx.Kunai);
+            }
+            yield break;
+        }
+        else if (rangeId == 7)
+        {
+            count = 2;
+            GameObject[] projectiles = new GameObject[count];
+            Vector3 deltaPos = GameManager.Instance.player.rangeArrow.transform.GetChild(0).position - GameManager.Instance.player.transform.position;
+            Vector3 arrowSpritePos;
+            Vector3 arrowAngle = GameManager.Instance.player.rangeArrow.transform.localEulerAngles;
+            Vector3 newDir = rangeDir;
+
+            for (int i = 0; i < count; i++)
+            {
+                projectiles[i] = GameManager.Instance.pool.Get(prefabId);
+                projectiles[i].transform.parent = projectilePool;
+                arrowSpritePos = GameManager.Instance.player.transform.position + deltaPos;
+
+                projectiles[i].transform.position = arrowSpritePos;
+                projectiles[i].transform.localEulerAngles = arrowAngle;
+
+                projectiles[i].GetComponent<Projectile>().Init(rangeData.baseAmount, rangeData.pierceCount, newDir, rangeData.speed, rangeId);
+                AudioManager.instance.PlaySfx(AudioManager.Sfx.Kunai);
+                yield return new WaitForSeconds(0.15f);
+            }
+            yield break;
+        }
+        else if (rangeId == 8)
+        {
+            count = 1;
+            GameObject[] projectiles = new GameObject[count];
+            Vector3 deltaPos = GameManager.Instance.player.rangeArrow.transform.GetChild(0).position - GameManager.Instance.player.transform.position;
+            Vector3 arrowSpritePos;
+            Vector3 arrowAngle = GameManager.Instance.player.rangeArrow.transform.localEulerAngles;
+            Vector3 newDir = rangeDir;
+
+            for (int i = 0; i < count; i++)
+            {
+                projectiles[i] = GameManager.Instance.pool.Get(prefabId);
+                projectiles[i].transform.parent = projectilePool;
+                arrowSpritePos = GameManager.Instance.player.transform.position + deltaPos;
+
+                projectiles[i].transform.position = arrowSpritePos;
+                projectiles[i].transform.localEulerAngles = arrowAngle;
+
+                projectiles[i].GetComponent<Projectile>().Init(rangeData.baseAmount, rangeData.pierceCount, newDir, rangeData.speed, rangeId);
+                AudioManager.instance.PlaySfx(AudioManager.Sfx.Arrow);
+                //yield return new WaitForSeconds(0.15f);
+            }
+            yield break;
+        }
     }
 }

@@ -7,7 +7,6 @@ public class Player : MonoBehaviour
 
     public Vector2 inputVector;
     public Scanner scanner;
-    public Hand[] hands;
     public RuntimeAnimatorController[] animCon;
     public Transform shadow;
     public RangeWeapon rangeWeapon;
@@ -81,7 +80,6 @@ public class Player : MonoBehaviour
         anim = GetComponent<Animator>();
         spriteRenderer = GetComponent<SpriteRenderer>();
         scanner = GetComponent<Scanner>();
-        hands = GetComponentsInChildren<Hand>(true);
         waitSec = new WaitForSeconds(.01f);
         waitFix = new WaitForFixedUpdate();
     }
@@ -326,6 +324,7 @@ public class Player : MonoBehaviour
         StartCoroutine("StartCharge");
     }
 
+    float originSpeed;
     IEnumerator StartCharge()
     {
         float chargeStartTimer = 0f;
@@ -345,8 +344,9 @@ public class Player : MonoBehaviour
 
         isCharging = true;
         chargeEffects[0].gameObject.SetActive(true);
+        originSpeed = GameManager.Instance.playerSpeed;
         // 이동속도 변경
-        GameManager.Instance.playerSpeed /= 2;
+        GameManager.Instance.playerSpeed = originSpeed * .8f;
 
         // 기 모으는 Effect 추가
         StartCoroutine("Charging");
@@ -437,7 +437,7 @@ public class Player : MonoBehaviour
         isCharging = false;
         chargeTimer = 0;
         chargeCount = 0;
-        GameManager.Instance.playerSpeed *= 2;
+        GameManager.Instance.playerSpeed = originSpeed;
         //스킬 방향 지시 중단
         StopCoroutine("SkillArrow");
         skillArrow.transform.localRotation = Quaternion.identity;
@@ -475,6 +475,16 @@ public class Player : MonoBehaviour
                 yield return null;
                 continue;
             }
+
+            if (chargeCount == 1)
+            {
+                GameManager.Instance.playerSpeed = originSpeed * 0.6f;
+            }
+            else if (chargeCount == 2)
+            {
+                GameManager.Instance.playerSpeed = originSpeed * 0.4f;
+            }
+
 
             if (chargeCount < 3 && !chargeEffects[chargeCount].gameObject.activeSelf)
             {
@@ -703,7 +713,7 @@ public class Player : MonoBehaviour
                 rangeDir = Vector3.right;
             }
 
-            rangeArrow.transform.localRotation = Quaternion.FromToRotation(Vector3.right, rangeDir);
+            rangeArrow.transform.localEulerAngles = new Vector3(0f, 0f, Vector3.SignedAngle(Vector3.right, rangeDir, Vector3.forward));
             yield return waitFix;
         }
     }

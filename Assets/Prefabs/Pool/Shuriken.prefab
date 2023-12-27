@@ -185,6 +185,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   trail: {fileID: 4666728667742461892}
+  targetLayer:
+    serializedVersion: 2
+    m_Bits: 64
   damage: 0
 --- !u!1 &4373477459203226727
 GameObject:
