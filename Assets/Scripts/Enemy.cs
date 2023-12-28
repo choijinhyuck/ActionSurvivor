@@ -11,7 +11,6 @@ public class Enemy : MonoBehaviour
     public float speed;
     public float health;
     public float maxHealth;
-    public RuntimeAnimatorController[] animCon;
     public Rigidbody2D target;
     public Slider hpBar;
     public Sprite[] barSprites;
@@ -25,8 +24,7 @@ public class Enemy : MonoBehaviour
     float hitTextPosYstart;
     float hitTextPosYend;
     int exp;
-    int[] dropItemsId;
-    float[] dropProbability;
+    DropItems[] dropItems;
     Vector2 shadowOrigin;
     Vector2 shadowFlip;
 
@@ -120,7 +118,7 @@ public class Enemy : MonoBehaviour
         rigid.simulated = true;
         spriter.sortingOrder = 2;
         health = maxHealth;
-        dropItemsId = new int[] { };
+        dropItems = new DropItems[] { };
         if (hpBar.gameObject.activeSelf) hpBar.gameObject.SetActive(false);
         barImage.sprite = barSprites[0];
         foreach (var hit in hitText)
@@ -132,18 +130,17 @@ public class Enemy : MonoBehaviour
         }
     }
 
-    public void Init(SpawnData data)
+    public void Init(EnemyData data)
     {
-        anim.runtimeAnimatorController = animCon[data.spriteType];
-        enemyName = data.name;
+        anim.runtimeAnimatorController = data.anim;
+        enemyName = data.enemyName;
         speed = data.speed;
         maxHealth = data.health;
         health = data.health;
         exp = data.exp;
         rigid.mass = data.mass;
         Positioning(data);
-        dropItemsId = data.dropItemsId;
-        dropProbability = data.dropProbability;
+        dropItems = data.dropItems;
         hpBar.GetComponent<RectTransform>().anchoredPosition = data.hpBarPos;
         hpBar.GetComponent<RectTransform>().sizeDelta = data.hpBarSize;
         hitTextPosXrange = data.hpBarSize.x / 4;
@@ -165,6 +162,11 @@ public class Enemy : MonoBehaviour
         }
         else if (collision.CompareTag("Skill"))
         {
+            if (GameManager.Instance.playerId == 0)
+            {
+                if (collision.GetComponent<Skill>().hitList.Contains(gameObject)) return;
+            }
+
             health -= collision.GetComponent<Skill>().damageRate * GameManager.Instance.playerDamage;
             HitDamageText(collision.GetComponent<Skill>().damageRate * GameManager.Instance.playerDamage);
         }
@@ -298,34 +300,33 @@ public class Enemy : MonoBehaviour
         
     }
 
-    void Positioning(SpawnData data)
+    void Positioning(EnemyData data)
     {
         shadow.gameObject.SetActive(true);
         shadowOrigin = data.shadowOrigin;
         shadowFlip = data.shadowFlip;
         shadow.localPosition = shadowOrigin;
-        shadow.localScale = new Vector3(data.shadowScale,data.shadowScale, data.shadowScale);
+        shadow.localScale = new Vector3(data.shadowScale, data.shadowScale, data.shadowScale);
 
         lookLeft = data.lookLeft;
-        
+
         coll.size = data.collSize;
         coll.offset = data.collPos;
     }
 
     void DropItem()
     {
-        if (dropItemsId.Length == 0)
-            return;
+        if (dropItems.Length == 0) return;
 
         float randValue = Random.value;
         float accumulatedValue = 0f;
         int selectedItemId = -1;
-        for (int i = 0;  i < dropItemsId.Length; i++)
+        for (int i = 0;  i < dropItems.Length; i++)
         {
-            accumulatedValue += dropProbability[i];
+            accumulatedValue += dropItems[i].probability;
             if (randValue < accumulatedValue)
             {
-                selectedItemId = dropItemsId[i];
+                selectedItemId = (int)dropItems[i].itemType;
                 break;
             }
         }

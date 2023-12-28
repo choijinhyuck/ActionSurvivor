@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class Projectile : MonoBehaviour
@@ -6,9 +7,10 @@ public class Projectile : MonoBehaviour
     public TrailRenderer trail;
     public LayerMask targetLayer;
     public float damage;
-    int pierceCount;
     int itemId;
+    int pierceCount;
     float speed;
+    
 
     Rigidbody2D rigid;
     

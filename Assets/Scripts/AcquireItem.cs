@@ -11,6 +11,7 @@ public class AcquireItem : MonoBehaviour
     Vector3 offset;
     float speed;
     float acquireRange;
+    bool invenFull;
 
 
     private void Awake()
@@ -23,7 +24,19 @@ public class AcquireItem : MonoBehaviour
 
     private void FixedUpdate()
     {
-
+        invenFull = true;
+        for (int i = 0; i < GameManager.Instance.maxInventory; i++)
+        {
+            if (GameManager.Instance.inventoryItemsId[i] == -1)
+            {
+                invenFull = false;
+                break;
+            }
+        }
+        if (!invenFull)
+        {
+            redundancies.Clear();
+        }
 
         targets = Physics2D.CircleCastAll(transform.position, scanRange, Vector2.up, 0.25f, targetLayer);
 

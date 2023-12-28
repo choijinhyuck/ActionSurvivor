@@ -235,7 +235,7 @@ public class GameManager : MonoBehaviour
 
         playerImmuneTime = .15f;
 
-        chargeCooltime = 4f;
+        chargeCooltime = 6f;
         chargeTime = 1f;
         dodgeTime = 2f;
         dodgeSpeed = 7f;

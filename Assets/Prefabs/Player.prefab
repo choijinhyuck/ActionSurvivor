@@ -91,6 +91,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damageRate: 1
+  hitList: []
 --- !u!1 &78346756638595038
 GameObject:
   m_ObjectHideFlags: 0
@@ -14964,153 +14965,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   spawnPoint: []
-  spawnData:
-  - name: Chicken
-    spriteType: 0
-    spawnTime: 3
-    health: 10
-    speed: 1
-    exp: 1
-    mass: 1
-    dropItemsId: 0c000000000000000300000006000000070000000800000009000000
-    dropProbability:
-    - 0.7
-    - 0.01
-    - 0.01
-    - 0.02
-    - 0.02
-    - 0.02
-    - 0.02
-    collPos: {x: 0, y: 0.34}
-    collSize: {x: 0.5, y: 0.5}
-    shadowScale: 0.655
-    shadowOrigin: {x: 0.009, y: 0.037}
-    shadowFlip: {x: 0.009, y: 0.037}
-    lookLeft: 1
-    hpBarPos: {x: 0, y: 91.3}
-    hpBarSize: {x: 63.69, y: 10}
-  - name: Bat
-    spriteType: 1
-    spawnTime: 3
-    health: 30
-    speed: 2
-    exp: 1
-    mass: 1
-    dropItemsId: 0c00000009000000
-    dropProbability:
-    - 0.5
-    - 0.01
-    collPos: {x: 0, y: 0.12}
-    collSize: {x: 0.23, y: 0.29}
-    shadowScale: 0.24
-    shadowOrigin: {x: 0.028, y: -0.029}
-    shadowFlip: {x: -0.02, y: -0.029}
-    lookLeft: 1
-    hpBarPos: {x: 0, y: 43.46}
-    hpBarSize: {x: 41.19, y: 8}
-  - name: Rhino
-    spriteType: 2
-    spawnTime: 3
-    health: 150
-    speed: 1.5
-    exp: 1
-    mass: 1
-    dropItemsId: 
-    dropProbability: []
-    collPos: {x: 0, y: 0.4}
-    collSize: {x: 0.97, y: 0.58}
-    shadowScale: 1
-    shadowOrigin: {x: 0.205, y: 0.042}
-    shadowFlip: {x: -0.212, y: 0.042}
-    lookLeft: 1
-    hpBarPos: {x: 0, y: 97.1}
-    hpBarSize: {x: 96.9, y: 10}
-  - name: BlueBird
-    spriteType: 3
-    spawnTime: 1
-    health: 150
-    speed: 1.5
-    exp: 1
-    mass: 1
-    dropItemsId: 
-    dropProbability: []
-    collPos: {x: 0, y: 0.33}
-    collSize: {x: 0.4, y: 0.5}
-    shadowScale: 0.4
-    shadowOrigin: {x: 0.037, y: -0.01}
-    shadowFlip: {x: -0.037, y: -0.01}
-    lookLeft: 1
-    hpBarPos: {x: 0, y: 68.8}
-    hpBarSize: {x: 52.4, y: 10}
-  - name: Snail
-    spriteType: 4
-    spawnTime: 1
-    health: 150
-    speed: 1.5
-    exp: 1
-    mass: 1
-    dropItemsId: 
-    dropProbability: []
-    collPos: {x: 0, y: 0.3}
-    collSize: {x: 0.64, y: 0.5}
-    shadowScale: 0.8
-    shadowOrigin: {x: 0.05, y: 0.004}
-    shadowFlip: {x: -0.05, y: 0.004}
-    lookLeft: 1
-    hpBarPos: {x: 0, y: 72.3}
-    hpBarSize: {x: 80, y: 10}
-  - name: Mushroom
-    spriteType: 5
-    spawnTime: 1
-    health: 150
-    speed: 1.5
-    exp: 1
-    mass: 1
-    dropItemsId: 0c0000000d0000000000000003000000060000000700000008000000090000000a000000
-    dropProbability:
-    - 0.6
-    - 0.1
-    - 0.015
-    - 0.015
-    - 0.03
-    - 0.03
-    - 0.03
-    - 0.02
-    - 0.01
-    collPos: {x: 0, y: 0.3}
-    collSize: {x: 0.64, y: 0.5}
-    shadowScale: 0.8
-    shadowOrigin: {x: 0, y: 0.029}
-    shadowFlip: {x: 0, y: 0.029}
-    lookLeft: 1
-    hpBarPos: {x: 0, y: 80.5}
-    hpBarSize: {x: 75, y: 10}
-  - name: Rock
-    spriteType: 6
-    spawnTime: 1
-    health: 150
-    speed: 1.5
-    exp: 1
-    mass: 1
-    dropItemsId: 0c0000000d0000000000000003000000060000000700000008000000090000000a000000
-    dropProbability:
-    - 0.6
-    - 0.1
-    - 0.015
-    - 0.015
-    - 0.03
-    - 0.03
-    - 0.03
-    - 0.02
-    - 0.01
-    collPos: {x: 0, y: 0.25}
-    collSize: {x: 0.55, y: 0.55}
-    shadowScale: 0.6
-    shadowOrigin: {x: 0, y: 0.018}
-    shadowFlip: {x: 0, y: 0.018}
-    lookLeft: 1
-    hpBarPos: {x: 0, y: 73.2}
-    hpBarSize: {x: 65, y: 10}
+  spawnData: []
   stage: {fileID: 0}
   RightUp: {fileID: 7415687105838511171}
   enemyParent: {fileID: 0}
@@ -20190,6 +20045,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damageRate: 2
+  hitList: []
 --- !u!114 &2102035778210782087
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -25296,6 +25152,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damageRate: 2
+  hitList: []
 --- !u!114 &4665693645010609161
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -25417,7 +25274,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a2d14980905b68d4db358b7b75135983, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damageRate: 1.3
+  damageRate: 1.5
+  hitList: []
 --- !u!1 &5972372787491421347
 GameObject:
   m_ObjectHideFlags: 0
@@ -25509,6 +25367,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damageRate: 1
+  hitList: []
 --- !u!1 &6706167564352726105
 GameObject:
   m_ObjectHideFlags: 0

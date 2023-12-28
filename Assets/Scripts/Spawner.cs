@@ -3,26 +3,19 @@ using UnityEngine;
 
 public class Spawner : MonoBehaviour
 {
-    public Transform[] spawnPoint;
-    public SpawnData[] spawnData;
     public StageData stage;
     public Transform RightUp;
     public Transform enemyParent;
-
+    public EnemyData[] enemyData;
 
     int wave;
     float[] timer;
-
-    private void Awake()
-    {
-        spawnPoint = GetComponentsInChildren<Transform>();
-    }
 
     private void Start()
     {
         stage = GameManager.Instance.stage.stageDataArr[GameManager.Instance.stageId];
         wave = 0;
-        timer = new float[stage.waveData[wave].mobArr.Length];
+        timer = new float[stage.waveData[wave].enemyInfos.Length];
     }
 
     private void Update()
@@ -32,23 +25,22 @@ public class Spawner : MonoBehaviour
         if (wave < stage.waveData.Length - 1 && GameManager.Instance.gameTime > stage.waveData[wave + 1].startTime)
         {
             wave++;
-            timer = new float[stage.waveData[wave].mobArr.Length];
+            timer = new float[stage.waveData[wave].enemyInfos.Length];
         }
 
-        // Wave별 Enemy spawn timer array 정의
-        //for (int i = 0; i < stage.waveData[wave].mobArr.Length; i++)
-        //{
-        //    timer[i] += Time.deltaTime;
-        //    if (timer[i] > spawnData[stage.waveData[wave].mobArr[i]].spawnTime)
-        //    {
-        //        timer[i] = 0;
+        for (int i = 0; i < stage.waveData[wave].enemyInfos.Length; i++)
+        {
+            timer[i] += Time.deltaTime;
+            if (timer[i] > stage.waveData[wave].enemyInfos[i].spawnTime)
+            {
+                timer[i] = 0;
 
-        //        for (int count = 0; count < spawnData[stage.waveData[wave].mobArr[i]].enemyCount; count++)
-        //        {
-        //            Spawn(stage.waveData[wave].mobArr[i]);
-        //        }
-        //    }
-        //}
+                for (int count = 0; count < stage.waveData[wave].enemyInfos[i].enemyCount; count++)
+                {
+                    Spawn((int)stage.waveData[wave].enemyInfos[i].enemyType);
+                }
+            }
+        }
     }
 
     void Spawn(int spawnIndex)
@@ -94,40 +86,7 @@ public class Spawner : MonoBehaviour
         float spawnY = RightUp.position.y - dY;
 
         enemy.transform.position = new Vector3(spawnX, spawnY, 0f);
-        enemy.GetComponent<Enemy>().Init(spawnData[spawnIndex]);
+        enemy.GetComponent<Enemy>().Init(enemyData[spawnIndex]);
     }
 
-}
-
-[System.Serializable]
-public class SpawnData
-{
-    [Header("# Spawn Info")]
-    public string name;
-    public int spriteType;
-    public float spawnTime;
-    public int health;
-    public float speed;
-    public int exp;
-    public int enemyCount = 1;
-    public float mass = 1;
-    // 아래 두 배열은 같은 인덱스를 공유해야함.
-    public int[] dropItemsId;
-    public float[] dropProbability;
-
-    [Header("# Collider Info")]
-    public Vector2 collPos;
-    public Vector2 collSize;
-
-    [Header("# Shadow Info")]
-    public float shadowScale;
-    public Vector2 shadowOrigin;
-    public Vector2 shadowFlip;
-
-    [Header("# Look Where")]
-    public bool lookLeft = true;
-
-    [Header("# UI")]
-    public Vector2 hpBarPos;
-    public Vector2 hpBarSize;
 }

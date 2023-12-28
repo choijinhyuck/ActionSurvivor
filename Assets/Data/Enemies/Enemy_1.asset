@@ -1,0 +1,33 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e98d9e62846565046b1b6b440c26e3b2, type: 3}
+  m_Name: Enemy_1
+  m_EditorClassIdentifier: 
+  enemyName: Bat
+  anim: {fileID: 9100000, guid: dd2a788db3d08d74fb87644630eff200, type: 2}
+  health: 5
+  speed: 10
+  exp: 1
+  mass: 1
+  dropItems:
+  - itemType: 12
+    probability: 0.7
+  - itemType: 9
+    probability: 0.02
+  collPos: {x: 0, y: 0.12}
+  collSize: {x: 0.23, y: 0.29}
+  shadowScale: 0.24
+  shadowOrigin: {x: 0.028, y: -0.029}
+  shadowFlip: {x: -0.02, y: -0.029}
+  lookLeft: 1
+  hpBarPos: {x: 0, y: 43.46}
+  hpBarSize: {x: 41.19, y: 8}
