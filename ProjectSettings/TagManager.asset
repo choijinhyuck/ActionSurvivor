@@ -11,6 +11,8 @@ TagManager:
   - Projectile
   - Bullet
   - DropItem
+  - Light
+  - VirtualCamera
   layers:
   - Default
   - TransparentFX

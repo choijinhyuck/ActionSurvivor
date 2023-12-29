@@ -318,7 +318,13 @@ public class Enemy : MonoBehaviour
     {
         if (dropItems.Length == 0) return;
 
-        float randValue = Random.value;
+        float totalProbability = 0f;
+        foreach (var dropItem in dropItems)
+        {
+            totalProbability += dropItem.probability;
+        }
+
+        float randValue = Random.Range(0,Mathf.Max(1f, totalProbability));
         float accumulatedValue = 0f;
         int selectedItemId = -1;
         for (int i = 0;  i < dropItems.Length; i++)

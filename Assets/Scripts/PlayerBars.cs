@@ -59,9 +59,19 @@ public class PlayerBars : MonoBehaviour
         dodgeBarRect.anchoredPosition = new Vector2(dodgeBarRect.anchoredPosition.x, dodgeBarPosY[GameManager.Instance.playerId]);
         if (!player.readyDodge)
         {
-            if (!dodgeBar.gameObject.activeSelf)
+            if (GameManager.Instance.health < .1f)
             {
-                dodgeBar.gameObject.SetActive(true);
+                if (dodgeBar.gameObject.activeSelf)
+                {
+                    dodgeBar.gameObject.SetActive(false);
+                }
+            }
+            else
+            {
+                if (!dodgeBar.gameObject.activeSelf)
+                {
+                    dodgeBar.gameObject.SetActive(true);
+                }
             }
 
             dodgeTimer += Time.deltaTime;

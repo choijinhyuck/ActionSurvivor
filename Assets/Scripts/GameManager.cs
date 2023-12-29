@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.Experimental.Rendering.Universal;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 
@@ -12,6 +13,9 @@ public class GameManager : MonoBehaviour
 
     [Header("# Input System")]
     public InputActionAsset actions;
+
+    [Header("# Camera")]
+    public int originPPU;
 
     [Header("# Game Control")]
     public StageManager stage;
@@ -155,6 +159,17 @@ public class GameManager : MonoBehaviour
     {
         GameStart();
     }
+
+    public void ZoomCamera(int targetPPU)
+    {
+        Camera.main.transform.GetComponent<PixelPerfectCamera>().assetsPPU = targetPPU;
+    }
+
+    public void ZoomCamera()
+    {
+        Camera.main.transform.GetComponent<PixelPerfectCamera>().assetsPPU = originPPU;
+    }
+
 
     private void Update()
     {

@@ -1,6 +1,10 @@
+using Cinemachine;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.Experimental.Rendering.Universal;
 using UnityEngine.InputSystem;
+using UnityEngine.Rendering.Universal;
+using UnityEngine.UIElements;
 
 public class Player : MonoBehaviour
 {
@@ -19,14 +23,13 @@ public class Player : MonoBehaviour
     public GameObject rangeArrow;
     public GameObject rightBash;
     public GameObject leftBash;
-
+    public Animator anim;
 
     InputAction moveAction;
     InputAction fireAction;
     InputAction dodgeAction;
     InputAction rangeWeaponAction;
     Rigidbody2D rigid;
-    Animator anim;
     SpriteRenderer spriteRenderer;
     WaitForSeconds waitSec;
     WaitForFixedUpdate waitFix;
@@ -137,7 +140,7 @@ public class Player : MonoBehaviour
 
     private void OnCollisionStay2D(Collision2D collision)
     {
-        if (!GameManager.Instance.isLive || isHit || isDodge) return;
+        if (!GameManager.Instance.isLive || isHit || isDodge || GameManager.Instance.health < 0.1f) return;
         // 피해면역인 상태면?
         if (isImmune) return;
 
@@ -155,14 +158,49 @@ public class Player : MonoBehaviour
 
         if (GameManager.Instance.health < 0.1f)
         {
-            for (int i = 2; i < transform.childCount; i++)
-            {
-                transform.GetChild(i).gameObject.SetActive(false);
-            }
+            //for (int i = 2; i < transform.childCount; i++)
+            //{
+            //    transform.GetChild(i).gameObject.SetActive(false);
+            //}
 
-            anim.SetTrigger("Dead");
-            GameManager.Instance.GameOver();
+            //Time.timeScale = .5f;
+            //anim.SetTrigger("Dead");
+
+            StartCoroutine(DeadCoroutine());
+
+            //GameManager.Instance.GameOver();
         }
+    }
+
+    IEnumerator DeadCoroutine()
+    {
+        var transposer = GameObject.FindGameObjectWithTag("VirtualCamera").GetComponent<CinemachineVirtualCamera>().GetCinemachineComponent<CinemachineTransposer>();
+        transposer.m_XDamping = 0f;
+        transposer.m_YDamping = 0f;
+
+        int targetPPU = 80;
+        float timer = 0f;
+        Time.timeScale = 0f;
+
+        GameObject.FindGameObjectWithTag("Light").GetComponent<Light2D>().color = Color.white;
+
+        while (timer < 1.5f)
+        {
+            GameManager.Instance.ZoomCamera(GameManager.Instance.originPPU + Mathf.FloorToInt((targetPPU - GameManager.Instance.originPPU) * timer / 2));
+            yield return null;
+            timer += Time.unscaledDeltaTime;
+        }
+
+        Time.timeScale = 1f;
+        anim.SetTrigger("Dead");
+
+        transposer.m_XDamping = 1f;
+        transposer.m_YDamping = 1f;
+    }
+
+    public void DeadEnd()
+    {
+        GameManager.Instance.GameOver();
     }
 
     // 넉백이 완료되고 나서도 일정시간 무적 부여
