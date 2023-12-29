@@ -24,6 +24,8 @@ public class AcquireItem : MonoBehaviour
 
     private void FixedUpdate()
     {
+        if (GameManager.Instance.health < .1f) return;
+
         invenFull = true;
         for (int i = 0; i < GameManager.Instance.maxInventory; i++)
         {

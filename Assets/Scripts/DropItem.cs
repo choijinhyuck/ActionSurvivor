@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.InteropServices.WindowsRuntime;
 using UnityEngine;
 
 public class DropItem : MonoBehaviour
@@ -16,6 +17,7 @@ public class DropItem : MonoBehaviour
 
     Vector3 shadowOriginLocalPos;
     Vector3 shadowOriginLocalScale;
+    Vector3 originScale;
     WaitForFixedUpdate waitFix;
 
 
@@ -26,6 +28,7 @@ public class DropItem : MonoBehaviour
         shadowScale = 2;
         shadowOriginLocalPos = shadow.localPosition;
         shadowOriginLocalScale = shadow.localScale;
+        originScale = transform.localScale;
         waitFix = new WaitForFixedUpdate();
     }
 
@@ -33,6 +36,7 @@ public class DropItem : MonoBehaviour
     {
         shadow.localScale = shadowOriginLocalScale;
         shadow.localPosition = shadowOriginLocalPos;
+        transform.localScale = originScale;
         deltaY = targetY;
         accumulatedDelta = 0f;
         isDropping = true;
@@ -85,7 +89,6 @@ public class DropItem : MonoBehaviour
     IEnumerator Dropping()
     {
         isDropping = true;
-        var originScale = transform.localScale;
         var originPos = transform.position;
         Vector3 deltaPos = new Vector3(0f, 2f, 0f);
         transform.localScale = Vector3.zero;
@@ -116,5 +119,33 @@ public class DropItem : MonoBehaviour
         }
         isDropping = false;
         transform.localScale = originScale;
+    }
+
+    public void Scatter()
+    {
+
+        StartCoroutine(ScatterCoroutine());
+    }
+
+    IEnumerator ScatterCoroutine()
+    {
+        float destX = Random.Range(0.5f, 2f);
+        float destY = Random.Range(0.5f, 1.5f);
+        int signX = Random.Range(0, 2);
+        int signY = Random.Range(0, 2);
+
+        destX = signX == 0 ? destX : -destX;
+        destY = signY == 0 ? destY : -destY;
+
+        Vector3 destPos = new Vector3(destX, destY, 0f);
+
+        float timer = 0f;
+
+        while (timer < .1f)
+        {
+            yield return null;
+            transform.localPosition += destPos * Time.unscaledDeltaTime / .1f;
+            timer += Time.unscaledDeltaTime;
+        }
     }
 }

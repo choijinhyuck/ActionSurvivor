@@ -22,7 +22,7 @@ MonoBehaviour:
       enemyCount: 1
       spawnTime: 3
     - enemyType: 1
-      enemyCount: 10
+      enemyCount: 5
       spawnTime: 59.8
   - startTime: 60
     enemyInfos:
@@ -30,7 +30,7 @@ MonoBehaviour:
       enemyCount: 1
       spawnTime: 2
     - enemyType: 1
-      enemyCount: 15
+      enemyCount: 8
       spawnTime: 59.8
   - startTime: 120
     enemyInfos:
@@ -38,7 +38,7 @@ MonoBehaviour:
       enemyCount: 1
       spawnTime: 2
     - enemyType: 1
-      enemyCount: 15
+      enemyCount: 11
       spawnTime: 59.8
     - enemyType: 2
       enemyCount: 1
@@ -49,7 +49,7 @@ MonoBehaviour:
       enemyCount: 1
       spawnTime: 4
     - enemyType: 1
-      enemyCount: 15
+      enemyCount: 13
       spawnTime: 59.8
     - enemyType: 2
       enemyCount: 2

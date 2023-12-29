@@ -15,7 +15,7 @@ MonoBehaviour:
   enemyName: Snail
   anim: {fileID: 9100000, guid: 84a8c58ffb8e8084da177f22c63cf426, type: 2}
   health: 15
-  speed: 6
+  speed: 5
   exp: 2
   mass: 2
   dropItems:

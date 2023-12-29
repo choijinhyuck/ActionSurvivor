@@ -13,13 +13,24 @@ public class Spawner : MonoBehaviour
 
     private void Start()
     {
-        stage = GameManager.Instance.stage.stageDataArr[GameManager.Instance.stageId];
-        wave = 0;
-        timer = new float[stage.waveData[wave].enemyInfos.Length];
+        if (GameManager.Instance.stageId == -1)
+        {
+            stage = null;
+            wave = -1;
+            timer = new float[] { };
+        }
+        else
+        {
+            stage = GameManager.Instance.stage.stageDataArr[GameManager.Instance.stageId];
+            wave = 0;
+            timer = new float[stage.waveData[wave].enemyInfos.Length];
+
+        }
     }
 
     private void Update()
     {
+        if (GameManager.Instance.stageId == -1) return;
         if (!GameManager.Instance.isLive) return;
 
         if (wave < stage.waveData.Length - 1 && GameManager.Instance.gameTime > stage.waveData[wave + 1].startTime)

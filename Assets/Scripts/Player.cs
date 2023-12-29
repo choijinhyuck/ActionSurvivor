@@ -1,5 +1,6 @@
 using Cinemachine;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Experimental.Rendering.Universal;
 using UnityEngine.InputSystem;
@@ -178,7 +179,7 @@ public class Player : MonoBehaviour
         transposer.m_XDamping = 0f;
         transposer.m_YDamping = 0f;
 
-        int targetPPU = 80;
+        int targetPPU = 66;
         float timer = 0f;
         Time.timeScale = 0f;
 
@@ -200,8 +201,81 @@ public class Player : MonoBehaviour
 
     public void DeadEnd()
     {
+        StartCoroutine(DeadEndCoroutine());
+    }
+    
+    IEnumerator DeadEndCoroutine()
+    {
+        List<int> itemList = new List<int>();
+
+        for (int i = 0; i < GameManager.Instance.inventoryItemsId.Length; i++)
+        {
+            if (GameManager.Instance.inventoryItemsId[i] != -1)
+            {
+                itemList.Add(GameManager.Instance.inventoryItemsId[i]);
+                GameManager.Instance.inventoryItemsId[i] = -1;
+            }
+        }
+        if (GameManager.Instance.mainWeaponItem[GameManager.Instance.playerId] != -1)
+        {
+            itemList.Add(GameManager.Instance.mainWeaponItem[GameManager.Instance.playerId]);
+            GameManager.Instance.mainWeaponItem[GameManager.Instance.playerId] = -1;
+        }
+        if (GameManager.Instance.mainWeaponItem[GameManager.Instance.playerId] != -1)
+        {
+            itemList.Add(GameManager.Instance.necklaceItem[GameManager.Instance.playerId]);
+            GameManager.Instance.necklaceItem[GameManager.Instance.playerId] = -1;
+        }
+        if (GameManager.Instance.mainWeaponItem[GameManager.Instance.playerId] != -1)
+        {
+            itemList.Add(GameManager.Instance.shoesItem[GameManager.Instance.playerId]);
+            GameManager.Instance.shoesItem[GameManager.Instance.playerId] = -1;
+        }
+        if (GameManager.Instance.rangeWeaponItem != -1)
+        {
+            itemList.Add(GameManager.Instance.rangeWeaponItem);
+            GameManager.Instance.rangeWeaponItem = -1;
+        }
+        if (GameManager.Instance.magicItem != -1)
+        {
+            itemList.Add(GameManager.Instance.magicItem);
+            GameManager.Instance.magicItem = -1;
+        }
+
+        if (itemList.Count == 0)
+        {
+            GameManager.Instance.GameOver();
+            yield break;
+        }
+
+        yield return new WaitForSecondsRealtime(0.3f);
+        foreach (var itemId in itemList)
+        {
+            int prefabId = -1;
+            for (int i = 0; i < GameManager.Instance.pool.prefabs.Length; i++)
+            {
+                if (GameManager.Instance.pool.prefabs[i] == ItemManager.Instance.itemDataArr[itemId].dropItem)
+                {
+                    prefabId = i;
+                    break;
+                }
+            }
+            if (prefabId == -1)
+            {
+                Debug.Log($"드랍 아이템에 해당하는 PrefabId를 Pool에서 찾을 수 없습니다. itemId: {itemId} ");
+                continue;
+            }
+
+            GameObject selectedItem = GameManager.Instance.pool.Get(prefabId);
+            selectedItem.transform.parent = GameManager.Instance.pool.dropItemsPool;
+            selectedItem.transform.position = transform.position;
+            selectedItem.GetComponent<DropItem>().itemId = itemId;
+            selectedItem.GetComponent<DropItem>().Scatter();
+        }
+        yield return new WaitForSecondsRealtime(0.3f);
         GameManager.Instance.GameOver();
     }
+
 
     // 넉백이 완료되고 나서도 일정시간 무적 부여
     IEnumerator KnockBack(int force)

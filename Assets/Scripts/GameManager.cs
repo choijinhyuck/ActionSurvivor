@@ -77,7 +77,6 @@ public class GameManager : MonoBehaviour
     public Player player;
     public Result uiResult;
 
-    GameObject enemyCleaner;
     InputAction inventoryAction;
     InputAction menuAction;
     InputAction cancelAction;
@@ -178,11 +177,11 @@ public class GameManager : MonoBehaviour
 
         gameTime += Time.deltaTime;
 
-        if (gameTime > maxGameTime)
-        {
-            gameTime = maxGameTime;
-            GameVictory();
-        }
+        //if (gameTime > maxGameTime)
+        //{
+        //    gameTime = maxGameTime;
+        //    GameVictory();
+        //}
     }
 
     public void StatusUpdate()
@@ -243,10 +242,18 @@ public class GameManager : MonoBehaviour
         }
     }
 
+
     public void GameStart()
     {
         gameTime = 0;
-        maxGameTime = stage.stageDataArr[stageId].gameTime;
+        if (stageId == -1)
+        {
+            maxGameTime = 0f;
+        }
+        else
+        {
+            maxGameTime = stage.stageDataArr[stageId].gameTime;
+        }
 
         playerImmuneTime = .15f;
 
@@ -301,9 +308,7 @@ public class GameManager : MonoBehaviour
 
     IEnumerator GameVictoryRoutine()
     {
-        enemyCleaner = GameObject.FindObjectsByType<EnemyCleaner>(FindObjectsInactive.Include, FindObjectsSortMode.None)[0].gameObject;
         isLive = false;
-        enemyCleaner.SetActive(true);
         yield return new WaitForSeconds(0.5f);
         uiResult.gameObject.SetActive(true);
         uiResult.Win();
