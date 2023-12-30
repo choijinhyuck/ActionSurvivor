@@ -13,6 +13,7 @@ TagManager:
   - DropItem
   - Light
   - VirtualCamera
+  - Lock
   layers:
   - Default
   - TransparentFX

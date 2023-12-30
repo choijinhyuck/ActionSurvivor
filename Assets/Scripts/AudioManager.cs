@@ -6,10 +6,15 @@ public class AudioManager : MonoBehaviour
     public static AudioManager instance;
 
     [Header("#BGM")]
-    public AudioClip bgmClip;
+    public AudioClip[] bgmClip;
     public float bgmVolume;
     AudioSource bgmPlayer;
     AudioHighPassFilter bgmEffect;
+
+    public enum Bgm
+    {
+        Camp, Stage0, Stage1, Stage2
+    }
 
     [Header("#SFC")]
     public AudioClip[] sfxClip;
@@ -48,7 +53,7 @@ public class AudioManager : MonoBehaviour
         bgmPlayer.playOnAwake = false;
         bgmPlayer.loop = true;
         bgmPlayer.volume = bgmVolume;
-        bgmPlayer.clip = bgmClip;
+        bgmPlayer.clip = null;
         bgmEffect = Camera.main.GetComponent<AudioHighPassFilter>();
 
         //효과음 플레이어 초기화
@@ -76,6 +81,11 @@ public class AudioManager : MonoBehaviour
         {
             bgmPlayer.Stop();
         }
+    }
+    public void changeBGM(Bgm bgmType, float bgmVol)
+    {
+        bgmPlayer.clip = bgmClip[(int)bgmType];
+        bgmPlayer.volume = bgmVol;
     }
     
     public void PauseBGM(bool pause)

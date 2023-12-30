@@ -56,6 +56,15 @@ public class PlayerBars : MonoBehaviour
 
     void UpdateDodgeBar()
     {
+        if (!GameManager.Instance.isLive)
+        {
+            if (dodgeBar.gameObject.activeSelf)
+            {
+                dodgeBar.gameObject.SetActive(false);
+            }
+            return;
+        }
+
         dodgeBarRect.anchoredPosition = new Vector2(dodgeBarRect.anchoredPosition.x, dodgeBarPosY[GameManager.Instance.playerId]);
         if (!player.readyDodge)
         {
@@ -94,6 +103,15 @@ public class PlayerBars : MonoBehaviour
 
     void UpdateChargeBar()
     {
+        if (!GameManager.Instance.isLive)
+        {
+            if (chargeRect.gameObject.activeSelf)
+            {
+                chargeRect.gameObject.SetActive(false);
+            }
+            return;
+        }
+
         chargeRect.anchoredPosition = new Vector2(chargeRect.anchoredPosition.x, chargePosY[GameManager.Instance.playerId]);
         if (player.isCharging)
         {

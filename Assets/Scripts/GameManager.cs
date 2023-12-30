@@ -60,8 +60,7 @@ public class GameManager : MonoBehaviour
     public int gold;
     public int maxInventory;
     public int[] inventoryItemsId;
-    public int storedGold;
-    public List<int> storedItemsId;
+    public int[] storedItemsId;
 
     [Header("# Equipment ")]
     // -1 ÀÌ¸é ¹«ÀåÂø
@@ -110,8 +109,11 @@ public class GameManager : MonoBehaviour
             inventoryItemsId[i] = -1;
         }
 
-        storedGold = 0;
-        storedItemsId = new List<int>();
+        storedItemsId = new int[24];
+        for (int i = 0; i <  storedItemsId.Length; i++)
+        {
+            storedItemsId[i] = -1;
+        }
 
         mainWeaponItem = new int[playerBasicDamage.Length];
         necklaceItem = new int[playerBasicDamage.Length];
@@ -135,10 +137,12 @@ public class GameManager : MonoBehaviour
         inventoryAction.performed += _ => OnInventory();
         menuAction.performed += _ => inventoryUI.OnMenu();
         cancelAction.performed += _ => inventoryUI.OnCancel();
+        cancelAction.performed += _ => StorageCancel();
         equipAction.performed += _ => inventoryUI.EquipUnequip();
         destroyAction.performed += _ => inventoryUI.DestroyItem();
 
     }
+
 
     private void OnEnable()
     {
@@ -156,6 +160,16 @@ public class GameManager : MonoBehaviour
 
     void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
+        switch (scene.name)
+        {
+            case "Camp":
+                player.transform.position = new Vector3(0, -3, 0);
+                AudioManager.instance.changeBGM(AudioManager.Bgm.Camp, 0.3f);
+                break;
+            default:
+                AudioManager.instance.changeBGM(AudioManager.Bgm.Stage0, 0.5f);
+                break;
+        }
         GameStart();
     }
 
@@ -242,6 +256,12 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    void StorageCancel()
+    {
+        StorageUI storageUI = GameObject.FindAnyObjectByType<StorageUI>(FindObjectsInactive.Include);
+        storageUI.OnCancel();
+    }
+
 
     public void GameStart()
     {
@@ -280,8 +300,6 @@ public class GameManager : MonoBehaviour
         Resume();
 
         AudioManager.instance.PlayBgm(true);
-        AudioManager.instance.PlaySfx(AudioManager.Sfx.Select);
-
     }
 
     public void GameOver()
