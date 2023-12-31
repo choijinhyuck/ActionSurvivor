@@ -5,7 +5,8 @@ using UnityEngine.UI;
 
 public class InventoryControlHelp : MonoBehaviour
 {
-    public enum ActionType { Empty, Equip, UnEquip, Pressed, Destroy, Use, FullMsg, FullHeart, NotEquippable, WrongPosition, WrongItem }
+    public enum ActionType { Empty, Equip, UnEquip, Pressed, Destroy, Use, FullMsg, FullHeart, NotEquippable, WrongPosition, WrongItem, 
+                             ToStorage, ToInventory, ToFullStorageMsg, ToFullInventory, Unlock, NotEnoughMoney}
 
     public GameObject message;
     public GameObject changeSlot;
@@ -131,6 +132,35 @@ public class InventoryControlHelp : MonoBehaviour
                 if (showMessage) StopCoroutine(messageCoroutine);
                 messageCoroutine = StartCoroutine(Message(ActionType.WrongItem));
                 break;
+
+            case ActionType.ToFullStorageMsg:
+                if (showMessage) StopCoroutine(messageCoroutine);
+                messageCoroutine = StartCoroutine(Message(ActionType.ToFullStorageMsg));
+                break;
+
+            case ActionType.ToFullInventory:
+                if (showMessage) StopCoroutine(messageCoroutine);
+                messageCoroutine = StartCoroutine(Message(ActionType.ToFullInventory));
+                break;
+
+            case ActionType.NotEnoughMoney:
+                if (showMessage) StopCoroutine(messageCoroutine);
+                messageCoroutine = StartCoroutine(Message(ActionType.NotEnoughMoney));
+                break;
+
+            case ActionType.ToStorage:
+                equipUse.GetComponentInChildren<Text>().text = "보관";
+                Filter(new List<GameObject> { close, select, equipUse, destroy });
+                break;
+
+            case ActionType.ToInventory:
+                equipUse.GetComponentInChildren<Text>().text = "찾기";
+                Filter(new List<GameObject> { close, select, equipUse, destroy });
+                break;
+
+            case ActionType.Unlock:
+                Filter(new List<GameObject> { close, select });
+                break;
         }
     }
 
@@ -179,6 +209,23 @@ public class InventoryControlHelp : MonoBehaviour
                 message.GetComponent<Text>().text = "착용할 수 없는 장비입니다.";
                 break;
 
+            case ActionType.ToFullInventory:
+                if (!message.activeSelf) message.SetActive(true);
+                message.GetComponent<Text>().text = "인벤토리 공간이 부족합니다.";
+                AudioManager.instance.PlaySfx(AudioManager.Sfx.Fail);
+                break;
+
+            case ActionType.ToFullStorageMsg:
+                if (!message.activeSelf) message.SetActive(true);
+                message.GetComponent<Text>().text = "창고 공간이 부족합니다.";
+                AudioManager.instance.PlaySfx(AudioManager.Sfx.Fail);
+                break;
+
+            case ActionType.NotEnoughMoney:
+                if (!message.activeSelf) message.SetActive(true);
+                message.GetComponent<Text>().text = "소지금이 부족합니다.";
+                AudioManager.instance.PlaySfx(AudioManager.Sfx.Fail);
+                break;
 
             default:
                 Debug.Log("Message에 잘못된 접근");

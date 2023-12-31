@@ -6,6 +6,9 @@ using UnityEngine.UI;
 
 public class StorageChest : MonoBehaviour
 {
+    public enum ActionType { Open, Inventory }
+
+    public StorageUI storageUI;
     public LayerMask playerLayer;
     public Sprite[] equipSprites;
 
@@ -13,18 +16,34 @@ public class StorageChest : MonoBehaviour
     Image buttonImage;
 
     InputAction openAction;
+    InputAction inventoryAction;
+    InputAction cancelAction;
+    InputAction menuAction;
+    InputAction destroyAction;
+    InputAction equipAction;
     bool isNear;
 
     private void Start()
     {
         isNear = false;
         openAction = GameManager.Instance.actions.FindActionMap("UI").FindAction("OpenChest");
-        openAction.performed += _ => Open();
+        inventoryAction = GameManager.Instance.actions.FindActionMap("UI").FindAction("Inventory");
+        cancelAction = GameManager.Instance.actions.FindActionMap("UI").FindAction("Cancel");
+        menuAction = GameManager.Instance.actions.FindActionMap("UI").FindAction("Menu");
+        destroyAction = GameManager.Instance.actions.FindActionMap("UI").FindAction("Destroy");
+        equipAction = GameManager.Instance.actions.FindActionMap("UI").FindAction("Equip");
+
+        openAction.performed += _ => Open(ActionType.Open);
+        inventoryAction.performed += _ => Open(ActionType.Inventory);
+        cancelAction.performed += _ => storageUI.OnCancel();
+        menuAction.performed += _ => storageUI.OnMenu();
+        destroyAction.performed += _ => storageUI.DestroyItem();
+        equipAction.performed += _ => storageUI.OnStore();
     }
 
     private void FixedUpdate()
     {
-        RaycastHit2D hit = Physics2D.CircleCast(transform.position, .5f, Vector2.zero, 0, playerLayer);
+        RaycastHit2D hit = Physics2D.CircleCast(transform.position, 1f, Vector2.up, .5f, playerLayer);
 
         if (hit.collider is null)
         {
@@ -50,10 +69,33 @@ public class StorageChest : MonoBehaviour
 
     }
 
-    void Open()
+    public void Open(ActionType actionType)
     {
         if (!isNear) return;
 
-        
+        switch (actionType)
+        {
+            case ActionType.Open:
+                if (!GameManager.Instance.workingInventory)
+                {
+                    AudioManager.instance.EffectBgm(true);
+                    GameManager.Instance.workingInventory = true;
+                    storageUI.gameObject.SetActive(true);
+                    GameManager.Instance.Stop();
+                }
+                break;
+
+            case ActionType.Inventory:
+                if (!storageUI.gameObject.activeSelf) return;
+                if (GameManager.Instance.workingInventory)
+                {
+                    AudioManager.instance.EffectBgm(false);
+                    GameManager.Instance.workingInventory = false;
+                    storageUI.gameObject.SetActive(false);
+                    storageUI.destroyDesc.transform.parent.gameObject.SetActive(false);
+                    GameManager.Instance.Resume();
+                }
+                break;
+        }
     }
 }

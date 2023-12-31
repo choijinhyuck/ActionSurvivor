@@ -137,7 +137,6 @@ public class GameManager : MonoBehaviour
         inventoryAction.performed += _ => OnInventory();
         menuAction.performed += _ => inventoryUI.OnMenu();
         cancelAction.performed += _ => inventoryUI.OnCancel();
-        cancelAction.performed += _ => StorageCancel();
         equipAction.performed += _ => inventoryUI.EquipUnequip();
         destroyAction.performed += _ => inventoryUI.DestroyItem();
 
@@ -238,6 +237,7 @@ public class GameManager : MonoBehaviour
 
         if (workingInventory)
         {
+            if (!inventoryUI.gameObject.activeSelf) return;
             //AudioManager.instance.PlaySfx(AudioManager.Sfx.Select);
             AudioManager.instance.EffectBgm(false);
             workingInventory = false;
@@ -254,12 +254,6 @@ public class GameManager : MonoBehaviour
             Stop();
 
         }
-    }
-
-    void StorageCancel()
-    {
-        StorageUI storageUI = GameObject.FindAnyObjectByType<StorageUI>(FindObjectsInactive.Include);
-        storageUI.OnCancel();
     }
 
 

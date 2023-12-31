@@ -293,6 +293,7 @@ public class InventoryUI : MonoBehaviour
 
     public void DestroyItem()
     {
+        if (!gameObject.activeSelf) return;
         if (isPressed) return;
         if (!GameManager.Instance.workingInventory) return;
         if (selectedId > 23) return;
@@ -937,6 +938,8 @@ public class InventoryUI : MonoBehaviour
     // 인벤토리 창에서 아무 버튼도 선택되지 않은 경우에 Menu키 (키보드: Esc, 게임패드: Start)로 빠져나올 수 있도록.
     public void OnMenu()
     {
+        if (!gameObject.activeSelf) return;
+
         if (GameManager.Instance.workingInventory)
         {
             if (!isPressed)
@@ -963,6 +966,8 @@ public class InventoryUI : MonoBehaviour
 
     public void OnCancel()
     {
+        if (!gameObject.activeSelf) return;
+
         if (GameManager.Instance.workingInventory)
         {
             if (isPressed)
@@ -981,7 +986,7 @@ public class InventoryUI : MonoBehaviour
             }
             else
             {
-                GameManager.Instance.OnInventory();
+                //GameManager.Instance.OnInventory();
             }
         }
     }
@@ -1001,6 +1006,7 @@ public class InventoryUI : MonoBehaviour
 
     public void EquipUnequip()
     {
+        if (!gameObject.activeSelf) return;
         if (!GameManager.Instance.workingInventory) return;
         if (isPressed) return;
         if (selectedId < 24)

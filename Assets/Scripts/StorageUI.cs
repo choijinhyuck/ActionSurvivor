@@ -16,12 +16,16 @@ public class StorageUI : MonoBehaviour
     public Button confirmNo;
     public InventoryControlHelp help;
 
+    [SerializeField]
+    StorageChest storageChest;
+
     List<Button> buttons;
     List<Canvas> canvases;
     List<Image> itemImages;
     GameObject currentSelect;
     bool isDestroying;
     bool isPressed;
+    bool isUnlocking;
     int pressedId;
     int selectedId;
     GameObject selectedObjectOnDestroy;
@@ -30,7 +34,6 @@ public class StorageUI : MonoBehaviour
     Color halfAlpha;
     Color grayColor;
     Color greenColor;
-    Color redColor;
 
     private void Awake()
     {
@@ -42,7 +45,6 @@ public class StorageUI : MonoBehaviour
         halfAlpha = new Color(1f, 1f, 1f, .5f);
         grayColor = new Color(.7f, .7f, .7f, 1f);
         greenColor = new Color(.6f, 1f, .6f, 1f);
-        redColor = new Color(1f, .4f, .4f, 1f);
 
         // buttons 0-23: Inventory, 24-47: Storage, 48-49: Lock
         for (int i = 0; i < buttons.Count; i++)
@@ -68,6 +70,7 @@ public class StorageUI : MonoBehaviour
     void OnEnable()
     {
         isDestroying = false;
+        isUnlocking = false;
 
         if (destroyDesc.transform.parent.gameObject.activeSelf)
         {
@@ -79,10 +82,43 @@ public class StorageUI : MonoBehaviour
             selectedId = pressedId;
         }
 
-        Debug.Log(GameManager.Instance.maxInventory);
         for (int i = 0; i < GameManager.Instance.maxInventory; i++)
         {
             buttons[i].gameObject.SetActive(true);
+        }
+        switch (GameManager.Instance.maxInventory)
+        {
+            case 8:
+                buttons[48].gameObject.SetActive(true);
+                buttons[48].interactable = true;
+                buttons[49].gameObject.SetActive(true);
+                buttons[49].interactable = false;
+                break;
+
+            case 16:
+                buttons[48].gameObject.SetActive(false);
+                buttons[49].gameObject.SetActive(true);
+                buttons[49].interactable = true;
+                int[] targetInts = new int[] {0, 1};
+                foreach (int targetInt in targetInts)
+                {
+                    Navigation navigation = buttons[targetInt].navigation;
+                    navigation.mode = Navigation.Mode.Automatic;
+                    buttons[targetInt].navigation = navigation;
+                }
+                break;
+
+            case 24:
+                buttons[48].gameObject.SetActive(false);
+                buttons[49].gameObject.SetActive(false);
+                targetInts = new int[] { 0, 1, 8, 9};
+                foreach (int targetInt in targetInts)
+                {
+                    Navigation navigation = buttons[targetInt].navigation;
+                    navigation.mode = Navigation.Mode.Automatic;
+                    buttons[targetInt].navigation = navigation;
+                }
+                break;
         }
 
         ChangeAlpha(originAlpha);
@@ -119,8 +155,6 @@ public class StorageUI : MonoBehaviour
             AudioManager.instance.PlaySfx(AudioManager.Sfx.ButtonChange);
         }
 
-        Debug.Log(selectedId);
-        Debug.Log(buttons[selectedId].gameObject.name);
 
         currentSelect.GetComponentInParent<Canvas>().sortingOrder = 2;
         currentSelect = EventSystem.current.currentSelectedGameObject;
@@ -175,56 +209,192 @@ public class StorageUI : MonoBehaviour
         {
             help.Show(InventoryControlHelp.ActionType.Pressed);
         }
-        else if (selectedId > 23)
+        else if (selectedId > 47)
         {
-
+            help.Show(InventoryControlHelp.ActionType.Unlock);
         }
         else
         {
-            int itemId = GameManager.Instance.inventoryItemsId[selectedId];
+            int itemId;
+            if (selectedId < 24)
+            {
+                itemId = GameManager.Instance.inventoryItemsId[selectedId];
+
+                if (itemId != -1)
+                {
+                    help.Show(InventoryControlHelp.ActionType.ToStorage);
+                }
+            }
+            else
+            {
+                itemId = GameManager.Instance.storedItemsId[selectedId % 24];
+
+                if (itemId != -1)
+                {
+                    help.Show(InventoryControlHelp.ActionType.ToInventory);
+                }
+            }
+
             if (itemId == -1)
             {
                 help.Show(InventoryControlHelp.ActionType.Empty);
             }
-            else
-            {
-                switch (ItemManager.Instance.itemDataArr[itemId].itemType)
-                {
-                    case ItemData.ItemType.Potion:
-                        help.Show(InventoryControlHelp.ActionType.Use);
-                        break;
+        }
+    }
 
-                    default:
-                        help.Show(InventoryControlHelp.ActionType.Equip);
-                        break;
+
+    public void OnStore()
+    {
+        if (!gameObject.activeSelf) return;
+        if (isPressed) return;
+        if (isDestroying) return;
+        if (!GameManager.Instance.workingInventory) return;
+        if (selectedId > 47) return;
+        if (selectedId < 24)
+        {
+            if (GameManager.Instance.inventoryItemsId[selectedId] == -1) return;
+        }
+        else
+        {
+            if (GameManager.Instance.storedItemsId[selectedId % 24] == -1) return;
+        }
+
+        if (selectedId < 24)
+        {
+            bool isEmpty = false;
+            for (int i = 0; i < GameManager.Instance.storedItemsId.Length; i++)
+            {
+                if (GameManager.Instance.storedItemsId[i] == -1)
+                {
+                    GameManager.Instance.storedItemsId[i] = GameManager.Instance.inventoryItemsId[selectedId];
+                    GameManager.Instance.inventoryItemsId[selectedId] = -1;
+                    AudioManager.instance.PlaySfx(AudioManager.Sfx.Equip);
+                    isEmpty = true;
+                    break;
                 }
             }
+            Debug.Log(isEmpty);
+            if (!isEmpty)
+            {
+                Debug.Log("full");
+                help.Show(InventoryControlHelp.ActionType.ToFullStorageMsg);
+            }
+
+        }
+        else
+        {
+            bool isEmpty = false;
+            for (int i = 0; i < GameManager.Instance.maxInventory; i++)
+            {
+                if (GameManager.Instance.inventoryItemsId[i] == -1)
+                {
+                    GameManager.Instance.inventoryItemsId[i] = GameManager.Instance.storedItemsId[selectedId % 24];
+                    GameManager.Instance.storedItemsId[selectedId % 24] = -1;
+                    AudioManager.instance.PlaySfx(AudioManager.Sfx.Equip);
+                    isEmpty = true;
+                    break;
+                }
+            }
+            Debug.Log(isEmpty);
+            if (!isEmpty)
+            {
+                Debug.Log("full");
+                help.Show(InventoryControlHelp.ActionType.ToFullInventory);
+            }
+
         }
     }
 
     public void DestroyItem()
     {
+        if (!gameObject.activeSelf) return;
         if (isPressed) return;
+        if (isUnlocking) return;
         if (!GameManager.Instance.workingInventory) return;
         if (selectedId > 47) return;
-        if (GameManager.Instance.inventoryItemsId[selectedId] == -1) return;
+        if (selectedId < 24)
+        {
+            if (GameManager.Instance.inventoryItemsId[selectedId] == -1) return;
+        }
+        else
+        {
+            if(GameManager.Instance.storedItemsId[selectedId % 24] == -1) return;
+        }
+
         // 위 조건에 해당되지 않으면 파괴 버튼 도움말 팝업 띄우기
 
         EventSystem.current.SetSelectedGameObject(confirmNo.gameObject);
         selectedObjectOnDestroy = confirmNo.gameObject;
         isDestroying = true;
         destroyDesc.transform.parent.gameObject.SetActive(true);
-        destroyDesc.text = string.Format("<color=green>{0}</color>\r\n을(를) 정말 <color=red>파괴</color>하시겠습니까?",
+        if (selectedId < 24)
+        {
+            destroyDesc.text = string.Format("<color=green>{0}</color>\r\n을(를) 정말 <color=red>파괴</color>하시겠습니까?",
             ItemManager.Instance.itemDataArr[GameManager.Instance.inventoryItemsId[selectedId]].itemName);
-
+        }
+        else
+        {
+            destroyDesc.text = string.Format("<color=green>{0}</color>\r\n을(를) 정말 <color=red>파괴</color>하시겠습니까?",
+            ItemManager.Instance.itemDataArr[GameManager.Instance.storedItemsId[selectedId % 24]].itemName);
+        }
     }
 
     public void OnConfirm(bool confirm)
     {
         if (confirm)
         {
-            GameManager.Instance.inventoryItemsId[selectedId] = -1;
-            AudioManager.instance.PlaySfx(AudioManager.Sfx.Destroy);
+            if (isUnlocking)
+            {
+                switch (selectedId)
+                {
+                    case 48:
+                        GameManager.Instance.maxInventory = 16;
+                        buttons[48].gameObject.SetActive(false);
+                        buttons[49].interactable = true;
+                        int[] targetInts = new int[] { 0, 1};
+                        foreach (int targetInt in targetInts)
+                        {
+                            Navigation navigation = buttons[targetInt].navigation;
+                            navigation.mode = Navigation.Mode.Automatic;
+                            buttons[targetInt].navigation = navigation;
+                        }
+                        GameManager.Instance.gold -= 1000;
+                        break;
+
+                    case 49:
+                        GameManager.Instance.maxInventory = 24;
+                        buttons[49].gameObject.SetActive(false);
+                        targetInts = new int[] { 0, 1, 8, 9 };
+                        foreach (int targetInt in targetInts)
+                        {
+                            Navigation navigation = buttons[targetInt].navigation;
+                            navigation.mode = Navigation.Mode.Automatic;
+                            buttons[targetInt].navigation = navigation;
+                        }
+                        GameManager.Instance.gold -= 3000;
+                        break;
+                }
+                AudioManager.instance.PlaySfx(AudioManager.Sfx.Equip);
+                for (int i = 0; i < GameManager.Instance.maxInventory; i++)
+                {
+                    buttons[i].gameObject.SetActive(true);
+                }
+                selectedId = 0;
+            }
+            else
+            {
+                if (selectedId < 24)
+                {
+                    GameManager.Instance.inventoryItemsId[selectedId] = -1;
+                    AudioManager.instance.PlaySfx(AudioManager.Sfx.Destroy);
+                }
+                else
+                {
+                    GameManager.Instance.storedItemsId[selectedId % 24] = -1;
+                    AudioManager.instance.PlaySfx(AudioManager.Sfx.Destroy);
+                }
+            }
+            
         }
         else
         {
@@ -232,6 +402,7 @@ public class StorageUI : MonoBehaviour
         }
         destroyDesc.transform.parent.gameObject.SetActive(false);
         isDestroying = false;
+        isUnlocking = false;
         EventSystem.current.SetSelectedGameObject(buttons[selectedId].gameObject);
     }
 
@@ -379,8 +550,7 @@ public class StorageUI : MonoBehaviour
         }
         else
         {
-            // 인벤토리 공간 확장 로직 작성
-            Debug.Log("Unlock");
+            OnUnlock();
             return;
         }
         
@@ -393,9 +563,39 @@ public class StorageUI : MonoBehaviour
         buttons[buttonIndex].GetComponent<Image>().color = grayColor;
     }
 
+    
+    void OnUnlock()
+    {
+        if (selectedId == 48)
+        {
+            if (GameManager.Instance.gold < 1000)
+            {
+                help.Show(InventoryControlHelp.ActionType.NotEnoughMoney);
+                return;
+            }
+        }
+        else if (selectedId == 49)
+        {
+            if (GameManager.Instance.gold < 3000)
+            {
+                help.Show(InventoryControlHelp.ActionType.NotEnoughMoney);
+                return;
+            }
+        }
+        EventSystem.current.SetSelectedGameObject(confirmNo.gameObject);
+        selectedObjectOnDestroy = confirmNo.gameObject;
+        isDestroying = true;
+        isUnlocking = true;
+        destroyDesc.transform.parent.gameObject.SetActive(true);
+
+        destroyDesc.text = "정말 인벤토리 <color=red>8칸</color>을 확장 하시겠습니까?";
+    }
+
     // 인벤토리 창에서 아무 버튼도 선택되지 않은 경우에 Menu키 (키보드: Esc, 게임패드: Start)로 빠져나올 수 있도록.
     public void OnMenu()
     {
+        if (!gameObject.activeSelf) return;
+
         if (GameManager.Instance.workingInventory)
         {
             if (!isPressed)
@@ -403,13 +603,14 @@ public class StorageUI : MonoBehaviour
                 if (isDestroying)
                 {
                     isDestroying = false;
+                    isUnlocking = false;
                     destroyDesc.transform.parent.gameObject.SetActive(false);
                     EventSystem.current.SetSelectedGameObject(buttons[selectedId].gameObject);
                     AudioManager.instance.PlaySfx(AudioManager.Sfx.Cancel);
                 }
                 else
                 {
-                    GameManager.Instance.OnInventory();
+                    storageChest.Open(StorageChest.ActionType.Inventory);
                 }
             }
             else
@@ -422,7 +623,9 @@ public class StorageUI : MonoBehaviour
 
     public void OnCancel()
     {
-        if (!GameManager.Instance.workingInventory)
+        if (!gameObject.activeSelf) return;
+
+        if (GameManager.Instance.workingInventory)
         {
             if (isPressed)
             {
@@ -434,13 +637,14 @@ public class StorageUI : MonoBehaviour
             else if (isDestroying)
             {
                 isDestroying = false;
+                isUnlocking = false;
                 destroyDesc.transform.parent.gameObject.SetActive(false);
                 EventSystem.current.SetSelectedGameObject(buttons[selectedId].gameObject);
                 AudioManager.instance.PlaySfx(AudioManager.Sfx.Cancel);
             }
             else
             {
-                GameManager.Instance.OnInventory();
+                //storageChest.Open(StorageChest.ActionType.Inventory);
             }
         }
     }
