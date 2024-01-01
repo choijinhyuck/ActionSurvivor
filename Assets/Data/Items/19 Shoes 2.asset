@@ -16,7 +16,7 @@ MonoBehaviour:
   itemName: "\uC2E4\uBC84 \uC288\uC988"
   itemDesc: "\uC720\uBA85 \uB300\uC7A5\uC7A5\uC774\uAC00 \uC740\uC73C\uB85C \uACBD\uB7C9\uD654\uD55C
     \uC2E0\uBC1C\uC774\uB2E4."
-  itemEffect: "\uC774\uB3D9\uC18D\uB3C4 <color=red>15%</colo> \uC99D\uAC00"
+  itemEffect: "\uC774\uB3D9\uC18D\uB3C4 <color=red>15%</color> \uC99D\uAC00"
   itemIcon: {fileID: 21300000, guid: eea190d14104e5c4a8bb789a3f8db804, type: 3}
   baseAmount: 15
   coolTime: 0
