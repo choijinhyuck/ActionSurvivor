@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public class InventoryControlHelp : MonoBehaviour
 {
     public enum ActionType { Empty, Equip, UnEquip, Pressed, Destroy, Use, FullMsg, FullHeart, NotEquippable, WrongPosition, WrongItem, 
-                             ToStorage, ToInventory, ToFullStorageMsg, ToFullInventory, Unlock, NotEnoughMoney}
+                             ToStorage, ToInventory, ToFullStorageMsg, ToFullInventory, Unlock, NotEnoughMoney, Buy, Sell}
 
     public GameObject message;
     public GameObject changeSlot;
@@ -80,6 +80,19 @@ public class InventoryControlHelp : MonoBehaviour
 
     public void Show(ActionType actionType)
     {
+        if (actionType == ActionType.Buy)
+        {
+            select.GetComponentInChildren<Text>().text = "구매";
+        }
+        else if (actionType == ActionType.Sell)
+        {
+            select.GetComponentInChildren<Text>().text = "판매";
+        }
+        else
+        {
+            select.GetComponentInChildren<Text>().text = "선택";
+        }
+
         switch (actionType)
         {
             case ActionType.Empty:
@@ -159,6 +172,14 @@ public class InventoryControlHelp : MonoBehaviour
                 break;
 
             case ActionType.Unlock:
+                Filter(new List<GameObject> { close, select });
+                break;
+
+            case ActionType.Buy:
+                Filter(new List<GameObject> { close, select });
+                break;
+
+            case ActionType.Sell:
                 Filter(new List<GameObject> { close, select });
                 break;
         }

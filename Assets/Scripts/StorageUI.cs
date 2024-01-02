@@ -273,7 +273,6 @@ public class StorageUI : MonoBehaviour
                     break;
                 }
             }
-            Debug.Log(isEmpty);
             if (!isEmpty)
             {
                 Debug.Log("full");
@@ -295,7 +294,6 @@ public class StorageUI : MonoBehaviour
                     break;
                 }
             }
-            Debug.Log(isEmpty);
             if (!isEmpty)
             {
                 Debug.Log("full");

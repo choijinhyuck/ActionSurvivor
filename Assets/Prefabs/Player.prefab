@@ -14964,11 +14964,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: af2a14b09d126ee45bcb998de95fbc65, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spawnPoint: []
-  spawnData: []
   stage: {fileID: 0}
   RightUp: {fileID: 7415687105838511171}
   enemyParent: {fileID: 0}
+  enemyData:
+  - {fileID: 11400000, guid: 44e28fb4b6125e44e9c8d614535524e2, type: 2}
+  - {fileID: 11400000, guid: 2f2f0eee4c1656e46b1b0f3f67ef4cd5, type: 2}
+  - {fileID: 11400000, guid: 87fa87c5c532dab4fa7f701b1b07026f, type: 2}
+  - {fileID: 11400000, guid: c0e4ed0291fe8e74c91e822324a2de7f, type: 2}
+  - {fileID: 11400000, guid: 3198f1aefd87a854fa010c11c77c1da8, type: 2}
+  - {fileID: 11400000, guid: 179202135d77dd84b9916b602bec73ad, type: 2}
+  - {fileID: 11400000, guid: 0126a37e397d9ed4ba7a4311484d6bac, type: 2}
 --- !u!1 &3627499518900660116
 GameObject:
   m_ObjectHideFlags: 0
@@ -25541,7 +25547,7 @@ Animator:
   m_GameObject: {fileID: 6706167564352726105}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: feec99d42c1dfbf468751931e922ab2d, type: 2}
+  m_Controller: {fileID: 9100000, guid: d0a784bd810cdda4586a54d6f5eb6db7, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -25590,6 +25596,7 @@ MonoBehaviour:
   rangeArrow: {fileID: 2908441838739007286}
   rightBash: {fileID: 4671178022740233024}
   leftBash: {fileID: 5660792382796065535}
+  anim: {fileID: 0}
   chargeTimer: 0
   chargeCount: 0
   isCharging: 0
