@@ -13,15 +13,16 @@ MonoBehaviour:
   m_Name: 21 Range Kunai 1
   m_EditorClassIdentifier: 
   itemType: 1
-  itemName: "\uC218\uB9AC\uAC80 <size=6>- \uD22C\uCC99\uBB34\uAE30</size>"
+  itemName: "<color=red>\uAC15\uD654</color> \uC218\uB9AC\uAC80 <size=6>- \uD22C\uCC99\uBB34\uAE30</size>"
   itemDesc: "\uC801\uC744 \uD5A5\uD574 \uC2E0\uC18D\uD788 \uB358\uC9C8 \uC218 \uC788\uB294
     \uBFB0\uC871\uD55C \uD615\uD0DC\uC758 \uC554\uAE30\uB2E4.\n"
   itemEffect: "\uD22C\uCC99 \uACF5\uACA9\uB825 <color=red>6</color>    \uC7AC\uC0AC\uC6A9\uC2DC\uAC04
     <color=red>3\uCD08</color>"
-  itemIcon: {fileID: 21300000, guid: 63e019ee98af0ba459e07d8c554f4131, type: 3}
+  itemIcon: {fileID: 21300000, guid: 20b6f163610ed2047b73b996a70615ba, type: 3}
   baseAmount: 6
   coolTime: 3
   pierceCount: 0
   speed: 10
+  priceToBuy: 3000
   projectile: {fileID: 145763860950815899, guid: d97eb97e840e3e042ae1624dd550a5b1, type: 3}
-  dropItem: {fileID: 4028297425782732125, guid: 9a33389b41d452b47a5217328c326387, type: 3}
+  dropItem: {fileID: 4028297425782732125, guid: cc2ec270e292ed346af65887ad1b53e5, type: 3}

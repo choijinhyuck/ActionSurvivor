@@ -16,6 +16,8 @@ public class ShopUI : MonoBehaviour
 
     [SerializeField]
     ShopNPC shopNPC;
+    [SerializeField]
+    Text npcDialogue;
 
     List<Button> buttons;
     List<Canvas> canvases;
@@ -41,7 +43,7 @@ public class ShopUI : MonoBehaviour
                                     -1, -1, -1,
                                     18, 19, 20,
                                     6,  7,  8,
-                                    -1, -1, -1,
+                                    21, 22, 23,
                                     9,  10, 11,
                                     15, 16, 17, };
 
@@ -134,12 +136,16 @@ public class ShopUI : MonoBehaviour
                 itemName.text = "";
                 itemDesc.text = "";
                 itemEffect.text = "";
+
+                npcDialogue.text = "먼 템 팔 거임?";
             }
             else
             {
                 itemName.text = ItemManager.Instance.itemDataArr[GameManager.Instance.inventoryItemsId[selectedId]].itemName;
                 itemDesc.text = ItemManager.Instance.itemDataArr[GameManager.Instance.inventoryItemsId[selectedId]].itemDesc;
                 itemEffect.text = ItemManager.Instance.itemDataArr[GameManager.Instance.inventoryItemsId[selectedId]].itemEffect;
+
+                npcDialogue.text = $"<color=blue>{Mathf.FloorToInt(ItemManager.Instance.itemDataArr[GameManager.Instance.inventoryItemsId[selectedId]].priceToBuy / 5)} 골드</color>에 삼~\r\n팔 거임?";
             }
         }
         else if (selectedId < buttons.Count)
@@ -149,12 +155,16 @@ public class ShopUI : MonoBehaviour
                 itemName.text = "";
                 itemDesc.text = "";
                 itemEffect.text = "";
+
+                npcDialogue.text = "먼 템 살 거임?";
             }
             else
             {
                 itemName.text = ItemManager.Instance.itemDataArr[shopItems[selectedId - 24]].itemName;
                 itemDesc.text = ItemManager.Instance.itemDataArr[shopItems[selectedId - 24]].itemDesc;
                 itemEffect.text = ItemManager.Instance.itemDataArr[shopItems[selectedId - 24]].itemEffect;
+
+                npcDialogue.text = $"<color=blue>{ItemManager.Instance.itemDataArr[shopItems[selectedId - 24]].priceToBuy} 골드</color>에 팜~\r\n살 거임?";
             }
         }
     }
@@ -274,12 +284,14 @@ public class ShopUI : MonoBehaviour
         if (selectedId < 24)
         {
             buySellConfirm.text = string.Format("<color=green>{0}</color> 을(를)\r\n<color=red>{1:N0} 골드</color>에 {2}하시겠습니까?",
-            ItemManager.Instance.itemDataArr[GameManager.Instance.inventoryItemsId[selectedId]].itemName, 3000, "판매");
+            ItemManager.Instance.itemDataArr[GameManager.Instance.inventoryItemsId[selectedId]].itemName,
+            Mathf.FloorToInt(ItemManager.Instance.itemDataArr[GameManager.Instance.inventoryItemsId[selectedId]].priceToBuy / 5), "판매");
         }
         else
         {
             buySellConfirm.text = string.Format("<color=green>{0}</color> 을(를)\r\n<color=red>{1:N0} 골드</color>에 {2}하시겠습니까",
-            ItemManager.Instance.itemDataArr[shopItems[selectedId-24]].itemName, 3000, "구매");
+            ItemManager.Instance.itemDataArr[shopItems[selectedId - 24]].itemName,
+            ItemManager.Instance.itemDataArr[shopItems[selectedId - 24]].priceToBuy, "구매");
         }
     }
 
@@ -289,13 +301,13 @@ public class ShopUI : MonoBehaviour
         {
             if (selectedId < 24)
             {
+                GameManager.Instance.gold += Mathf.FloorToInt(ItemManager.Instance.itemDataArr[GameManager.Instance.inventoryItemsId[selectedId]].priceToBuy / 5);
                 GameManager.Instance.inventoryItemsId[selectedId] = -1;
-                GameManager.Instance.gold += 3000;
                 AudioManager.instance.PlaySfx(AudioManager.Sfx.Gold);
             }
             else
             {
-                if (GameManager.Instance.gold < 3000)
+                if (GameManager.Instance.gold < Mathf.FloorToInt(ItemManager.Instance.itemDataArr[shopItems[selectedId - 24]].priceToBuy))
                 {
                     help.Show(InventoryControlHelp.ActionType.NotEnoughMoney);
                 }
@@ -318,8 +330,8 @@ public class ShopUI : MonoBehaviour
                     }
                     else
                     {
+                        GameManager.Instance.gold -= Mathf.FloorToInt(ItemManager.Instance.itemDataArr[shopItems[selectedId - 24]].priceToBuy);
                         GameManager.Instance.inventoryItemsId[emptySlotId] = shopItems[selectedId - 24];
-                        GameManager.Instance.gold -= 3000;
                         AudioManager.instance.PlaySfx(AudioManager.Sfx.Gold);
                     }
                 }

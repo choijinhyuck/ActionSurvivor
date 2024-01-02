@@ -21,5 +21,6 @@ MonoBehaviour:
   coolTime: 0
   pierceCount: 0
   speed: 0
+  priceToBuy: 1100
   projectile: {fileID: 0}
   dropItem: {fileID: 5610707430277344137, guid: 9a4e757f58671624782622b37faa6cd5, type: 3}

@@ -80,5 +80,8 @@ MonoBehaviour:
   - {fileID: 8300000, guid: dbf9a0a6f71347043bab11e73d540c21, type: 3}
   - {fileID: 8300000, guid: 8f087b0a4a35d5346ae5edbde7b675fc, type: 3}
   - {fileID: 8300000, guid: 373673fafcfabbe4bb8ce65f1e7d2de3, type: 3}
+  - {fileID: 8300000, guid: b4e5986e1558cfd4994aa8ac6e9d964f, type: 3}
+  - {fileID: 8300000, guid: cf7a00767516568428432db45a8c8aad, type: 3}
+  - {fileID: 8300000, guid: dbe5050e455bbe3458db306da2b234ca, type: 3}
   sfxVolume: 0.5
   channels: 32

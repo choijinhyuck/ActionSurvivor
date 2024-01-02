@@ -11,6 +11,7 @@ public class StorageChest : MonoBehaviour
     public StorageUI storageUI;
     public LayerMask playerLayer;
     public Sprite[] equipSprites;
+    
 
     [SerializeField]
     Image buttonImage;
@@ -21,10 +22,15 @@ public class StorageChest : MonoBehaviour
     InputAction menuAction;
     InputAction destroyAction;
     InputAction equipAction;
+    Animator animator;
     bool isNear;
+    bool isOpening;
 
     private void Start()
     {
+        animator = GetComponent<Animator>();
+        isOpening = false;
+
         isNear = false;
         openAction = GameManager.Instance.actions.FindActionMap("UI").FindAction("OpenChest");
         inventoryAction = GameManager.Instance.actions.FindActionMap("UI").FindAction("Inventory");
@@ -78,10 +84,15 @@ public class StorageChest : MonoBehaviour
             case ActionType.Open:
                 if (!GameManager.Instance.workingInventory)
                 {
-                    AudioManager.instance.EffectBgm(true);
-                    GameManager.Instance.workingInventory = true;
-                    storageUI.gameObject.SetActive(true);
-                    GameManager.Instance.Stop();
+                    if (isOpening) return;
+                    isOpening = true;
+                    animator.SetTrigger("Open");
+
+                    //AudioManager.instance.PlaySfx(AudioManager.Sfx.ChestOpen);
+                    //AudioManager.instance.EffectBgm(true);
+                    //GameManager.Instance.workingInventory = true;
+                    //storageUI.gameObject.SetActive(true);
+                    //GameManager.Instance.Stop();
                 }
                 break;
 
@@ -97,5 +108,21 @@ public class StorageChest : MonoBehaviour
                 }
                 break;
         }
+    }
+
+    public void OpenChest()
+    {
+        AudioManager.instance.PlaySfx(AudioManager.Sfx.ChestOpen);
+        AudioManager.instance.EffectBgm(true);
+        GameManager.Instance.workingInventory = true;
+        storageUI.gameObject.SetActive(true);
+        GameManager.Instance.Stop();
+
+        isOpening = false;
+    }
+    
+    public void CloseSound()
+    {
+        AudioManager.instance.PlaySfx(AudioManager.Sfx.ChestOpen);
     }
 }

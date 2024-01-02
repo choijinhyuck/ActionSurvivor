@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public class InventoryControlHelp : MonoBehaviour
 {
     public enum ActionType { Empty, Equip, UnEquip, Pressed, Destroy, Use, FullMsg, FullHeart, NotEquippable, WrongPosition, WrongItem, 
-                             ToStorage, ToInventory, ToFullStorageMsg, ToFullInventory, Unlock, NotEnoughMoney, Buy, Sell}
+                             ToStorage, ToInventory, ToFullStorageMsg, ToFullInventory, Unlock, NotEnoughMoney, Buy, Sell, Upgrade, NotUpgradable}
 
     public GameObject message;
     public GameObject changeSlot;
@@ -88,6 +88,10 @@ public class InventoryControlHelp : MonoBehaviour
         {
             select.GetComponentInChildren<Text>().text = "판매";
         }
+        else if (actionType == ActionType.Upgrade)
+        {
+            select.GetComponentInChildren<Text>().text = "강화";
+        }
         else
         {
             select.GetComponentInChildren<Text>().text = "선택";
@@ -161,6 +165,11 @@ public class InventoryControlHelp : MonoBehaviour
                 messageCoroutine = StartCoroutine(Message(ActionType.NotEnoughMoney));
                 break;
 
+            case ActionType.NotUpgradable:
+                if (showMessage) StopCoroutine(messageCoroutine);
+                messageCoroutine = StartCoroutine(Message(ActionType.NotUpgradable));
+                break;
+
             case ActionType.ToStorage:
                 equipUse.GetComponentInChildren<Text>().text = "보관";
                 Filter(new List<GameObject> { close, select, equipUse, destroy });
@@ -180,6 +189,10 @@ public class InventoryControlHelp : MonoBehaviour
                 break;
 
             case ActionType.Sell:
+                Filter(new List<GameObject> { close, select });
+                break;
+
+            case ActionType.Upgrade:
                 Filter(new List<GameObject> { close, select });
                 break;
         }
@@ -245,6 +258,12 @@ public class InventoryControlHelp : MonoBehaviour
             case ActionType.NotEnoughMoney:
                 if (!message.activeSelf) message.SetActive(true);
                 message.GetComponent<Text>().text = "소지금이 부족합니다.";
+                AudioManager.instance.PlaySfx(AudioManager.Sfx.Fail);
+                break;
+
+            case ActionType.NotUpgradable:
+                if (!message.activeSelf) message.SetActive(true);
+                message.GetComponent<Text>().text = "강화할 수 없는 아이템입니다";
                 AudioManager.instance.PlaySfx(AudioManager.Sfx.Fail);
                 break;
 

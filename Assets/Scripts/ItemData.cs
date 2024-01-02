@@ -7,7 +7,7 @@ public class ItemData : ScriptableObject
 {
     public enum ItemType { Melee, Range, Shoes, Necklace, Magic, Potion, Gold }
     public enum Items { BronzeSword, SilverSword, GoldenSword, BronzeHammer, SilverHammer, GoldenHammer, Kunai, Shuriken, Arrow, MiniPotion, NormalPotion, BigPotion,
-                        Gold5, Gold19, Gold49, FireMagic, IceMagic, LightningMagic, BronzeShoes, SilverShoes, GoldenShoes}
+                        Gold5, Gold19, Gold49, FireMagic, IceMagic, LightningMagic, BronzeShoes, SilverShoes, GoldenShoes, KunaiPlus, ShurikenPlus, ArrowPlus}
 
 
     [Header("# Main Info")]
@@ -28,6 +28,8 @@ public class ItemData : ScriptableObject
     //≈ı√¥ Ω∫««µÂ
     public float speed = 0;
 
+    [Header("# Shop")]
+    public int priceToBuy;
 
     [Header("# Check for Pool")]
     public GameObject projectile;
