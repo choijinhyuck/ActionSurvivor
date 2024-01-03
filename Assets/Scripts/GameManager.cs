@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.Experimental.Rendering.Universal;
@@ -10,6 +11,9 @@ using UnityEngine.SceneManagement;
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
+
+    [Header("Loading Info")]
+    public string sceneName;
 
     [Header("# Input System")]
     public InputActionAsset actions;
@@ -75,6 +79,9 @@ public class GameManager : MonoBehaviour
     public PoolManager pool;
     public Player player;
     public Result uiResult;
+    public GameObject hud;
+    public GameObject timer;
+    public GameObject killText;
 
     InputAction inventoryAction;
     InputAction menuAction;
@@ -162,14 +169,34 @@ public class GameManager : MonoBehaviour
         switch (scene.name)
         {
             case "Camp":
+                if (timer.activeSelf) timer.SetActive(false);
+                if (killText.activeSelf) killText.SetActive(false);
                 player.transform.position = new Vector3(0, -3, 0);
                 AudioManager.instance.changeBGM(AudioManager.Bgm.Camp, 0.3f);
+                GameStart();
                 break;
+
+            case "Title":
+                if (hud.activeSelf) hud.SetActive(false);
+                player.gameObject.SetActive(true);
+                AudioManager.instance.changeBGM(AudioManager.Bgm.Title, 0.3f);
+                AudioManager.instance.PlayBgm(true);
+                actions.Disable();
+                break;
+
+            case "Loading":
+                if (hud.activeSelf) hud.SetActive(false);
+                AudioManager.instance.PlayBgm(false);
+                actions.Disable();
+                break;
+
             default:
+                if (!timer.activeSelf) timer.SetActive(true);
+                if (!killText.activeSelf) killText.SetActive(true);
                 AudioManager.instance.changeBGM(AudioManager.Bgm.Stage0, 0.5f);
+                GameStart();
                 break;
         }
-        GameStart();
     }
 
     public void ZoomCamera(int targetPPU)
@@ -259,6 +286,16 @@ public class GameManager : MonoBehaviour
 
     public void GameStart()
     {
+        if (!hud.activeSelf) hud.SetActive(true);
+
+        actions.Enable();
+        if (inventoryUI.gameObject.activeSelf)
+        {
+            inventoryUI.gameObject.SetActive(false);
+            inventoryUI.destroyDesc.transform.parent.gameObject.SetActive(false);
+        }
+        workingInventory = false;
+
         gameTime = 0;
         if (stageId == -1)
         {

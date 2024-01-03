@@ -14,6 +14,8 @@ public class UpgradeUI : MonoBehaviour
     {
         public ItemData.Items before;
         public ItemData.Items after;
+        public int goldRequired;
+        public float probability;
     }
 
     public Canvas upgradeCanvas;
@@ -172,8 +174,8 @@ public class UpgradeUI : MonoBehaviour
                 beforeItemSlotImg.color = greenColor;
                 AfterItemImg.sprite = ItemManager.Instance.itemDataArr[(int)upgradableItems[GetUpgradeIndex()].after].itemIcon;
                 AfterItemImg.color = halfAlpha;
-                probability.text = string.Format("강화 확률: <color=red>{0}</color> %", 10);
-                goldRequired.text = string.Format("소모 골드: <color=blue>{0}</color> 골드", 100);
+                probability.text = string.Format("강화 확률: <color=red>{0}</color> %", Mathf.FloorToInt(upgradableItems[GetUpgradeIndex()].probability * 100));
+                goldRequired.text = string.Format("소모 골드: <color=blue>{0}</color> 골드", upgradableItems[GetUpgradeIndex()].goldRequired);
             }
             else
             {
@@ -297,14 +299,14 @@ public class UpgradeUI : MonoBehaviour
 
         upgradeConfirm.text = string.Format("<color=green>{0}</color> 을(를)\r\n<color=red>{1:N0} 골드</color>에 {2}하시겠습니까?\r\n<color=green><size=6>(실패 시 아이템이 파괴됩니다.)</size></color>",
         ItemManager.Instance.itemDataArr[GameManager.Instance.inventoryItemsId[selectedId]].itemName,
-        100, "강화");
+        upgradableItems[GetUpgradeIndex()].goldRequired, "강화");
     }
 
     public void OnConfirm(bool confirm)
     {
         if (confirm)
         {
-            if (GameManager.Instance.gold < 100)
+            if (GameManager.Instance.gold < upgradableItems[GetUpgradeIndex()].goldRequired)
             {
                 help.Show(InventoryControlHelp.ActionType.NotEnoughMoney);
             }
@@ -327,10 +329,10 @@ public class UpgradeUI : MonoBehaviour
 
     public void FinishUpgrade()
     {
-        GameManager.Instance.gold -= 100;
+        GameManager.Instance.gold -= upgradableItems[GetUpgradeIndex()].goldRequired;
         upgradeResult.SetActive(true);
 
-        if (UnityEngine.Random.value < 0.1f)
+        if (UnityEngine.Random.value < upgradableItems[GetUpgradeIndex()].probability)
         {
             GameManager.Instance.inventoryItemsId[selectedId] = (int)upgradableItems[GetUpgradeIndex()].after;
             upgradeResult.GetComponentInChildren<Text>().text = "<color=blue>축하합니다!</color>\r\n\r\n강화에 성공했습니다";

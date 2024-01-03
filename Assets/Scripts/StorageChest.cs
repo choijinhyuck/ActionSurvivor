@@ -24,12 +24,12 @@ public class StorageChest : MonoBehaviour
     InputAction equipAction;
     Animator animator;
     bool isNear;
-    bool isOpening;
+    bool isClosing;
 
     private void Start()
     {
         animator = GetComponent<Animator>();
-        isOpening = false;
+        isClosing = false;
 
         isNear = false;
         openAction = GameManager.Instance.actions.FindActionMap("UI").FindAction("OpenChest");
@@ -78,21 +78,19 @@ public class StorageChest : MonoBehaviour
     public void Open(ActionType actionType)
     {
         if (!isNear) return;
+        if (isClosing) return;
 
         switch (actionType)
         {
             case ActionType.Open:
                 if (!GameManager.Instance.workingInventory)
                 {
-                    if (isOpening) return;
-                    isOpening = true;
                     animator.SetTrigger("Open");
-
-                    //AudioManager.instance.PlaySfx(AudioManager.Sfx.ChestOpen);
-                    //AudioManager.instance.EffectBgm(true);
-                    //GameManager.Instance.workingInventory = true;
-                    //storageUI.gameObject.SetActive(true);
-                    //GameManager.Instance.Stop();
+                    AudioManager.instance.PlaySfx(AudioManager.Sfx.ChestOpen);
+                    AudioManager.instance.EffectBgm(true);
+                    GameManager.Instance.workingInventory = true;
+                    storageUI.gameObject.SetActive(true);
+                    GameManager.Instance.Stop();
                 }
                 break;
 
@@ -100,6 +98,8 @@ public class StorageChest : MonoBehaviour
                 if (!storageUI.gameObject.activeSelf) return;
                 if (GameManager.Instance.workingInventory)
                 {
+                    isClosing = true;
+                    animator.SetTrigger("Close");
                     AudioManager.instance.EffectBgm(false);
                     GameManager.Instance.workingInventory = false;
                     storageUI.gameObject.SetActive(false);
@@ -109,20 +109,14 @@ public class StorageChest : MonoBehaviour
                 break;
         }
     }
-
-    public void OpenChest()
-    {
-        AudioManager.instance.PlaySfx(AudioManager.Sfx.ChestOpen);
-        AudioManager.instance.EffectBgm(true);
-        GameManager.Instance.workingInventory = true;
-        storageUI.gameObject.SetActive(true);
-        GameManager.Instance.Stop();
-
-        isOpening = false;
-    }
     
     public void CloseSound()
     {
         AudioManager.instance.PlaySfx(AudioManager.Sfx.ChestOpen);
+    }
+
+    public void FinishClose()
+    {
+        isClosing = false;
     }
 }

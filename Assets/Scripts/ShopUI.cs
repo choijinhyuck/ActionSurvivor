@@ -332,7 +332,7 @@ public class ShopUI : MonoBehaviour
                     {
                         GameManager.Instance.gold -= Mathf.FloorToInt(ItemManager.Instance.itemDataArr[shopItems[selectedId - 24]].priceToBuy);
                         GameManager.Instance.inventoryItemsId[emptySlotId] = shopItems[selectedId - 24];
-                        AudioManager.instance.PlaySfx(AudioManager.Sfx.Gold);
+                        AudioManager.instance.PlaySfx(AudioManager.Sfx.Equip);
                     }
                 }
             }

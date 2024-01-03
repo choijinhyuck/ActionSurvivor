@@ -13,7 +13,7 @@ public class AudioManager : MonoBehaviour
 
     public enum Bgm
     {
-        Camp, Stage0, Stage1, Stage2
+        Camp, Stage0, Stage1, Stage2, Title, Boss
     }
 
     [Header("#SFC")]
@@ -26,7 +26,7 @@ public class AudioManager : MonoBehaviour
     public enum Sfx
     {
         Dead, Hit, LevelUp = 3, Lose, Melee, Range = 7, Select, Win, WarriorSkill = 11, WarriorAttack, PlayerHit, Dodge = 14, Fail, Kunai, Arrow, Healthy,
-        ButtonChange, ButtonPress, Cancel, Equip, Unequip, Destroy, Gold, AcquireItem, HeartBeat, Success, Upgrade, ChestOpen
+        ButtonChange, ButtonPress, Cancel, Equip, Unequip, Destroy, Gold, AcquireItem, HeartBeat, Success, Upgrade, ChestOpen, Start, MenuChange
     }
 
     private void Awake()

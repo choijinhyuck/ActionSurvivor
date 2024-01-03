@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.Experimental.Rendering.Universal;
 using UnityEngine.InputSystem;
 using UnityEngine.Rendering.Universal;
+using UnityEngine.SceneManagement;
 using UnityEngine.UIElements;
 
 public class Player : MonoBehaviour
@@ -90,6 +91,9 @@ public class Player : MonoBehaviour
 
     private void OnEnable()
     {
+        Scene scene = SceneManager.GetActiveScene();
+        if (scene.name == "Title" || scene.name == "Loading") gameObject.SetActive(false);
+
         readyDodge = true;
         isDodge = false;
         isAttack = false;
@@ -114,6 +118,7 @@ public class Player : MonoBehaviour
             shadow.gameObject.SetActive(true);
         }
     }
+
     private void FixedUpdate()
     {
         if (!GameManager.Instance.isLive || isHit) return;
