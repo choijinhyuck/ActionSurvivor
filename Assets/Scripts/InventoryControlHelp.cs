@@ -6,7 +6,8 @@ using UnityEngine.UI;
 public class InventoryControlHelp : MonoBehaviour
 {
     public enum ActionType { Empty, Equip, UnEquip, Pressed, Destroy, Use, FullMsg, FullHeart, NotEquippable, WrongPosition, WrongItem, 
-                             ToStorage, ToInventory, ToFullStorageMsg, ToFullInventory, Unlock, NotEnoughMoney, Buy, Sell, Upgrade, NotUpgradable}
+                             ToStorage, ToInventory, ToFullStorageMsg, ToFullInventory, Unlock, NotEnoughMoney, Buy, Sell, Upgrade, NotUpgradable,
+                             WrongClass, }
 
     public GameObject message;
     public GameObject changeSlot;
@@ -170,6 +171,11 @@ public class InventoryControlHelp : MonoBehaviour
                 messageCoroutine = StartCoroutine(Message(ActionType.NotUpgradable));
                 break;
 
+            case ActionType.WrongClass:
+                if (showMessage) StopCoroutine(messageCoroutine);
+                messageCoroutine = StartCoroutine(Message(ActionType.WrongClass));
+                break;
+
             case ActionType.ToStorage:
                 equipUse.GetComponentInChildren<Text>().text = "보관";
                 Filter(new List<GameObject> { close, select, equipUse, destroy });
@@ -264,6 +270,12 @@ public class InventoryControlHelp : MonoBehaviour
             case ActionType.NotUpgradable:
                 if (!message.activeSelf) message.SetActive(true);
                 message.GetComponent<Text>().text = "강화할 수 없는 아이템입니다";
+                AudioManager.instance.PlaySfx(AudioManager.Sfx.Fail);
+                break;
+
+            case ActionType.WrongClass:
+                if (!message.activeSelf) message.SetActive(true);
+                message.GetComponent<Text>().text = "착용할 수 없는 캐릭터입니다.";
                 AudioManager.instance.PlaySfx(AudioManager.Sfx.Fail);
                 break;
 
