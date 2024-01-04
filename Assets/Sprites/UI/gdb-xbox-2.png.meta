@@ -227,6 +227,90 @@ TextureImporter:
       indices: 
       edges: []
       weights: []
+    - serializedVersion: 2
+      name: gdb-xbox-2_0
+      rect:
+        serializedVersion: 2
+        x: 16
+        y: 528
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d8e61629cd608874996bfc67f1635773
+      internalID: 1497636567
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: gdb-xbox-2_1
+      rect:
+        serializedVersion: 2
+        x: 16
+        y: 512
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 20a749ab5f85a3a4fa42e411a0aba416
+      internalID: -196812906
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: gdb-xbox-2_2
+      rect:
+        serializedVersion: 2
+        x: 216
+        y: 552
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 643dd677a5b1a7f49a98740179e52f4e
+      internalID: -68591458
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: gdb-xbox-2_3
+      rect:
+        serializedVersion: 2
+        x: 336
+        y: 560
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 14b24091fdefcc74296de55efa9b4c1f
+      internalID: -427484702
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     physicsShape: []
     bones: []
@@ -243,6 +327,10 @@ TextureImporter:
       RB: -1453515250
       X: -393524055
       Y: -551165062
+      gdb-xbox-2_0: 1497636567
+      gdb-xbox-2_1: -196812906
+      gdb-xbox-2_2: -68591458
+      gdb-xbox-2_3: -427484702
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

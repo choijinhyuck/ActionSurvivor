@@ -7,7 +7,6 @@ using UnityEngine.InputSystem.Controls;
 
 public class RangeWeapon : MonoBehaviour
 {
-    public Transform projectilePool;
     public bool readyRangeWeapon;
     public int leftTime;
 
@@ -56,9 +55,9 @@ public class RangeWeapon : MonoBehaviour
     {
         int prefabId = -1;
         GameObject rangePrefab = rangeData.projectile;
-        for (int i = 0; i < GameManager.Instance.pool.prefabs.Length; i++)
+        for (int i = 0; i < PoolManager.instance.prefabs.Length; i++)
         {
-            if (GameManager.Instance.pool.prefabs[i] == rangePrefab)
+            if (PoolManager.instance.prefabs[i] == rangePrefab)
             {
                 prefabId = i;
                 break;
@@ -92,8 +91,8 @@ public class RangeWeapon : MonoBehaviour
 
             for (int i = 0; i < count; i++)
             {
-                projectiles[i] = GameManager.Instance.pool.Get(prefabId);
-                projectiles[i].transform.parent = projectilePool;
+                projectiles[i] = PoolManager.instance.Get(prefabId);
+                projectiles[i].transform.parent = PoolManager.instance.transform.GetChild(1);
                 arrowSpritePos = GameManager.Instance.player.transform.position + deltaPos;
 
                 switch (i)
@@ -137,8 +136,8 @@ public class RangeWeapon : MonoBehaviour
 
             for (int i = 0; i < count; i++)
             {
-                projectiles[i] = GameManager.Instance.pool.Get(prefabId);
-                projectiles[i].transform.parent = projectilePool;
+                projectiles[i] = PoolManager.instance.Get(prefabId);
+                projectiles[i].transform.parent = PoolManager.instance.transform.GetChild(1); ;
                 arrowSpritePos = GameManager.Instance.player.transform.position + deltaPos;
 
                 projectiles[i].transform.position = arrowSpritePos;
@@ -161,8 +160,8 @@ public class RangeWeapon : MonoBehaviour
 
             for (int i = 0; i < count; i++)
             {
-                projectiles[i] = GameManager.Instance.pool.Get(prefabId);
-                projectiles[i].transform.parent = projectilePool;
+                projectiles[i] = PoolManager.instance.Get(prefabId);
+                projectiles[i].transform.parent = PoolManager.instance.transform.GetChild(1); ;
                 arrowSpritePos = GameManager.Instance.player.transform.position + deltaPos;
 
                 projectiles[i].transform.position = arrowSpritePos;

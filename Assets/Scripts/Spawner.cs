@@ -5,9 +5,9 @@ public class Spawner : MonoBehaviour
 {
     public StageData stage;
     public Transform RightUp;
-    public Transform enemyParent;
     public EnemyData[] enemyData;
 
+    int currentStageId;
     int wave;
     float[] timer;
 
@@ -23,15 +23,22 @@ public class Spawner : MonoBehaviour
         {
             stage = GameManager.Instance.stage.stageDataArr[GameManager.Instance.stageId];
             wave = 0;
-            timer = new float[stage.waveData[wave].enemyInfos.Length];
-
+            timer = new float[stage.waveData[0].enemyInfos.Length];
         }
+        currentStageId = GameManager.Instance.stageId;
     }
 
     private void Update()
     {
         if (GameManager.Instance.stageId == -1) return;
         if (!GameManager.Instance.isLive) return;
+        if (GameManager.Instance.gameTime > GameManager.Instance.maxGameTime) return;
+        if (currentStageId != GameManager.Instance.stageId)
+        {
+            currentStageId = GameManager.Instance.stageId;
+            wave = 0;
+            timer = new float[stage.waveData[0].enemyInfos.Length];
+        }
 
         if (wave < stage.waveData.Length - 1 && GameManager.Instance.gameTime > stage.waveData[wave + 1].startTime)
         {
@@ -57,8 +64,8 @@ public class Spawner : MonoBehaviour
     void Spawn(int spawnIndex)
     {
         // PoolManager의 0번 Prefab은 Enemy
-        GameObject enemy = GameManager.Instance.pool.Get(0);
-        enemy.transform.parent = enemyParent;
+        GameObject enemy = PoolManager.instance.Get(0);
+        enemy.transform.parent = PoolManager.instance.transform.GetChild(0);
 
         //Respawn Edge 영역 설정
         float localX = RightUp.localPosition.x;

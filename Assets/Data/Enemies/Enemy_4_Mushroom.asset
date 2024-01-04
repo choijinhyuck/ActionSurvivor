@@ -1,0 +1,45 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e98d9e62846565046b1b6b440c26e3b2, type: 3}
+  m_Name: Enemy_4_Mushroom
+  m_EditorClassIdentifier: 
+  enemyName: Mushroom
+  anim: {fileID: 9100000, guid: 225dc93e007474d45bc3253facb2246f, type: 2}
+  health: 15
+  speed: 8
+  exp: 3
+  mass: 1.5
+  dropItems:
+  - itemType: 12
+    probability: 0.7
+  - itemType: 0
+    probability: 0.012
+  - itemType: 3
+    probability: 0.0085
+  - itemType: 6
+    probability: 0.0085
+  - itemType: 7
+    probability: 0.0085
+  - itemType: 8
+    probability: 0.0085
+  - itemType: 18
+    probability: 0.0085
+  - itemType: 9
+    probability: 0.025
+  collPos: {x: 0, y: 0.3}
+  collSize: {x: 0.64, y: 0.5}
+  shadowScale: 0.8
+  shadowOrigin: {x: 0, y: 0.029}
+  shadowFlip: {x: 0, y: 0.029}
+  lookLeft: 1
+  hpBarPos: {x: 0, y: 80.5}
+  hpBarSize: {x: 75, y: 10}

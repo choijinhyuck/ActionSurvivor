@@ -12,7 +12,6 @@ public class Player : MonoBehaviour
 {
 
     public Vector2 inputVector;
-    public Scanner scanner;
     public RuntimeAnimatorController[] animCon;
     public Transform shadow;
     public RangeWeapon rangeWeapon;
@@ -84,7 +83,6 @@ public class Player : MonoBehaviour
         rigid = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
         spriteRenderer = GetComponent<SpriteRenderer>();
-        scanner = GetComponent<Scanner>();
         waitSec = new WaitForSeconds(.01f);
         waitFix = new WaitForFixedUpdate();
     }
@@ -122,6 +120,7 @@ public class Player : MonoBehaviour
     private void FixedUpdate()
     {
         if (!GameManager.Instance.isLive || isHit) return;
+        if (GameManager.Instance.health < .1f) return;
 
         inputVector = moveAction.ReadValue<Vector2>();
 
@@ -198,10 +197,19 @@ public class Player : MonoBehaviour
         }
 
         Time.timeScale = 1f;
-        anim.SetTrigger("Dead");
 
         transposer.m_XDamping = 1f;
         transposer.m_YDamping = 1f;
+
+        // 부활의 목걸이 착용 시 목걸이는 파괴되고 죽지 않고 체력 +2 획득
+        // 깜빡이면서 그동안 무적이 되는 코루틴 생성
+
+        //GameManager.Instance.health += 2;
+        //GameManager.Instance.ZoomCamera(GameManager.Instance.originPPU);
+        //AudioManager.instance.PauseBGM(false);
+        //yield break;
+
+        anim.SetTrigger("Dead");
     }
 
     public void DeadEnd()
@@ -257,9 +265,9 @@ public class Player : MonoBehaviour
         foreach (var itemId in itemList)
         {
             int prefabId = -1;
-            for (int i = 0; i < GameManager.Instance.pool.prefabs.Length; i++)
+            for (int i = 0; i < PoolManager.instance.prefabs.Length; i++)
             {
-                if (GameManager.Instance.pool.prefabs[i] == ItemManager.Instance.itemDataArr[itemId].dropItem)
+                if (PoolManager.instance.prefabs[i] == ItemManager.Instance.itemDataArr[itemId].dropItem)
                 {
                     prefabId = i;
                     break;
@@ -271,8 +279,8 @@ public class Player : MonoBehaviour
                 continue;
             }
 
-            GameObject selectedItem = GameManager.Instance.pool.Get(prefabId);
-            selectedItem.transform.parent = GameManager.Instance.pool.dropItemsPool;
+            GameObject selectedItem = PoolManager.instance.Get(prefabId);
+            selectedItem.transform.parent = PoolManager.instance.transform.GetChild(2);
             selectedItem.transform.position = transform.position;
             selectedItem.GetComponent<DropItem>().itemId = itemId;
             selectedItem.GetComponent<DropItem>().Scatter();

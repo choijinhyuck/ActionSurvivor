@@ -1,0 +1,57 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e98d9e62846565046b1b6b440c26e3b2, type: 3}
+  m_Name: Enemy_3_Rock
+  m_EditorClassIdentifier: 
+  enemyName: Rock
+  anim: {fileID: 9100000, guid: 64d181a5bd7930643920bbdc46767016, type: 2}
+  health: 30
+  speed: 7
+  exp: 6
+  mass: 1
+  dropItems:
+  - itemType: 12
+    probability: 0.3
+  - itemType: 13
+    probability: 0.4
+  - itemType: 0
+    probability: 0.025
+  - itemType: 1
+    probability: 0.08
+  - itemType: 3
+    probability: 0.015
+  - itemType: 4
+    probability: 0.05
+  - itemType: 6
+    probability: 0.015
+  - itemType: 7
+    probability: 0.015
+  - itemType: 8
+    probability: 0.015
+  - itemType: 18
+    probability: 0.015
+  - itemType: 19
+    probability: 0.005
+  - itemType: 9
+    probability: 0.045
+  - itemType: 10
+    probability: 0.015
+  - itemType: 11
+    probability: 0.003
+  collPos: {x: 0, y: 0.25}
+  collSize: {x: 0.55, y: 0.55}
+  shadowScale: 0.6
+  shadowOrigin: {x: 0, y: 0.018}
+  shadowFlip: {x: 0, y: 0.018}
+  lookLeft: 1
+  hpBarPos: {x: 0, y: 73.2}
+  hpBarSize: {x: 65, y: 10}

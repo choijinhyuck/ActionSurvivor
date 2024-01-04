@@ -14966,7 +14966,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   stage: {fileID: 0}
   RightUp: {fileID: 7415687105838511171}
-  enemyParent: {fileID: 0}
   enemyData:
   - {fileID: 11400000, guid: 44e28fb4b6125e44e9c8d614535524e2, type: 2}
   - {fileID: 11400000, guid: 2f2f0eee4c1656e46b1b0f3f67ef4cd5, type: 2}
@@ -15051,7 +15050,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9cfd7e30b280c9641982b121d8984613, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  projectilePool: {fileID: 0}
   readyRangeWeapon: 0
   leftTime: 0
 --- !u!1 &4036370201646567990
@@ -25388,7 +25386,6 @@ GameObject:
   - component: {fileID: 7818326043286534329}
   - component: {fileID: 1883881264296609098}
   - component: {fileID: 6809121563169130220}
-  - component: {fileID: 9108079268977488034}
   - component: {fileID: 628140833691418785}
   m_Layer: 3
   m_Name: Player
@@ -25571,7 +25568,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   inputVector: {x: 0, y: 0}
-  scanner: {fileID: 0}
   animCon:
   - {fileID: 9100000, guid: d0a784bd810cdda4586a54d6f5eb6db7, type: 2}
   - {fileID: 9100000, guid: feec99d42c1dfbf468751931e922ab2d, type: 2}
@@ -25602,23 +25598,6 @@ MonoBehaviour:
   isCharging: 0
   isHit: 0
   readyDodge: 0
---- !u!114 &9108079268977488034
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6706167564352726105}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: de5370a9e3801f442beb2398b7274e3d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  scanRange: 7
-  targetLayer:
-    serializedVersion: 2
-    m_Bits: 64
-  nearestTarget: {fileID: 0}
 --- !u!114 &628140833691418785
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -25742,7 +25721,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 4
-  m_Sprite: {fileID: 21300000, guid: 1b59674555bf28749ab7637c5940fdee, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 1322c96e1bd248345929ac6de328517e, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 0.8666667}
   m_FlipX: 0
   m_FlipY: 0
@@ -30737,7 +30716,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 6
-  m_Sprite: {fileID: -1948928870, guid: 64dbe0f89b4ed194caac0022bbd017d9, type: 3}
+  m_Sprite: {fileID: 1868790728, guid: 7895f366951a68f488262eaedaa21e24, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0

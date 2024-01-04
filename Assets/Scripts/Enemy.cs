@@ -275,6 +275,7 @@ public class Enemy : MonoBehaviour
         isHit = false;
     }
 
+
     IEnumerator Dead()
     {
         Color currColor = spriter.color;
@@ -297,7 +298,7 @@ public class Enemy : MonoBehaviour
         currColor.a = 1f;
         spriter.color = currColor;
         gameObject.SetActive(false);
-        
+
     }
 
     void Positioning(EnemyData data)
@@ -338,9 +339,9 @@ public class Enemy : MonoBehaviour
         }
         if (selectedItemId == -1) return;
         int prefabId = -1;
-        for (int i = 0; i < GameManager.Instance.pool.prefabs.Length; i++)
+        for (int i = 0; i < PoolManager.instance.prefabs.Length; i++)
         {
-            if (GameManager.Instance.pool.prefabs[i] == ItemManager.Instance.itemDataArr[selectedItemId].dropItem)
+            if (PoolManager.instance.prefabs[i] == ItemManager.Instance.itemDataArr[selectedItemId].dropItem)
             {
                 prefabId = i;
                 break;
@@ -352,8 +353,8 @@ public class Enemy : MonoBehaviour
             return;
         }
 
-        GameObject selectedItem = GameManager.Instance.pool.Get(prefabId);
-        selectedItem.transform.parent = GameManager.Instance.pool.dropItemsPool;
+        GameObject selectedItem = PoolManager.instance.Get(prefabId);
+        selectedItem.transform.parent = PoolManager.instance.transform.GetChild(2);
         selectedItem.transform.position = transform.position;
         selectedItem.GetComponent<DropItem>().itemId = selectedItemId;
         selectedItem.GetComponent<DropItem>().Init();

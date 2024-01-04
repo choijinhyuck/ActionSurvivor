@@ -47,6 +47,7 @@ MonoBehaviour:
   sceneName: 
   actions: {fileID: -944628639613478452, guid: 7a8bf57f548517145a5d5008f25a86ca, type: 3}
   originPPU: 36
+  fadeInPrefab: {fileID: 3589323735817737528, guid: fd278161f4afbee4facaa1381b830939, type: 3}
   stage: {fileID: 0}
   stageId: -1
   isLive: 0

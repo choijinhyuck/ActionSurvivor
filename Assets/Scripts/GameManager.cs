@@ -20,6 +20,7 @@ public class GameManager : MonoBehaviour
 
     [Header("# Camera")]
     public int originPPU;
+    public GameObject fadeInPrefab;
 
     [Header("# Game Control")]
     public StageManager stage;
@@ -76,9 +77,7 @@ public class GameManager : MonoBehaviour
 
 
     [Header("# Game Object")]
-    public PoolManager pool;
     public Player player;
-    public Result uiResult;
     public GameObject hud;
     public GameObject timer;
     public GameObject killText;
@@ -190,6 +189,25 @@ public class GameManager : MonoBehaviour
                 actions.Disable();
                 break;
 
+            case "Stage_0":
+                GameObject.FindAnyObjectByType<TutorialUI>(FindObjectsInactive.Include).gameObject.SetActive(true);
+                FadeIn();
+                stageId = 0;
+                if (!timer.activeSelf) timer.SetActive(true);
+                if (!killText.activeSelf) killText.SetActive(true);
+                AudioManager.instance.changeBGM(AudioManager.Bgm.Stage0, 0.5f);
+                GameStart();
+                break;
+
+            case "Stage_1":
+                FadeIn();
+                stageId = 1;
+                if (!timer.activeSelf) timer.SetActive(true);
+                if (!killText.activeSelf) killText.SetActive(true);
+                AudioManager.instance.changeBGM(AudioManager.Bgm.Stage1, 0.5f);
+                GameStart();
+                break;
+
             default:
                 if (!timer.activeSelf) timer.SetActive(true);
                 if (!killText.activeSelf) killText.SetActive(true);
@@ -197,6 +215,12 @@ public class GameManager : MonoBehaviour
                 GameStart();
                 break;
         }
+    }
+
+    void FadeIn()
+    {
+        GameObject fadeIn = Instantiate<GameObject>(fadeInPrefab);
+        fadeIn.SetActive(true);
     }
 
     public void ZoomCamera(int targetPPU)
@@ -261,6 +285,8 @@ public class GameManager : MonoBehaviour
     public void OnInventory()
     {
         if (LevelUp.instance.isLevelUp) return;
+        if (GameObject.FindAnyObjectByType<TutorialUI>() is not null) return;
+        if (health < .1f) return;
 
         if (workingInventory)
         {
@@ -342,12 +368,11 @@ public class GameManager : MonoBehaviour
     {
         isLive = false;
         yield return new WaitForSeconds(0.5f);
-        uiResult.gameObject.SetActive(true);
-        uiResult.Lose();
         Stop();
+        BaseUI.Instance.Death();
 
-        AudioManager.instance.PlayBgm(false);
-        AudioManager.instance.PlaySfx(AudioManager.Sfx.Lose);
+        AudioManager.instance.changeBGM(AudioManager.Bgm.Death, .5f);
+        AudioManager.instance.PlayBgm(true);
     }
 
     public void GameVictory()
@@ -359,8 +384,6 @@ public class GameManager : MonoBehaviour
     {
         isLive = false;
         yield return new WaitForSeconds(0.5f);
-        uiResult.gameObject.SetActive(true);
-        uiResult.Win();
         Stop();
 
         AudioManager.instance.PlayBgm(false);

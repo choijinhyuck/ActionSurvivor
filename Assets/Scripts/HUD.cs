@@ -8,7 +8,7 @@ public class HUD : MonoBehaviour
 {
     public enum InfoType
     {
-        Exp, Level, Kill, Time, Health
+        Exp, Level, Kill, Time, Health, EnemyCount, StageName
     }
     public InfoType type;
     public Sprite[] heartImages;
@@ -89,7 +89,15 @@ public class HUD : MonoBehaviour
                 }
                 break;
             case InfoType.Time:
-                float remainTime = GameManager.Instance.maxGameTime - GameManager.Instance.gameTime;
+                float remainTime = Mathf.Max(0f, GameManager.Instance.maxGameTime - GameManager.Instance.gameTime);
+                if (remainTime < 10)
+                {
+                    myText.color = Color.red;
+                }
+                else
+                {
+                    myText.color = Color.white;
+                }
                 int min = Mathf.FloorToInt(remainTime / 60);
                 int sec = Mathf.FloorToInt(remainTime % 60);
                 myText.text = string.Format("{0:D2}:{1:D2}", min, sec);
@@ -118,12 +126,26 @@ public class HUD : MonoBehaviour
                     heartCount++;
                 }
 
-
                 if (GameManager.Instance.player.isHit && !isLosing) StartCoroutine("LoseHeart");
-
 
                 break;
 
+            case InfoType.EnemyCount:
+                if (GameManager.Instance.maxGameTime < GameManager.Instance.gameTime)
+                {
+                    int count = PoolManager.instance.EnemyCount();
+                    GetComponent<Text>().text = $"³²Àº Àû: {count}";
+                }
+                else
+                {
+                    GetComponent<Text>().text = "";
+                }
+                break;
+
+            case InfoType.StageName:
+                if (GetComponent<Text>().text == GameManager.Instance.stage.stageDataArr[GameManager.Instance.stageId].stageName) return;
+                GetComponent<Text>().text = GameManager.Instance.stage.stageDataArr[GameManager.Instance.stageId].stageName;
+                break;
         }
     }
 

@@ -54,9 +54,9 @@ public class Magic : MonoBehaviour
     {
         int prefabId = -1;
         GameObject magicPrefab = magicData.projectile;
-        for (int i = 0; i < GameManager.Instance.pool.prefabs.Length; i++)
+        for (int i = 0; i < PoolManager.instance.prefabs.Length; i++)
         {
-            if (GameManager.Instance.pool.prefabs[i] == magicPrefab)
+            if (PoolManager.instance.prefabs[i] == magicPrefab)
             {
                 prefabId = i;
                 break;
@@ -69,7 +69,7 @@ public class Magic : MonoBehaviour
             return;
         }
 
-        GameObject projectile = GameManager.Instance.pool.Get(prefabId);
+        GameObject projectile = PoolManager.instance.Get(prefabId);
         projectile.transform.parent = projectilePool;
         projectile.transform.position = GameManager.Instance.player.rangeArrow.transform.GetChild(0).position;
         projectile.transform.localRotation = Quaternion.FromToRotation(Vector3.right, magicDir);

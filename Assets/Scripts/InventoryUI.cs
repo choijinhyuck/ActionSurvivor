@@ -1020,7 +1020,10 @@ public class InventoryUI : MonoBehaviour
     // 인벤토리 창에서 아무 버튼도 선택되지 않은 경우에 Menu키 (키보드: Esc, 게임패드: Start)로 빠져나올 수 있도록.
     public void OnMenu()
     {
+        // 인벤토리 UI가 꺼져있고 튜토리얼 도움말도 꺼져있는 경우
         if (!gameObject.activeSelf) return;
+
+        if (GameObject.FindAnyObjectByType<TutorialUI>() is not null) return;
 
         if (GameManager.Instance.workingInventory)
         {

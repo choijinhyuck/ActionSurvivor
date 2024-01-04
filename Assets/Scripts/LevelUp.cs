@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.Rendering;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -18,22 +19,25 @@ public class LevelUp : MonoBehaviour
     public Text firstText;
     public bool isLevelUp;
 
-    Vector3[] textOriginPos;
+    Vector2[] textOriginPos;
     ControllerManager.scheme currentScheme;
     GameObject currentEvent;
 
     private void Awake()
     {
-        if (instance != null)
+        if (instance == null)
         {
-            Destroy(instance.gameObject);
+            instance = this;
         }
-        instance = this;
+        else
+        {
+            Destroy(gameObject);
+        }
 
-        textOriginPos = new Vector3[levelUpText.Length];
+        textOriginPos = new Vector2[levelUpText.Length];
         for (int i = 0; i < textOriginPos.Length; i++)
         {
-            textOriginPos[i] = levelUpText[i].transform.position;
+            textOriginPos[i] = levelUpText[i].GetComponent<RectTransform>().anchoredPosition;
         }
 
         currentScheme = ControllerManager.scheme.Undefined;
@@ -68,7 +72,6 @@ public class LevelUp : MonoBehaviour
         {
             element.gameObject.SetActive(false);
         }
-
         gameObject.SetActive(false);
     }
 
@@ -109,15 +112,15 @@ public class LevelUp : MonoBehaviour
         {
             yield return null;
             timer += Time.unscaledDeltaTime;
-
+            
             // 글자 "레"
             if (timer < .5f)
             {
-                levelUpText[0].transform.localPosition += new Vector3(0f, 5f * Time.unscaledDeltaTime, 0f);
+                levelUpText[0].GetComponent<RectTransform>().anchoredPosition += new Vector2(0f, 5f * Time.unscaledDeltaTime);
             }
             else if (timer < 1f)
             {
-                levelUpText[0].transform.localPosition -= new Vector3(0f, 5f * Time.unscaledDeltaTime, 0f);
+                levelUpText[0].GetComponent<RectTransform>().anchoredPosition -= new Vector2(0f, 5f * Time.unscaledDeltaTime);
             }
 
             // 글자 "벨"
@@ -125,11 +128,11 @@ public class LevelUp : MonoBehaviour
             {
                 if (timer < .6f)
                 {
-                    levelUpText[1].transform.localPosition += new Vector3(0f, 5f * Time.unscaledDeltaTime, 0f);
+                    levelUpText[1].GetComponent<RectTransform>().anchoredPosition += new Vector2(0f, 5f * Time.unscaledDeltaTime);
                 }
                 else if (timer < 1.1f)
                 {
-                    levelUpText[1].transform.localPosition -= new Vector3(0f, 5f * Time.unscaledDeltaTime, 0f);
+                    levelUpText[1].GetComponent<RectTransform>().anchoredPosition -= new Vector2(0f, 5f * Time.unscaledDeltaTime);
                 }
             }
 
@@ -138,11 +141,11 @@ public class LevelUp : MonoBehaviour
             {
                 if (timer < .7f)
                 {
-                    levelUpText[2].transform.localPosition += new Vector3(0f, 5f * Time.unscaledDeltaTime, 0f);
+                    levelUpText[2].GetComponent<RectTransform>().anchoredPosition += new Vector2(0f, 5f * Time.unscaledDeltaTime);
                 }
                 else if (timer < 1.2f)
                 {
-                    levelUpText[2].transform.localPosition -= new Vector3(0f, 5f * Time.unscaledDeltaTime, 0f);
+                    levelUpText[2].GetComponent<RectTransform>().anchoredPosition -= new Vector2(0f, 5f * Time.unscaledDeltaTime);
                 }
             }
 
@@ -151,11 +154,11 @@ public class LevelUp : MonoBehaviour
             {
                 if (timer < .8f)
                 {
-                    levelUpText[3].transform.localPosition += new Vector3(0f, 5f * Time.unscaledDeltaTime, 0f);
+                    levelUpText[3].GetComponent<RectTransform>().anchoredPosition += new Vector2(0f, 5f * Time.unscaledDeltaTime);
                 }
                 else if (timer < 1.3f)
                 {
-                    levelUpText[3].transform.localPosition -= new Vector3(0f, 5f * Time.unscaledDeltaTime, 0f);
+                    levelUpText[3].GetComponent<RectTransform>().anchoredPosition -= new Vector2(0f, 5f * Time.unscaledDeltaTime);
                 }
                 // 모든 글자가 왕복을 마치면 timer 초기화 및 위치 초기화
                 else
@@ -163,7 +166,7 @@ public class LevelUp : MonoBehaviour
                     timer = 0f;
                     for (int i = 0; i < textOriginPos.Length; i++)
                     {
-                        levelUpText[i].transform.position = textOriginPos[i];
+                        levelUpText[i].GetComponent<RectTransform>().anchoredPosition = textOriginPos[i];
                     }
                 }
             }
@@ -208,7 +211,7 @@ public class LevelUp : MonoBehaviour
     {
         for (int i = 0; i < textOriginPos.Length; i++)
         {
-            levelUpText[i].transform.position = textOriginPos[i];
+            levelUpText[i].GetComponent<RectTransform>().anchoredPosition = textOriginPos[i];
         }
 
         foreach (var element in GetComponentsInChildren<Transform>(true))

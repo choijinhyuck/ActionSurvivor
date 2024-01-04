@@ -13,7 +13,7 @@ public class AudioManager : MonoBehaviour
 
     public enum Bgm
     {
-        Camp, Stage0, Stage1, Stage2, Title, Boss
+        Camp, Stage0, Stage1, Stage2, Title, Boss, Death
     }
 
     [Header("#SFC")]

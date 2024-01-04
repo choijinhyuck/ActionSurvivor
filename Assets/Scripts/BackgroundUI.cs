@@ -109,7 +109,7 @@ public class BackgroundUI : MonoBehaviour
         isNewGame = true;
         buttons[0].GetComponent<Animator>().SetBool("PressedByScript", false);
         AudioManager.instance.PlaySfx(AudioManager.Sfx.Start);
-        GameManager.Instance.sceneName = "Camp";
+        GameManager.Instance.sceneName = "Stage_0";
         StartCoroutine(ToLoading());
     }
 
