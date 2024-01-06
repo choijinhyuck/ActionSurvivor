@@ -23,6 +23,8 @@ public class BackgroundUI : MonoBehaviour
 
     private void Start()
     {
+        if (InventoryUI.instance is not null && InventoryUI.instance.gameObject.activeSelf) InventoryUI.instance.gameObject.SetActive(false);
+
         buttons[1].interactable = PlayerPrefs.HasKey("maxInventory") ? true : false;
         EventSystem.current.SetSelectedGameObject(buttons[selectedId].gameObject);
     }
@@ -107,25 +109,33 @@ public class BackgroundUI : MonoBehaviour
     {
         if (isNewGame) return;
         isNewGame = true;
-        buttons[0].GetComponent<Animator>().SetBool("PressedByScript", false);
+        StartCoroutine(Press());
+        //buttons[0].GetComponent<Animator>().SetBool("PressedByScript", false);
         AudioManager.instance.PlaySfx(AudioManager.Sfx.Start);
         GameManager.Instance.sceneName = "Stage_0";
-        StartCoroutine(ToLoading());
+        GameManager.Instance.FadeOut();
+        //StartCoroutine(ToLoading());
     }
 
-    IEnumerator ToLoading()
+    IEnumerator Press()
     {
-        Color color = new Color(0f, 0f, 0f, 0f);
-        float timer = 0f;
-        while (timer < 1f)
-        {
-            yield return null;
-            timer += Time.unscaledDeltaTime;
-            color.a = timer;
-            fadeOut.color = color;
-        }
-        SceneManager.LoadScene("Loading");
+        yield return null;
+        buttons[0].GetComponent<Animator>().SetBool("PressedByScript", false);
     }
+
+    //IEnumerator ToLoading()
+    //{
+    //    Color color = new Color(0f, 0f, 0f, 0f);
+    //    float timer = 0f;
+    //    while (timer < 1f)
+    //    {
+    //        yield return null;
+    //        timer += Time.unscaledDeltaTime;
+    //        color.a = timer;
+    //        fadeOut.color = color;
+    //    }
+    //    SceneManager.LoadScene("Loading");
+    //}
 
     public void Exit()
     {

@@ -36,11 +36,15 @@ public class LoadingUI : MonoBehaviour
 
     private void Start()
     {
+        if (InventoryUI.instance is not null && InventoryUI.instance.gameObject.activeSelf) InventoryUI.instance.gameObject.SetActive(false);
+
         movingGuy.anchoredPosition = new Vector2(leftEnd, posY);
         loadingBar.value = 0f;
         StartCoroutine(Loading());
         isLoading.text = loadingText[0];
         loadingPercentage.text = string.Format("{0}%", 0);
+
+        GameManager.Instance.player.gameObject.SetActive(false);
     }
 
     IEnumerator Loading()

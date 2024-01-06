@@ -39,12 +39,47 @@ public class StorageChest : MonoBehaviour
         destroyAction = GameManager.Instance.actions.FindActionMap("UI").FindAction("Destroy");
         equipAction = GameManager.Instance.actions.FindActionMap("UI").FindAction("Equip");
 
-        openAction.performed += _ => Open(ActionType.Open);
-        inventoryAction.performed += _ => Open(ActionType.Inventory);
-        cancelAction.performed += _ => storageUI.OnCancel();
-        menuAction.performed += _ => storageUI.OnMenu();
-        destroyAction.performed += _ => storageUI.DestroyItem();
-        equipAction.performed += _ => storageUI.OnStore();
+        openAction.performed += OpenHandler;
+        inventoryAction.performed += InventoryHandler;
+        cancelAction.performed += CancelHandler;
+        menuAction.performed += MenuHandler;
+        destroyAction.performed += DestroyHandler;
+        equipAction.performed += EquipHandler;
+    }
+
+    void OpenHandler(InputAction.CallbackContext context)
+    {
+        Open(ActionType.Open);
+    }
+    void InventoryHandler(InputAction.CallbackContext context)
+    {
+        Open(ActionType.Inventory);
+    }
+    void CancelHandler(InputAction.CallbackContext context)
+    {
+        storageUI.OnCancel();
+    }
+    void MenuHandler(InputAction.CallbackContext context)
+    {
+        storageUI.OnMenu();
+    }
+    void DestroyHandler(InputAction.CallbackContext context)
+    {
+        storageUI.DestroyItem();
+    }
+    void EquipHandler(InputAction.CallbackContext context)
+    {
+        storageUI.OnStore();
+    }
+
+    private void OnDestroy()
+    {
+        openAction.performed -= OpenHandler;
+        inventoryAction.performed -= InventoryHandler;
+        cancelAction.performed -= CancelHandler;
+        menuAction.performed -= MenuHandler;
+        destroyAction.performed -= DestroyHandler;
+        equipAction.performed -= EquipHandler;
     }
 
     private void FixedUpdate()

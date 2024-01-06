@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class HUD : MonoBehaviour
@@ -134,7 +135,14 @@ public class HUD : MonoBehaviour
                 if (GameManager.Instance.maxGameTime < GameManager.Instance.gameTime)
                 {
                     int count = PoolManager.instance.EnemyCount();
-                    GetComponent<Text>().text = $"남은 적: {count}";
+                    if (count == 0)
+                    {
+                        GetComponent<Text>().text = "";
+                    }
+                    else
+                    {
+                        GetComponent<Text>().text = $"남은 적: {count}";
+                    }
                 }
                 else
                 {
@@ -143,6 +151,15 @@ public class HUD : MonoBehaviour
                 break;
 
             case InfoType.StageName:
+                if (SceneManager.GetActiveScene().name == "Camp")
+                {
+                    if (GetComponent<Text>().text != "야영지")
+                    {
+                        GetComponent<Text>().text = "야영지";
+                    }
+                    return;
+                }
+
                 if (GetComponent<Text>().text == GameManager.Instance.stage.stageDataArr[GameManager.Instance.stageId].stageName) return;
                 GetComponent<Text>().text = GameManager.Instance.stage.stageDataArr[GameManager.Instance.stageId].stageName;
                 break;

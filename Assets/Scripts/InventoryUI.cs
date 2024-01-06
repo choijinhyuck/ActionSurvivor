@@ -9,6 +9,8 @@ using UnityEngine.UI;
 
 public class InventoryUI : MonoBehaviour
 {
+    public static InventoryUI instance;
+
     public Canvas baseUI;
     public Text itemName;
     public Text itemDesc;
@@ -35,6 +37,15 @@ public class InventoryUI : MonoBehaviour
 
     private void Awake()
     {
+        if (instance == null)
+        {
+            instance = this;
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+
         buttons = GetComponentsInChildren<Button>(true).ToList<Button>();
         itemImages = new Image[buttons.Count];
         canvases = new Canvas[buttons.Count];
@@ -1183,7 +1194,29 @@ public class InventoryUI : MonoBehaviour
         }
         else
         {
-            
+            // 장비 슬롯이 비어 있는 경우
+            switch (selectedId)
+            {
+                case 24:
+                    if (GameManager.Instance.mainWeaponItem[GameManager.Instance.playerId] == -1) return;
+                    break;
+
+                case 25:
+                    if (GameManager.Instance.necklaceItem[GameManager.Instance.playerId] == -1) return;
+                    break;
+
+                case 26:
+                    if (GameManager.Instance.shoesItem[GameManager.Instance.playerId] == -1) return;
+                    break;
+
+                case 27:
+                    if (GameManager.Instance.rangeWeaponItem == -1) return;
+                    break;
+
+                case 28:
+                    if (GameManager.Instance.magicItem == -1) return;
+                    break;
+            }
 
             int selectedSlot = -1;
             for (int i = 0; i < GameManager.Instance.maxInventory; i++)
@@ -1197,29 +1230,6 @@ public class InventoryUI : MonoBehaviour
             // 인벤토리에 자리가 없는 경우
             if (selectedSlot == -1)
             {
-                switch (selectedId)
-                {
-                    case 24:
-                        if (GameManager.Instance.mainWeaponItem[GameManager.Instance.playerId] == -1) return;
-                        break;
-
-                    case 25:
-                        if (GameManager.Instance.necklaceItem[GameManager.Instance.playerId] == -1) return;
-                        break;
-
-                    case 26:
-                        if (GameManager.Instance.shoesItem[GameManager.Instance.playerId] == -1) return;
-                        break;
-
-                    case 27:
-                        if (GameManager.Instance.rangeWeaponItem == -1) return;
-                        break;
-
-                    case 28:
-                        if (GameManager.Instance.magicItem == -1) return;
-                        break;
-                }
-
                 AudioManager.instance.PlaySfx(AudioManager.Sfx.Fail);
                 help.Show(InventoryControlHelp.ActionType.FullMsg);
                 return;

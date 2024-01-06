@@ -10,6 +10,8 @@ public class PoolManager : MonoBehaviour
 
     List<GameObject>[] pools;
 
+    bool isVictory;
+
     private void Awake()
     {
         if (instance == null)
@@ -28,11 +30,22 @@ public class PoolManager : MonoBehaviour
         {
             pools[i] = new List<GameObject>();
         }
+
+        isVictory = false;
     }
 
     private void OnEnable()
     {
         SceneManager.sceneLoaded += OnSceneLoaded;
+    }
+
+    private void Update()
+    {
+        if (!isVictory && GameManager.Instance.stageId != -1 && GameManager.Instance.gameTime > GameManager.Instance.maxGameTime && EnemyCount() == 0)
+        {
+            isVictory = true;
+            GameManager.Instance.GameVictory();
+        }
     }
 
     void OnSceneLoaded(Scene scene, LoadSceneMode mode)
@@ -46,6 +59,8 @@ public class PoolManager : MonoBehaviour
             }
             pools[i] = new List<GameObject>();
         }
+
+        isVictory = false;
     }
 
     public GameObject Get(int index)

@@ -195,6 +195,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 0}
     - target: {fileID: 1965660839262481242, guid: ed51b23643e714e4fbe7884f700a1496, type: 3}
+      propertyPath: stageName
+      value: 
+      objectReference: {fileID: 1230659267}
+    - target: {fileID: 1965660839262481242, guid: ed51b23643e714e4fbe7884f700a1496, type: 3}
       propertyPath: inventoryUI
       value: 
       objectReference: {fileID: 1071864778}
@@ -1251,6 +1255,11 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 2454044450004867321, guid: 894d87468ee736e4ab3d884e72c442de, type: 3}
   m_PrefabInstance: {fileID: 1230659265}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1230659267 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4158333099280476685, guid: 894d87468ee736e4ab3d884e72c442de, type: 3}
+  m_PrefabInstance: {fileID: 1230659265}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1289147184
 GameObject:
   m_ObjectHideFlags: 0
@@ -1302,7 +1311,7 @@ Animator:
   m_Avatar: {fileID: 0}
   m_Controller: {fileID: 9100000, guid: d79e9a8588788d84996df54cfffa6498, type: 2}
   m_CullingMode: 0
-  m_UpdateMode: 0
+  m_UpdateMode: 2
   m_ApplyRootMotion: 0
   m_LinearVelocityBlending: 0
   m_StabilizeFeet: 0

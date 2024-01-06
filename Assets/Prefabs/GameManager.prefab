@@ -48,8 +48,9 @@ MonoBehaviour:
   actions: {fileID: -944628639613478452, guid: 7a8bf57f548517145a5d5008f25a86ca, type: 3}
   originPPU: 36
   fadeInPrefab: {fileID: 3589323735817737528, guid: fd278161f4afbee4facaa1381b830939, type: 3}
+  fadeOutPrefab: {fileID: 3589323735817737528, guid: 2df77333cac141f4cabc883d69857a51, type: 3}
   stage: {fileID: 0}
-  stageId: -1
+  stageId: 0
   isLive: 0
   gameTime: 0
   maxGameTime: 0
@@ -98,9 +99,8 @@ MonoBehaviour:
   shoesItem: 
   rangeWeaponItem: 0
   magicItem: 0
-  pool: {fileID: 0}
   player: {fileID: 0}
-  uiResult: {fileID: 0}
   hud: {fileID: 0}
   timer: {fileID: 0}
   killText: {fileID: 0}
+  stageName: {fileID: 0}

@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class TutorialUI : MonoBehaviour
@@ -17,8 +18,13 @@ public class TutorialUI : MonoBehaviour
     {
         closeAction = actions.FindActionMap("UI").FindAction("Menu");
         closeAction2 = actions.FindActionMap("UI").FindAction("Cancel");
-        closeAction.performed += _ => Close();
-        closeAction2.performed += _ => Close();
+        closeAction.performed += CloseHandler;
+        closeAction2.performed += CloseHandler;
+    }
+
+    void CloseHandler(InputAction.CallbackContext context)
+    {
+        Close();
     }
 
     // 타이틀 화면에서 바로 Stage 0 씬으로 온, 새 게임인 경우
@@ -27,6 +33,12 @@ public class TutorialUI : MonoBehaviour
     {
         AudioManager.instance.PlayBgm(false);
         GameManager.Instance.Stop();
+    }
+
+    private void OnDestroy()
+    {
+        closeAction.performed -= CloseHandler;
+        closeAction2.performed -= CloseHandler;
     }
 
     private void Update()

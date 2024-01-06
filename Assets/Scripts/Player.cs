@@ -10,6 +10,7 @@ using UnityEngine.UIElements;
 
 public class Player : MonoBehaviour
 {
+    public static Player instance;
 
     public Vector2 inputVector;
     public RuntimeAnimatorController[] animCon;
@@ -53,29 +54,22 @@ public class Player : MonoBehaviour
 
     private void Awake()
     {
-        Player[] scripts = GameObject.FindObjectsByType<Player>(FindObjectsSortMode.None);
-        if (scripts.Length > 1)
+        if (instance == null)
         {
-            Destroy(this.gameObject);
+            instance = this;
         }
-        DontDestroyOnLoad(this.gameObject);
-        //Key 입력 처리
+        else
+        {
+            Destroy(gameObject);
+        }
+        DontDestroyOnLoad(gameObject);
+
 
         // 코루틴 사용하여 chargeTimer 누적 시킨 후 
         moveAction = actions.FindActionMap("Player").FindAction("Move");
         fireAction = actions.FindActionMap("Player").FindAction("Fire");
         dodgeAction = actions.FindActionMap("Player").FindAction("Dodge");
         rangeWeaponAction = actions.FindActionMap("Player").FindAction("RangeWeapon");
-
-        fireAction.started += _ => StartCharging();
-        fireAction.performed += _ => ChargedFire(0);
-        fireAction.canceled += _ => ChargedFire(1);
-
-        dodgeAction.performed += _ => OnDodge();
-
-        rangeWeaponAction.started += _ => StartRangeWeapon();
-        rangeWeaponAction.performed += _ => OnRangeWeapon(canRangeFire);
-        rangeWeaponAction.canceled += _ => OnRangeWeapon(canRangeFire);
 
         chargeTimer = 0f;
 
@@ -85,6 +79,8 @@ public class Player : MonoBehaviour
         spriteRenderer = GetComponent<SpriteRenderer>();
         waitSec = new WaitForSeconds(.01f);
         waitFix = new WaitForFixedUpdate();
+
+        PlayerActionAdd();
     }
 
     private void OnEnable()
@@ -106,6 +102,8 @@ public class Player : MonoBehaviour
         }
 
 
+        if (GameManager.Instance is null) return;
+
         anim.runtimeAnimatorController = animCon[GameManager.Instance.playerId];
         if (GameManager.Instance.playerId == 0)
         {
@@ -115,6 +113,11 @@ public class Player : MonoBehaviour
         {
             shadow.gameObject.SetActive(true);
         }
+    }
+
+    private void OnDestroy()
+    {
+        PlayerActionRemove();
     }
 
     private void FixedUpdate()
@@ -179,9 +182,7 @@ public class Player : MonoBehaviour
 
     IEnumerator DeadCoroutine()
     {
-        var transposer = GameObject.FindGameObjectWithTag("VirtualCamera").GetComponent<CinemachineVirtualCamera>().GetCinemachineComponent<CinemachineTransposer>();
-        transposer.m_XDamping = 0f;
-        transposer.m_YDamping = 0f;
+        GameManager.Instance.CameraDamping(0f);
 
         int targetPPU = 66;
         float timer = 0f;
@@ -198,8 +199,7 @@ public class Player : MonoBehaviour
 
         Time.timeScale = 1f;
 
-        transposer.m_XDamping = 1f;
-        transposer.m_YDamping = 1f;
+        GameManager.Instance.CameraDamping();
 
         // 부활의 목걸이 착용 시 목걸이는 파괴되고 죽지 않고 체력 +2 획득
         // 깜빡이면서 그동안 무적이 되는 코루틴 생성
@@ -216,7 +216,7 @@ public class Player : MonoBehaviour
     {
         StartCoroutine(DeadEndCoroutine());
     }
-    
+
     IEnumerator DeadEndCoroutine()
     {
         List<int> itemList = new List<int>();
@@ -364,6 +364,7 @@ public class Player : MonoBehaviour
     void OnDodge()
     {
         if (!GameManager.Instance.isLive) return;
+        if (GameManager.Instance.health < .1) return;
         if (inputVector.magnitude == 0) return;
         if (anim.GetCurrentAnimatorStateInfo(0).IsName("Attack") || anim.GetCurrentAnimatorStateInfo(0).IsName("SkillMotion") || anim.GetCurrentAnimatorStateInfo(0).IsName("Dead") || isHit || isDodge)
             return;
@@ -443,6 +444,7 @@ public class Player : MonoBehaviour
     void StartCharging()
     {
         if (!GameManager.Instance.isLive) return;
+        if (GameManager.Instance.health < .1) return;
         if (anim.GetCurrentAnimatorStateInfo(0).IsName("Attack") || anim.GetCurrentAnimatorStateInfo(0).IsName("SkillMotion") || anim.GetCurrentAnimatorStateInfo(0).IsName("Dead") || isHit)
             return;
 
@@ -510,6 +512,8 @@ public class Player : MonoBehaviour
     /// </summary>
     void ChargedFire(int status)
     {
+        if (GameManager.Instance.health < .1) return;
+
         if (status == 1)
         {
             // 차징 중 interrupt로 인해 cancel 된 경우? performed와 동일한 작업
@@ -791,6 +795,7 @@ public class Player : MonoBehaviour
         //if (anim.GetCurrentAnimatorStateInfo(0).IsName("Dead") || isHit)
         //    return;
         if (!GameManager.Instance.isLive) return;
+        if (GameManager.Instance.health < .1) return;
         // 장비하고 있으면 실행
         if (GameManager.Instance.rangeWeaponItem == -1)
             return;
@@ -845,6 +850,7 @@ public class Player : MonoBehaviour
 
     void OnRangeWeapon(bool ready)
     {
+        if (GameManager.Instance.health < .1) return;
         if (ready && GameManager.Instance.isLive)
         {
             rangeWeapon.Fire(rangeDir);
@@ -853,5 +859,60 @@ public class Player : MonoBehaviour
         StopCoroutine("RangeArrow");
         rangeArrow.transform.localRotation = Quaternion.identity;
         rangeArrow.SetActive(false);
+    }
+
+    public void PlayerActionRemove()
+    {
+        fireAction.started -= FireStartHandler;
+        fireAction.performed -= FirePerformedHandler;
+        fireAction.canceled -= FireCancelHandler;
+
+        dodgeAction.performed -= DodgePerformedHandler;
+
+        rangeWeaponAction.started -= RangeStartHandler;
+        rangeWeaponAction.performed -= RangePerformedHandler;
+        rangeWeaponAction.canceled -= RangeCancelHandler;
+    }
+
+    public void PlayerActionAdd()
+    {
+        fireAction.started += FireStartHandler;
+        fireAction.performed += FirePerformedHandler;
+        fireAction.canceled += FireCancelHandler;
+
+        dodgeAction.performed += DodgePerformedHandler;
+
+        rangeWeaponAction.started += RangeStartHandler;
+        rangeWeaponAction.performed += RangePerformedHandler;
+        rangeWeaponAction.canceled += RangeCancelHandler;
+    }
+
+    void FireStartHandler(InputAction.CallbackContext context)
+    {
+        StartCharging();
+    }
+    void FirePerformedHandler(InputAction.CallbackContext context)
+    {
+        ChargedFire(0);
+    }
+    void FireCancelHandler(InputAction.CallbackContext context)
+    {
+        ChargedFire(1);
+    }
+    void DodgePerformedHandler(InputAction.CallbackContext context)
+    {
+        OnDodge();
+    }
+    void RangeStartHandler(InputAction.CallbackContext context)
+    {
+        StartRangeWeapon();
+    }
+    void RangePerformedHandler(InputAction.CallbackContext context)
+    {
+        OnRangeWeapon(canRangeFire);
+    }
+    void RangeCancelHandler(InputAction.CallbackContext context)
+    {
+        OnRangeWeapon(canRangeFire);
     }
 }

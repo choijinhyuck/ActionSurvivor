@@ -27,10 +27,36 @@ public class UpgradeNPC : MonoBehaviour
         cancelAction = GameManager.Instance.actions.FindActionMap("UI").FindAction("Cancel");
         menuAction = GameManager.Instance.actions.FindActionMap("UI").FindAction("Menu");
 
-        openAction.performed += _ => Open(ActionType.Open);
-        inventoryAction.performed += _ => Open(ActionType.Inventory);
-        cancelAction.performed += _ => upgradeUI.OnCancel();
-        menuAction.performed += _ => upgradeUI.OnMenu();
+        openAction.performed += OpenHandler;
+        inventoryAction.performed += InventoryHandler;
+        cancelAction.performed += CancelHandler;
+        menuAction.performed += MenuHandler;
+    }
+    
+    void OpenHandler(InputAction.CallbackContext context)
+    {
+        Open(ActionType.Open);
+    }
+    void InventoryHandler(InputAction.CallbackContext context)
+    {
+        Open(ActionType.Inventory);
+    }
+    void CancelHandler(InputAction.CallbackContext context)
+    {
+        upgradeUI.OnCancel();
+    }
+    void MenuHandler(InputAction.CallbackContext context)
+    {
+        upgradeUI.OnMenu();
+    }
+
+
+    private void OnDestroy()
+    {
+        openAction.performed -= OpenHandler;
+        inventoryAction.performed -= InventoryHandler;
+        cancelAction.performed -= CancelHandler;
+        menuAction.performed -= MenuHandler;
     }
 
     private void FixedUpdate()

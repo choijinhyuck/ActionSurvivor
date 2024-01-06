@@ -1,3 +1,4 @@
+using Cinemachine;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -21,6 +22,7 @@ public class GameManager : MonoBehaviour
     [Header("# Camera")]
     public int originPPU;
     public GameObject fadeInPrefab;
+    public GameObject fadeOutPrefab;
 
     [Header("# Game Control")]
     public StageManager stage;
@@ -81,6 +83,7 @@ public class GameManager : MonoBehaviour
     public GameObject hud;
     public GameObject timer;
     public GameObject killText;
+    public GameObject stageName;
 
     InputAction inventoryAction;
     InputAction menuAction;
@@ -140,12 +143,7 @@ public class GameManager : MonoBehaviour
         equipAction = actions.FindActionMap("UI").FindAction("Equip");
         destroyAction = actions.FindActionMap("UI").FindAction("Destroy");
 
-        inventoryAction.performed += _ => OnInventory();
-        menuAction.performed += _ => inventoryUI.OnMenu();
-        cancelAction.performed += _ => inventoryUI.OnCancel();
-        equipAction.performed += _ => inventoryUI.EquipUnequip();
-        destroyAction.performed += _ => inventoryUI.DestroyItem();
-
+        GameManagerActionAdd();
     }
 
 
@@ -162,65 +160,100 @@ public class GameManager : MonoBehaviour
         workingInventory = false;
     }
 
+    private void OnDestroy()
+    {
+        GameManagerActionRemove();
+    }
 
     void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
         switch (scene.name)
         {
-            case "Camp":
-                if (timer.activeSelf) timer.SetActive(false);
-                if (killText.activeSelf) killText.SetActive(false);
-                player.transform.position = new Vector3(0, -3, 0);
-                AudioManager.instance.changeBGM(AudioManager.Bgm.Camp, 0.3f);
-                GameStart();
-                break;
-
             case "Title":
-                if (hud.activeSelf) hud.SetActive(false);
+                stageId = -1;
+                FadeIn();
+                player.transform.position = new Vector3(0, 0, 0);
                 player.gameObject.SetActive(true);
-                AudioManager.instance.changeBGM(AudioManager.Bgm.Title, 0.3f);
-                AudioManager.instance.PlayBgm(true);
+                if (hud.activeSelf) hud.SetActive(false);
+                BGMInit(AudioManager.Bgm.Title, .3f);
+                ZoomCamera();
+                CameraDamping(0f);
                 actions.Disable();
                 break;
 
             case "Loading":
+                stageId = -1;
+                player.transform.position = new Vector3(0, 0, 0);
+                player.gameObject.SetActive(true);
                 if (hud.activeSelf) hud.SetActive(false);
                 AudioManager.instance.PlayBgm(false);
+                CameraDamping(0f);
                 actions.Disable();
                 break;
 
-            case "Stage_0":
-                GameObject.FindAnyObjectByType<TutorialUI>(FindObjectsInactive.Include).gameObject.SetActive(true);
+            case "Camp":
+                stageId = -1;
                 FadeIn();
+                player.gameObject.SetActive(false);
+                if (!stageName.activeSelf) stageName.SetActive(true);
+                if (timer.activeSelf) timer.SetActive(false);
+                if (killText.activeSelf) killText.SetActive(false);
+                player.transform.position = new Vector3(0, -3, 0);
+                BGMInit(AudioManager.Bgm.Camp, .3f);
+                ZoomCamera();
+                CameraDamping(0f);
+                GameStart();
+                break;
+
+            case "Stage_0":
                 stageId = 0;
+                FadeIn();
+                player.transform.position = new Vector3(0, 0, 0);
+                player.gameObject.SetActive(false);
+                GameObject.FindAnyObjectByType<TutorialUI>(FindObjectsInactive.Include).gameObject.SetActive(true);
+                if (!stageName.activeSelf) stageName.SetActive(true);
                 if (!timer.activeSelf) timer.SetActive(true);
                 if (!killText.activeSelf) killText.SetActive(true);
-                AudioManager.instance.changeBGM(AudioManager.Bgm.Stage0, 0.5f);
+                AudioManager.instance.changeBGM(AudioManager.Bgm.Stage0, .5f);
+                //BGMInit(AudioManager.Bgm.Stage0, .5f);
+                ZoomCamera();
+                CameraDamping(0f);
                 GameStart();
                 break;
 
             case "Stage_1":
-                FadeIn();
                 stageId = 1;
+                FadeIn();
+                player.transform.position = new Vector3(0, 0, 0);
+                player.gameObject.SetActive(false);
+                if (stageName.activeSelf) stageName.SetActive(true);
                 if (!timer.activeSelf) timer.SetActive(true);
                 if (!killText.activeSelf) killText.SetActive(true);
-                AudioManager.instance.changeBGM(AudioManager.Bgm.Stage1, 0.5f);
-                GameStart();
-                break;
-
-            default:
-                if (!timer.activeSelf) timer.SetActive(true);
-                if (!killText.activeSelf) killText.SetActive(true);
-                AudioManager.instance.changeBGM(AudioManager.Bgm.Stage0, 0.5f);
+                BGMInit(AudioManager.Bgm.Stage1, .5f);
+                ZoomCamera();
+                CameraDamping(0f);
                 GameStart();
                 break;
         }
+    }
+
+    void BGMInit(AudioManager.Bgm BgmType, float volume)
+    {
+        AudioManager.instance.EffectBgm(false);
+        AudioManager.instance.changeBGM(BgmType, volume);
+        AudioManager.instance.PlayBgm(true);
     }
 
     void FadeIn()
     {
         GameObject fadeIn = Instantiate<GameObject>(fadeInPrefab);
         fadeIn.SetActive(true);
+    }
+
+    public void FadeOut()
+    {
+        GameObject fadeOut = Instantiate<GameObject>(fadeOutPrefab);
+        fadeOut.SetActive(true);
     }
 
     public void ZoomCamera(int targetPPU)
@@ -233,6 +266,12 @@ public class GameManager : MonoBehaviour
         Camera.main.transform.GetComponent<PixelPerfectCamera>().assetsPPU = originPPU;
     }
 
+    public void CameraDamping(float value = 1f)
+    {
+        var transposer = VirtualCamera.instance.GetComponent<CinemachineVirtualCamera>().GetCinemachineComponent<CinemachineTransposer>();
+        transposer.m_XDamping = value;
+        transposer.m_YDamping = value;
+    }
 
     private void Update()
     {
@@ -240,12 +279,6 @@ public class GameManager : MonoBehaviour
             return;
 
         gameTime += Time.deltaTime;
-
-        //if (gameTime > maxGameTime)
-        //{
-        //    gameTime = maxGameTime;
-        //    GameVictory();
-        //}
     }
 
     public void StatusUpdate()
@@ -287,6 +320,7 @@ public class GameManager : MonoBehaviour
         if (LevelUp.instance.isLevelUp) return;
         if (GameObject.FindAnyObjectByType<TutorialUI>() is not null) return;
         if (health < .1f) return;
+        if (BaseUI.Instance.victory.gameObject.activeSelf) return;
 
         if (workingInventory)
         {
@@ -377,21 +411,11 @@ public class GameManager : MonoBehaviour
 
     public void GameVictory()
     {
-        StartCoroutine(GameVictoryRoutine());
-    }
-
-    IEnumerator GameVictoryRoutine()
-    {
         isLive = false;
-        yield return new WaitForSeconds(0.5f);
         Stop();
-
-        AudioManager.instance.PlayBgm(false);
+        AudioManager.instance.PauseBGM(true);
         AudioManager.instance.PlaySfx(AudioManager.Sfx.Win);
-    }
-    public void GameRetry()
-    {
-        SceneManager.LoadScene(0);
+        BaseUI.Instance.Victory();
     }
 
     public void GameQuit()
@@ -454,5 +478,68 @@ public class GameManager : MonoBehaviour
     {
         isLive = true;
         Time.timeScale = 1;
+    }
+
+    void OnMenu()
+    {
+        if (InventoryUI.instance is null) return;
+        InventoryUI.instance.OnMenu();
+    }
+
+    void OnCancel()
+    {
+        if (InventoryUI.instance is null) return;
+        InventoryUI.instance.OnCancel();
+    }
+
+    void EquipUnequip()
+    {
+        if (InventoryUI.instance is null) return;
+        InventoryUI.instance.EquipUnequip();
+    }
+
+    void DestroyItem()
+    {
+        if (InventoryUI.instance is null) return;
+        InventoryUI.instance.DestroyItem();
+    }
+
+    public void GameManagerActionRemove()
+    {
+        inventoryAction.performed -= InventoryHandler;
+        menuAction.performed -= MenuHandler;
+        cancelAction.performed -= CancelHandler;
+        equipAction.performed -= EquipHandler;
+        destroyAction.performed -= DestroyHandler;
+    }
+
+    public void GameManagerActionAdd()
+    {
+        inventoryAction.performed += InventoryHandler;
+        menuAction.performed += MenuHandler;
+        cancelAction.performed += CancelHandler;
+        equipAction.performed += EquipHandler;
+        destroyAction.performed += DestroyHandler;
+    }
+
+    void InventoryHandler(InputAction.CallbackContext context)
+    {
+        OnInventory();
+    }
+    void MenuHandler(InputAction.CallbackContext context)
+    {
+        OnMenu();
+    }
+    void CancelHandler(InputAction.CallbackContext context)
+    {
+        OnCancel();
+    }
+    void EquipHandler(InputAction.CallbackContext context)
+    {
+        EquipUnequip();
+    }
+    void DestroyHandler(InputAction.CallbackContext context)
+    {
+        DestroyItem();
     }
 }
