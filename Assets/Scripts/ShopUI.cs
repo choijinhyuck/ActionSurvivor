@@ -77,7 +77,7 @@ public class ShopUI : MonoBehaviour
             buySellConfirm.transform.parent.gameObject.SetActive(false);
         }
 
-        for (int i = 0; i < GameManager.Instance.maxInventory; i++)
+        for (int i = 0; i < GameManager.instance.maxInventory; i++)
         {
             buttons[i].gameObject.SetActive(true);
         }
@@ -131,7 +131,7 @@ public class ShopUI : MonoBehaviour
 
         if (selectedId < 24)
         {
-            if (GameManager.Instance.inventoryItemsId[selectedId] == -1)
+            if (GameManager.instance.inventoryItemsId[selectedId] == -1)
             {
                 itemName.text = "";
                 itemDesc.text = "";
@@ -141,11 +141,11 @@ public class ShopUI : MonoBehaviour
             }
             else
             {
-                itemName.text = ItemManager.Instance.itemDataArr[GameManager.Instance.inventoryItemsId[selectedId]].itemName;
-                itemDesc.text = ItemManager.Instance.itemDataArr[GameManager.Instance.inventoryItemsId[selectedId]].itemDesc;
-                itemEffect.text = ItemManager.Instance.itemDataArr[GameManager.Instance.inventoryItemsId[selectedId]].itemEffect;
+                itemName.text = ItemManager.Instance.itemDataArr[GameManager.instance.inventoryItemsId[selectedId]].itemName;
+                itemDesc.text = ItemManager.Instance.itemDataArr[GameManager.instance.inventoryItemsId[selectedId]].itemDesc;
+                itemEffect.text = ItemManager.Instance.itemDataArr[GameManager.instance.inventoryItemsId[selectedId]].itemEffect;
 
-                npcDialogue.text = $"<color=blue>{Mathf.FloorToInt(ItemManager.Instance.itemDataArr[GameManager.Instance.inventoryItemsId[selectedId]].priceToBuy / 5)} 골드</color>에 삼~\r\n팔 거임?";
+                npcDialogue.text = $"<color=blue>{Mathf.FloorToInt(ItemManager.Instance.itemDataArr[GameManager.instance.inventoryItemsId[selectedId]].priceToBuy / 5)} 골드</color>에 삼~\r\n팔 거임?";
             }
         }
         else if (selectedId < buttons.Count)
@@ -177,7 +177,7 @@ public class ShopUI : MonoBehaviour
         //판매
         if (selectedId < 24)
         {
-            itemId = GameManager.Instance.inventoryItemsId[selectedId];
+            itemId = GameManager.instance.inventoryItemsId[selectedId];
 
             if (itemId != -1)
             {
@@ -202,15 +202,15 @@ public class ShopUI : MonoBehaviour
     }
     void Init()
     {
-        for (int i = 0; i < GameManager.Instance.maxInventory; i++)
+        for (int i = 0; i < GameManager.instance.maxInventory; i++)
         {
-            if (GameManager.Instance.inventoryItemsId[i] == -1)
+            if (GameManager.instance.inventoryItemsId[i] == -1)
             {
                 emptySlot(i);
             }
             else
             {
-                itemImages[i].sprite = ItemManager.Instance.itemDataArr[GameManager.Instance.inventoryItemsId[i]].itemIcon;
+                itemImages[i].sprite = ItemManager.Instance.itemDataArr[GameManager.instance.inventoryItemsId[i]].itemIcon;
                 slotAlpha(i);
             }
         }
@@ -250,7 +250,7 @@ public class ShopUI : MonoBehaviour
         // 인벤토리 아이템 누름 (판매)
         if (buttonIndex < 24)
         {
-            if (GameManager.Instance.inventoryItemsId[buttonIndex] == -1)
+            if (GameManager.instance.inventoryItemsId[buttonIndex] == -1)
             {
                 return;
             }
@@ -273,7 +273,7 @@ public class ShopUI : MonoBehaviour
     public void BuySellItem()
     {
         if (!gameObject.activeSelf) return;
-        if (!GameManager.Instance.workingInventory) return;
+        if (!GameManager.instance.workingInventory) return;
 
         // 위 조건에 해당되지 않으면 파괴 버튼 도움말 팝업 띄우기
 
@@ -284,8 +284,8 @@ public class ShopUI : MonoBehaviour
         if (selectedId < 24)
         {
             buySellConfirm.text = string.Format("<color=green>{0}</color> 을(를)\r\n<color=red>{1:N0} 골드</color>에 {2}하시겠습니까?",
-            ItemManager.Instance.itemDataArr[GameManager.Instance.inventoryItemsId[selectedId]].itemName,
-            Mathf.FloorToInt(ItemManager.Instance.itemDataArr[GameManager.Instance.inventoryItemsId[selectedId]].priceToBuy / 5), "판매");
+            ItemManager.Instance.itemDataArr[GameManager.instance.inventoryItemsId[selectedId]].itemName,
+            Mathf.FloorToInt(ItemManager.Instance.itemDataArr[GameManager.instance.inventoryItemsId[selectedId]].priceToBuy / 5), "판매");
         }
         else
         {
@@ -301,22 +301,22 @@ public class ShopUI : MonoBehaviour
         {
             if (selectedId < 24)
             {
-                GameManager.Instance.gold += Mathf.FloorToInt(ItemManager.Instance.itemDataArr[GameManager.Instance.inventoryItemsId[selectedId]].priceToBuy / 5);
-                GameManager.Instance.inventoryItemsId[selectedId] = -1;
+                GameManager.instance.gold += Mathf.FloorToInt(ItemManager.Instance.itemDataArr[GameManager.instance.inventoryItemsId[selectedId]].priceToBuy / 5);
+                GameManager.instance.inventoryItemsId[selectedId] = -1;
                 AudioManager.instance.PlaySfx(AudioManager.Sfx.Gold);
             }
             else
             {
-                if (GameManager.Instance.gold < Mathf.FloorToInt(ItemManager.Instance.itemDataArr[shopItems[selectedId - 24]].priceToBuy))
+                if (GameManager.instance.gold < Mathf.FloorToInt(ItemManager.Instance.itemDataArr[shopItems[selectedId - 24]].priceToBuy))
                 {
                     help.Show(InventoryControlHelp.ActionType.NotEnoughMoney);
                 }
                 else
                 {
                     int emptySlotId = -1;
-                    for (int i = 0; GameManager.Instance.maxInventory > i; i++)
+                    for (int i = 0; GameManager.instance.maxInventory > i; i++)
                     {
-                        if (GameManager.Instance.inventoryItemsId[i] == -1)
+                        if (GameManager.instance.inventoryItemsId[i] == -1)
                         {
                             emptySlotId = i;
                             break;
@@ -330,8 +330,8 @@ public class ShopUI : MonoBehaviour
                     }
                     else
                     {
-                        GameManager.Instance.gold -= Mathf.FloorToInt(ItemManager.Instance.itemDataArr[shopItems[selectedId - 24]].priceToBuy);
-                        GameManager.Instance.inventoryItemsId[emptySlotId] = shopItems[selectedId - 24];
+                        GameManager.instance.gold -= Mathf.FloorToInt(ItemManager.Instance.itemDataArr[shopItems[selectedId - 24]].priceToBuy);
+                        GameManager.instance.inventoryItemsId[emptySlotId] = shopItems[selectedId - 24];
                         AudioManager.instance.PlaySfx(AudioManager.Sfx.Equip);
                     }
                 }
@@ -352,7 +352,7 @@ public class ShopUI : MonoBehaviour
     {
         if (!gameObject.activeSelf) return;
 
-        if (GameManager.Instance.workingInventory)
+        if (GameManager.instance.workingInventory)
         {
 
                 if (isBuySell)
@@ -374,7 +374,7 @@ public class ShopUI : MonoBehaviour
     {
         if (!gameObject.activeSelf) return;
 
-        if (GameManager.Instance.workingInventory)
+        if (GameManager.instance.workingInventory)
         {
             if (isBuySell)
             {
@@ -396,7 +396,7 @@ public class ShopUI : MonoBehaviour
         {
             if (i < 24)
             {
-                if (GameManager.Instance.inventoryItemsId[i] == -1)
+                if (GameManager.instance.inventoryItemsId[i] == -1)
                 {
                     itemImages[i].color = blankAlpha;
                     continue;

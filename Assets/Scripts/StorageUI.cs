@@ -82,11 +82,11 @@ public class StorageUI : MonoBehaviour
             selectedId = pressedId;
         }
 
-        for (int i = 0; i < GameManager.Instance.maxInventory; i++)
+        for (int i = 0; i < GameManager.instance.maxInventory; i++)
         {
             buttons[i].gameObject.SetActive(true);
         }
-        switch (GameManager.Instance.maxInventory)
+        switch (GameManager.instance.maxInventory)
         {
             case 8:
                 buttons[48].gameObject.SetActive(true);
@@ -172,7 +172,7 @@ public class StorageUI : MonoBehaviour
 
         if (selectedId < 24)
         {
-            if (GameManager.Instance.inventoryItemsId[selectedId] == -1)
+            if (GameManager.instance.inventoryItemsId[selectedId] == -1)
             {
                 itemName.text = "";
                 itemDesc.text = "";
@@ -180,14 +180,14 @@ public class StorageUI : MonoBehaviour
             }
             else
             {
-                itemName.text = ItemManager.Instance.itemDataArr[GameManager.Instance.inventoryItemsId[selectedId]].itemName;
-                itemDesc.text = ItemManager.Instance.itemDataArr[GameManager.Instance.inventoryItemsId[selectedId]].itemDesc;
-                itemEffect.text = ItemManager.Instance.itemDataArr[GameManager.Instance.inventoryItemsId[selectedId]].itemEffect;
+                itemName.text = ItemManager.Instance.itemDataArr[GameManager.instance.inventoryItemsId[selectedId]].itemName;
+                itemDesc.text = ItemManager.Instance.itemDataArr[GameManager.instance.inventoryItemsId[selectedId]].itemDesc;
+                itemEffect.text = ItemManager.Instance.itemDataArr[GameManager.instance.inventoryItemsId[selectedId]].itemEffect;
             }
         }
         else if (selectedId < 48)
         {
-            if (GameManager.Instance.storedItemsId[selectedId % 24] == -1)
+            if (GameManager.instance.storedItemsId[selectedId % 24] == -1)
             {
                 itemName.text = "";
                 itemDesc.text = "";
@@ -195,9 +195,9 @@ public class StorageUI : MonoBehaviour
             }
             else
             {
-                itemName.text = ItemManager.Instance.itemDataArr[GameManager.Instance.storedItemsId[selectedId % 24]].itemName;
-                itemDesc.text = ItemManager.Instance.itemDataArr[GameManager.Instance.storedItemsId[selectedId % 24]].itemDesc;
-                itemEffect.text = ItemManager.Instance.itemDataArr[GameManager.Instance.storedItemsId[selectedId % 24]].itemEffect;
+                itemName.text = ItemManager.Instance.itemDataArr[GameManager.instance.storedItemsId[selectedId % 24]].itemName;
+                itemDesc.text = ItemManager.Instance.itemDataArr[GameManager.instance.storedItemsId[selectedId % 24]].itemDesc;
+                itemEffect.text = ItemManager.Instance.itemDataArr[GameManager.instance.storedItemsId[selectedId % 24]].itemEffect;
             }
         }
     }
@@ -218,7 +218,7 @@ public class StorageUI : MonoBehaviour
             int itemId;
             if (selectedId < 24)
             {
-                itemId = GameManager.Instance.inventoryItemsId[selectedId];
+                itemId = GameManager.instance.inventoryItemsId[selectedId];
 
                 if (itemId != -1)
                 {
@@ -227,7 +227,7 @@ public class StorageUI : MonoBehaviour
             }
             else
             {
-                itemId = GameManager.Instance.storedItemsId[selectedId % 24];
+                itemId = GameManager.instance.storedItemsId[selectedId % 24];
 
                 if (itemId != -1)
                 {
@@ -248,26 +248,26 @@ public class StorageUI : MonoBehaviour
         if (!gameObject.activeSelf) return;
         if (isPressed) return;
         if (isDestroying) return;
-        if (!GameManager.Instance.workingInventory) return;
+        if (!GameManager.instance.workingInventory) return;
         if (selectedId > 47) return;
         if (selectedId < 24)
         {
-            if (GameManager.Instance.inventoryItemsId[selectedId] == -1) return;
+            if (GameManager.instance.inventoryItemsId[selectedId] == -1) return;
         }
         else
         {
-            if (GameManager.Instance.storedItemsId[selectedId % 24] == -1) return;
+            if (GameManager.instance.storedItemsId[selectedId % 24] == -1) return;
         }
 
         if (selectedId < 24)
         {
             bool isEmpty = false;
-            for (int i = 0; i < GameManager.Instance.storedItemsId.Length; i++)
+            for (int i = 0; i < GameManager.instance.storedItemsId.Length; i++)
             {
-                if (GameManager.Instance.storedItemsId[i] == -1)
+                if (GameManager.instance.storedItemsId[i] == -1)
                 {
-                    GameManager.Instance.storedItemsId[i] = GameManager.Instance.inventoryItemsId[selectedId];
-                    GameManager.Instance.inventoryItemsId[selectedId] = -1;
+                    GameManager.instance.storedItemsId[i] = GameManager.instance.inventoryItemsId[selectedId];
+                    GameManager.instance.inventoryItemsId[selectedId] = -1;
                     AudioManager.instance.PlaySfx(AudioManager.Sfx.Equip);
                     isEmpty = true;
                     break;
@@ -283,12 +283,12 @@ public class StorageUI : MonoBehaviour
         else
         {
             bool isEmpty = false;
-            for (int i = 0; i < GameManager.Instance.maxInventory; i++)
+            for (int i = 0; i < GameManager.instance.maxInventory; i++)
             {
-                if (GameManager.Instance.inventoryItemsId[i] == -1)
+                if (GameManager.instance.inventoryItemsId[i] == -1)
                 {
-                    GameManager.Instance.inventoryItemsId[i] = GameManager.Instance.storedItemsId[selectedId % 24];
-                    GameManager.Instance.storedItemsId[selectedId % 24] = -1;
+                    GameManager.instance.inventoryItemsId[i] = GameManager.instance.storedItemsId[selectedId % 24];
+                    GameManager.instance.storedItemsId[selectedId % 24] = -1;
                     AudioManager.instance.PlaySfx(AudioManager.Sfx.Equip);
                     isEmpty = true;
                     break;
@@ -308,15 +308,15 @@ public class StorageUI : MonoBehaviour
         if (!gameObject.activeSelf) return;
         if (isPressed) return;
         if (isUnlocking) return;
-        if (!GameManager.Instance.workingInventory) return;
+        if (!GameManager.instance.workingInventory) return;
         if (selectedId > 47) return;
         if (selectedId < 24)
         {
-            if (GameManager.Instance.inventoryItemsId[selectedId] == -1) return;
+            if (GameManager.instance.inventoryItemsId[selectedId] == -1) return;
         }
         else
         {
-            if(GameManager.Instance.storedItemsId[selectedId % 24] == -1) return;
+            if(GameManager.instance.storedItemsId[selectedId % 24] == -1) return;
         }
 
         // 위 조건에 해당되지 않으면 파괴 버튼 도움말 팝업 띄우기
@@ -328,12 +328,12 @@ public class StorageUI : MonoBehaviour
         if (selectedId < 24)
         {
             destroyDesc.text = string.Format("<color=green>{0}</color>\r\n을(를) 정말 <color=red>파괴</color>하시겠습니까?",
-            ItemManager.Instance.itemDataArr[GameManager.Instance.inventoryItemsId[selectedId]].itemName);
+            ItemManager.Instance.itemDataArr[GameManager.instance.inventoryItemsId[selectedId]].itemName);
         }
         else
         {
             destroyDesc.text = string.Format("<color=green>{0}</color>\r\n을(를) 정말 <color=red>파괴</color>하시겠습니까?",
-            ItemManager.Instance.itemDataArr[GameManager.Instance.storedItemsId[selectedId % 24]].itemName);
+            ItemManager.Instance.itemDataArr[GameManager.instance.storedItemsId[selectedId % 24]].itemName);
         }
     }
 
@@ -346,7 +346,7 @@ public class StorageUI : MonoBehaviour
                 switch (selectedId)
                 {
                     case 48:
-                        GameManager.Instance.maxInventory = 16;
+                        GameManager.instance.maxInventory = 16;
                         buttons[48].gameObject.SetActive(false);
                         buttons[49].interactable = true;
                         int[] targetInts = new int[] { 0, 1};
@@ -356,11 +356,11 @@ public class StorageUI : MonoBehaviour
                             navigation.mode = Navigation.Mode.Automatic;
                             buttons[targetInt].navigation = navigation;
                         }
-                        GameManager.Instance.gold -= 1000;
+                        GameManager.instance.gold -= 1000;
                         break;
 
                     case 49:
-                        GameManager.Instance.maxInventory = 24;
+                        GameManager.instance.maxInventory = 24;
                         buttons[49].gameObject.SetActive(false);
                         targetInts = new int[] { 0, 1, 8, 9 };
                         foreach (int targetInt in targetInts)
@@ -369,11 +369,11 @@ public class StorageUI : MonoBehaviour
                             navigation.mode = Navigation.Mode.Automatic;
                             buttons[targetInt].navigation = navigation;
                         }
-                        GameManager.Instance.gold -= 3000;
+                        GameManager.instance.gold -= 3000;
                         break;
                 }
                 AudioManager.instance.PlaySfx(AudioManager.Sfx.Equip);
-                for (int i = 0; i < GameManager.Instance.maxInventory; i++)
+                for (int i = 0; i < GameManager.instance.maxInventory; i++)
                 {
                     buttons[i].gameObject.SetActive(true);
                 }
@@ -383,12 +383,12 @@ public class StorageUI : MonoBehaviour
             {
                 if (selectedId < 24)
                 {
-                    GameManager.Instance.inventoryItemsId[selectedId] = -1;
+                    GameManager.instance.inventoryItemsId[selectedId] = -1;
                     AudioManager.instance.PlaySfx(AudioManager.Sfx.Destroy);
                 }
                 else
                 {
-                    GameManager.Instance.storedItemsId[selectedId % 24] = -1;
+                    GameManager.instance.storedItemsId[selectedId % 24] = -1;
                     AudioManager.instance.PlaySfx(AudioManager.Sfx.Destroy);
                 }
             }
@@ -406,28 +406,28 @@ public class StorageUI : MonoBehaviour
 
     void Init()
     {
-        for (int i = 0; i < GameManager.Instance.maxInventory; i++)
+        for (int i = 0; i < GameManager.instance.maxInventory; i++)
         {
-            if (GameManager.Instance.inventoryItemsId[i] == -1)
+            if (GameManager.instance.inventoryItemsId[i] == -1)
             {
                 emptySlot(i);
             }
             else
             {
-                itemImages[i].sprite = ItemManager.Instance.itemDataArr[GameManager.Instance.inventoryItemsId[i]].itemIcon;
+                itemImages[i].sprite = ItemManager.Instance.itemDataArr[GameManager.instance.inventoryItemsId[i]].itemIcon;
                 slotAlpha(i);
             }
         }
 
         for (int i = 24; i < 48; i++)
         {
-            if (GameManager.Instance.storedItemsId[i % 24] == -1)
+            if (GameManager.instance.storedItemsId[i % 24] == -1)
             {
                 emptySlot(i);
             }
             else
             {
-                itemImages[i].sprite = ItemManager.Instance.itemDataArr[GameManager.Instance.storedItemsId[i % 24]].itemIcon;
+                itemImages[i].sprite = ItemManager.Instance.itemDataArr[GameManager.instance.storedItemsId[i % 24]].itemIcon;
                 slotAlpha(i);
             }
         }
@@ -492,18 +492,18 @@ public class StorageUI : MonoBehaviour
                 // 인벤토리 내 물품을 누른 경우
                 if (buttonIndex < 24)
                 {
-                    int tempItemId = GameManager.Instance.inventoryItemsId[pressedId];
-                    GameManager.Instance.inventoryItemsId[pressedId] = GameManager.Instance.inventoryItemsId[buttonIndex];
-                    GameManager.Instance.inventoryItemsId[buttonIndex] = tempItemId;
+                    int tempItemId = GameManager.instance.inventoryItemsId[pressedId];
+                    GameManager.instance.inventoryItemsId[pressedId] = GameManager.instance.inventoryItemsId[buttonIndex];
+                    GameManager.instance.inventoryItemsId[buttonIndex] = tempItemId;
                     isPressed = false;
                     AudioManager.instance.PlaySfx(AudioManager.Sfx.ButtonPress);
                     return;
                 }
                 else if (buttonIndex < 48)
                 {
-                    int tempItemId = GameManager.Instance.inventoryItemsId[pressedId];
-                    GameManager.Instance.inventoryItemsId[pressedId] = GameManager.Instance.storedItemsId[buttonIndex % 24];
-                    GameManager.Instance.storedItemsId[buttonIndex % 24] = tempItemId;
+                    int tempItemId = GameManager.instance.inventoryItemsId[pressedId];
+                    GameManager.instance.inventoryItemsId[pressedId] = GameManager.instance.storedItemsId[buttonIndex % 24];
+                    GameManager.instance.storedItemsId[buttonIndex % 24] = tempItemId;
                     isPressed = false;
                     AudioManager.instance.PlaySfx(AudioManager.Sfx.ButtonPress);
                     return;
@@ -513,18 +513,18 @@ public class StorageUI : MonoBehaviour
             {
                 if (buttonIndex < 24)
                 {
-                    int tempItemId = GameManager.Instance.storedItemsId[pressedId % 24];
-                    GameManager.Instance.storedItemsId[pressedId % 24] = GameManager.Instance.inventoryItemsId[buttonIndex];
-                    GameManager.Instance.inventoryItemsId[buttonIndex] = tempItemId;
+                    int tempItemId = GameManager.instance.storedItemsId[pressedId % 24];
+                    GameManager.instance.storedItemsId[pressedId % 24] = GameManager.instance.inventoryItemsId[buttonIndex];
+                    GameManager.instance.inventoryItemsId[buttonIndex] = tempItemId;
                     isPressed = false;
                     AudioManager.instance.PlaySfx(AudioManager.Sfx.ButtonPress);
                     return;
                 }
                 else if (buttonIndex < 48)
                 {
-                    int tempItemId = GameManager.Instance.storedItemsId[pressedId % 24];
-                    GameManager.Instance.storedItemsId[pressedId % 24] = GameManager.Instance.storedItemsId[buttonIndex % 24];
-                    GameManager.Instance.storedItemsId[buttonIndex % 24] = tempItemId;
+                    int tempItemId = GameManager.instance.storedItemsId[pressedId % 24];
+                    GameManager.instance.storedItemsId[pressedId % 24] = GameManager.instance.storedItemsId[buttonIndex % 24];
+                    GameManager.instance.storedItemsId[buttonIndex % 24] = tempItemId;
                     isPressed = false;
                     AudioManager.instance.PlaySfx(AudioManager.Sfx.ButtonPress);
                     return;
@@ -534,14 +534,14 @@ public class StorageUI : MonoBehaviour
 
         if (buttonIndex < 24)
         {
-            if (GameManager.Instance.inventoryItemsId[buttonIndex] == -1)
+            if (GameManager.instance.inventoryItemsId[buttonIndex] == -1)
             {
                 return;
             }
         }
         else if (buttonIndex < 48)
         {
-            if (GameManager.Instance.storedItemsId[buttonIndex % 24] == -1)
+            if (GameManager.instance.storedItemsId[buttonIndex % 24] == -1)
             {
                 return;
             }
@@ -566,7 +566,7 @@ public class StorageUI : MonoBehaviour
     {
         if (selectedId == 48)
         {
-            if (GameManager.Instance.gold < 1000)
+            if (GameManager.instance.gold < 1000)
             {
                 help.Show(InventoryControlHelp.ActionType.NotEnoughMoney);
                 return;
@@ -574,7 +574,7 @@ public class StorageUI : MonoBehaviour
         }
         else if (selectedId == 49)
         {
-            if (GameManager.Instance.gold < 3000)
+            if (GameManager.instance.gold < 3000)
             {
                 help.Show(InventoryControlHelp.ActionType.NotEnoughMoney);
                 return;
@@ -594,7 +594,7 @@ public class StorageUI : MonoBehaviour
     {
         if (!gameObject.activeSelf) return;
 
-        if (GameManager.Instance.workingInventory)
+        if (GameManager.instance.workingInventory)
         {
             if (!isPressed)
             {
@@ -623,7 +623,7 @@ public class StorageUI : MonoBehaviour
     {
         if (!gameObject.activeSelf) return;
 
-        if (GameManager.Instance.workingInventory)
+        if (GameManager.instance.workingInventory)
         {
             if (isPressed)
             {
@@ -653,7 +653,7 @@ public class StorageUI : MonoBehaviour
         {
             if (i < 24)
             {
-                if (GameManager.Instance.inventoryItemsId[i] == -1)
+                if (GameManager.instance.inventoryItemsId[i] == -1)
                 {
                     itemImages[i].color = blankAlpha;
                     continue;
@@ -661,7 +661,7 @@ public class StorageUI : MonoBehaviour
             }
             else if (i < 48)
             {
-                if (GameManager.Instance.storedItemsId[i % 24] == -1)
+                if (GameManager.instance.storedItemsId[i % 24] == -1)
                 {
                     itemImages[i].color = blankAlpha;
                     continue;

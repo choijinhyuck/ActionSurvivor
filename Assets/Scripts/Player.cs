@@ -85,6 +85,11 @@ public class Player : MonoBehaviour
 
     private void OnEnable()
     {
+        spriteRenderer.color = new Color(1f, 1f, 1f, 1f);
+        spriteRenderer.material.SetColor("_FlashColor", new Color(1, 1, 1, 0));
+        spriteRenderer.material.SetFloat("_FlashAmount", 0f);
+        dodgeEffects[GameManager.instance.playerId].gameObject.SetActive(false);
+
         Scene scene = SceneManager.GetActiveScene();
         if (scene.name == "Title" || scene.name == "Loading") gameObject.SetActive(false);
 
@@ -102,10 +107,10 @@ public class Player : MonoBehaviour
         }
 
 
-        if (GameManager.Instance is null) return;
+        if (GameManager.instance == null) return;
 
-        anim.runtimeAnimatorController = animCon[GameManager.Instance.playerId];
-        if (GameManager.Instance.playerId == 0)
+        anim.runtimeAnimatorController = animCon[GameManager.instance.playerId];
+        if (GameManager.instance.playerId == 0)
         {
             shadow.gameObject.SetActive(false);
         }
@@ -122,18 +127,18 @@ public class Player : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (!GameManager.Instance.isLive || isHit) return;
-        if (GameManager.Instance.health < .1f) return;
+        if (!GameManager.instance.isLive || isHit) return;
+        if (GameManager.instance.health < .1f) return;
 
         inputVector = moveAction.ReadValue<Vector2>();
 
         if (isDodge) return;
-        Vector2 nextVec = inputVector * GameManager.Instance.playerSpeed / 5 * Time.fixedDeltaTime;
+        Vector2 nextVec = inputVector * GameManager.instance.playerSpeed / 5 * Time.fixedDeltaTime;
         rigid.MovePosition(rigid.position + nextVec);
     }
     private void LateUpdate()
     {
-        if (!GameManager.Instance.isLive || isHit) return;
+        if (!GameManager.instance.isLive || isHit) return;
 
         anim.SetFloat("Speed", inputVector.magnitude);
 
@@ -148,7 +153,7 @@ public class Player : MonoBehaviour
 
     private void OnCollisionStay2D(Collision2D collision)
     {
-        if (!GameManager.Instance.isLive || isHit || isDodge || GameManager.Instance.health < 0.1f) return;
+        if (!GameManager.instance.isLive || isHit || isDodge || GameManager.instance.health < 0.1f) return;
         // 피해면역인 상태면?
         if (isImmune) return;
 
@@ -161,10 +166,10 @@ public class Player : MonoBehaviour
             // Knockback에 사용되는 force는 Mass 의 10배가 적당 (Player 한정)
             StartCoroutine(KnockBack(10000));
             AudioManager.instance.PlaySfx(AudioManager.Sfx.PlayerHit);
-            GameManager.Instance.health -= 0.5f;
+            GameManager.instance.health -= 0.5f;
         }
 
-        if (GameManager.Instance.health < 0.1f)
+        if (GameManager.instance.health < 0.1f)
         {
             //for (int i = 2; i < transform.childCount; i++)
             //{
@@ -182,7 +187,7 @@ public class Player : MonoBehaviour
 
     IEnumerator DeadCoroutine()
     {
-        GameManager.Instance.CameraDamping(0f);
+        GameManager.instance.CameraDamping(0f);
 
         int targetPPU = 66;
         float timer = 0f;
@@ -192,14 +197,14 @@ public class Player : MonoBehaviour
 
         while (timer < 1.5f)
         {
-            GameManager.Instance.ZoomCamera(GameManager.Instance.originPPU + Mathf.FloorToInt((targetPPU - GameManager.Instance.originPPU) * timer / 2));
+            GameManager.instance.ZoomCamera(GameManager.instance.originPPU + Mathf.FloorToInt((targetPPU - GameManager.instance.originPPU) * timer / 2));
             yield return null;
             timer += Time.unscaledDeltaTime;
         }
 
         Time.timeScale = 1f;
 
-        GameManager.Instance.CameraDamping();
+        GameManager.instance.CameraDamping();
 
         // 부활의 목걸이 착용 시 목걸이는 파괴되고 죽지 않고 체력 +2 획득
         // 깜빡이면서 그동안 무적이 되는 코루틴 생성
@@ -219,45 +224,45 @@ public class Player : MonoBehaviour
 
     IEnumerator DeadEndCoroutine()
     {
-        List<int> itemList = new List<int>();
+        List<int> itemList = new();
 
-        for (int i = 0; i < GameManager.Instance.inventoryItemsId.Length; i++)
+        for (int i = 0; i < GameManager.instance.inventoryItemsId.Length; i++)
         {
-            if (GameManager.Instance.inventoryItemsId[i] != -1)
+            if (GameManager.instance.inventoryItemsId[i] != -1)
             {
-                itemList.Add(GameManager.Instance.inventoryItemsId[i]);
-                GameManager.Instance.inventoryItemsId[i] = -1;
+                itemList.Add(GameManager.instance.inventoryItemsId[i]);
+                GameManager.instance.inventoryItemsId[i] = -1;
             }
         }
-        if (GameManager.Instance.mainWeaponItem[GameManager.Instance.playerId] != -1)
+        if (GameManager.instance.mainWeaponItem[GameManager.instance.playerId] != -1)
         {
-            itemList.Add(GameManager.Instance.mainWeaponItem[GameManager.Instance.playerId]);
-            GameManager.Instance.mainWeaponItem[GameManager.Instance.playerId] = -1;
+            itemList.Add(GameManager.instance.mainWeaponItem[GameManager.instance.playerId]);
+            GameManager.instance.mainWeaponItem[GameManager.instance.playerId] = -1;
         }
-        if (GameManager.Instance.mainWeaponItem[GameManager.Instance.playerId] != -1)
+        if (GameManager.instance.necklaceItem[GameManager.instance.playerId] != -1)
         {
-            itemList.Add(GameManager.Instance.necklaceItem[GameManager.Instance.playerId]);
-            GameManager.Instance.necklaceItem[GameManager.Instance.playerId] = -1;
+            itemList.Add(GameManager.instance.necklaceItem[GameManager.instance.playerId]);
+            GameManager.instance.necklaceItem[GameManager.instance.playerId] = -1;
         }
-        if (GameManager.Instance.mainWeaponItem[GameManager.Instance.playerId] != -1)
+        if (GameManager.instance.shoesItem[GameManager.instance.playerId] != -1)
         {
-            itemList.Add(GameManager.Instance.shoesItem[GameManager.Instance.playerId]);
-            GameManager.Instance.shoesItem[GameManager.Instance.playerId] = -1;
+            itemList.Add(GameManager.instance.shoesItem[GameManager.instance.playerId]);
+            GameManager.instance.shoesItem[GameManager.instance.playerId] = -1;
         }
-        if (GameManager.Instance.rangeWeaponItem != -1)
+        if (GameManager.instance.rangeWeaponItem != -1)
         {
-            itemList.Add(GameManager.Instance.rangeWeaponItem);
-            GameManager.Instance.rangeWeaponItem = -1;
+            itemList.Add(GameManager.instance.rangeWeaponItem);
+            GameManager.instance.rangeWeaponItem = -1;
         }
-        if (GameManager.Instance.magicItem != -1)
+        if (GameManager.instance.magicItem != -1)
         {
-            itemList.Add(GameManager.Instance.magicItem);
-            GameManager.Instance.magicItem = -1;
+            itemList.Add(GameManager.instance.magicItem);
+            GameManager.instance.magicItem = -1;
         }
 
         if (itemList.Count == 0)
         {
-            GameManager.Instance.GameOver();
+            GameManager.instance.GameOver();
             yield break;
         }
 
@@ -286,7 +291,7 @@ public class Player : MonoBehaviour
             selectedItem.GetComponent<DropItem>().Scatter();
         }
         yield return new WaitForSecondsRealtime(0.3f);
-        GameManager.Instance.GameOver();
+        GameManager.instance.GameOver();
     }
 
 
@@ -318,14 +323,14 @@ public class Player : MonoBehaviour
 
         // 피해 면역 추가
         isImmune = true;
-        yield return new WaitForSeconds(GameManager.Instance.playerImmuneTime);
+        yield return new WaitForSeconds(GameManager.instance.playerImmuneTime);
         spriteRenderer.color = Color.white;
         isImmune = false;
     }
 
     void Shadow()
     {
-        switch (GameManager.Instance.playerId)
+        switch (GameManager.instance.playerId)
         {
             case 0:
                 if (shadow.gameObject.activeSelf)
@@ -363,8 +368,8 @@ public class Player : MonoBehaviour
 
     void OnDodge()
     {
-        if (!GameManager.Instance.isLive) return;
-        if (GameManager.Instance.health < .1) return;
+        if (!GameManager.instance.isLive) return;
+        if (GameManager.instance.health < .1) return;
         if (inputVector.magnitude == 0) return;
         if (anim.GetCurrentAnimatorStateInfo(0).IsName("Attack") || anim.GetCurrentAnimatorStateInfo(0).IsName("SkillMotion") || anim.GetCurrentAnimatorStateInfo(0).IsName("Dead") || isHit || isDodge)
             return;
@@ -380,15 +385,15 @@ public class Player : MonoBehaviour
         readyDodge = false;
         isDodge = true;
         AudioManager.instance.PlaySfx(AudioManager.Sfx.Dodge);
-        dodgeEffects[GameManager.Instance.playerId].gameObject.SetActive(true);
+        dodgeEffects[GameManager.instance.playerId].gameObject.SetActive(true);
 
         if (spriteRenderer.flipX)
         {
-            dodgeEffects[GameManager.Instance.playerId].flip = new Vector3(1f, 0f, 0f);
+            dodgeEffects[GameManager.instance.playerId].flip = new Vector3(1f, 0f, 0f);
         }
         else
         {
-            dodgeEffects[GameManager.Instance.playerId].flip = new Vector3(0f, 0f, 0f);
+            dodgeEffects[GameManager.instance.playerId].flip = new Vector3(0f, 0f, 0f);
         }
 
         //Dodge 도중 반투명
@@ -396,7 +401,7 @@ public class Player : MonoBehaviour
         //currColor.a = .6f;
         //spriteRenderer.color = currColor;
 
-        rigid.velocity = inputVector * GameManager.Instance.dodgeSpeed;
+        rigid.velocity = inputVector * GameManager.instance.dodgeSpeed;
         // 0.2 초
         yield return new WaitForSeconds(.3f);
 
@@ -406,9 +411,10 @@ public class Player : MonoBehaviour
 
         isDodge = false;
         rigid.velocity = Vector2.zero;
-        dodgeEffects[GameManager.Instance.playerId].gameObject.SetActive(false);
+        dodgeEffects[GameManager.instance.playerId].gameObject.SetActive(false);
     }
 
+    // Animation 에서 사용하는 함수
     void Attack(int playerId)
     {
         // 모은 기에 따른 공격 패턴과 데미지 변화 변수 추가해야함
@@ -443,8 +449,8 @@ public class Player : MonoBehaviour
 
     void StartCharging()
     {
-        if (!GameManager.Instance.isLive) return;
-        if (GameManager.Instance.health < .1) return;
+        if (!GameManager.instance.isLive) return;
+        if (GameManager.instance.health < .1) return;
         if (anim.GetCurrentAnimatorStateInfo(0).IsName("Attack") || anim.GetCurrentAnimatorStateInfo(0).IsName("SkillMotion") || anim.GetCurrentAnimatorStateInfo(0).IsName("Dead") || isHit)
             return;
 
@@ -463,7 +469,7 @@ public class Player : MonoBehaviour
             yield return waitFix;
         }
 
-        if (GameManager.Instance.chargeCount == 0)
+        if (GameManager.instance.chargeCount == 0)
         {
             StartCoroutine(FailMotion());
             yield break;
@@ -471,9 +477,9 @@ public class Player : MonoBehaviour
 
         isCharging = true;
         chargeEffects[0].gameObject.SetActive(true);
-        originSpeed = GameManager.Instance.playerSpeed;
+        originSpeed = GameManager.instance.playerSpeed;
         // 이동속도 변경
-        GameManager.Instance.playerSpeed = originSpeed * .8f;
+        GameManager.instance.playerSpeed = originSpeed * .8f;
 
         // 기 모으는 Effect 추가
         StartCoroutine("Charging");
@@ -495,13 +501,13 @@ public class Player : MonoBehaviour
             //transform.localPosition += deltaVec;
             //yield return waitSec;
 
-            rigid.position = rigid.position + new Vector2(deltaVec.x, deltaVec.y);
+            rigid.position += (Vector2)deltaVec;
             yield return waitSec;
-            rigid.position = rigid.position - new Vector2(deltaVec.x, deltaVec.y);
+            rigid.position -= (Vector2)deltaVec;
             yield return waitSec;
-            rigid.position = rigid.position - new Vector2(deltaVec.x, deltaVec.y);
+            rigid.position -= (Vector2)deltaVec;
             yield return waitSec;
-            rigid.position = rigid.position + new Vector2(deltaVec.x, deltaVec.y);
+            rigid.position += (Vector2)deltaVec;
             yield return waitSec;
         }
     }
@@ -512,13 +518,13 @@ public class Player : MonoBehaviour
     /// </summary>
     void ChargedFire(int status)
     {
-        if (GameManager.Instance.health < .1) return;
+        if (GameManager.instance.health < .1) return;
 
         if (status == 1)
         {
             // 차징 중 interrupt로 인해 cancel 된 경우? performed와 동일한 작업
             if (!isCharging) StopCoroutine("StartCharge");
-            if (GameManager.Instance.isLive) Fire();
+            if (GameManager.instance.isLive) Fire();
             // 0.2 - 0.5 초 사이의 키 입력을 시도한 경우 - 한 번의 공격 나가도록
             return;
         }
@@ -529,7 +535,7 @@ public class Player : MonoBehaviour
             return;   // 공격중 차징을 시도하고 키를 뗐을 때 공격 한 번 나가는 것 방지,
         }
 
-        if (!isHit && GameManager.Instance.isLive)
+        if (!isHit && GameManager.instance.isLive)
         {
             // 총 3 칸으로 구성된 기 카운트 사용
             switch (chargeCount)
@@ -542,17 +548,17 @@ public class Player : MonoBehaviour
                     AttackSkill(0);
                     anim.SetTrigger("SkillMotion");
                     AudioManager.instance.PlaySfx(AudioManager.Sfx.WarriorSkill);
-                    GameManager.Instance.chargeCount--;
+                    GameManager.instance.chargeCount--;
                     break;
                 case 2:
                     anim.SetTrigger("SkillMotion");
                     AttackSkill(1);
                     AudioManager.instance.PlaySfx(AudioManager.Sfx.WarriorSkill);
-                    GameManager.Instance.chargeCount -= 2;
+                    GameManager.instance.chargeCount -= 2;
                     break;
                 case 3:
                     AudioManager.instance.PlaySfx(AudioManager.Sfx.WarriorSkill);
-                    GameManager.Instance.chargeCount -= 3;
+                    GameManager.instance.chargeCount -= 3;
                     break;
             }
             StopCoroutine("Charging");
@@ -566,7 +572,7 @@ public class Player : MonoBehaviour
         isCharging = false;
         chargeTimer = 0;
         chargeCount = 0;
-        GameManager.Instance.playerSpeed = originSpeed;
+        GameManager.instance.playerSpeed = originSpeed;
         //스킬 방향 지시 중단
         StopCoroutine("SkillArrow");
         skillArrow.transform.localRotation = Quaternion.identity;
@@ -588,14 +594,14 @@ public class Player : MonoBehaviour
         chargeTimer = 0;
         while (true)
         {
-            if (isHit || (!GameManager.Instance.isLive))
+            if (isHit || (!GameManager.instance.isLive))
             {
                 ChargedFire(0);
                 break;
             }
 
 
-            if (GameManager.Instance.chargeCount == chargeCount || chargeCount == GameManager.Instance.maxChargibleCount)
+            if (GameManager.instance.chargeCount == chargeCount || chargeCount == GameManager.instance.maxChargibleCount)
             {
                 if (chargeCount < 3)
                 {
@@ -607,11 +613,11 @@ public class Player : MonoBehaviour
 
             if (chargeCount == 1)
             {
-                GameManager.Instance.playerSpeed = originSpeed * 0.6f;
+                GameManager.instance.playerSpeed = originSpeed * 0.6f;
             }
             else if (chargeCount == 2)
             {
-                GameManager.Instance.playerSpeed = originSpeed * 0.4f;
+                GameManager.instance.playerSpeed = originSpeed * 0.4f;
             }
 
 
@@ -620,7 +626,7 @@ public class Player : MonoBehaviour
                 chargeEffects[chargeCount].gameObject.SetActive(true);
             }
 
-            if (chargeTimer > GameManager.Instance.chargeTime && chargeCount < GameManager.Instance.maxChargibleCount)
+            if (chargeTimer > GameManager.instance.chargeTime && chargeCount < GameManager.instance.maxChargibleCount)
             {
                 if (chargeCount < 2) chargeEffects[chargeCount].gameObject.SetActive(false);
                 chargeCount++;
@@ -640,9 +646,9 @@ public class Player : MonoBehaviour
 
             // 스킬 방향 설정 : 1회 기모으는 시점부터 보이도록.
 
-            if (totalTime > GameManager.Instance.chargeTime)
+            if (totalTime > GameManager.instance.chargeTime)
             {
-                if (GameManager.Instance.playerId == 0 && chargeCount > 1)
+                if (GameManager.instance.playerId == 0 && chargeCount > 1)
                 {
                     StartCoroutine("SkillArrow");
                 }
@@ -762,7 +768,7 @@ public class Player : MonoBehaviour
 
             case 1:
                 Rigidbody2D skillRigid;
-                skillRigid = skills[GameManager.Instance.playerId].transform.GetChild(level).GetComponentsInChildren<Rigidbody2D>(true)[0];
+                skillRigid = skills[GameManager.instance.playerId].transform.GetChild(level).GetComponentsInChildren<Rigidbody2D>(true)[0];
                 skillRigid.transform.parent.localRotation = Quaternion.FromToRotation(Vector3.right, skillDir);
                 skillRigid.transform.parent.gameObject.SetActive(true);
                 skillRigid.velocity = skillDir * 15;
@@ -794,10 +800,10 @@ public class Player : MonoBehaviour
             return;
         //if (anim.GetCurrentAnimatorStateInfo(0).IsName("Dead") || isHit)
         //    return;
-        if (!GameManager.Instance.isLive) return;
-        if (GameManager.Instance.health < .1) return;
+        if (!GameManager.instance.isLive) return;
+        if (GameManager.instance.health < .1) return;
         // 장비하고 있으면 실행
-        if (GameManager.Instance.rangeWeaponItem == -1)
+        if (GameManager.instance.rangeWeaponItem == -1)
             return;
         // 차징 캔슬 가능하도록 start Action으로 옮기도록. 조준만 해도 차징 취소.
         // 일단 아래 기능 임시로 취소.
@@ -829,7 +835,7 @@ public class Player : MonoBehaviour
 
         while (true)
         {
-            if (!GameManager.Instance.isLive) break;
+            if (!GameManager.instance.isLive) break;
             if (inputVector.magnitude > 0)
             {
                 rangeDir = inputVector;
@@ -850,8 +856,8 @@ public class Player : MonoBehaviour
 
     void OnRangeWeapon(bool ready)
     {
-        if (GameManager.Instance.health < .1) return;
-        if (ready && GameManager.Instance.isLive)
+        if (GameManager.instance.health < .1) return;
+        if (ready && GameManager.instance.isLive)
         {
             rangeWeapon.Fire(rangeDir);
         }

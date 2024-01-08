@@ -41,10 +41,10 @@ public class PoolManager : MonoBehaviour
 
     private void Update()
     {
-        if (!isVictory && GameManager.Instance.stageId != -1 && GameManager.Instance.gameTime > GameManager.Instance.maxGameTime && EnemyCount() == 0)
+        if (!isVictory && GameManager.instance.stageId != -1 && GameManager.instance.gameTime > GameManager.instance.maxGameTime && EnemyCount() == 0)
         {
             isVictory = true;
-            GameManager.Instance.GameVictory();
+            GameManager.instance.GameVictory();
         }
     }
 

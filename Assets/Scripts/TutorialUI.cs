@@ -31,8 +31,8 @@ public class TutorialUI : MonoBehaviour
     // 재방문하는 경우는 튜토리얼 도움말을 띄우지 않음 (기본값: Disable 유지)
     private void Start()
     {
-        AudioManager.instance.PlayBgm(false);
-        GameManager.Instance.Stop();
+        //AudioManager.instance.PlayBgm(false);
+        GameManager.instance.Stop();
     }
 
     private void OnDestroy()
@@ -60,8 +60,9 @@ public class TutorialUI : MonoBehaviour
     void Close()
     {
         if (!gameObject.activeSelf) return;
-        GameManager.Instance.Resume();
+        GameManager.instance.Resume();
         AudioManager.instance.PlayBgm(true);
-        gameObject.SetActive(false);
+        Destroy(gameObject);
+        //gameObject.SetActive(false);
     }
 }

@@ -30,7 +30,7 @@ public class CoolTime : MonoBehaviour
             if (i == 0)
             {
                 // 捧么 公扁 贸府
-                if (GameManager.Instance.rangeWeaponItem == -1)
+                if (GameManager.instance.rangeWeaponItem == -1)
                 {
                     if (range.activeSelf)
                     {
@@ -44,9 +44,9 @@ public class CoolTime : MonoBehaviour
                 {
                     range.SetActive(true);
                 }
-                if (prevRangeId != GameManager.Instance.rangeWeaponItem)
+                if (prevRangeId != GameManager.instance.rangeWeaponItem)
                 {
-                    prevRangeId = GameManager.Instance.rangeWeaponItem;
+                    prevRangeId = GameManager.instance.rangeWeaponItem;
                     range.GetComponent<Image>().sprite = ItemManager.Instance.itemDataArr[prevRangeId].itemIcon;
                 }
 
@@ -76,7 +76,7 @@ public class CoolTime : MonoBehaviour
             else if (i == 1)
             {
                 // 付过 贸府
-                if (GameManager.Instance.magicItem == -1)
+                if (GameManager.instance.magicItem == -1)
                 {
                     if (magic.activeSelf)
                     {
@@ -90,9 +90,9 @@ public class CoolTime : MonoBehaviour
                 {
                     magic.SetActive(true);
                 }
-                if (prevMagicId != GameManager.Instance.magicItem)
+                if (prevMagicId != GameManager.instance.magicItem)
                 {
-                    prevMagicId = GameManager.Instance.magicItem;
+                    prevMagicId = GameManager.instance.magicItem;
                     magic.GetComponent<Image>().sprite = ItemManager.Instance.itemDataArr[prevMagicId].itemIcon;
                 }
 

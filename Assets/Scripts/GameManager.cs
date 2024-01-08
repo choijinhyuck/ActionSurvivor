@@ -11,7 +11,17 @@ using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
-    public static GameManager Instance;
+    public static GameManager instance;
+
+    [Header("# Save Info")]
+    public int stage0_ClearCount;
+    public int stage1_ClearCount;
+    public int stage2_ClearCount;
+    // 해금과 캐릭터 교체 도움말 창을 닫고 난 후 true로 전환
+    // 플레이어 교체는 Camp 에서만 가능
+    // 캐릭터는 순서대로 해금되고 마지막으로 해금한 Id가 할당
+    public int newCharacterUnlock;
+    Coroutine saveCoroutine;
 
     [Header("Loading Info")]
     public string sceneName;
@@ -95,11 +105,11 @@ public class GameManager : MonoBehaviour
 
     private void Awake()
     {
-        if (Instance == null)
+        if (instance == null)
         {
-            Instance = this;
+            instance = this;
         }
-        else if (Instance != this)
+        else if (instance != this)
         {
             Destroy(this.gameObject);
         }
@@ -110,6 +120,23 @@ public class GameManager : MonoBehaviour
         //커서 잠금
         //Cursor.lockState = CursorLockMode.Locked;
 
+        InfoInit();
+
+        saveCoroutine = null;
+
+        inventoryAction = actions.FindActionMap("UI").FindAction("Inventory");
+        menuAction = actions.FindActionMap("UI").FindAction("Menu");
+        cancelAction = actions.FindActionMap("UI").FindAction("Cancel");
+        equipAction = actions.FindActionMap("UI").FindAction("Equip");
+        destroyAction = actions.FindActionMap("UI").FindAction("Destroy");
+
+        GameManagerActionAdd();
+    }
+
+    public void InfoInit()
+    {
+        playerId = 0;
+
         gold = 0;
         inventoryItemsId = new int[24];
         // -1 means an empty slot!
@@ -119,7 +146,7 @@ public class GameManager : MonoBehaviour
         }
 
         storedItemsId = new int[24];
-        for (int i = 0; i <  storedItemsId.Length; i++)
+        for (int i = 0; i < storedItemsId.Length; i++)
         {
             storedItemsId[i] = -1;
         }
@@ -137,15 +164,11 @@ public class GameManager : MonoBehaviour
             shoesItem[i] = -1;
         }
 
-        inventoryAction = actions.FindActionMap("UI").FindAction("Inventory");
-        menuAction = actions.FindActionMap("UI").FindAction("Menu");
-        cancelAction = actions.FindActionMap("UI").FindAction("Cancel");
-        equipAction = actions.FindActionMap("UI").FindAction("Equip");
-        destroyAction = actions.FindActionMap("UI").FindAction("Destroy");
-
-        GameManagerActionAdd();
+        stage0_ClearCount = 0;
+        stage1_ClearCount = 0;
+        stage2_ClearCount = 0;
+        newCharacterUnlock = 0;
     }
-
 
     private void OnEnable()
     {
@@ -167,6 +190,7 @@ public class GameManager : MonoBehaviour
 
     void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
+        SaveCoroutineManager(scene.name);
         switch (scene.name)
         {
             case "Title":
@@ -177,7 +201,6 @@ public class GameManager : MonoBehaviour
                 if (hud.activeSelf) hud.SetActive(false);
                 BGMInit(AudioManager.Bgm.Title, .3f);
                 ZoomCamera();
-                CameraDamping(0f);
                 actions.Disable();
                 break;
 
@@ -187,7 +210,6 @@ public class GameManager : MonoBehaviour
                 player.gameObject.SetActive(true);
                 if (hud.activeSelf) hud.SetActive(false);
                 AudioManager.instance.PlayBgm(false);
-                CameraDamping(0f);
                 actions.Disable();
                 break;
 
@@ -201,7 +223,6 @@ public class GameManager : MonoBehaviour
                 player.transform.position = new Vector3(0, -3, 0);
                 BGMInit(AudioManager.Bgm.Camp, .3f);
                 ZoomCamera();
-                CameraDamping(0f);
                 GameStart();
                 break;
 
@@ -210,14 +231,16 @@ public class GameManager : MonoBehaviour
                 FadeIn();
                 player.transform.position = new Vector3(0, 0, 0);
                 player.gameObject.SetActive(false);
-                GameObject.FindAnyObjectByType<TutorialUI>(FindObjectsInactive.Include).gameObject.SetActive(true);
                 if (!stageName.activeSelf) stageName.SetActive(true);
                 if (!timer.activeSelf) timer.SetActive(true);
                 if (!killText.activeSelf) killText.SetActive(true);
-                AudioManager.instance.changeBGM(AudioManager.Bgm.Stage0, .5f);
-                //BGMInit(AudioManager.Bgm.Stage0, .5f);
+                BGMInit(AudioManager.Bgm.Stage0, .5f);
+                if (!PlayerPrefs.HasKey("maxInventory"))
+                {
+                    AudioManager.instance.PlayBgm(false);
+                    FindAnyObjectByType<TutorialUI>(FindObjectsInactive.Include).gameObject.SetActive(true);
+                }
                 ZoomCamera();
-                CameraDamping(0f);
                 GameStart();
                 break;
 
@@ -231,16 +254,45 @@ public class GameManager : MonoBehaviour
                 if (!killText.activeSelf) killText.SetActive(true);
                 BGMInit(AudioManager.Bgm.Stage1, .5f);
                 ZoomCamera();
-                CameraDamping(0f);
                 GameStart();
                 break;
         }
     }
 
-    void BGMInit(AudioManager.Bgm BgmType, float volume)
+    IEnumerator SaveCoroutine()
+    {
+        while (true)
+        {
+            SaveManager.Save();
+            Debug.Log("Save Completed");
+            yield return new WaitForSecondsRealtime(1f);
+        }
+    }
+
+    void SaveCoroutineManager(string name)
+    {
+        bool isCamp = name == "Camp";
+        if (!isCamp)
+        {
+            if (saveCoroutine != null)
+            {
+                StopCoroutine(saveCoroutine);
+                saveCoroutine = null;
+            }
+        }
+        else
+        {
+            if (saveCoroutine == null)
+            {
+                saveCoroutine = StartCoroutine(SaveCoroutine());
+            }
+        }
+    }
+
+    void BGMInit(AudioManager.Bgm BgmType, float volume, bool isLoop = true)
     {
         AudioManager.instance.EffectBgm(false);
-        AudioManager.instance.changeBGM(BgmType, volume);
+        AudioManager.instance.ChangeBGM(BgmType, volume, isLoop);
         AudioManager.instance.PlayBgm(true);
     }
 
@@ -318,7 +370,7 @@ public class GameManager : MonoBehaviour
     public void OnInventory()
     {
         if (LevelUp.instance.isLevelUp) return;
-        if (GameObject.FindAnyObjectByType<TutorialUI>() is not null) return;
+        if (FindAnyObjectByType<TutorialUI>() != null) return;
         if (health < .1f) return;
         if (BaseUI.Instance.victory.gameObject.activeSelf) return;
 
@@ -339,7 +391,6 @@ public class GameManager : MonoBehaviour
             workingInventory = true;
             inventoryUI.gameObject.SetActive(true);
             Stop();
-
         }
     }
 
@@ -376,6 +427,9 @@ public class GameManager : MonoBehaviour
         maxChargibleCount = 1;
         maxChargeCount = 2;
 
+        level = 0;
+        exp = 0;
+
         playerDamageLevel = 0;
         playerSpeedLevel = 0;
         playerHealthLevel = 0;
@@ -389,8 +443,6 @@ public class GameManager : MonoBehaviour
 
         player.gameObject.SetActive(true);
         Resume();
-
-        AudioManager.instance.PlayBgm(true);
     }
 
     public void GameOver()
@@ -405,16 +457,14 @@ public class GameManager : MonoBehaviour
         Stop();
         BaseUI.Instance.Death();
 
-        AudioManager.instance.changeBGM(AudioManager.Bgm.Death, .5f);
-        AudioManager.instance.PlayBgm(true);
+        BGMInit(AudioManager.Bgm.Death, .5f, false);
     }
 
     public void GameVictory()
     {
-        isLive = false;
         Stop();
-        AudioManager.instance.PauseBGM(true);
-        AudioManager.instance.PlaySfx(AudioManager.Sfx.Win);
+
+        BGMInit(AudioManager.Bgm.Victory, .3f, false);
         BaseUI.Instance.Victory();
     }
 
@@ -482,25 +532,25 @@ public class GameManager : MonoBehaviour
 
     void OnMenu()
     {
-        if (InventoryUI.instance is null) return;
+        if (InventoryUI.instance == null) return;
         InventoryUI.instance.OnMenu();
     }
 
     void OnCancel()
     {
-        if (InventoryUI.instance is null) return;
+        if (InventoryUI.instance == null) return;
         InventoryUI.instance.OnCancel();
     }
 
     void EquipUnequip()
     {
-        if (InventoryUI.instance is null) return;
+        if (InventoryUI.instance == null) return;
         InventoryUI.instance.EquipUnequip();
     }
 
     void DestroyItem()
     {
-        if (InventoryUI.instance is null) return;
+        if (InventoryUI.instance == null) return;
         InventoryUI.instance.DestroyItem();
     }
 

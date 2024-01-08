@@ -20,19 +20,19 @@ public class GlobalLight : MonoBehaviour
 
     private void LateUpdate()
     {
-        if (GameManager.Instance.health < 1.1f & GameManager.Instance.health > 0.1f & !isWarning)
+        if (GameManager.instance.health < 1.1f & GameManager.instance.health > 0.1f & !isWarning)
         {
             StartCoroutine("Warning");
             AudioManager.instance.PauseBGM(true);
         }
-        else if (GameManager.Instance.health > 1.1f & isWarning)
+        else if (GameManager.instance.health > 1.1f & isWarning)
         {
             StopCoroutine("Warning");
             isWarning = false;
             light2d.color = Color.white;
             AudioManager.instance.PauseBGM(false);
         }
-        else if (GameManager.Instance.health < 0.1f)
+        else if (GameManager.instance.health < 0.1f)
         {
             StopCoroutine("Warning");
             isWarning = false;

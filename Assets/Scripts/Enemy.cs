@@ -56,7 +56,7 @@ public class Enemy : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (!GameManager.Instance.isLive) return;
+        if (!GameManager.instance.isLive) return;
 
         if (!isLive || isHit)
             return;
@@ -69,7 +69,7 @@ public class Enemy : MonoBehaviour
 
     private void LateUpdate()
     {
-        if (!GameManager.Instance.isLive) return;
+        if (!GameManager.instance.isLive) return;
 
         if (!isLive) return;
         
@@ -112,7 +112,7 @@ public class Enemy : MonoBehaviour
     private void OnEnable()
     {
         isHit = false;
-        target = GameManager.Instance.player.GetComponent<Rigidbody2D>();
+        target = GameManager.instance.player.GetComponent<Rigidbody2D>();
         isLive = true;
         coll.enabled = true;
         rigid.simulated = true;
@@ -162,13 +162,13 @@ public class Enemy : MonoBehaviour
         }
         else if (collision.CompareTag("Skill"))
         {
-            if (GameManager.Instance.playerId == 0)
+            if (GameManager.instance.playerId == 0)
             {
                 if (collision.GetComponent<Skill>().hitList.Contains(gameObject)) return;
             }
 
-            health -= collision.GetComponent<Skill>().damageRate * GameManager.Instance.playerDamage;
-            HitDamageText(collision.GetComponent<Skill>().damageRate * GameManager.Instance.playerDamage);
+            health -= collision.GetComponent<Skill>().damageRate * GameManager.instance.playerDamage;
+            HitDamageText(collision.GetComponent<Skill>().damageRate * GameManager.instance.playerDamage);
         }
 
         if (!hpBar.gameObject.activeSelf) hpBar.gameObject.SetActive(true);
@@ -199,7 +199,7 @@ public class Enemy : MonoBehaviour
             StartCoroutine(Dead());
             
 
-            if (GameManager.Instance.isLive)
+            if (GameManager.instance.isLive)
             {
                 AudioManager.instance.PlaySfx(AudioManager.Sfx.Dead);
             }
@@ -287,8 +287,8 @@ public class Enemy : MonoBehaviour
         yield return waitSec;
 
         DropItem();
-        GameManager.Instance.kill++;
-        GameManager.Instance.GetExp(exp);
+        GameManager.instance.kill++;
+        GameManager.instance.GetExp(exp);
         currColor.a = .4f;
         spriter.color = currColor;
         yield return waitSec;

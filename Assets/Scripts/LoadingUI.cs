@@ -44,12 +44,12 @@ public class LoadingUI : MonoBehaviour
         isLoading.text = loadingText[0];
         loadingPercentage.text = string.Format("{0}%", 0);
 
-        GameManager.Instance.player.gameObject.SetActive(false);
+        GameManager.instance.player.gameObject.SetActive(false);
     }
 
     IEnumerator Loading()
     {
-        AsyncOperation scene = SceneManager.LoadSceneAsync(GameManager.Instance.sceneName);
+        AsyncOperation scene = SceneManager.LoadSceneAsync(GameManager.instance.sceneName);
         scene.allowSceneActivation = false;
         float timer = 0f;
         float textTimer = 0f;

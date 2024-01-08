@@ -13,7 +13,7 @@ public class Spawner : MonoBehaviour
 
     private void Start()
     {
-        if (GameManager.Instance.stageId == -1)
+        if (GameManager.instance.stageId == -1)
         {
             stage = null;
             wave = -1;
@@ -21,26 +21,26 @@ public class Spawner : MonoBehaviour
         }
         else
         {
-            stage = GameManager.Instance.stage.stageDataArr[GameManager.Instance.stageId];
+            stage = GameManager.instance.stage.stageDataArr[GameManager.instance.stageId];
             wave = 0;
             timer = new float[stage.waveData[0].enemyInfos.Length];
         }
-        currentStageId = GameManager.Instance.stageId;
+        currentStageId = GameManager.instance.stageId;
     }
 
     private void Update()
     {
-        if (GameManager.Instance.stageId == -1) return;
-        if (!GameManager.Instance.isLive) return;
-        if (GameManager.Instance.gameTime > GameManager.Instance.maxGameTime) return;
-        if (currentStageId != GameManager.Instance.stageId)
+        if (GameManager.instance.stageId == -1) return;
+        if (!GameManager.instance.isLive) return;
+        if (GameManager.instance.gameTime > GameManager.instance.maxGameTime) return;
+        if (currentStageId != GameManager.instance.stageId)
         {
-            currentStageId = GameManager.Instance.stageId;
+            currentStageId = GameManager.instance.stageId;
             wave = 0;
             timer = new float[stage.waveData[0].enemyInfos.Length];
         }
 
-        if (wave < stage.waveData.Length - 1 && GameManager.Instance.gameTime > stage.waveData[wave + 1].startTime)
+        if (wave < stage.waveData.Length - 1 && GameManager.instance.gameTime > stage.waveData[wave + 1].startTime)
         {
             wave++;
             timer = new float[stage.waveData[wave].enemyInfos.Length];

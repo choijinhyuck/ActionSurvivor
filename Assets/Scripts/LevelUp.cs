@@ -231,17 +231,17 @@ public class LevelUp : MonoBehaviour
             }
         }
 
-        int[] playerLevels = new int[] {GameManager.Instance.playerDamageLevel, GameManager.Instance.playerSpeedLevel,
-                                        GameManager.Instance.playerHealthLevel, GameManager.Instance.playerSkillLevel,
-                                        GameManager.Instance.playerDashLevel};
+        int[] playerLevels = new int[] {GameManager.instance.playerDamageLevel, GameManager.instance.playerSpeedLevel,
+                                        GameManager.instance.playerHealthLevel, GameManager.instance.playerSkillLevel,
+                                        GameManager.instance.playerDashLevel};
 
         // Max Level이 아닌 경우만 고려
         List<int> levelArr = new List<int> { };
-        if (GameManager.Instance.playerDamageLevel < 3) levelArr.Add(0);
-        if (GameManager.Instance.playerSpeedLevel < 3) levelArr.Add(1);
-        if (GameManager.Instance.playerHealthLevel < 4) levelArr.Add(2);
-        if (GameManager.Instance.playerSkillLevel < 6) levelArr.Add(3);
-        if (GameManager.Instance.playerDashLevel < 4) levelArr.Add(4);
+        if (GameManager.instance.playerDamageLevel < 3) levelArr.Add(0);
+        if (GameManager.instance.playerSpeedLevel < 3) levelArr.Add(1);
+        if (GameManager.instance.playerHealthLevel < 4) levelArr.Add(2);
+        if (GameManager.instance.playerSkillLevel < 6) levelArr.Add(3);
+        if (GameManager.instance.playerDashLevel < 4) levelArr.Add(4);
 
 
         List<int> select = new List<int>();
@@ -330,14 +330,14 @@ public class LevelUp : MonoBehaviour
         //        GameManager.Instance.playerDashLevel++;
         //        break;
         //}
-        GameManager.Instance.StatusUpdate();
+        GameManager.instance.StatusUpdate();
 
         AudioManager.instance.PlaySfx(AudioManager.Sfx.ButtonPress);
-        if (GameManager.Instance.health > 1.1f)
+        if (GameManager.instance.health > 1.1f)
         {
             AudioManager.instance.PauseBGM(false);
         }
-        GameManager.Instance.Resume();
+        GameManager.instance.Resume();
         isLevelUp = false;
         currentEvent = null;
 
@@ -355,50 +355,50 @@ public class LevelUp : MonoBehaviour
         switch (index)
         {
             case 0:
-                if (GameManager.Instance.playerDamageLevel == 2)
+                if (GameManager.instance.playerDamageLevel == 2)
                 {
-                    texts[0] = string.Format("힘 <size=9><color=blue>Lv.{0}</color> <color=red>(Max)</color></size>", GameManager.Instance.playerDamageLevel + 1);
+                    texts[0] = string.Format("힘 <size=9><color=blue>Lv.{0}</color> <color=red>(Max)</color></size>", GameManager.instance.playerDamageLevel + 1);
                 }
                 else
                 {
-                    texts[0] = string.Format("힘 <size=9><color=blue>Lv.{0}</color></size>", GameManager.Instance.playerDamageLevel + 1);
+                    texts[0] = string.Format("힘 <size=9><color=blue>Lv.{0}</color></size>", GameManager.instance.playerDamageLevel + 1);
                 }
                 texts[1] = string.Format("공격력 <color=red><size=7>{0}</size></color> 증가", 1);
                 break;
 
             case 1:
-                if (GameManager.Instance.playerSpeedLevel == 2)
+                if (GameManager.instance.playerSpeedLevel == 2)
                 {
-                    texts[0] = string.Format("민첩 <size=9><color=blue>Lv.{0}</color> <color=red>(Max)</color></size>", GameManager.Instance.playerSpeedLevel + 1);
+                    texts[0] = string.Format("민첩 <size=9><color=blue>Lv.{0}</color> <color=red>(Max)</color></size>", GameManager.instance.playerSpeedLevel + 1);
                 }
                 else
                 {
-                    texts[0] = string.Format("민첩 <size=9><color=blue>Lv.{0}</color></size>", GameManager.Instance.playerSpeedLevel + 1);
+                    texts[0] = string.Format("민첩 <size=9><color=blue>Lv.{0}</color></size>", GameManager.instance.playerSpeedLevel + 1);
                 }
                 texts[1] = string.Format("이동속도 <color=red><size=7>{0}</size></color> 증가", 1);
                 break;
 
             case 2:
-                if (GameManager.Instance.playerHealthLevel == 3)
+                if (GameManager.instance.playerHealthLevel == 3)
                 {
-                    texts[0] = string.Format("건강 <size=9><color=blue>Lv.{0}</color> <color=red>(Max)</color></size>", GameManager.Instance.playerHealthLevel + 1);
+                    texts[0] = string.Format("건강 <size=9><color=blue>Lv.{0}</color> <color=red>(Max)</color></size>", GameManager.instance.playerHealthLevel + 1);
                     texts[1] = "피격 시 무적시간 <size=7><color=red>100%</color></size> 증가";
 
                 }
                 else
                 {
-                    texts[0] = string.Format("건강 <size=9><color=blue>Lv.{0}</color></size>", GameManager.Instance.playerHealthLevel + 1);
+                    texts[0] = string.Format("건강 <size=9><color=blue>Lv.{0}</color></size>", GameManager.instance.playerHealthLevel + 1);
                     texts[1] = string.Format("최대 하트 <color=red><size=7>{0}</size></color> 증가", 1);
 
                 }
                 break;
 
             case 3:
-                texts[0] = string.Format("기술 <size=9><color=blue>Lv.{0}</color></size>", GameManager.Instance.playerSkillLevel + 1);
-                switch (GameManager.Instance.playerSkillLevel)
+                texts[0] = string.Format("기술 <size=9><color=blue>Lv.{0}</color></size>", GameManager.instance.playerSkillLevel + 1);
+                switch (GameManager.instance.playerSkillLevel)
                 {
                     case 5:
-                        texts[0] = string.Format("기술 <size=9><color=blue>Lv.{0}</color> <color=red>(Max)</color></size>", GameManager.Instance.playerSkillLevel + 1);
+                        texts[0] = string.Format("기술 <size=9><color=blue>Lv.{0}</color> <color=red>(Max)</color></size>", GameManager.instance.playerSkillLevel + 1);
                         texts[1] = string.Format("<size=7><color=red>3단계</color></size> 차지 기술 개방");
                         break;
                     case 4:
@@ -420,22 +420,22 @@ public class LevelUp : MonoBehaviour
                 break;
 
             case 4:
-                switch (GameManager.Instance.playerDashLevel)
+                switch (GameManager.instance.playerDashLevel)
                 {
                     case 3:
-                        texts[0] = string.Format("대시 <size=9><color=blue>Lv.{0}</color> <color=red>(Max)</color></size>", GameManager.Instance.playerDashLevel + 1);
+                        texts[0] = string.Format("대시 <size=9><color=blue>Lv.{0}</color> <color=red>(Max)</color></size>", GameManager.instance.playerDashLevel + 1);
                         texts[1] = string.Format("대시 이동거리 <size=7><color=red>30%</color></size> 증가");
                         break;
                     case 2:
-                        texts[0] = string.Format("대시 <size=9><color=blue>Lv.{0}</color></size>", GameManager.Instance.playerDashLevel + 1);
+                        texts[0] = string.Format("대시 <size=9><color=blue>Lv.{0}</color></size>", GameManager.instance.playerDashLevel + 1);
                         texts[1] = string.Format("대시 재사용 시간 <size=7><color=red>20%</color></size> 감소");
                         break;
                     case 1:
-                        texts[0] = string.Format("대시 <size=9><color=blue>Lv.{0}</color></size>", GameManager.Instance.playerDashLevel + 1);
+                        texts[0] = string.Format("대시 <size=9><color=blue>Lv.{0}</color></size>", GameManager.instance.playerDashLevel + 1);
                         texts[1] = string.Format("대시 재사용 시간 <size=7><color=red>15%</color></size> 감소");
                         break;
                     default:
-                        texts[0] = string.Format("대시 <size=9><color=blue>Lv.{0}</color></size>", GameManager.Instance.playerDashLevel + 1);
+                        texts[0] = string.Format("대시 <size=9><color=blue>Lv.{0}</color></size>", GameManager.instance.playerDashLevel + 1);
                         texts[1] = string.Format("대시 재사용 시간 <size=7><color=red>10%</color></size> 감소");
                         break;
                 }
@@ -449,67 +449,67 @@ public class LevelUp : MonoBehaviour
         switch (levelIndex)
         {
             case 0:
-                GameManager.Instance.playerDamageLevel++;
+                GameManager.instance.playerDamageLevel++;
                 break;
 
             case 1:
-                GameManager.Instance.playerSpeedLevel++;
+                GameManager.instance.playerSpeedLevel++;
                 break;
 
             case 2:
-                if (GameManager.Instance.playerHealthLevel == 3)
+                if (GameManager.instance.playerHealthLevel == 3)
                 {
-                    GameManager.Instance.playerImmuneTime *= 2;
+                    GameManager.instance.playerImmuneTime *= 2;
                 }
                 else
                 {
-                    GameManager.Instance.health++;
+                    GameManager.instance.health++;
                 }
-                GameManager.Instance.playerHealthLevel++;
+                GameManager.instance.playerHealthLevel++;
                 break;
 
             case 3:
-                switch (GameManager.Instance.playerSkillLevel)
+                switch (GameManager.instance.playerSkillLevel)
                 {
                     case 5:
-                        GameManager.Instance.maxChargibleCount = 3;
+                        GameManager.instance.maxChargibleCount = 3;
                         break;
                     case 4:
-                        GameManager.Instance.maxChargeCount += 2;
+                        GameManager.instance.maxChargeCount += 2;
                         break;
                     case 3:
-                        GameManager.Instance.chargeTime *= .7f;
+                        GameManager.instance.chargeTime *= .7f;
                         break;
                     case 2:
-                        GameManager.Instance.maxChargibleCount = 2;
+                        GameManager.instance.maxChargibleCount = 2;
                         break;
                     case 1:
-                        GameManager.Instance.maxChargeCount += 1;
+                        GameManager.instance.maxChargeCount += 1;
                         break;
                     default:
-                        GameManager.Instance.chargeTime *= .8f;
+                        GameManager.instance.chargeTime *= .8f;
                         break;
                 }
-                GameManager.Instance.playerSkillLevel++;
+                GameManager.instance.playerSkillLevel++;
                 break;
 
             case 4:
-                switch (GameManager.Instance.playerDashLevel)
+                switch (GameManager.instance.playerDashLevel)
                 {
                     case 3:
-                        GameManager.Instance.dodgeSpeed *= 1.3f;
+                        GameManager.instance.dodgeSpeed *= 1.3f;
                         break;
                     case 2:
-                        GameManager.Instance.dodgeTime *= .8f;
+                        GameManager.instance.dodgeTime *= .8f;
                         break;
                     case 1:
-                        GameManager.Instance.dodgeTime *= .85f;
+                        GameManager.instance.dodgeTime *= .85f;
                         break;
                     default:
-                        GameManager.Instance.dodgeTime *= .9f;
+                        GameManager.instance.dodgeTime *= .9f;
                         break;
                 }
-                GameManager.Instance.playerDashLevel++;
+                GameManager.instance.playerDashLevel++;
                 break;
         }
     }

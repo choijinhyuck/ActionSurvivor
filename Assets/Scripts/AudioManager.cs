@@ -1,4 +1,3 @@
-using UnityEditor.Rendering;
 using UnityEngine;
 
 public class AudioManager : MonoBehaviour
@@ -13,7 +12,7 @@ public class AudioManager : MonoBehaviour
 
     public enum Bgm
     {
-        Camp, Stage0, Stage1, Stage2, Title, Boss, Death
+        Camp, Stage0, Stage1, Stage2, Title, Boss, Death, Victory
     }
 
     [Header("#SFC")]
@@ -26,7 +25,7 @@ public class AudioManager : MonoBehaviour
     public enum Sfx
     {
         Dead, Hit, LevelUp = 3, Lose, Melee, Range = 7, Select, Win, WarriorSkill = 11, WarriorAttack, PlayerHit, Dodge = 14, Fail, Kunai, Arrow, Healthy,
-        ButtonChange, ButtonPress, Cancel, Equip, Unequip, Destroy, Gold, AcquireItem, HeartBeat, Success, Upgrade, ChestOpen, Start, MenuChange
+        ButtonChange, ButtonPress, Cancel, Equip, Unequip, Destroy, Gold, AcquireItem, HeartBeat, Success, Upgrade, ChestOpen, MenuSelect, MenuChange
     }
 
     private void Awake()
@@ -47,7 +46,7 @@ public class AudioManager : MonoBehaviour
     void Init()
     {
         //배경음 플레이어 초기화
-        GameObject bgmObject = new GameObject("BgmPlayer");
+        GameObject bgmObject = new("BgmPlayer");
         bgmObject.transform.parent = transform;
         bgmPlayer = bgmObject.AddComponent<AudioSource>();
         bgmPlayer.playOnAwake = false;
@@ -57,7 +56,7 @@ public class AudioManager : MonoBehaviour
         bgmEffect = Camera.main.GetComponent<AudioHighPassFilter>();
 
         //효과음 플레이어 초기화
-        GameObject sfxObject = new GameObject("SfxPlayer");
+        GameObject sfxObject = new("SfxPlayer");
         sfxObject.transform.parent = transform;
         sfxPlayers = new AudioSource[channels];
 
@@ -72,7 +71,7 @@ public class AudioManager : MonoBehaviour
 
     public void PlayBgm(bool isPlay)
     {
-        if(isPlay)
+        if (isPlay)
         {
             bgmPlayer.Play();
 
@@ -82,12 +81,14 @@ public class AudioManager : MonoBehaviour
             bgmPlayer.Stop();
         }
     }
-    public void changeBGM(Bgm bgmType, float bgmVol)
+    public void ChangeBGM(Bgm bgmType, float bgmVol, bool isLoop)
     {
         bgmPlayer.clip = bgmClip[(int)bgmType];
         bgmPlayer.volume = bgmVol;
+
+        bgmPlayer.loop = isLoop;
     }
-    
+
     public void PauseBGM(bool pause)
     {
         if (pause)
@@ -102,7 +103,7 @@ public class AudioManager : MonoBehaviour
 
     public void EffectBgm(bool isPlay)
     {
-       bgmEffect.enabled = isPlay;
+        bgmEffect.enabled = isPlay;
     }
 
     public void PlaySfx(Sfx sfx)

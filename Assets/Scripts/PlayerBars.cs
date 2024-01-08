@@ -35,9 +35,9 @@ public class PlayerBars : MonoBehaviour
         dodgeBarRect = dodgeBar.GetComponent<RectTransform>();
         chargeRect = chargeBar.transform.parent.GetComponent<RectTransform>();
 
-        player = GameManager.Instance.player;
-        dodgeBarRect.anchoredPosition = new Vector2(dodgeBarRect.anchoredPosition.x, dodgeBarPosY[GameManager.Instance.playerId]);
-        chargeRect.anchoredPosition = new Vector2(chargeRect.anchoredPosition.x, chargePosY[GameManager.Instance.playerId]);
+        player = GameManager.instance.player;
+        dodgeBarRect.anchoredPosition = new Vector2(dodgeBarRect.anchoredPosition.x, dodgeBarPosY[GameManager.instance.playerId]);
+        chargeRect.anchoredPosition = new Vector2(chargeRect.anchoredPosition.x, chargePosY[GameManager.instance.playerId]);
 
         Init();
     }
@@ -56,7 +56,7 @@ public class PlayerBars : MonoBehaviour
 
     void UpdateDodgeBar()
     {
-        if (!GameManager.Instance.isLive)
+        if (!GameManager.instance.isLive)
         {
             if (dodgeBar.gameObject.activeSelf)
             {
@@ -65,10 +65,10 @@ public class PlayerBars : MonoBehaviour
             return;
         }
 
-        dodgeBarRect.anchoredPosition = new Vector2(dodgeBarRect.anchoredPosition.x, dodgeBarPosY[GameManager.Instance.playerId]);
+        dodgeBarRect.anchoredPosition = new Vector2(dodgeBarRect.anchoredPosition.x, dodgeBarPosY[GameManager.instance.playerId]);
         if (!player.readyDodge)
         {
-            if (GameManager.Instance.health < .1f)
+            if (GameManager.instance.health < .1f)
             {
                 if (dodgeBar.gameObject.activeSelf)
                 {
@@ -84,9 +84,9 @@ public class PlayerBars : MonoBehaviour
             }
 
             dodgeTimer += Time.deltaTime;
-            dodgeBar.value = dodgeTimer / GameManager.Instance.dodgeTime;
+            dodgeBar.value = dodgeTimer / GameManager.instance.dodgeTime;
 
-            if (dodgeTimer > GameManager.Instance.dodgeTime)
+            if (dodgeTimer > GameManager.instance.dodgeTime)
             {
                 dodgeTimer = 0f;
                 player.readyDodge = true;
@@ -103,7 +103,7 @@ public class PlayerBars : MonoBehaviour
 
     void UpdateChargeBar()
     {
-        if (!GameManager.Instance.isLive)
+        if (!GameManager.instance.isLive)
         {
             if (chargeRect.gameObject.activeSelf)
             {
@@ -112,7 +112,7 @@ public class PlayerBars : MonoBehaviour
             return;
         }
 
-        chargeRect.anchoredPosition = new Vector2(chargeRect.anchoredPosition.x, chargePosY[GameManager.Instance.playerId]);
+        chargeRect.anchoredPosition = new Vector2(chargeRect.anchoredPosition.x, chargePosY[GameManager.instance.playerId]);
         if (player.isCharging)
         {
             if (!chargeRect.gameObject.activeSelf)
@@ -132,22 +132,22 @@ public class PlayerBars : MonoBehaviour
             //chargeRect.GetChild(1).GetComponent<Text>().text =string.Format("<color=#FFFF00>{0:F0}</color><size=2> </size>/<size=2> </size>{1:F0}",
             //    player.chargeCount, GameManager.Instance.maxChargibleCount);
 
-            if (player.chargeCount == GameManager.Instance.maxChargibleCount || player.chargeCount == GameManager.Instance.chargeCount)
+            if (player.chargeCount == GameManager.instance.maxChargibleCount || player.chargeCount == GameManager.instance.chargeCount)
             {
                 chargeBar.value = 1f;
             }
             else
             {
-                chargeBar.value = player.chargeTimer / GameManager.Instance.chargeTime;
+                chargeBar.value = player.chargeTimer / GameManager.instance.chargeTime;
             }
 
             for (int i = 0; i < 3; i++)
             {
-                if (i < GameManager.Instance.maxChargibleCount)
+                if (i < GameManager.instance.maxChargibleCount)
                 {
                     if (player.chargeCount > i)
                     {
-                        switch (GameManager.Instance.playerId)
+                        switch (GameManager.instance.playerId)
                         {
                             case 0:
                                 warrior[i].SetActive(true);
@@ -184,7 +184,7 @@ public class PlayerBars : MonoBehaviour
 
             for (int i = 0; i < 3; i++)
             {
-                switch (GameManager.Instance.playerId)
+                switch (GameManager.instance.playerId)
                 {
                     case 0:
                         warrior[i].SetActive(false);

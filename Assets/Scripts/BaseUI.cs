@@ -86,23 +86,6 @@ public class BaseUI : MonoBehaviour
 
     private void Update()
     {
-        if (EventSystem.current.currentSelectedGameObject is not null)
-        {
-            if (resurrection.gameObject.activeSelf || rightNow.gameObject.activeSelf)
-            {
-                if (currentSelected is null)
-                {
-                    currentSelected = EventSystem.current.currentSelectedGameObject;
-                }
-                else if (currentSelected != EventSystem.current.currentSelectedGameObject)
-                {
-                    AudioManager.instance.PlaySfx(AudioManager.Sfx.MenuChange);
-                    currentSelected = EventSystem.current.currentSelectedGameObject;
-                }
-            }
-
-        }
-
         if (resurrection.gameObject.activeSelf || selectHelp.gameObject.activeSelf)
         {
             switch (ControllerManager.instance.CurrentScheme)
@@ -118,15 +101,34 @@ public class BaseUI : MonoBehaviour
                     break;
             }
         }
+
         if (isComeBack)
         {
-            if (EventSystem.current.currentSelectedGameObject == rightNow.gameObject)
+            if (currentSelected == rightNow.gameObject)
             {
                 EventSystem.current.SetSelectedGameObject(rightNow.gameObject);
             }
-            else if (EventSystem.current.currentSelectedGameObject == later.gameObject)
+            else if (currentSelected == later.gameObject)
             {
                 EventSystem.current.SetSelectedGameObject(later.gameObject);
+            }
+
+            return;
+        }
+
+        if (EventSystem.current.currentSelectedGameObject is not null)
+        {
+            if (resurrection.gameObject.activeSelf || rightNow.gameObject.activeSelf)
+            {
+                if (currentSelected is null)
+                {
+                    currentSelected = EventSystem.current.currentSelectedGameObject;
+                }
+                else if (currentSelected != EventSystem.current.currentSelectedGameObject)
+                {
+                    AudioManager.instance.PlaySfx(AudioManager.Sfx.MenuChange);
+                    currentSelected = EventSystem.current.currentSelectedGameObject;
+                }
             }
         }
     }
@@ -169,9 +171,9 @@ public class BaseUI : MonoBehaviour
         if (isOnClick) return;
         isOnClick = true;
 
-        GameManager.Instance.sceneName = "Camp";
-        AudioManager.instance.PlaySfx(AudioManager.Sfx.Start);
-        GameManager.Instance.FadeOut();
+        GameManager.instance.sceneName = "Camp";
+        AudioManager.instance.PlaySfx(AudioManager.Sfx.MenuSelect);
+        GameManager.instance.FadeOut();
     }
 
     public void Victory()
@@ -190,7 +192,7 @@ public class BaseUI : MonoBehaviour
         float endSecond = 3f;
         float targetAlpha = .7f;
 
-        while (timer < endSecond)
+        while (timer <  endSecond)
         {
             ChangeAlpha(timer / endSecond * targetAlpha, victory, victoryTitle, victoryMessage);
             yield return null;
@@ -209,15 +211,15 @@ public class BaseUI : MonoBehaviour
         if (now)
         {
             isComeBack = true;
-            AudioManager.instance.PlaySfx(AudioManager.Sfx.Start);
+            AudioManager.instance.PlaySfx(AudioManager.Sfx.MenuSelect);
             StartCoroutine(Press(rightNow.gameObject));
-            GameManager.Instance.sceneName = "Camp";
-            GameManager.Instance.FadeOut();
+            GameManager.instance.sceneName = "Camp";
+            GameManager.instance.FadeOut();
         }
         else
         {
             isComeBack = true;
-            AudioManager.instance.PlaySfx(AudioManager.Sfx.Start);
+            AudioManager.instance.PlaySfx(AudioManager.Sfx.MenuSelect);
             StartCoroutine(Press(later.gameObject));
             StartCoroutine(LaterComeBack());
         }
@@ -256,8 +258,9 @@ public class BaseUI : MonoBehaviour
         EventSystem.current.SetSelectedGameObject(null);
         AudioManager.instance.PauseBGM(false);
 
-        GameManager.Instance.Resume();
+        GameManager.instance.Resume();
 
+        isComeBack = false;
         remainTime.text = "10초 후 귀환합니다.";
         remainTime.gameObject.SetActive(true);
         float remainTimer = 10f;
@@ -267,8 +270,8 @@ public class BaseUI : MonoBehaviour
             yield return null;
             remainTimer -= Time.deltaTime;
         }
-        GameManager.Instance.sceneName = "Camp";
-        GameManager.Instance.FadeOut();
+        GameManager.instance.sceneName = "Camp";
+        GameManager.instance.FadeOut();
     }
 }
 

@@ -27,9 +27,9 @@ public class RangeWeapon : MonoBehaviour
             this.timer += Time.deltaTime;
         }
         // 장비가 변하면 원거리 장비의 아이템 Id 갱신
-        if (rangeId != GameManager.Instance.rangeWeaponItem)
+        if (rangeId != GameManager.instance.rangeWeaponItem)
         {
-            rangeId = GameManager.Instance.rangeWeaponItem;
+            rangeId = GameManager.instance.rangeWeaponItem;
             if (rangeId != -1)
             {
                 rangeData = ItemManager.Instance.itemDataArr[rangeId];
@@ -83,9 +83,9 @@ public class RangeWeapon : MonoBehaviour
         {
             count = 3;
             GameObject[] projectiles = new GameObject[count];
-            Vector3 deltaPos = GameManager.Instance.player.rangeArrow.transform.GetChild(0).position - GameManager.Instance.player.transform.position;
+            Vector3 deltaPos = GameManager.instance.player.rangeArrow.transform.GetChild(0).position - GameManager.instance.player.transform.position;
             Vector3 arrowSpritePos;
-            Vector3 arrowAngle = GameManager.Instance.player.rangeArrow.transform.localEulerAngles;
+            Vector3 arrowAngle = GameManager.instance.player.rangeArrow.transform.localEulerAngles;
             Vector3 newDir = rangeDir;
             float rotAngle = 15f;
 
@@ -93,14 +93,14 @@ public class RangeWeapon : MonoBehaviour
             {
                 projectiles[i] = PoolManager.instance.Get(prefabId);
                 projectiles[i].transform.parent = PoolManager.instance.transform.GetChild(1);
-                arrowSpritePos = GameManager.Instance.player.transform.position + deltaPos;
+                arrowSpritePos = GameManager.instance.player.transform.position + deltaPos;
 
                 switch (i)
                 {
                     case 0:
                         projectiles[i].transform.position = Quaternion.AngleAxis(rotAngle, Vector3.forward)
-                                                       * (arrowSpritePos - GameManager.Instance.player.rangeArrow.transform.position)
-                                                       + GameManager.Instance.player.rangeArrow.transform.position;
+                                                       * (arrowSpritePos - GameManager.instance.player.rangeArrow.transform.position)
+                                                       + GameManager.instance.player.rangeArrow.transform.position;
                         projectiles[i].transform.localEulerAngles = arrowAngle + new Vector3(0, 0, rotAngle);
                         newDir = Quaternion.AngleAxis(rotAngle, Vector3.forward) * rangeDir;
                         break;
@@ -113,8 +113,8 @@ public class RangeWeapon : MonoBehaviour
 
                     case 2:
                         projectiles[i].transform.position = Quaternion.AngleAxis(-rotAngle, Vector3.forward)
-                                                       * (arrowSpritePos - GameManager.Instance.player.rangeArrow.transform.position)
-                                                       + GameManager.Instance.player.rangeArrow.transform.position;
+                                                       * (arrowSpritePos - GameManager.instance.player.rangeArrow.transform.position)
+                                                       + GameManager.instance.player.rangeArrow.transform.position;
                         projectiles[i].transform.localEulerAngles = arrowAngle + new Vector3(0, 0, -rotAngle);
                         newDir = Quaternion.AngleAxis(-rotAngle, Vector3.forward) * rangeDir;
                         break;
@@ -129,16 +129,16 @@ public class RangeWeapon : MonoBehaviour
         {
             count = 2;
             GameObject[] projectiles = new GameObject[count];
-            Vector3 deltaPos = GameManager.Instance.player.rangeArrow.transform.GetChild(0).position - GameManager.Instance.player.transform.position;
+            Vector3 deltaPos = GameManager.instance.player.rangeArrow.transform.GetChild(0).position - GameManager.instance.player.transform.position;
             Vector3 arrowSpritePos;
-            Vector3 arrowAngle = GameManager.Instance.player.rangeArrow.transform.localEulerAngles;
+            Vector3 arrowAngle = GameManager.instance.player.rangeArrow.transform.localEulerAngles;
             Vector3 newDir = rangeDir;
 
             for (int i = 0; i < count; i++)
             {
                 projectiles[i] = PoolManager.instance.Get(prefabId);
                 projectiles[i].transform.parent = PoolManager.instance.transform.GetChild(1); ;
-                arrowSpritePos = GameManager.Instance.player.transform.position + deltaPos;
+                arrowSpritePos = GameManager.instance.player.transform.position + deltaPos;
 
                 projectiles[i].transform.position = arrowSpritePos;
                 projectiles[i].transform.localEulerAngles = arrowAngle;
@@ -153,16 +153,16 @@ public class RangeWeapon : MonoBehaviour
         {
             count = 1;
             GameObject[] projectiles = new GameObject[count];
-            Vector3 deltaPos = GameManager.Instance.player.rangeArrow.transform.GetChild(0).position - GameManager.Instance.player.transform.position;
+            Vector3 deltaPos = GameManager.instance.player.rangeArrow.transform.GetChild(0).position - GameManager.instance.player.transform.position;
             Vector3 arrowSpritePos;
-            Vector3 arrowAngle = GameManager.Instance.player.rangeArrow.transform.localEulerAngles;
+            Vector3 arrowAngle = GameManager.instance.player.rangeArrow.transform.localEulerAngles;
             Vector3 newDir = rangeDir;
 
             for (int i = 0; i < count; i++)
             {
                 projectiles[i] = PoolManager.instance.Get(prefabId);
                 projectiles[i].transform.parent = PoolManager.instance.transform.GetChild(1); ;
-                arrowSpritePos = GameManager.Instance.player.transform.position + deltaPos;
+                arrowSpritePos = GameManager.instance.player.transform.position + deltaPos;
 
                 projectiles[i].transform.position = arrowSpritePos;
                 projectiles[i].transform.localEulerAngles = arrowAngle;

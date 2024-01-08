@@ -26,9 +26,9 @@ public class Magic : MonoBehaviour
             this.timer += Time.deltaTime;
         }
         // 장비가 변하면 원거리 장비의 아이템 Id 갱신
-        if (magicId != GameManager.Instance.magicItem)
+        if (magicId != GameManager.instance.magicItem)
         {
-            magicId = GameManager.Instance.magicItem;
+            magicId = GameManager.instance.magicItem;
             if (magicId != -1)
             {
                 magicData = ItemManager.Instance.itemDataArr[magicId];
@@ -71,7 +71,7 @@ public class Magic : MonoBehaviour
 
         GameObject projectile = PoolManager.instance.Get(prefabId);
         projectile.transform.parent = projectilePool;
-        projectile.transform.position = GameManager.Instance.player.rangeArrow.transform.GetChild(0).position;
+        projectile.transform.position = GameManager.instance.player.rangeArrow.transform.GetChild(0).position;
         projectile.transform.localRotation = Quaternion.FromToRotation(Vector3.right, magicDir);
         projectile.GetComponent<Projectile>().Init(magicData.baseAmount, magicData.pierceCount, magicDir, magicData.speed, magicId);
         //if (rangeId == 6 || rangeId == 7)

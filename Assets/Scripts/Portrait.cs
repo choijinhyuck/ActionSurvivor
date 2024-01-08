@@ -25,7 +25,7 @@ public class Portrait : MonoBehaviour
 
     void GetPortrait()
     {
-        switch (GameManager.Instance.playerId)
+        switch (GameManager.instance.playerId)
         {
             case 0:
                 portrait.sprite = sprites[0];

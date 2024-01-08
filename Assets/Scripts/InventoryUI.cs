@@ -92,7 +92,7 @@ public class InventoryUI : MonoBehaviour
         }
         
 
-        for (int i = 0; i < GameManager.Instance.maxInventory; i++)
+        for (int i = 0; i < GameManager.instance.maxInventory; i++)
         {
             buttons[i].gameObject.SetActive(true);
         }
@@ -147,7 +147,7 @@ public class InventoryUI : MonoBehaviour
 
         if (selectedId < 24)
         {
-            if (GameManager.Instance.inventoryItemsId[selectedId] == -1)
+            if (GameManager.instance.inventoryItemsId[selectedId] == -1)
             {
                 itemName.text = "";
                 itemDesc.text = "";
@@ -155,9 +155,9 @@ public class InventoryUI : MonoBehaviour
             }
             else
             {
-                itemName.text = ItemManager.Instance.itemDataArr[GameManager.Instance.inventoryItemsId[selectedId]].itemName;
-                itemDesc.text = ItemManager.Instance.itemDataArr[GameManager.Instance.inventoryItemsId[selectedId]].itemDesc;
-                itemEffect.text = ItemManager.Instance.itemDataArr[GameManager.Instance.inventoryItemsId[selectedId]].itemEffect;
+                itemName.text = ItemManager.Instance.itemDataArr[GameManager.instance.inventoryItemsId[selectedId]].itemName;
+                itemDesc.text = ItemManager.Instance.itemDataArr[GameManager.instance.inventoryItemsId[selectedId]].itemDesc;
+                itemEffect.text = ItemManager.Instance.itemDataArr[GameManager.instance.inventoryItemsId[selectedId]].itemEffect;
             }
         }
         else
@@ -165,7 +165,7 @@ public class InventoryUI : MonoBehaviour
             switch (selectedId)
             {
                 case 24:
-                    if (GameManager.Instance.mainWeaponItem[GameManager.Instance.playerId] == -1)
+                    if (GameManager.instance.mainWeaponItem[GameManager.instance.playerId] == -1)
                     {
                         itemName.text = "";
                         itemDesc.text = "";
@@ -173,13 +173,13 @@ public class InventoryUI : MonoBehaviour
                     }
                     else
                     {
-                        itemName.text = ItemManager.Instance.itemDataArr[GameManager.Instance.mainWeaponItem[GameManager.Instance.playerId]].itemName;
-                        itemDesc.text = ItemManager.Instance.itemDataArr[GameManager.Instance.mainWeaponItem[GameManager.Instance.playerId]].itemDesc;
-                        itemEffect.text = ItemManager.Instance.itemDataArr[GameManager.Instance.mainWeaponItem[GameManager.Instance.playerId]].itemEffect;
+                        itemName.text = ItemManager.Instance.itemDataArr[GameManager.instance.mainWeaponItem[GameManager.instance.playerId]].itemName;
+                        itemDesc.text = ItemManager.Instance.itemDataArr[GameManager.instance.mainWeaponItem[GameManager.instance.playerId]].itemDesc;
+                        itemEffect.text = ItemManager.Instance.itemDataArr[GameManager.instance.mainWeaponItem[GameManager.instance.playerId]].itemEffect;
                     }
                     break;
                 case 25:
-                    if (GameManager.Instance.necklaceItem[GameManager.Instance.playerId] == -1)
+                    if (GameManager.instance.necklaceItem[GameManager.instance.playerId] == -1)
                     {
                         itemName.text = "";
                         itemDesc.text = "";
@@ -187,13 +187,13 @@ public class InventoryUI : MonoBehaviour
                     }
                     else
                     {
-                        itemName.text = ItemManager.Instance.itemDataArr[GameManager.Instance.necklaceItem[GameManager.Instance.playerId]].itemName;
-                        itemDesc.text = ItemManager.Instance.itemDataArr[GameManager.Instance.necklaceItem[GameManager.Instance.playerId]].itemDesc;
-                        itemEffect.text = ItemManager.Instance.itemDataArr[GameManager.Instance.necklaceItem[GameManager.Instance.playerId]].itemEffect;
+                        itemName.text = ItemManager.Instance.itemDataArr[GameManager.instance.necklaceItem[GameManager.instance.playerId]].itemName;
+                        itemDesc.text = ItemManager.Instance.itemDataArr[GameManager.instance.necklaceItem[GameManager.instance.playerId]].itemDesc;
+                        itemEffect.text = ItemManager.Instance.itemDataArr[GameManager.instance.necklaceItem[GameManager.instance.playerId]].itemEffect;
                     }
                     break;
                 case 26:
-                    if (GameManager.Instance.shoesItem[GameManager.Instance.playerId] == -1)
+                    if (GameManager.instance.shoesItem[GameManager.instance.playerId] == -1)
                     {
                         itemName.text = "";
                         itemDesc.text = "";
@@ -201,13 +201,13 @@ public class InventoryUI : MonoBehaviour
                     }
                     else
                     {
-                        itemName.text = ItemManager.Instance.itemDataArr[GameManager.Instance.shoesItem[GameManager.Instance.playerId]].itemName;
-                        itemDesc.text = ItemManager.Instance.itemDataArr[GameManager.Instance.shoesItem[GameManager.Instance.playerId]].itemDesc;
-                        itemEffect.text = ItemManager.Instance.itemDataArr[GameManager.Instance.shoesItem[GameManager.Instance.playerId]].itemEffect;
+                        itemName.text = ItemManager.Instance.itemDataArr[GameManager.instance.shoesItem[GameManager.instance.playerId]].itemName;
+                        itemDesc.text = ItemManager.Instance.itemDataArr[GameManager.instance.shoesItem[GameManager.instance.playerId]].itemDesc;
+                        itemEffect.text = ItemManager.Instance.itemDataArr[GameManager.instance.shoesItem[GameManager.instance.playerId]].itemEffect;
                     }
                     break;
                 case 27:
-                    if (GameManager.Instance.rangeWeaponItem == -1)
+                    if (GameManager.instance.rangeWeaponItem == -1)
                     {
                         itemName.text = "";
                         itemDesc.text = "";
@@ -215,13 +215,13 @@ public class InventoryUI : MonoBehaviour
                     }
                     else
                     {
-                        itemName.text = ItemManager.Instance.itemDataArr[GameManager.Instance.rangeWeaponItem].itemName;
-                        itemDesc.text = ItemManager.Instance.itemDataArr[GameManager.Instance.rangeWeaponItem].itemDesc;
-                        itemEffect.text = ItemManager.Instance.itemDataArr[GameManager.Instance.rangeWeaponItem].itemEffect;
+                        itemName.text = ItemManager.Instance.itemDataArr[GameManager.instance.rangeWeaponItem].itemName;
+                        itemDesc.text = ItemManager.Instance.itemDataArr[GameManager.instance.rangeWeaponItem].itemDesc;
+                        itemEffect.text = ItemManager.Instance.itemDataArr[GameManager.instance.rangeWeaponItem].itemEffect;
                     }
                     break;
                 case 28:
-                    if (GameManager.Instance.magicItem == -1)
+                    if (GameManager.instance.magicItem == -1)
                     {
                         itemName.text = "";
                         itemDesc.text = "";
@@ -229,9 +229,9 @@ public class InventoryUI : MonoBehaviour
                     }
                     else
                     {
-                        itemName.text = ItemManager.Instance.itemDataArr[GameManager.Instance.magicItem].itemName;
-                        itemDesc.text = ItemManager.Instance.itemDataArr[GameManager.Instance.magicItem].itemDesc;
-                        itemEffect.text = ItemManager.Instance.itemDataArr[GameManager.Instance.magicItem].itemEffect;
+                        itemName.text = ItemManager.Instance.itemDataArr[GameManager.instance.magicItem].itemName;
+                        itemDesc.text = ItemManager.Instance.itemDataArr[GameManager.instance.magicItem].itemDesc;
+                        itemEffect.text = ItemManager.Instance.itemDataArr[GameManager.instance.magicItem].itemEffect;
                     }
                     break;
             }
@@ -252,23 +252,23 @@ public class InventoryUI : MonoBehaviour
             switch (selectedId)
             {
                 case 24:
-                    isEmpty = GameManager.Instance.mainWeaponItem[GameManager.Instance.playerId] == -1;
+                    isEmpty = GameManager.instance.mainWeaponItem[GameManager.instance.playerId] == -1;
                     break;
 
                 case 25:
-                    isEmpty = GameManager.Instance.necklaceItem[GameManager.Instance.playerId] == -1;
+                    isEmpty = GameManager.instance.necklaceItem[GameManager.instance.playerId] == -1;
                     break;
 
                 case 26:
-                    isEmpty = GameManager.Instance.shoesItem[GameManager.Instance.playerId] == -1;
+                    isEmpty = GameManager.instance.shoesItem[GameManager.instance.playerId] == -1;
                     break;
 
                 case 27:
-                    isEmpty = GameManager.Instance.rangeWeaponItem == -1;
+                    isEmpty = GameManager.instance.rangeWeaponItem == -1;
                     break;
 
                 case 28:
-                    isEmpty = GameManager.Instance.magicItem == -1;
+                    isEmpty = GameManager.instance.magicItem == -1;
                     break;
             }
             if (isEmpty)
@@ -282,7 +282,7 @@ public class InventoryUI : MonoBehaviour
         }
         else
         {
-            int itemId = GameManager.Instance.inventoryItemsId[selectedId];
+            int itemId = GameManager.instance.inventoryItemsId[selectedId];
             if (itemId == -1)
             {
                 help.Show(InventoryControlHelp.ActionType.Empty);
@@ -307,9 +307,9 @@ public class InventoryUI : MonoBehaviour
     {
         if (!gameObject.activeSelf) return;
         if (isPressed) return;
-        if (!GameManager.Instance.workingInventory) return;
+        if (!GameManager.instance.workingInventory) return;
         if (selectedId > 23) return;
-        if (GameManager.Instance.inventoryItemsId[selectedId] == -1) return;
+        if (GameManager.instance.inventoryItemsId[selectedId] == -1) return;
         // 위 조건에 해당되지 않으면 파괴 버튼 도움말 팝업 띄우기
 
         EventSystem.current.SetSelectedGameObject(confirmNo.gameObject);
@@ -317,7 +317,7 @@ public class InventoryUI : MonoBehaviour
         isDestroying = true;
         destroyDesc.transform.parent.gameObject.SetActive(true);
         destroyDesc.text = string.Format("<color=green>{0}</color>\r\n을(를) 정말 <color=red>파괴</color>하시겠습니까?",
-            ItemManager.Instance.itemDataArr[GameManager.Instance.inventoryItemsId[selectedId]].itemName);
+            ItemManager.Instance.itemDataArr[GameManager.instance.inventoryItemsId[selectedId]].itemName);
         
     }
     
@@ -325,7 +325,7 @@ public class InventoryUI : MonoBehaviour
     {
         if (confirm)
         {
-            GameManager.Instance.inventoryItemsId[selectedId] = -1;
+            GameManager.instance.inventoryItemsId[selectedId] = -1;
             AudioManager.instance.PlaySfx(AudioManager.Sfx.Destroy);
         }
         else
@@ -339,15 +339,15 @@ public class InventoryUI : MonoBehaviour
 
     void Init()
     {
-        for (int i = 0; i < GameManager.Instance.maxInventory; i++)
+        for (int i = 0; i < GameManager.instance.maxInventory; i++)
         {
-            if (GameManager.Instance.inventoryItemsId[i] == -1)
+            if (GameManager.instance.inventoryItemsId[i] == -1)
             {
                 emptySlot(i);
             }
             else
             {
-                itemImages[i].sprite = ItemManager.Instance.itemDataArr[GameManager.Instance.inventoryItemsId[i]].itemIcon;
+                itemImages[i].sprite = ItemManager.Instance.itemDataArr[GameManager.instance.inventoryItemsId[i]].itemIcon;
                 slotAlpha(i);
             }
         }
@@ -358,19 +358,19 @@ public class InventoryUI : MonoBehaviour
             switch (i)
             {
                 case 24:
-                    tempItemId = GameManager.Instance.mainWeaponItem[GameManager.Instance.playerId];
+                    tempItemId = GameManager.instance.mainWeaponItem[GameManager.instance.playerId];
                     break;
                 case 25:
-                    tempItemId = GameManager.Instance.necklaceItem[GameManager.Instance.playerId];
+                    tempItemId = GameManager.instance.necklaceItem[GameManager.instance.playerId];
                     break;
                 case 26:
-                    tempItemId = GameManager.Instance.shoesItem[GameManager.Instance.playerId];
+                    tempItemId = GameManager.instance.shoesItem[GameManager.instance.playerId];
                     break;
                 case 27:
-                    tempItemId = GameManager.Instance.rangeWeaponItem;
+                    tempItemId = GameManager.instance.rangeWeaponItem;
                     break;
                 case 28:
-                    tempItemId = GameManager.Instance.magicItem;
+                    tempItemId = GameManager.instance.magicItem;
                     break;
             }
             if (tempItemId == -1)
@@ -397,7 +397,7 @@ public class InventoryUI : MonoBehaviour
                 {
                     if (pressedId < 24)
                     {
-                        ItemData.ItemType tempPressedItemType = ItemManager.Instance.itemDataArr[GameManager.Instance.inventoryItemsId[pressedId]].itemType;
+                        ItemData.ItemType tempPressedItemType = ItemManager.Instance.itemDataArr[GameManager.instance.inventoryItemsId[pressedId]].itemType;
                         switch (i)
                         {
                             case 24:
@@ -407,9 +407,9 @@ public class InventoryUI : MonoBehaviour
                                 }
                                 else
                                 {
-                                    if (GameManager.Instance.playerId == 0)
+                                    if (GameManager.instance.playerId == 0)
                                     {
-                                        if (GameManager.Instance.inventoryItemsId[pressedId] < 3)
+                                        if (GameManager.instance.inventoryItemsId[pressedId] < 3)
                                         {
                                             buttons[i].GetComponent<Image>().color = greenColor;
                                         }
@@ -418,9 +418,9 @@ public class InventoryUI : MonoBehaviour
                                             buttons[i].GetComponent<Image>().color = redColor;
                                         }
                                     }
-                                    else if (GameManager.Instance.playerId == 1)
+                                    else if (GameManager.instance.playerId == 1)
                                     {
-                                        if (GameManager.Instance.inventoryItemsId[pressedId] > 2 && GameManager.Instance.inventoryItemsId[pressedId] < 6)
+                                        if (GameManager.instance.inventoryItemsId[pressedId] > 2 && GameManager.instance.inventoryItemsId[pressedId] < 6)
                                         {
                                             buttons[i].GetComponent<Image>().color = greenColor;
                                         }
@@ -488,16 +488,16 @@ public class InventoryUI : MonoBehaviour
                                     buttons[i].GetComponent<Image>().color = redColor;
                                     break;
                                 default:
-                                    if (GameManager.Instance.inventoryItemsId[selectedId] == -1)
+                                    if (GameManager.instance.inventoryItemsId[selectedId] == -1)
                                     {
                                         buttons[i].GetComponent<Image>().color = greenColor;
                                         break;
                                     }
-                                    if (ItemManager.Instance.itemDataArr[GameManager.Instance.inventoryItemsId[selectedId]].itemType == ItemData.ItemType.Melee)
+                                    if (ItemManager.Instance.itemDataArr[GameManager.instance.inventoryItemsId[selectedId]].itemType == ItemData.ItemType.Melee)
                                     {
-                                        if (GameManager.Instance.playerId == 0)
+                                        if (GameManager.instance.playerId == 0)
                                         {
-                                            if (GameManager.Instance.inventoryItemsId[selectedId] < 3)
+                                            if (GameManager.instance.inventoryItemsId[selectedId] < 3)
                                             {
                                                 buttons[i].GetComponent<Image>().color = greenColor;
                                             }
@@ -506,9 +506,9 @@ public class InventoryUI : MonoBehaviour
                                                 buttons[i].GetComponent<Image>().color = redColor;
                                             }
                                         }
-                                        else if (GameManager.Instance.playerId == 1)
+                                        else if (GameManager.instance.playerId == 1)
                                         {
-                                            if (GameManager.Instance.inventoryItemsId[selectedId] > 2 && GameManager.Instance.inventoryItemsId[selectedId] < 6)
+                                            if (GameManager.instance.inventoryItemsId[selectedId] > 2 && GameManager.instance.inventoryItemsId[selectedId] < 6)
                                             {
                                                 buttons[i].GetComponent<Image>().color = greenColor;
                                             }
@@ -535,12 +535,12 @@ public class InventoryUI : MonoBehaviour
                                     buttons[i].GetComponent<Image>().color = redColor;
                                     break;
                                 default:
-                                    if (GameManager.Instance.inventoryItemsId[selectedId] == -1)
+                                    if (GameManager.instance.inventoryItemsId[selectedId] == -1)
                                     {
                                         buttons[i].GetComponent<Image>().color = greenColor;
                                         break;
                                     }
-                                    if (ItemManager.Instance.itemDataArr[GameManager.Instance.inventoryItemsId[selectedId]].itemType == ItemData.ItemType.Necklace)
+                                    if (ItemManager.Instance.itemDataArr[GameManager.instance.inventoryItemsId[selectedId]].itemType == ItemData.ItemType.Necklace)
                                     {
                                         buttons[i].GetComponent<Image>().color = greenColor;
                                     }
@@ -561,12 +561,12 @@ public class InventoryUI : MonoBehaviour
                                     buttons[i].GetComponent<Image>().color = redColor;
                                     break;
                                 default:
-                                    if (GameManager.Instance.inventoryItemsId[selectedId] == -1)
+                                    if (GameManager.instance.inventoryItemsId[selectedId] == -1)
                                     {
                                         buttons[i].GetComponent<Image>().color = greenColor;
                                         break;
                                     }
-                                    if (ItemManager.Instance.itemDataArr[GameManager.Instance.inventoryItemsId[selectedId]].itemType == ItemData.ItemType.Shoes)
+                                    if (ItemManager.Instance.itemDataArr[GameManager.instance.inventoryItemsId[selectedId]].itemType == ItemData.ItemType.Shoes)
                                     {
                                         buttons[i].GetComponent<Image>().color = greenColor;
                                     }
@@ -587,12 +587,12 @@ public class InventoryUI : MonoBehaviour
                                     buttons[i].GetComponent<Image>().color = redColor;
                                     break;
                                 default:
-                                    if (GameManager.Instance.inventoryItemsId[selectedId] == -1)
+                                    if (GameManager.instance.inventoryItemsId[selectedId] == -1)
                                     {
                                         buttons[i].GetComponent<Image>().color = greenColor;
                                         break;
                                     }
-                                    if (ItemManager.Instance.itemDataArr[GameManager.Instance.inventoryItemsId[selectedId]].itemType == ItemData.ItemType.Range)
+                                    if (ItemManager.Instance.itemDataArr[GameManager.instance.inventoryItemsId[selectedId]].itemType == ItemData.ItemType.Range)
                                     {
                                         buttons[i].GetComponent<Image>().color = greenColor;
                                     }
@@ -613,12 +613,12 @@ public class InventoryUI : MonoBehaviour
                                     buttons[i].GetComponent<Image>().color = redColor;
                                     break;
                                 default:
-                                    if (GameManager.Instance.inventoryItemsId[selectedId] == -1)
+                                    if (GameManager.instance.inventoryItemsId[selectedId] == -1)
                                     {
                                         buttons[i].GetComponent<Image>().color = greenColor;
                                         break;
                                     }
-                                    if (ItemManager.Instance.itemDataArr[GameManager.Instance.inventoryItemsId[selectedId]].itemType == ItemData.ItemType.Magic)
+                                    if (ItemManager.Instance.itemDataArr[GameManager.instance.inventoryItemsId[selectedId]].itemType == ItemData.ItemType.Magic)
                                     {
                                         buttons[i].GetComponent<Image>().color = greenColor;
                                     }
@@ -678,9 +678,9 @@ public class InventoryUI : MonoBehaviour
                 // 인벤토리 내 물품을 누른 경우
                 if (buttonIndex < 24)
                 {
-                    int tempItemId = GameManager.Instance.inventoryItemsId[pressedId];
-                    GameManager.Instance.inventoryItemsId[pressedId] = GameManager.Instance.inventoryItemsId[buttonIndex];
-                    GameManager.Instance.inventoryItemsId[buttonIndex] = tempItemId;
+                    int tempItemId = GameManager.instance.inventoryItemsId[pressedId];
+                    GameManager.instance.inventoryItemsId[pressedId] = GameManager.instance.inventoryItemsId[buttonIndex];
+                    GameManager.instance.inventoryItemsId[buttonIndex] = tempItemId;
                     isPressed = false;
                     AudioManager.instance.PlaySfx(AudioManager.Sfx.ButtonPress);
                     return;
@@ -690,16 +690,16 @@ public class InventoryUI : MonoBehaviour
                 {
                     case 24:
                         // 주무기 장비
-                        if (ItemManager.Instance.itemDataArr[GameManager.Instance.inventoryItemsId[pressedId]].itemType == ItemData.ItemType.Melee)
+                        if (ItemManager.Instance.itemDataArr[GameManager.instance.inventoryItemsId[pressedId]].itemType == ItemData.ItemType.Melee)
                         {
-                            if (GameManager.Instance.playerId == 0)
+                            if (GameManager.instance.playerId == 0)
                             {
-                                if (GameManager.Instance.inventoryItemsId[pressedId] < 3)
+                                if (GameManager.instance.inventoryItemsId[pressedId] < 3)
                                 {
-                                    (GameManager.Instance.mainWeaponItem[GameManager.Instance.playerId], GameManager.Instance.inventoryItemsId[pressedId]) 
-                                        = (GameManager.Instance.inventoryItemsId[pressedId], GameManager.Instance.mainWeaponItem[GameManager.Instance.playerId]);
+                                    (GameManager.instance.mainWeaponItem[GameManager.instance.playerId], GameManager.instance.inventoryItemsId[pressedId]) 
+                                        = (GameManager.instance.inventoryItemsId[pressedId], GameManager.instance.mainWeaponItem[GameManager.instance.playerId]);
                                     isPressed = false;
-                                    GameManager.Instance.StatusUpdate();
+                                    GameManager.instance.StatusUpdate();
                                     AudioManager.instance.PlaySfx(AudioManager.Sfx.Equip);
                                 }
                                 else
@@ -707,14 +707,14 @@ public class InventoryUI : MonoBehaviour
                                     help.Show(InventoryControlHelp.ActionType.WrongClass);
                                 }
                             }
-                            else if (GameManager.Instance.playerId == 1)
+                            else if (GameManager.instance.playerId == 1)
                             {
-                                if (GameManager.Instance.inventoryItemsId[pressedId] > 2 && GameManager.Instance.inventoryItemsId[pressedId] < 6)
+                                if (GameManager.instance.inventoryItemsId[pressedId] > 2 && GameManager.instance.inventoryItemsId[pressedId] < 6)
                                 {
-                                    (GameManager.Instance.mainWeaponItem[GameManager.Instance.playerId], GameManager.Instance.inventoryItemsId[pressedId])
-                                        = (GameManager.Instance.inventoryItemsId[pressedId], GameManager.Instance.mainWeaponItem[GameManager.Instance.playerId]);
+                                    (GameManager.instance.mainWeaponItem[GameManager.instance.playerId], GameManager.instance.inventoryItemsId[pressedId])
+                                        = (GameManager.instance.inventoryItemsId[pressedId], GameManager.instance.mainWeaponItem[GameManager.instance.playerId]);
                                     isPressed = false;
-                                    GameManager.Instance.StatusUpdate();
+                                    GameManager.instance.StatusUpdate();
                                     AudioManager.instance.PlaySfx(AudioManager.Sfx.Equip);
                                 }
                                 else
@@ -731,12 +731,12 @@ public class InventoryUI : MonoBehaviour
                         return;
                     case 25:
                         // 목걸이 장비
-                        if (ItemManager.Instance.itemDataArr[GameManager.Instance.inventoryItemsId[pressedId]].itemType == ItemData.ItemType.Necklace)
+                        if (ItemManager.Instance.itemDataArr[GameManager.instance.inventoryItemsId[pressedId]].itemType == ItemData.ItemType.Necklace)
                         {
-                            (GameManager.Instance.necklaceItem[GameManager.Instance.playerId], GameManager.Instance.inventoryItemsId[pressedId])
-                                = (GameManager.Instance.inventoryItemsId[pressedId], GameManager.Instance.necklaceItem[GameManager.Instance.playerId]);
+                            (GameManager.instance.necklaceItem[GameManager.instance.playerId], GameManager.instance.inventoryItemsId[pressedId])
+                                = (GameManager.instance.inventoryItemsId[pressedId], GameManager.instance.necklaceItem[GameManager.instance.playerId]);
                             isPressed = false;
-                            GameManager.Instance.StatusUpdate();
+                            GameManager.instance.StatusUpdate();
                             AudioManager.instance.PlaySfx(AudioManager.Sfx.Equip);
                         }
                         else
@@ -747,12 +747,12 @@ public class InventoryUI : MonoBehaviour
                         return;
                     case 26:
                         // 신발 장비
-                        if (ItemManager.Instance.itemDataArr[GameManager.Instance.inventoryItemsId[pressedId]].itemType == ItemData.ItemType.Shoes)
+                        if (ItemManager.Instance.itemDataArr[GameManager.instance.inventoryItemsId[pressedId]].itemType == ItemData.ItemType.Shoes)
                         {
-                            (GameManager.Instance.shoesItem[GameManager.Instance.playerId], GameManager.Instance.inventoryItemsId[pressedId])
-                                = (GameManager.Instance.inventoryItemsId[pressedId], GameManager.Instance.shoesItem[GameManager.Instance.playerId]);
+                            (GameManager.instance.shoesItem[GameManager.instance.playerId], GameManager.instance.inventoryItemsId[pressedId])
+                                = (GameManager.instance.inventoryItemsId[pressedId], GameManager.instance.shoesItem[GameManager.instance.playerId]);
                             isPressed = false;
-                            GameManager.Instance.StatusUpdate();
+                            GameManager.instance.StatusUpdate();
                             AudioManager.instance.PlaySfx(AudioManager.Sfx.Equip);
                         }
                         else
@@ -763,12 +763,12 @@ public class InventoryUI : MonoBehaviour
                         return;
                     case 27:
                         //투척 무기 장비
-                        if (ItemManager.Instance.itemDataArr[GameManager.Instance.inventoryItemsId[pressedId]].itemType == ItemData.ItemType.Range)
+                        if (ItemManager.Instance.itemDataArr[GameManager.instance.inventoryItemsId[pressedId]].itemType == ItemData.ItemType.Range)
                         {
-                            (GameManager.Instance.rangeWeaponItem, GameManager.Instance.inventoryItemsId[pressedId])
-                                = (GameManager.Instance.inventoryItemsId[pressedId], GameManager.Instance.rangeWeaponItem);
+                            (GameManager.instance.rangeWeaponItem, GameManager.instance.inventoryItemsId[pressedId])
+                                = (GameManager.instance.inventoryItemsId[pressedId], GameManager.instance.rangeWeaponItem);
                             isPressed = false;
-                            GameManager.Instance.StatusUpdate();
+                            GameManager.instance.StatusUpdate();
                             AudioManager.instance.PlaySfx(AudioManager.Sfx.Equip);
                         }
                         else
@@ -779,12 +779,12 @@ public class InventoryUI : MonoBehaviour
                         return;
                     case 28:
                         // 마법책 장비
-                        if (ItemManager.Instance.itemDataArr[GameManager.Instance.inventoryItemsId[pressedId]].itemType == ItemData.ItemType.Magic)
+                        if (ItemManager.Instance.itemDataArr[GameManager.instance.inventoryItemsId[pressedId]].itemType == ItemData.ItemType.Magic)
                         {
-                            (GameManager.Instance.magicItem, GameManager.Instance.inventoryItemsId[pressedId])
-                                = (GameManager.Instance.inventoryItemsId[pressedId], GameManager.Instance.magicItem);
+                            (GameManager.instance.magicItem, GameManager.instance.inventoryItemsId[pressedId])
+                                = (GameManager.instance.inventoryItemsId[pressedId], GameManager.instance.magicItem);
                             isPressed = false;
-                            GameManager.Instance.StatusUpdate();
+                            GameManager.instance.StatusUpdate();
                             AudioManager.instance.PlaySfx(AudioManager.Sfx.Equip);
                         }
                         else
@@ -823,25 +823,25 @@ public class InventoryUI : MonoBehaviour
                         // 주무기가 눌려 있는 경우
                         case 24:
                             // 인벤토리 내 빈슬롯을 누른 경우
-                            if (GameManager.Instance.inventoryItemsId[buttonIndex] == -1)
+                            if (GameManager.instance.inventoryItemsId[buttonIndex] == -1)
                             {
-                                GameManager.Instance.inventoryItemsId[buttonIndex] = GameManager.Instance.mainWeaponItem[GameManager.Instance.playerId];
-                                GameManager.Instance.mainWeaponItem[GameManager.Instance.playerId] = -1;
+                                GameManager.instance.inventoryItemsId[buttonIndex] = GameManager.instance.mainWeaponItem[GameManager.instance.playerId];
+                                GameManager.instance.mainWeaponItem[GameManager.instance.playerId] = -1;
                                 isPressed = false;
-                                GameManager.Instance.StatusUpdate();
+                                GameManager.instance.StatusUpdate();
                                 AudioManager.instance.PlaySfx(AudioManager.Sfx.Unequip);
                             }
                             // 인벤토리 내 물품이 Melee 타입인 경우
-                            else if (ItemManager.Instance.itemDataArr[GameManager.Instance.inventoryItemsId[buttonIndex]].itemType == ItemData.ItemType.Melee)
+                            else if (ItemManager.Instance.itemDataArr[GameManager.instance.inventoryItemsId[buttonIndex]].itemType == ItemData.ItemType.Melee)
                             {
-                                if (GameManager.Instance.playerId == 0)
+                                if (GameManager.instance.playerId == 0)
                                 {
-                                    if (GameManager.Instance.inventoryItemsId[buttonIndex] < 3)
+                                    if (GameManager.instance.inventoryItemsId[buttonIndex] < 3)
                                     {
-                                        (GameManager.Instance.inventoryItemsId[buttonIndex], GameManager.Instance.mainWeaponItem[GameManager.Instance.playerId])
-                                            = (GameManager.Instance.mainWeaponItem[GameManager.Instance.playerId], GameManager.Instance.inventoryItemsId[buttonIndex]);
+                                        (GameManager.instance.inventoryItemsId[buttonIndex], GameManager.instance.mainWeaponItem[GameManager.instance.playerId])
+                                            = (GameManager.instance.mainWeaponItem[GameManager.instance.playerId], GameManager.instance.inventoryItemsId[buttonIndex]);
                                         isPressed = false;
-                                        GameManager.Instance.StatusUpdate();
+                                        GameManager.instance.StatusUpdate();
                                         AudioManager.instance.PlaySfx(AudioManager.Sfx.Equip);
                                     }
                                     else
@@ -849,14 +849,14 @@ public class InventoryUI : MonoBehaviour
                                         help.Show(InventoryControlHelp.ActionType.WrongClass);
                                     }
                                 }
-                                else if (GameManager.Instance.playerId == 1)
+                                else if (GameManager.instance.playerId == 1)
                                 {
-                                    if (GameManager.Instance.inventoryItemsId[buttonIndex] > 2 && GameManager.Instance.inventoryItemsId[buttonIndex] < 6)
+                                    if (GameManager.instance.inventoryItemsId[buttonIndex] > 2 && GameManager.instance.inventoryItemsId[buttonIndex] < 6)
                                     {
-                                        (GameManager.Instance.inventoryItemsId[buttonIndex], GameManager.Instance.mainWeaponItem[GameManager.Instance.playerId])
-                                            = (GameManager.Instance.mainWeaponItem[GameManager.Instance.playerId], GameManager.Instance.inventoryItemsId[buttonIndex]);
+                                        (GameManager.instance.inventoryItemsId[buttonIndex], GameManager.instance.mainWeaponItem[GameManager.instance.playerId])
+                                            = (GameManager.instance.mainWeaponItem[GameManager.instance.playerId], GameManager.instance.inventoryItemsId[buttonIndex]);
                                         isPressed = false;
-                                        GameManager.Instance.StatusUpdate();
+                                        GameManager.instance.StatusUpdate();
                                         AudioManager.instance.PlaySfx(AudioManager.Sfx.Equip);
                                     }
                                     else
@@ -877,21 +877,21 @@ public class InventoryUI : MonoBehaviour
                         // 목걸이가 눌려 있는 경우
                         case 25:
                             // 인벤토리 내 빈슬롯을 누른 경우
-                            if (GameManager.Instance.inventoryItemsId[buttonIndex] == -1)
+                            if (GameManager.instance.inventoryItemsId[buttonIndex] == -1)
                             {
-                                GameManager.Instance.inventoryItemsId[buttonIndex] = GameManager.Instance.necklaceItem[GameManager.Instance.playerId];
-                                GameManager.Instance.necklaceItem[GameManager.Instance.playerId] = -1;
+                                GameManager.instance.inventoryItemsId[buttonIndex] = GameManager.instance.necklaceItem[GameManager.instance.playerId];
+                                GameManager.instance.necklaceItem[GameManager.instance.playerId] = -1;
                                 isPressed = false;
-                                GameManager.Instance.StatusUpdate();
+                                GameManager.instance.StatusUpdate();
                                 AudioManager.instance.PlaySfx(AudioManager.Sfx.Equip);
                             }
                             // 인벤토리 내 물품이 Necklace 타입인 경우
-                            else if (ItemManager.Instance.itemDataArr[GameManager.Instance.inventoryItemsId[buttonIndex]].itemType == ItemData.ItemType.Necklace)
+                            else if (ItemManager.Instance.itemDataArr[GameManager.instance.inventoryItemsId[buttonIndex]].itemType == ItemData.ItemType.Necklace)
                             {
-                                (GameManager.Instance.inventoryItemsId[buttonIndex], GameManager.Instance.necklaceItem[GameManager.Instance.playerId])
-                                    = (GameManager.Instance.necklaceItem[GameManager.Instance.playerId], GameManager.Instance.inventoryItemsId[buttonIndex]);
+                                (GameManager.instance.inventoryItemsId[buttonIndex], GameManager.instance.necklaceItem[GameManager.instance.playerId])
+                                    = (GameManager.instance.necklaceItem[GameManager.instance.playerId], GameManager.instance.inventoryItemsId[buttonIndex]);
                                 isPressed = false;
-                                GameManager.Instance.StatusUpdate();
+                                GameManager.instance.StatusUpdate();
                                 AudioManager.instance.PlaySfx(AudioManager.Sfx.Unequip);
                             }
                             // 인벤토리 내 물품과 위치를 바꿀 수 없는 경우
@@ -906,21 +906,21 @@ public class InventoryUI : MonoBehaviour
                         // 신발이 눌려 있는 경우
                         case 26:
                             // 인벤토리 내 빈슬롯을 누른 경우
-                            if (GameManager.Instance.inventoryItemsId[buttonIndex] == -1)
+                            if (GameManager.instance.inventoryItemsId[buttonIndex] == -1)
                             {
-                                GameManager.Instance.inventoryItemsId[buttonIndex] = GameManager.Instance.shoesItem[GameManager.Instance.playerId];
-                                GameManager.Instance.shoesItem[GameManager.Instance.playerId] = -1;
+                                GameManager.instance.inventoryItemsId[buttonIndex] = GameManager.instance.shoesItem[GameManager.instance.playerId];
+                                GameManager.instance.shoesItem[GameManager.instance.playerId] = -1;
                                 isPressed = false;
-                                GameManager.Instance.StatusUpdate();
+                                GameManager.instance.StatusUpdate();
                                 AudioManager.instance.PlaySfx(AudioManager.Sfx.Equip);
                             }
                             // 인벤토리 내 물품이 Shoes 타입인 경우
-                            else if (ItemManager.Instance.itemDataArr[GameManager.Instance.inventoryItemsId[buttonIndex]].itemType == ItemData.ItemType.Shoes)
+                            else if (ItemManager.Instance.itemDataArr[GameManager.instance.inventoryItemsId[buttonIndex]].itemType == ItemData.ItemType.Shoes)
                             {
-                                (GameManager.Instance.inventoryItemsId[buttonIndex], GameManager.Instance.shoesItem[GameManager.Instance.playerId])
-                                    = (GameManager.Instance.shoesItem[GameManager.Instance.playerId], GameManager.Instance.inventoryItemsId[buttonIndex]);
+                                (GameManager.instance.inventoryItemsId[buttonIndex], GameManager.instance.shoesItem[GameManager.instance.playerId])
+                                    = (GameManager.instance.shoesItem[GameManager.instance.playerId], GameManager.instance.inventoryItemsId[buttonIndex]);
                                 isPressed = false;
-                                GameManager.Instance.StatusUpdate();
+                                GameManager.instance.StatusUpdate();
                                 AudioManager.instance.PlaySfx(AudioManager.Sfx.Unequip);
                             }
                             // 인벤토리 내 물품과 위치를 바꿀 수 없는 경우
@@ -935,21 +935,21 @@ public class InventoryUI : MonoBehaviour
                         // 투척무기가 눌려 있는 경우
                         case 27:
                             // 인벤토리 내 빈슬롯을 누른 경우
-                            if (GameManager.Instance.inventoryItemsId[buttonIndex] == -1)
+                            if (GameManager.instance.inventoryItemsId[buttonIndex] == -1)
                             {
-                                GameManager.Instance.inventoryItemsId[buttonIndex] = GameManager.Instance.rangeWeaponItem;
-                                GameManager.Instance.rangeWeaponItem = -1;
+                                GameManager.instance.inventoryItemsId[buttonIndex] = GameManager.instance.rangeWeaponItem;
+                                GameManager.instance.rangeWeaponItem = -1;
                                 isPressed = false;
-                                GameManager.Instance.StatusUpdate();
+                                GameManager.instance.StatusUpdate();
                                 AudioManager.instance.PlaySfx(AudioManager.Sfx.Equip);
                             }
                             // 인벤토리 내 물품이 Range 타입인 경우
-                            else if (ItemManager.Instance.itemDataArr[GameManager.Instance.inventoryItemsId[buttonIndex]].itemType == ItemData.ItemType.Range)
+                            else if (ItemManager.Instance.itemDataArr[GameManager.instance.inventoryItemsId[buttonIndex]].itemType == ItemData.ItemType.Range)
                             {
-                                (GameManager.Instance.inventoryItemsId[buttonIndex], GameManager.Instance.rangeWeaponItem)
-                                    = (GameManager.Instance.rangeWeaponItem, GameManager.Instance.inventoryItemsId[buttonIndex]);
+                                (GameManager.instance.inventoryItemsId[buttonIndex], GameManager.instance.rangeWeaponItem)
+                                    = (GameManager.instance.rangeWeaponItem, GameManager.instance.inventoryItemsId[buttonIndex]);
                                 isPressed = false;
-                                GameManager.Instance.StatusUpdate();
+                                GameManager.instance.StatusUpdate();
                                 AudioManager.instance.PlaySfx(AudioManager.Sfx.Unequip);
                             }
                             // 인벤토리 내 물품과 위치를 바꿀 수 없는 경우
@@ -964,21 +964,21 @@ public class InventoryUI : MonoBehaviour
                         // 마법책이 눌려 있는 경우
                         case 28:
                             // 인벤토리 내 빈슬롯을 누른 경우
-                            if (GameManager.Instance.inventoryItemsId[buttonIndex] == -1)
+                            if (GameManager.instance.inventoryItemsId[buttonIndex] == -1)
                             {
-                                GameManager.Instance.inventoryItemsId[buttonIndex] = GameManager.Instance.magicItem;
-                                GameManager.Instance.magicItem = -1;
+                                GameManager.instance.inventoryItemsId[buttonIndex] = GameManager.instance.magicItem;
+                                GameManager.instance.magicItem = -1;
                                 isPressed = false;
-                                GameManager.Instance.StatusUpdate();
+                                GameManager.instance.StatusUpdate();
                                 AudioManager.instance.PlaySfx(AudioManager.Sfx.Equip);
                             }
                             // 인벤토리 내 물품이 Magic 타입인 경우
-                            else if (ItemManager.Instance.itemDataArr[GameManager.Instance.inventoryItemsId[buttonIndex]].itemType == ItemData.ItemType.Magic)
+                            else if (ItemManager.Instance.itemDataArr[GameManager.instance.inventoryItemsId[buttonIndex]].itemType == ItemData.ItemType.Magic)
                             {
-                                (GameManager.Instance.inventoryItemsId[buttonIndex], GameManager.Instance.magicItem) 
-                                    = (GameManager.Instance.magicItem, GameManager.Instance.inventoryItemsId[buttonIndex]);
+                                (GameManager.instance.inventoryItemsId[buttonIndex], GameManager.instance.magicItem) 
+                                    = (GameManager.instance.magicItem, GameManager.instance.inventoryItemsId[buttonIndex]);
                                 isPressed = false;
-                                GameManager.Instance.StatusUpdate();
+                                GameManager.instance.StatusUpdate();
                                 AudioManager.instance.PlaySfx(AudioManager.Sfx.Unequip);
                             }
                             // 인벤토리 내 물품과 위치를 바꿀 수 없는 경우
@@ -999,23 +999,23 @@ public class InventoryUI : MonoBehaviour
             switch (buttonIndex)
             {
                 case 24:
-                    if (GameManager.Instance.mainWeaponItem[GameManager.Instance.playerId] == -1) return;
+                    if (GameManager.instance.mainWeaponItem[GameManager.instance.playerId] == -1) return;
                     break;
                 case 25:
-                    if (GameManager.Instance.necklaceItem[GameManager.Instance.playerId] == -1) return;
+                    if (GameManager.instance.necklaceItem[GameManager.instance.playerId] == -1) return;
                     break;
                 case 26:
-                    if (GameManager.Instance.shoesItem[GameManager.Instance.playerId] == -1) return;
+                    if (GameManager.instance.shoesItem[GameManager.instance.playerId] == -1) return;
                     break;
                 case 27:
-                    if (GameManager.Instance.rangeWeaponItem == -1) return;
+                    if (GameManager.instance.rangeWeaponItem == -1) return;
                     break;
                 case 28:
-                    if (GameManager.Instance.magicItem == -1) return;
+                    if (GameManager.instance.magicItem == -1) return;
                     break;
             }
         }
-        else if (GameManager.Instance.inventoryItemsId[buttonIndex] == -1)
+        else if (GameManager.instance.inventoryItemsId[buttonIndex] == -1)
         {
             return;
         }
@@ -1036,7 +1036,7 @@ public class InventoryUI : MonoBehaviour
 
         if (GameObject.FindAnyObjectByType<TutorialUI>() is not null) return;
 
-        if (GameManager.Instance.workingInventory)
+        if (GameManager.instance.workingInventory)
         {
             if (!isPressed)
             {
@@ -1049,7 +1049,7 @@ public class InventoryUI : MonoBehaviour
                 }
                 else
                 {
-                    GameManager.Instance.OnInventory();
+                    GameManager.instance.OnInventory();
                 }
             }
             else
@@ -1064,7 +1064,7 @@ public class InventoryUI : MonoBehaviour
     {
         if (!gameObject.activeSelf) return;
 
-        if (GameManager.Instance.workingInventory)
+        if (GameManager.instance.workingInventory)
         {
             if (isPressed)
             {
@@ -1091,7 +1091,7 @@ public class InventoryUI : MonoBehaviour
     {
         for (int i = 0; i < buttons.Count; i++)
         {
-            if (i < 24 && GameManager.Instance.inventoryItemsId[i] == -1)
+            if (i < 24 && GameManager.instance.inventoryItemsId[i] == -1)
             {
                 itemImages[i].color = blankAlpha;
                 continue;
@@ -1103,24 +1103,24 @@ public class InventoryUI : MonoBehaviour
     public void EquipUnequip()
     {
         if (!gameObject.activeSelf) return;
-        if (!GameManager.Instance.workingInventory) return;
+        if (!GameManager.instance.workingInventory) return;
         if (isPressed) return;
         if (selectedId < 24)
         {
-            int selectedItemId = GameManager.Instance.inventoryItemsId[selectedId];
+            int selectedItemId = GameManager.instance.inventoryItemsId[selectedId];
             if (selectedItemId == -1) return;
             ItemData.ItemType selectedItemType = ItemManager.Instance.itemDataArr[selectedItemId].itemType;
             switch (selectedItemType)
             {
                 case ItemData.ItemType.Melee:
                     int tempItemId;
-                    if (GameManager.Instance.playerId == 0)
+                    if (GameManager.instance.playerId == 0)
                     {
                         if (selectedItemId < 3)
                         {
-                            tempItemId = GameManager.Instance.mainWeaponItem[GameManager.Instance.playerId];
-                            GameManager.Instance.mainWeaponItem[GameManager.Instance.playerId] = selectedItemId;
-                            GameManager.Instance.inventoryItemsId[selectedId] = tempItemId;
+                            tempItemId = GameManager.instance.mainWeaponItem[GameManager.instance.playerId];
+                            GameManager.instance.mainWeaponItem[GameManager.instance.playerId] = selectedItemId;
+                            GameManager.instance.inventoryItemsId[selectedId] = tempItemId;
                             AudioManager.instance.PlaySfx(AudioManager.Sfx.Equip);
                         }
                         else
@@ -1128,13 +1128,13 @@ public class InventoryUI : MonoBehaviour
                             help.Show(InventoryControlHelp.ActionType.WrongClass);
                         }
                     }
-                    else if (GameManager.Instance.playerId == 1)
+                    else if (GameManager.instance.playerId == 1)
                     {
                         if (selectedItemId > 2 && selectedItemId < 6)
                         {
-                            tempItemId = GameManager.Instance.mainWeaponItem[GameManager.Instance.playerId];
-                            GameManager.Instance.mainWeaponItem[GameManager.Instance.playerId] = selectedItemId;
-                            GameManager.Instance.inventoryItemsId[selectedId] = tempItemId;
+                            tempItemId = GameManager.instance.mainWeaponItem[GameManager.instance.playerId];
+                            GameManager.instance.mainWeaponItem[GameManager.instance.playerId] = selectedItemId;
+                            GameManager.instance.inventoryItemsId[selectedId] = tempItemId;
                             AudioManager.instance.PlaySfx(AudioManager.Sfx.Equip);
                         }
                         else
@@ -1145,35 +1145,35 @@ public class InventoryUI : MonoBehaviour
                     break;
 
                 case ItemData.ItemType.Necklace:
-                    tempItemId = GameManager.Instance.necklaceItem[GameManager.Instance.playerId];
-                    GameManager.Instance.necklaceItem[GameManager.Instance.playerId] = selectedItemId;
-                    GameManager.Instance.inventoryItemsId[selectedId] = tempItemId;
+                    tempItemId = GameManager.instance.necklaceItem[GameManager.instance.playerId];
+                    GameManager.instance.necklaceItem[GameManager.instance.playerId] = selectedItemId;
+                    GameManager.instance.inventoryItemsId[selectedId] = tempItemId;
                     AudioManager.instance.PlaySfx(AudioManager.Sfx.Equip);
                     break;
 
                 case ItemData.ItemType.Shoes:
-                    tempItemId = GameManager.Instance.shoesItem[GameManager.Instance.playerId];
-                    GameManager.Instance.shoesItem[GameManager.Instance.playerId] = selectedItemId;
-                    GameManager.Instance.inventoryItemsId[selectedId] = tempItemId;
+                    tempItemId = GameManager.instance.shoesItem[GameManager.instance.playerId];
+                    GameManager.instance.shoesItem[GameManager.instance.playerId] = selectedItemId;
+                    GameManager.instance.inventoryItemsId[selectedId] = tempItemId;
                     AudioManager.instance.PlaySfx(AudioManager.Sfx.Equip);
                     break;
 
                 case ItemData.ItemType.Range:
-                    tempItemId = GameManager.Instance.rangeWeaponItem;
-                    GameManager.Instance.rangeWeaponItem = selectedItemId;
-                    GameManager.Instance.inventoryItemsId[selectedId] = tempItemId;
+                    tempItemId = GameManager.instance.rangeWeaponItem;
+                    GameManager.instance.rangeWeaponItem = selectedItemId;
+                    GameManager.instance.inventoryItemsId[selectedId] = tempItemId;
                     AudioManager.instance.PlaySfx(AudioManager.Sfx.Equip);
                     break;
 
                 case ItemData.ItemType.Magic:
-                    tempItemId = GameManager.Instance.magicItem;
-                    GameManager.Instance.magicItem = selectedItemId;
-                    GameManager.Instance.inventoryItemsId[selectedId] = tempItemId;
+                    tempItemId = GameManager.instance.magicItem;
+                    GameManager.instance.magicItem = selectedItemId;
+                    GameManager.instance.inventoryItemsId[selectedId] = tempItemId;
                     AudioManager.instance.PlaySfx(AudioManager.Sfx.Equip);
                     break;
 
                 case ItemData.ItemType.Potion:
-                    if (Mathf.Abs(GameManager.Instance.maxHealth - GameManager.Instance.health) < 0.1f)
+                    if (Mathf.Abs(GameManager.instance.maxHealth - GameManager.instance.health) < 0.1f)
                     {
                         Debug.Log("이미 체력이 가득 차 있습니다.");
                         // 에러 메시지 띄우기
@@ -1182,15 +1182,15 @@ public class InventoryUI : MonoBehaviour
                     }
                     else
                     {
-                        GameManager.Instance.health = Mathf.Clamp(GameManager.Instance.health +
-                            ItemManager.Instance.itemDataArr[selectedItemId].baseAmount, 0, GameManager.Instance.maxHealth);
-                        GameManager.Instance.inventoryItemsId[selectedId] = -1;
+                        GameManager.instance.health = Mathf.Clamp(GameManager.instance.health +
+                            ItemManager.Instance.itemDataArr[selectedItemId].baseAmount, 0, GameManager.instance.maxHealth);
+                        GameManager.instance.inventoryItemsId[selectedId] = -1;
                         // 물약 마시는 소리 추가
                         AudioManager.instance.PlaySfx(AudioManager.Sfx.Healthy);
                     }
                     break;
             }
-            GameManager.Instance.StatusUpdate();
+            GameManager.instance.StatusUpdate();
         }
         else
         {
@@ -1198,30 +1198,30 @@ public class InventoryUI : MonoBehaviour
             switch (selectedId)
             {
                 case 24:
-                    if (GameManager.Instance.mainWeaponItem[GameManager.Instance.playerId] == -1) return;
+                    if (GameManager.instance.mainWeaponItem[GameManager.instance.playerId] == -1) return;
                     break;
 
                 case 25:
-                    if (GameManager.Instance.necklaceItem[GameManager.Instance.playerId] == -1) return;
+                    if (GameManager.instance.necklaceItem[GameManager.instance.playerId] == -1) return;
                     break;
 
                 case 26:
-                    if (GameManager.Instance.shoesItem[GameManager.Instance.playerId] == -1) return;
+                    if (GameManager.instance.shoesItem[GameManager.instance.playerId] == -1) return;
                     break;
 
                 case 27:
-                    if (GameManager.Instance.rangeWeaponItem == -1) return;
+                    if (GameManager.instance.rangeWeaponItem == -1) return;
                     break;
 
                 case 28:
-                    if (GameManager.Instance.magicItem == -1) return;
+                    if (GameManager.instance.magicItem == -1) return;
                     break;
             }
 
             int selectedSlot = -1;
-            for (int i = 0; i < GameManager.Instance.maxInventory; i++)
+            for (int i = 0; i < GameManager.instance.maxInventory; i++)
             {
-                if (GameManager.Instance.inventoryItemsId[i] == -1)
+                if (GameManager.instance.inventoryItemsId[i] == -1)
                 {
                     selectedSlot = i;
                     break;
@@ -1238,36 +1238,36 @@ public class InventoryUI : MonoBehaviour
             switch(selectedId)
             {
                 case 24:
-                    GameManager.Instance.inventoryItemsId[selectedSlot] = GameManager.Instance.mainWeaponItem[GameManager.Instance.playerId];
-                    GameManager.Instance.mainWeaponItem[GameManager.Instance.playerId] = -1;
+                    GameManager.instance.inventoryItemsId[selectedSlot] = GameManager.instance.mainWeaponItem[GameManager.instance.playerId];
+                    GameManager.instance.mainWeaponItem[GameManager.instance.playerId] = -1;
                     AudioManager.instance.PlaySfx(AudioManager.Sfx.Unequip);
                     break;
 
                 case 25:
-                    GameManager.Instance.inventoryItemsId[selectedSlot] = GameManager.Instance.necklaceItem[GameManager.Instance.playerId];
-                    GameManager.Instance.necklaceItem[GameManager.Instance.playerId] = -1;
+                    GameManager.instance.inventoryItemsId[selectedSlot] = GameManager.instance.necklaceItem[GameManager.instance.playerId];
+                    GameManager.instance.necklaceItem[GameManager.instance.playerId] = -1;
                     AudioManager.instance.PlaySfx(AudioManager.Sfx.Unequip);
                     break;
 
                 case 26:
-                    GameManager.Instance.inventoryItemsId[selectedSlot] = GameManager.Instance.shoesItem[GameManager.Instance.playerId];
-                    GameManager.Instance.shoesItem[GameManager.Instance.playerId] = -1;
+                    GameManager.instance.inventoryItemsId[selectedSlot] = GameManager.instance.shoesItem[GameManager.instance.playerId];
+                    GameManager.instance.shoesItem[GameManager.instance.playerId] = -1;
                     AudioManager.instance.PlaySfx(AudioManager.Sfx.Unequip);
                     break;
 
                 case 27:
-                    GameManager.Instance.inventoryItemsId[selectedSlot] = GameManager.Instance.rangeWeaponItem;
-                    GameManager.Instance.rangeWeaponItem = -1;
+                    GameManager.instance.inventoryItemsId[selectedSlot] = GameManager.instance.rangeWeaponItem;
+                    GameManager.instance.rangeWeaponItem = -1;
                     AudioManager.instance.PlaySfx(AudioManager.Sfx.Unequip);
                     break;
 
                 case 28:
-                    GameManager.Instance.inventoryItemsId[selectedSlot] = GameManager.Instance.magicItem;
-                    GameManager.Instance.magicItem = -1;
+                    GameManager.instance.inventoryItemsId[selectedSlot] = GameManager.instance.magicItem;
+                    GameManager.instance.magicItem = -1;
                     AudioManager.instance.PlaySfx(AudioManager.Sfx.Unequip);
                     break;
             }
-            GameManager.Instance.StatusUpdate();
+            GameManager.instance.StatusUpdate();
         }
     }
 }

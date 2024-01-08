@@ -61,51 +61,31 @@ public class HUD : MonoBehaviour
         switch (type)
         {
             case InfoType.Exp:
-                float curExp = GameManager.Instance.exp;
-                float maxExp = GameManager.Instance.nextExp[Mathf.Min(GameManager.Instance.level, GameManager.Instance.nextExp.Length - 1)];
+                float curExp = GameManager.instance.exp;
+                float maxExp = GameManager.instance.nextExp[Mathf.Min(GameManager.instance.level, GameManager.instance.nextExp.Length - 1)];
                 mySlider.value = curExp / maxExp;
                 break;
             case InfoType.Level:
-                if (GameManager.Instance.level == 20)
-                {
-                    myText.text = string.Format("Lv.Max");
-                }
-                else
-                {
-                    myText.text = string.Format("Lv.{0:F0}", GameManager.Instance.level + 1);
-                }
+                myText.text = GameManager.instance.level == 20 ? string.Format("Lv.Max") : string.Format("Lv.{0:F0}", GameManager.instance.level + 1);
                 break;
             case InfoType.Kill:
-                switch (GameManager.Instance.kill)
+                myText.text = GameManager.instance.kill switch
                 {
-                    case 0:
-                        myText.text = string.Format("{0:F0} kill", 0);
-                        break;
-                    case 1:
-                        myText.text = string.Format("{0:F0} kill", 1);
-                        break;
-                    default:
-                        myText.text = string.Format("{0:F0} kills", GameManager.Instance.kill);
-                        break;
-                }
+                    0 => string.Format("{0:F0} kill", 0),
+                    1 => string.Format("{0:F0} kill", 1),
+                    _ => string.Format("{0:F0} kills", GameManager.instance.kill),
+                };
                 break;
             case InfoType.Time:
-                float remainTime = Mathf.Max(0f, GameManager.Instance.maxGameTime - GameManager.Instance.gameTime);
-                if (remainTime < 10)
-                {
-                    myText.color = Color.red;
-                }
-                else
-                {
-                    myText.color = Color.white;
-                }
+                float remainTime = Mathf.Max(0f, GameManager.instance.maxGameTime - GameManager.instance.gameTime);
+                myText.color = remainTime < 10 ? Color.red : Color.white;
                 int min = Mathf.FloorToInt(remainTime / 60);
                 int sec = Mathf.FloorToInt(remainTime % 60);
                 myText.text = string.Format("{0:D2}:{1:D2}", min, sec);
                 break;
             case InfoType.Health:
                 InitHeart();
-                float curHealth = GameManager.Instance.health;
+                float curHealth = GameManager.instance.health;
                 int intCurHealth = Mathf.FloorToInt(curHealth);
                 int heartCount = 0;
 
@@ -127,12 +107,12 @@ public class HUD : MonoBehaviour
                     heartCount++;
                 }
 
-                if (GameManager.Instance.player.isHit && !isLosing) StartCoroutine("LoseHeart");
+                if (GameManager.instance.player.isHit && !isLosing) StartCoroutine(LoseHeart());
 
                 break;
 
             case InfoType.EnemyCount:
-                if (GameManager.Instance.maxGameTime < GameManager.Instance.gameTime)
+                if (GameManager.instance.maxGameTime < GameManager.instance.gameTime)
                 {
                     int count = PoolManager.instance.EnemyCount();
                     if (count == 0)
@@ -160,8 +140,8 @@ public class HUD : MonoBehaviour
                     return;
                 }
 
-                if (GetComponent<Text>().text == GameManager.Instance.stage.stageDataArr[GameManager.Instance.stageId].stageName) return;
-                GetComponent<Text>().text = GameManager.Instance.stage.stageDataArr[GameManager.Instance.stageId].stageName;
+                if (GetComponent<Text>().text == GameManager.instance.stage.stageDataArr[GameManager.instance.stageId].stageName) return;
+                GetComponent<Text>().text = GameManager.instance.stage.stageDataArr[GameManager.instance.stageId].stageName;
                 break;
         }
     }
@@ -189,7 +169,7 @@ public class HUD : MonoBehaviour
     void InitHeart()
     {
         if (hearts.Count == 0) hearts.Add(transform.GetChild(0).GetComponent<Image>());
-        maxHealth = GameManager.Instance.maxHealth;
+        maxHealth = GameManager.instance.maxHealth;
         intMaxHealth = Mathf.FloorToInt(maxHealth);
 
         if (transform.childCount == intMaxHealth)

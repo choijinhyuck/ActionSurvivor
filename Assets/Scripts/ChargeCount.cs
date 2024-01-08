@@ -26,7 +26,7 @@ public class ChargeCount : MonoBehaviour
 
     void Init()
     {
-        maxChargeCount = GameManager.Instance.maxChargeCount;
+        maxChargeCount = GameManager.instance.maxChargeCount;
 
         for (int i = 0; i < transform.childCount; i++)
         {
@@ -51,37 +51,37 @@ public class ChargeCount : MonoBehaviour
 
     private void LateUpdate()
     {
-        if (maxChargeCount != GameManager.Instance.maxChargeCount)
+        if (maxChargeCount != GameManager.instance.maxChargeCount)
         {
             Init();
         }
 
         for (int i = 0; i < maxChargeCount; i++)
         {
-            if (i < GameManager.Instance.chargeCount)
+            if (i < GameManager.instance.chargeCount)
             {
                 transform.GetChild(i).GetComponent<Image>().sprite = skillReady;
             }
-            if (i == GameManager.Instance.chargeCount)
+            if (i == GameManager.instance.chargeCount)
             {
                 chargeTimer += Time.deltaTime;
 
-                if (chargeTimer > GameManager.Instance.chargeCooltime)
+                if (chargeTimer > GameManager.instance.chargeCooltime)
                 {
                     chargeTimer = 0;
                     transform.GetChild(i).GetComponent<Image>().sprite = skillPercentages[skillPercentages.Length - 1];
                     StartCoroutine(ReadyCharge(transform.GetChild(i).GetComponent<RectTransform>()));
-                    GameManager.Instance.chargeCount++;
+                    GameManager.instance.chargeCount++;
 
                 }
                 else
                 {
-                    int spriteIndex = Mathf.FloorToInt(chargeTimer * 10 / GameManager.Instance.chargeCooltime);
+                    int spriteIndex = Mathf.FloorToInt(chargeTimer * 10 / GameManager.instance.chargeCooltime);
                     transform.GetChild(i).GetComponent<Image>().sprite = skillPercentages[spriteIndex];
                 }
 
             }
-            if (i > GameManager.Instance.chargeCount)
+            if (i > GameManager.instance.chargeCount)
             {
                 transform.GetChild(i).GetComponent<Image>().sprite = skillPercentages[0];
             }

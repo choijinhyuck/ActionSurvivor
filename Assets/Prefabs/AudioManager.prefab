@@ -52,6 +52,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 099a8d0314308b549b57fe6d4c2a4236, type: 3}
   - {fileID: 8300000, guid: 2107664e8ec4aa1489bcad606f6a477d, type: 3}
   - {fileID: 8300000, guid: c27928c44eb1a8f46a3eb3d17d5db991, type: 3}
+  - {fileID: 8300000, guid: 83b85540438372c42abbd03d0b197987, type: 3}
   bgmVolume: 0
   sfxClip:
   - {fileID: 8300000, guid: 291608b8d286e2a4580ff36324455ce2, type: 3}

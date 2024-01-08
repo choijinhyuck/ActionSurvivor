@@ -92,7 +92,7 @@ public class UpgradeUI : MonoBehaviour
             upgradeConfirm.transform.parent.gameObject.SetActive(false);
         }
 
-        for (int i = 0; i < GameManager.Instance.maxInventory; i++)
+        for (int i = 0; i < GameManager.instance.maxInventory; i++)
         {
             buttons[i].gameObject.SetActive(true);
         }
@@ -144,7 +144,7 @@ public class UpgradeUI : MonoBehaviour
 
         Init();
 
-        if (GameManager.Instance.inventoryItemsId[selectedId] == -1)
+        if (GameManager.instance.inventoryItemsId[selectedId] == -1)
         {
             itemName.text = "";
             itemDesc.text = "";
@@ -162,9 +162,9 @@ public class UpgradeUI : MonoBehaviour
         }
         else
         {
-            itemName.text = ItemManager.Instance.itemDataArr[GameManager.Instance.inventoryItemsId[selectedId]].itemName;
-            itemDesc.text = ItemManager.Instance.itemDataArr[GameManager.Instance.inventoryItemsId[selectedId]].itemDesc;
-            itemEffect.text = ItemManager.Instance.itemDataArr[GameManager.Instance.inventoryItemsId[selectedId]].itemEffect;
+            itemName.text = ItemManager.Instance.itemDataArr[GameManager.instance.inventoryItemsId[selectedId]].itemName;
+            itemDesc.text = ItemManager.Instance.itemDataArr[GameManager.instance.inventoryItemsId[selectedId]].itemDesc;
+            itemEffect.text = ItemManager.Instance.itemDataArr[GameManager.instance.inventoryItemsId[selectedId]].itemEffect;
 
             if (CanUpgrade())
             {
@@ -180,7 +180,7 @@ public class UpgradeUI : MonoBehaviour
             else
             {
                 npcDialogue.text = "그 템은 \n\r강화 불가임";
-                beforeItemImg.sprite = ItemManager.Instance.itemDataArr[GameManager.Instance.inventoryItemsId[selectedId]].itemIcon;
+                beforeItemImg.sprite = ItemManager.Instance.itemDataArr[GameManager.instance.inventoryItemsId[selectedId]].itemIcon;
                 beforeItemImg.color = originAlpha;
                 beforeItemSlotImg.color = redColor;
                 AfterItemImg.sprite = null;
@@ -196,7 +196,7 @@ public class UpgradeUI : MonoBehaviour
         // 컨트롤 도움말
         int itemId;
 
-        itemId = GameManager.Instance.inventoryItemsId[selectedId];
+        itemId = GameManager.instance.inventoryItemsId[selectedId];
 
         if (itemId != -1)
         {
@@ -210,15 +210,15 @@ public class UpgradeUI : MonoBehaviour
 
     void Init()
     {
-        for (int i = 0; i < GameManager.Instance.maxInventory; i++)
+        for (int i = 0; i < GameManager.instance.maxInventory; i++)
         {
-            if (GameManager.Instance.inventoryItemsId[i] == -1)
+            if (GameManager.instance.inventoryItemsId[i] == -1)
             {
                 EmptySlot(i);
             }
             else
             {
-                itemImages[i].sprite = ItemManager.Instance.itemDataArr[GameManager.Instance.inventoryItemsId[i]].itemIcon;
+                itemImages[i].sprite = ItemManager.Instance.itemDataArr[GameManager.instance.inventoryItemsId[i]].itemIcon;
                 SlotAlpha(i);
             }
         }
@@ -244,7 +244,7 @@ public class UpgradeUI : MonoBehaviour
     {
         for (int i = 0; i < upgradableItems.Count; i++)
         {
-            if (upgradableItems[i].before == (ItemData.Items)GameManager.Instance.inventoryItemsId[selectedId])
+            if (upgradableItems[i].before == (ItemData.Items)GameManager.instance.inventoryItemsId[selectedId])
             {
                 return true;
             }
@@ -257,7 +257,7 @@ public class UpgradeUI : MonoBehaviour
     {
         for (int i = 0; i < upgradableItems.Count; i++)
         {
-            if (upgradableItems[i].before == (ItemData.Items)GameManager.Instance.inventoryItemsId[selectedId])
+            if (upgradableItems[i].before == (ItemData.Items)GameManager.instance.inventoryItemsId[selectedId])
             {
                 return i;
             }
@@ -269,7 +269,7 @@ public class UpgradeUI : MonoBehaviour
 
     void OnPress(int buttonIndex)
     {
-        if (GameManager.Instance.inventoryItemsId[buttonIndex] == -1)
+        if (GameManager.instance.inventoryItemsId[buttonIndex] == -1)
         {
             return;
         }
@@ -290,7 +290,7 @@ public class UpgradeUI : MonoBehaviour
     public void UpgradeItem()
     {
         if (!gameObject.activeSelf) return;
-        if (!GameManager.Instance.workingInventory) return;
+        if (!GameManager.instance.workingInventory) return;
 
         EventSystem.current.SetSelectedGameObject(confirmNo.gameObject);
         selectedObjectOnDestroy = confirmNo.gameObject;
@@ -298,7 +298,7 @@ public class UpgradeUI : MonoBehaviour
         upgradeConfirm.transform.parent.gameObject.SetActive(true);
 
         upgradeConfirm.text = string.Format("<color=green>{0}</color> 을(를)\r\n<color=red>{1:N0} 골드</color>에 {2}하시겠습니까?\r\n<color=green><size=6>(실패 시 아이템이 파괴됩니다.)</size></color>",
-        ItemManager.Instance.itemDataArr[GameManager.Instance.inventoryItemsId[selectedId]].itemName,
+        ItemManager.Instance.itemDataArr[GameManager.instance.inventoryItemsId[selectedId]].itemName,
         upgradableItems[GetUpgradeIndex()].goldRequired, "강화");
     }
 
@@ -306,7 +306,7 @@ public class UpgradeUI : MonoBehaviour
     {
         if (confirm)
         {
-            if (GameManager.Instance.gold < upgradableItems[GetUpgradeIndex()].goldRequired)
+            if (GameManager.instance.gold < upgradableItems[GetUpgradeIndex()].goldRequired)
             {
                 help.Show(InventoryControlHelp.ActionType.NotEnoughMoney);
             }
@@ -329,18 +329,18 @@ public class UpgradeUI : MonoBehaviour
 
     public void FinishUpgrade()
     {
-        GameManager.Instance.gold -= upgradableItems[GetUpgradeIndex()].goldRequired;
+        GameManager.instance.gold -= upgradableItems[GetUpgradeIndex()].goldRequired;
         upgradeResult.SetActive(true);
 
         if (UnityEngine.Random.value < upgradableItems[GetUpgradeIndex()].probability)
         {
-            GameManager.Instance.inventoryItemsId[selectedId] = (int)upgradableItems[GetUpgradeIndex()].after;
+            GameManager.instance.inventoryItemsId[selectedId] = (int)upgradableItems[GetUpgradeIndex()].after;
             upgradeResult.GetComponentInChildren<Text>().text = "<color=blue>축하합니다!</color>\r\n\r\n강화에 성공했습니다";
             AudioManager.instance.PlaySfx(AudioManager.Sfx.Success);
         }
         else
         {
-            GameManager.Instance.inventoryItemsId[selectedId] = -1;
+            GameManager.instance.inventoryItemsId[selectedId] = -1;
             upgradeResult.GetComponentInChildren<Text>().text = "강화에 실패했습니다.\r\n\r\n<color=red>아이템이 파괴됐습니다.</color>";
             AudioManager.instance.PlaySfx(AudioManager.Sfx.Destroy);
         }
@@ -364,7 +364,7 @@ public class UpgradeUI : MonoBehaviour
     {
         if (!gameObject.activeSelf) return;
 
-        if (GameManager.Instance.workingInventory)
+        if (GameManager.instance.workingInventory)
         {
 
             if (isUpgrade)
@@ -388,7 +388,7 @@ public class UpgradeUI : MonoBehaviour
     {
         if (!gameObject.activeSelf) return;
 
-        if (GameManager.Instance.workingInventory)
+        if (GameManager.instance.workingInventory)
         {
             if (isUpgrade)
             {
@@ -410,7 +410,7 @@ public class UpgradeUI : MonoBehaviour
     {
         for (int i = 0; i < buttons.Count; i++)
         {
-                if (GameManager.Instance.inventoryItemsId[i] == -1)
+                if (GameManager.instance.inventoryItemsId[i] == -1)
                 {
                     itemImages[i].color = blankAlpha;
                     continue;

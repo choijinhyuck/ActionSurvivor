@@ -16,7 +16,7 @@ public class EnemyPoint : MonoBehaviour
 
     private void Start()
     {
-        player = GameManager.Instance.player.transform;
+        player = GameManager.instance.player.transform;
     }
     // Update is called once per frame
     void Update()

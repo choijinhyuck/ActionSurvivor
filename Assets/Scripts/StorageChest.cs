@@ -32,12 +32,12 @@ public class StorageChest : MonoBehaviour
         isClosing = false;
 
         isNear = false;
-        openAction = GameManager.Instance.actions.FindActionMap("UI").FindAction("OpenChest");
-        inventoryAction = GameManager.Instance.actions.FindActionMap("UI").FindAction("Inventory");
-        cancelAction = GameManager.Instance.actions.FindActionMap("UI").FindAction("Cancel");
-        menuAction = GameManager.Instance.actions.FindActionMap("UI").FindAction("Menu");
-        destroyAction = GameManager.Instance.actions.FindActionMap("UI").FindAction("Destroy");
-        equipAction = GameManager.Instance.actions.FindActionMap("UI").FindAction("Equip");
+        openAction = GameManager.instance.actions.FindActionMap("UI").FindAction("OpenChest");
+        inventoryAction = GameManager.instance.actions.FindActionMap("UI").FindAction("Inventory");
+        cancelAction = GameManager.instance.actions.FindActionMap("UI").FindAction("Cancel");
+        menuAction = GameManager.instance.actions.FindActionMap("UI").FindAction("Menu");
+        destroyAction = GameManager.instance.actions.FindActionMap("UI").FindAction("Destroy");
+        equipAction = GameManager.instance.actions.FindActionMap("UI").FindAction("Equip");
 
         openAction.performed += OpenHandler;
         inventoryAction.performed += InventoryHandler;
@@ -118,28 +118,28 @@ public class StorageChest : MonoBehaviour
         switch (actionType)
         {
             case ActionType.Open:
-                if (!GameManager.Instance.workingInventory)
+                if (!GameManager.instance.workingInventory)
                 {
                     animator.SetTrigger("Open");
                     AudioManager.instance.PlaySfx(AudioManager.Sfx.ChestOpen);
                     AudioManager.instance.EffectBgm(true);
-                    GameManager.Instance.workingInventory = true;
+                    GameManager.instance.workingInventory = true;
                     storageUI.gameObject.SetActive(true);
-                    GameManager.Instance.Stop();
+                    GameManager.instance.Stop();
                 }
                 break;
 
             case ActionType.Inventory:
                 if (!storageUI.gameObject.activeSelf) return;
-                if (GameManager.Instance.workingInventory)
+                if (GameManager.instance.workingInventory)
                 {
                     isClosing = true;
                     animator.SetTrigger("Close");
                     AudioManager.instance.EffectBgm(false);
-                    GameManager.Instance.workingInventory = false;
+                    GameManager.instance.workingInventory = false;
                     storageUI.gameObject.SetActive(false);
                     storageUI.destroyDesc.transform.parent.gameObject.SetActive(false);
-                    GameManager.Instance.Resume();
+                    GameManager.instance.Resume();
                 }
                 break;
         }

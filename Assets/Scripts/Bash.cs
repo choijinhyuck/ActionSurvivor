@@ -6,6 +6,6 @@ public class Bash : MonoBehaviour
 {
     public void StopBash()
     {
-        GameManager.Instance.player.StopBash();
+        GameManager.instance.player.StopBash();
     }
 }

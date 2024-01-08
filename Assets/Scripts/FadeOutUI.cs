@@ -16,13 +16,13 @@ public class FadeOutUI : MonoBehaviour
     }
     private void Start()
     {
-        GameManager.Instance.Stop();
+        GameManager.instance.Stop();
         StartCoroutine(FadeOut());
     }
 
     IEnumerator FadeOut()
     {
-        Color color = new Color(0f, 0f, 0f, 0f);
+        Color color = new(0f, 0f, 0f, 0f);
         float timer = 0f;
         while (timer < time)
         {

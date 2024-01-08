@@ -22,10 +22,10 @@ public class ShopNPC : MonoBehaviour
     private void Start()
     {
         isNear = false;
-        openAction = GameManager.Instance.actions.FindActionMap("UI").FindAction("OpenChest");
-        inventoryAction = GameManager.Instance.actions.FindActionMap("UI").FindAction("Inventory");
-        cancelAction = GameManager.Instance.actions.FindActionMap("UI").FindAction("Cancel");
-        menuAction = GameManager.Instance.actions.FindActionMap("UI").FindAction("Menu");
+        openAction = GameManager.instance.actions.FindActionMap("UI").FindAction("OpenChest");
+        inventoryAction = GameManager.instance.actions.FindActionMap("UI").FindAction("Inventory");
+        cancelAction = GameManager.instance.actions.FindActionMap("UI").FindAction("Cancel");
+        menuAction = GameManager.instance.actions.FindActionMap("UI").FindAction("Menu");
 
         openAction.performed += OpenHandler;
         inventoryAction.performed += InventoryHandler;
@@ -93,24 +93,24 @@ public class ShopNPC : MonoBehaviour
         switch (actionType)
         {
             case ActionType.Open:
-                if (!GameManager.Instance.workingInventory)
+                if (!GameManager.instance.workingInventory)
                 {
                     AudioManager.instance.EffectBgm(true);
-                    GameManager.Instance.workingInventory = true;
+                    GameManager.instance.workingInventory = true;
                     shopUI.gameObject.SetActive(true);
-                    GameManager.Instance.Stop();
+                    GameManager.instance.Stop();
                 }
                 break;
 
             case ActionType.Inventory:
                 if (!shopUI.gameObject.activeSelf) return;
-                if (GameManager.Instance.workingInventory)
+                if (GameManager.instance.workingInventory)
                 {
                     AudioManager.instance.EffectBgm(false);
-                    GameManager.Instance.workingInventory = false;
+                    GameManager.instance.workingInventory = false;
                     shopUI.gameObject.SetActive(false);
                     shopUI.buySellConfirm.transform.parent.gameObject.SetActive(false);
-                    GameManager.Instance.Resume();
+                    GameManager.instance.Resume();
                 }
                 break;
         }

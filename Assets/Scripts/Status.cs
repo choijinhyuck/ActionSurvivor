@@ -17,83 +17,83 @@ public class Status : MonoBehaviour
     private void Start()
     {
         className.text = GetClassName();
-        damageValue.text = GameManager.Instance.playerDamage.ToString("N0");
-        speedValue.text = GameManager.Instance.playerSpeed.ToString("N0"); ;
-        damageLevel.text = string.Format("  Èû: Lv.{0} / Lv.3", GameManager.Instance.playerDamageLevel);
-        speedLevel.text = string.Format("¹ÎÃ¸: Lv.{0} / Lv.3", GameManager.Instance.playerSpeedLevel);
-        healthLevel.text = string.Format("°Ç°­: Lv.{0} / Lv.4", GameManager.Instance.playerHealthLevel);
-        skillLevel.text = string.Format("±â¼ú: Lv.{0} / Lv.6", GameManager.Instance.playerSkillLevel);
-        dashLevel.text = string.Format("´ë½Ã: Lv.{0} / Lv.4", GameManager.Instance.playerDashLevel);
+        damageValue.text = GameManager.instance.playerDamage.ToString("N0");
+        speedValue.text = GameManager.instance.playerSpeed.ToString("N0"); ;
+        damageLevel.text = string.Format("  Èû: Lv.{0} / Lv.3", GameManager.instance.playerDamageLevel);
+        speedLevel.text = string.Format("¹ÎÃ¸: Lv.{0} / Lv.3", GameManager.instance.playerSpeedLevel);
+        healthLevel.text = string.Format("°Ç°­: Lv.{0} / Lv.4", GameManager.instance.playerHealthLevel);
+        skillLevel.text = string.Format("±â¼ú: Lv.{0} / Lv.6", GameManager.instance.playerSkillLevel);
+        dashLevel.text = string.Format("´ë½Ã: Lv.{0} / Lv.4", GameManager.instance.playerDashLevel);
     }
 
     private void LateUpdate()
     {
         className.text = GetClassName();
-        damageValue.text = GameManager.Instance.playerDamage.ToString("N0");
-        speedValue.text = GameManager.Instance.playerSpeed.ToString("N0");
+        damageValue.text = GameManager.instance.playerDamage.ToString("N0");
+        speedValue.text = GameManager.instance.playerSpeed.ToString("N0");
 
-        switch (GameManager.Instance.playerDamageLevel)
+        switch (GameManager.instance.playerDamageLevel)
         {
             case 3:
-                damageLevel.text = string.Format("  Èû:   <color=red>Lv.Max</color>", GameManager.Instance.playerDamageLevel);
+                damageLevel.text = string.Format("  Èû:   <color=red>Lv.Max</color>", GameManager.instance.playerDamageLevel);
                 break;
             case 0:
                 damageLevel.text = "  Èû: Lv.- / Lv.3";
                 break;
             default:
-                damageLevel.text = string.Format("  Èû: Lv.{0} / Lv.3", GameManager.Instance.playerDamageLevel);
+                damageLevel.text = string.Format("  Èû: Lv.{0} / Lv.3", GameManager.instance.playerDamageLevel);
                 break;
         }
 
-        switch (GameManager.Instance.playerSpeedLevel)
+        switch (GameManager.instance.playerSpeedLevel)
         {
             case 3:
-                speedLevel.text = string.Format("¹ÎÃ¸:   <color=red>Lv.Max</color>", GameManager.Instance.playerSpeedLevel);
+                speedLevel.text = string.Format("¹ÎÃ¸:   <color=red>Lv.Max</color>", GameManager.instance.playerSpeedLevel);
                 break;
             case 0:
                 speedLevel.text = "¹ÎÃ¸: Lv.- / Lv.3";
                 break;
             default:
-                speedLevel.text = string.Format("¹ÎÃ¸: Lv.{0} / Lv.3", GameManager.Instance.playerSpeedLevel);
+                speedLevel.text = string.Format("¹ÎÃ¸: Lv.{0} / Lv.3", GameManager.instance.playerSpeedLevel);
                 break;
         }
 
-        switch (GameManager.Instance.playerHealthLevel)
+        switch (GameManager.instance.playerHealthLevel)
         {
             case 4:
-                healthLevel.text = string.Format("°Ç°­:   <color=red>Lv.Max</color>", GameManager.Instance.playerHealthLevel);
+                healthLevel.text = string.Format("°Ç°­:   <color=red>Lv.Max</color>", GameManager.instance.playerHealthLevel);
                 break;
             case 0:
                 healthLevel.text = "°Ç°­: Lv.- / Lv.4";
                 break;
             default:
-                healthLevel.text = string.Format("°Ç°­: Lv.{0} / Lv.4", GameManager.Instance.playerHealthLevel);
+                healthLevel.text = string.Format("°Ç°­: Lv.{0} / Lv.4", GameManager.instance.playerHealthLevel);
                 break;
         }
 
-        switch (GameManager.Instance.playerSkillLevel)
+        switch (GameManager.instance.playerSkillLevel)
         {
             case 6:
-                skillLevel.text = string.Format("±â¼ú:   <color=red>Lv.Max</color>", GameManager.Instance.playerSkillLevel);
+                skillLevel.text = string.Format("±â¼ú:   <color=red>Lv.Max</color>", GameManager.instance.playerSkillLevel);
                 break;
             case 0:
                 skillLevel.text = "±â¼ú: Lv.- / Lv.6";
                 break;
             default:
-                skillLevel.text = string.Format("±â¼ú: Lv.{0} / Lv.6", GameManager.Instance.playerSkillLevel);
+                skillLevel.text = string.Format("±â¼ú: Lv.{0} / Lv.6", GameManager.instance.playerSkillLevel);
                 break;
         }
         
-        switch(GameManager.Instance.playerDashLevel)
+        switch(GameManager.instance.playerDashLevel)
         {
             case 4:
-                dashLevel.text = string.Format("´ë½Ã:   <color=red>Lv.Max</color>", GameManager.Instance.playerDashLevel);
+                dashLevel.text = string.Format("´ë½Ã:   <color=red>Lv.Max</color>", GameManager.instance.playerDashLevel);
                 break;
             case 0:
                 dashLevel.text = "´ë½Ã: Lv.- / Lv.4";
                 break;
             default:
-                dashLevel.text = string.Format("´ë½Ã: Lv.{0} / Lv.4", GameManager.Instance.playerDashLevel);
+                dashLevel.text = string.Format("´ë½Ã: Lv.{0} / Lv.4", GameManager.instance.playerDashLevel);
                 break;
         }
     }
@@ -101,7 +101,7 @@ public class Status : MonoBehaviour
 
     string GetClassName()
     {
-        switch (GameManager.Instance.playerId)
+        switch (GameManager.instance.playerId)
         {
             case 0:
                 return "¿ö¸®¾î";

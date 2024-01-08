@@ -15,7 +15,7 @@ public class Gold : MonoBehaviour
 
     private void LateUpdate()
     {
-        content = GameManager.Instance.gold.ToString("N0");
+        content = GameManager.instance.gold.ToString("N0");
         text.text = content;
     }
 }
