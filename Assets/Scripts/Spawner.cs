@@ -21,7 +21,7 @@ public class Spawner : MonoBehaviour
         }
         else
         {
-            stage = GameManager.instance.stage.stageDataArr[GameManager.instance.stageId];
+            stage = StageManager.instance.stageDataArr[GameManager.instance.stageId];
             wave = 0;
             timer = new float[stage.waveData[0].enemyInfos.Length];
         }
@@ -35,6 +35,7 @@ public class Spawner : MonoBehaviour
         if (GameManager.instance.gameTime > GameManager.instance.maxGameTime) return;
         if (currentStageId != GameManager.instance.stageId)
         {
+            stage = StageManager.instance.stageDataArr[GameManager.instance.stageId];
             currentStageId = GameManager.instance.stageId;
             wave = 0;
             timer = new float[stage.waveData[0].enemyInfos.Length];

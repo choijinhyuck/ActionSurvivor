@@ -1119,6 +1119,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 60f7c657e7ad43045b05a5a20e3ad113, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  actions: {fileID: -944628639613478452, guid: 7a8bf57f548517145a5d5008f25a86ca, type: 3}
   confirm: {fileID: 319407056}
 --- !u!1 &945980386
 GameObject:
@@ -2185,7 +2186,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 1
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: "\uC544\uB2C8\uC624"
+  m_Text: "\uC544\uB2C8\uC694"
 --- !u!222 &1810191776
 CanvasRenderer:
   m_ObjectHideFlags: 0

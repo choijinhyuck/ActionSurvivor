@@ -4,13 +4,17 @@ using System.Linq;
 using System.Threading;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class BackgroundUI : MonoBehaviour
 {
+    [SerializeField] InputActionAsset actions;
     [SerializeField] GameObject confirm;
 
+    InputAction cancelAction;
+    InputAction menuAction;
     Vector2 newGameSize;
     Vector2 exitSize;
     int buttonClickedIndex;
@@ -26,6 +30,27 @@ public class BackgroundUI : MonoBehaviour
 
         newGameSize = new(590, 315);
         exitSize = new(590, 230);
+
+        cancelAction = actions.FindActionMap("UI").FindAction("Cancel");
+        menuAction = actions.FindActionMap("UI").FindAction("Menu");
+
+        cancelAction.performed += CancelHandler;
+        menuAction.performed += CancelHandler;
+    }
+
+    void CancelHandler(InputAction.CallbackContext context)
+    {
+        if (confirm.activeSelf)
+        {
+            if (!buttons[selectedId].enabled) return;
+            Confirm(false);
+        }
+    }
+
+    private void OnDestroy()
+    {
+        cancelAction.performed -= CancelHandler;
+        menuAction.performed -= CancelHandler;
     }
 
     private void Start()
@@ -170,7 +195,7 @@ public class BackgroundUI : MonoBehaviour
         else
         {
             confirm.SetActive(false);
-            AudioManager.instance.PlaySfx(AudioManager.Sfx.Select);
+            AudioManager.instance.PlaySfx(AudioManager.Sfx.MenuSelect);
             EventSystem.current.SetSelectedGameObject(buttons[buttonClickedIndex].gameObject);
             buttonClickedIndex = -1;
         }

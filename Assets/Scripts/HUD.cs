@@ -140,8 +140,8 @@ public class HUD : MonoBehaviour
                     return;
                 }
 
-                if (GetComponent<Text>().text == GameManager.instance.stage.stageDataArr[GameManager.instance.stageId].stageName) return;
-                GetComponent<Text>().text = GameManager.instance.stage.stageDataArr[GameManager.instance.stageId].stageName;
+                if (GetComponent<Text>().text == StageManager.instance.stageDataArr[GameManager.instance.stageId].stageName) return;
+                GetComponent<Text>().text = StageManager.instance.stageDataArr[GameManager.instance.stageId].stageName;
                 break;
         }
     }

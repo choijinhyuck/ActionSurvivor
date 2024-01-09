@@ -1034,7 +1034,7 @@ public class InventoryUI : MonoBehaviour
         // 인벤토리 UI가 꺼져있고 튜토리얼 도움말도 꺼져있는 경우
         if (!gameObject.activeSelf) return;
 
-        if (GameObject.FindAnyObjectByType<TutorialUI>() is not null) return;
+        if (FindAnyObjectByType<TutorialUI>() != null) return;
 
         if (GameManager.instance.workingInventory)
         {

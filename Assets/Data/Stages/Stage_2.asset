@@ -1,0 +1,84 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 30bf7cf748dbbb344b4af6c3c38165f1, type: 3}
+  m_Name: Stage_2
+  m_EditorClassIdentifier: 
+  stageNumber: 2
+  stageName: "\uACE0\uBE14\uB9B0\uC758 \uC232"
+  gameTime: 600
+  waveData:
+  - startTime: 0
+    enemyInfos:
+    - enemyType: 4
+      enemyCount: 1
+      spawnTime: 3
+    - enemyType: 1
+      enemyCount: 8
+      spawnTime: 59.8
+  - startTime: 60
+    enemyInfos:
+    - enemyType: 4
+      enemyCount: 1
+      spawnTime: 2
+    - enemyType: 1
+      enemyCount: 10
+      spawnTime: 59.8
+  - startTime: 120
+    enemyInfos:
+    - enemyType: 4
+      enemyCount: 1
+      spawnTime: 2
+    - enemyType: 1
+      enemyCount: 12
+      spawnTime: 59.8
+    - enemyType: 2
+      enemyCount: 1
+      spawnTime: 2
+  - startTime: 180
+    enemyInfos:
+    - enemyType: 4
+      enemyCount: 1
+      spawnTime: 4
+    - enemyType: 1
+      enemyCount: 15
+      spawnTime: 59.8
+    - enemyType: 2
+      enemyCount: 2
+      spawnTime: 2
+  - startTime: 240
+    enemyInfos:
+    - enemyType: 4
+      enemyCount: 1
+      spawnTime: 4
+    - enemyType: 1
+      enemyCount: 15
+      spawnTime: 29.8
+    - enemyType: 2
+      enemyCount: 2
+      spawnTime: 3
+    - enemyType: 3
+      enemyCount: 1
+      spawnTime: 3
+  - startTime: 300
+    enemyInfos:
+    - enemyType: 4
+      enemyCount: 1
+      spawnTime: 4
+    - enemyType: 1
+      enemyCount: 15
+      spawnTime: 19.8
+    - enemyType: 2
+      enemyCount: 2
+      spawnTime: 2
+    - enemyType: 3
+      enemyCount: 1
+      spawnTime: 2

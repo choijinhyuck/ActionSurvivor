@@ -2,11 +2,11 @@ using Cinemachine;
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.Experimental.Rendering.Universal;
 using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.UI;
 using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
@@ -35,7 +35,6 @@ public class GameManager : MonoBehaviour
     public GameObject fadeOutPrefab;
 
     [Header("# Game Control")]
-    public StageManager stage;
     public int stageId;
     public bool isLive;
     public float gameTime;
@@ -45,7 +44,7 @@ public class GameManager : MonoBehaviour
     public int playerId;
     public float health;
     public float maxHealth;
-    
+
     public int level;
     public int kill;
     public int exp;
@@ -201,7 +200,6 @@ public class GameManager : MonoBehaviour
                 if (hud.activeSelf) hud.SetActive(false);
                 BGMInit(AudioManager.Bgm.Title, .3f);
                 ZoomCamera();
-                actions.Disable();
                 break;
 
             case "Loading":
@@ -210,7 +208,6 @@ public class GameManager : MonoBehaviour
                 player.gameObject.SetActive(true);
                 if (hud.activeSelf) hud.SetActive(false);
                 AudioManager.instance.PlayBgm(false);
-                actions.Disable();
                 break;
 
             case "Camp":
@@ -220,7 +217,7 @@ public class GameManager : MonoBehaviour
                 if (!stageName.activeSelf) stageName.SetActive(true);
                 if (timer.activeSelf) timer.SetActive(false);
                 if (killText.activeSelf) killText.SetActive(false);
-                player.transform.position = new Vector3(0, -3, 0);
+                player.transform.position = new Vector3(0, -2.5f, 0);
                 BGMInit(AudioManager.Bgm.Camp, .3f);
                 ZoomCamera();
                 GameStart();
@@ -264,7 +261,6 @@ public class GameManager : MonoBehaviour
         while (true)
         {
             SaveManager.Save();
-            Debug.Log("Save Completed");
             yield return new WaitForSecondsRealtime(1f);
         }
     }
@@ -331,6 +327,12 @@ public class GameManager : MonoBehaviour
             return;
 
         gameTime += Time.deltaTime;
+
+        var test = (InputSystemUIInputModule)EventSystem.current.currentInputModule;
+        if (test.cancel.action.WasPerformedThisFrame())
+        {
+        }
+        //FindObjectOfType<StageSelect>() != null
     }
 
     public void StatusUpdate()
@@ -355,7 +357,7 @@ public class GameManager : MonoBehaviour
             // 체력 증가 아이템을 해제했을 때, 최대체력보다 현재체력이 넘어가는 현상을 방지하기 위해 MaxHeath로 현재 체력을 제한
             health = Mathf.Clamp(health, 0, maxHealth);
         }
-        
+
         if (shoesItem[playerId] == -1)
         {
             playerSpeed = playerBasicSpeed[playerId] + playerSpeedLevel;
@@ -364,11 +366,16 @@ public class GameManager : MonoBehaviour
         {
             playerSpeed = (playerBasicSpeed[playerId] + playerSpeedLevel) * (1 + ItemManager.Instance.itemDataArr[shoesItem[playerId]].baseAmount / 100);
         }
-        
+
     }
 
     public void OnInventory()
     {
+        if (new List<string> { "Title", "Loading" }.Contains(SceneManager.GetActiveScene().name)) return;
+        if (FindAnyObjectByType<StageSelect>() != null)
+        {
+            if (FindAnyObjectByType<StageSelect>().stageSelectPanel.activeSelf) return;
+        }
         if (LevelUp.instance.isLevelUp) return;
         if (FindAnyObjectByType<TutorialUI>() != null) return;
         if (health < .1f) return;
@@ -399,7 +406,6 @@ public class GameManager : MonoBehaviour
     {
         if (!hud.activeSelf) hud.SetActive(true);
 
-        actions.Enable();
         if (inventoryUI.gameObject.activeSelf)
         {
             inventoryUI.gameObject.SetActive(false);
@@ -414,7 +420,7 @@ public class GameManager : MonoBehaviour
         }
         else
         {
-            maxGameTime = stage.stageDataArr[stageId].gameTime;
+            maxGameTime = StageManager.instance.stageDataArr[stageId].gameTime;
         }
 
         playerImmuneTime = .15f;
@@ -466,6 +472,18 @@ public class GameManager : MonoBehaviour
 
         BGMInit(AudioManager.Bgm.Victory, .3f, false);
         BaseUI.Instance.Victory();
+        switch (sceneName)
+        {
+            case "Stage_0":
+                stage0_ClearCount++;
+                break;
+            case "Stage_1":
+                stage1_ClearCount++;
+                break;
+            case "Stage_2":
+                stage2_ClearCount++;
+                break;
+        }
     }
 
     public void GameQuit()
@@ -505,7 +523,7 @@ public class GameManager : MonoBehaviour
                     exp = 0;
                     Stop();
                     LevelUp.instance.Do();
-                    
+
                     // 레벨업 후 잔여 Exp가 존재하는 경우 한 번 더 적을 쓰러뜨린 후 호출하는 코루틴을 호출
                     if (restExp != 0)
                     {
@@ -515,7 +533,7 @@ public class GameManager : MonoBehaviour
                 break;
             }
         }
-        
+
     }
 
     public void Stop()

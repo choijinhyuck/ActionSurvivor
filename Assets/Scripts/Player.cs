@@ -88,7 +88,7 @@ public class Player : MonoBehaviour
         spriteRenderer.color = new Color(1f, 1f, 1f, 1f);
         spriteRenderer.material.SetColor("_FlashColor", new Color(1, 1, 1, 0));
         spriteRenderer.material.SetFloat("_FlashAmount", 0f);
-        dodgeEffects[GameManager.instance.playerId].gameObject.SetActive(false);
+        if (GameManager.instance != null) dodgeEffects[GameManager.instance.playerId].gameObject.SetActive(false);
 
         Scene scene = SceneManager.GetActiveScene();
         if (scene.name == "Title" || scene.name == "Loading") gameObject.SetActive(false);
@@ -127,8 +127,16 @@ public class Player : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (!GameManager.instance.isLive || isHit) return;
-        if (GameManager.instance.health < .1f) return;
+        if (!GameManager.instance.isLive || isHit)
+        {
+            inputVector = Vector2.zero;
+            return;
+        }
+        if (GameManager.instance.health < .1f)
+        {
+            inputVector = Vector2.zero;
+            return;
+        }
 
         inputVector = moveAction.ReadValue<Vector2>();
 

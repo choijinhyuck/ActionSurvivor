@@ -4,15 +4,21 @@ using UnityEngine;
 
 public class StageManager : MonoBehaviour
 {
+    public static StageManager instance;
+
     public StageData[] stageDataArr;
+    
 
     private void Awake()
     {
-        StageManager[] scripts = GameObject.FindObjectsByType<StageManager>(FindObjectsSortMode.None);
-        if (scripts.Length > 1)
+        if (instance == null)
         {
-            Destroy(this.gameObject);
+            instance = this;
         }
-        DontDestroyOnLoad(this.gameObject);
+        else
+        {
+            Destroy(gameObject);
+        }
+        DontDestroyOnLoad(gameObject);
     }
 }

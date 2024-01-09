@@ -122,10 +122,11 @@ public class StorageChest : MonoBehaviour
                 {
                     animator.SetTrigger("Open");
                     AudioManager.instance.PlaySfx(AudioManager.Sfx.ChestOpen);
-                    AudioManager.instance.EffectBgm(true);
+                    //AudioManager.instance.EffectBgm(true);
                     GameManager.instance.workingInventory = true;
                     storageUI.gameObject.SetActive(true);
-                    GameManager.instance.Stop();
+                    //GameManager.instance.Stop();
+                    GameManager.instance.isLive = false;
                 }
                 break;
 
@@ -135,11 +136,12 @@ public class StorageChest : MonoBehaviour
                 {
                     isClosing = true;
                     animator.SetTrigger("Close");
-                    AudioManager.instance.EffectBgm(false);
+                    //AudioManager.instance.EffectBgm(false);
                     GameManager.instance.workingInventory = false;
                     storageUI.gameObject.SetActive(false);
                     storageUI.destroyDesc.transform.parent.gameObject.SetActive(false);
-                    GameManager.instance.Resume();
+                    //GameManager.instance.Resume();
+                    GameManager.instance.isLive = true;
                 }
                 break;
         }

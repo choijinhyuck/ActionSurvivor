@@ -96,10 +96,11 @@ public class UpgradeNPC : MonoBehaviour
             case ActionType.Open:
                 if (!GameManager.instance.workingInventory)
                 {
-                    AudioManager.instance.EffectBgm(true);
+                    //AudioManager.instance.EffectBgm(true);
                     GameManager.instance.workingInventory = true;
                     upgradeUI.gameObject.SetActive(true);
-                    GameManager.instance.Stop();
+                    //GameManager.instance.Stop();
+                    GameManager.instance.isLive = false;
                 }
                 break;
 
@@ -109,11 +110,12 @@ public class UpgradeNPC : MonoBehaviour
                 {
                     upgradeUI.hammering.SetActive(false);
                     upgradeUI.upgradeResult.SetActive(false);
-                    AudioManager.instance.EffectBgm(false);
+                    //AudioManager.instance.EffectBgm(false);
                     GameManager.instance.workingInventory = false;
                     upgradeUI.gameObject.SetActive(false);
                     upgradeUI.upgradeConfirm.transform.parent.gameObject.SetActive(false);
-                    GameManager.instance.Resume();
+                    //GameManager.instance.Resume();
+                    GameManager.instance.isLive = true;
                 }
                 break;
         }
