@@ -66,6 +66,7 @@ public class ShopNPC : MonoBehaviour
         {
             isNear = false;
             buttonImage.transform.parent.gameObject.SetActive(false);
+            Close();
             return;
         }
 
@@ -104,17 +105,22 @@ public class ShopNPC : MonoBehaviour
                 break;
 
             case ActionType.Inventory:
-                if (!shopUI.gameObject.activeSelf) return;
-                if (GameManager.instance.workingInventory)
-                {
-                    //AudioManager.instance.EffectBgm(false);
-                    GameManager.instance.workingInventory = false;
-                    shopUI.gameObject.SetActive(false);
-                    shopUI.buySellConfirm.transform.parent.gameObject.SetActive(false);
-                    //GameManager.instance.Resume();
-                    GameManager.instance.isLive = true;
-                }
+                Close();
                 break;
+        }
+    }
+
+    void Close()
+    {
+        if (!shopUI.gameObject.activeSelf) return;
+        if (GameManager.instance.workingInventory)
+        {
+            //AudioManager.instance.EffectBgm(false);
+            GameManager.instance.workingInventory = false;
+            shopUI.gameObject.SetActive(false);
+            shopUI.buySellConfirm.transform.parent.gameObject.SetActive(false);
+            //GameManager.instance.Resume();
+            GameManager.instance.isLive = true;
         }
     }
 }

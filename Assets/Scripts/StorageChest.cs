@@ -90,6 +90,7 @@ public class StorageChest : MonoBehaviour
         {
             isNear = false;
             buttonImage.transform.parent.gameObject.SetActive(false);
+            Close();
             return;
         }
 
@@ -131,18 +132,7 @@ public class StorageChest : MonoBehaviour
                 break;
 
             case ActionType.Inventory:
-                if (!storageUI.gameObject.activeSelf) return;
-                if (GameManager.instance.workingInventory)
-                {
-                    isClosing = true;
-                    animator.SetTrigger("Close");
-                    //AudioManager.instance.EffectBgm(false);
-                    GameManager.instance.workingInventory = false;
-                    storageUI.gameObject.SetActive(false);
-                    storageUI.destroyDesc.transform.parent.gameObject.SetActive(false);
-                    //GameManager.instance.Resume();
-                    GameManager.instance.isLive = true;
-                }
+                Close();
                 break;
         }
     }
@@ -155,5 +145,21 @@ public class StorageChest : MonoBehaviour
     public void FinishClose()
     {
         isClosing = false;
+    }
+
+    void Close()
+    {
+        if (!storageUI.gameObject.activeSelf) return;
+        if (GameManager.instance.workingInventory)
+        {
+            isClosing = true;
+            animator.SetTrigger("Close");
+            //AudioManager.instance.EffectBgm(false);
+            GameManager.instance.workingInventory = false;
+            storageUI.gameObject.SetActive(false);
+            storageUI.destroyDesc.transform.parent.gameObject.SetActive(false);
+            //GameManager.instance.Resume();
+            GameManager.instance.isLive = true;
+        }
     }
 }

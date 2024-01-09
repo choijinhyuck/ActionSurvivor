@@ -67,6 +67,7 @@ public class UpgradeNPC : MonoBehaviour
         {
             isNear = false;
             buttonImage.transform.parent.gameObject.SetActive(false);
+            Close();
             return;
         }
 
@@ -105,19 +106,24 @@ public class UpgradeNPC : MonoBehaviour
                 break;
 
             case ActionType.Inventory:
-                if (!upgradeUI.gameObject.activeSelf) return;
-                if (GameManager.instance.workingInventory)
-                {
-                    upgradeUI.hammering.SetActive(false);
-                    upgradeUI.upgradeResult.SetActive(false);
-                    //AudioManager.instance.EffectBgm(false);
-                    GameManager.instance.workingInventory = false;
-                    upgradeUI.gameObject.SetActive(false);
-                    upgradeUI.upgradeConfirm.transform.parent.gameObject.SetActive(false);
-                    //GameManager.instance.Resume();
-                    GameManager.instance.isLive = true;
-                }
+                Close();
                 break;
+        }
+    }
+
+    void Close()
+    {
+        if (!upgradeUI.gameObject.activeSelf) return;
+        if (GameManager.instance.workingInventory)
+        {
+            upgradeUI.hammering.SetActive(false);
+            upgradeUI.upgradeResult.SetActive(false);
+            //AudioManager.instance.EffectBgm(false);
+            GameManager.instance.workingInventory = false;
+            upgradeUI.gameObject.SetActive(false);
+            upgradeUI.upgradeConfirm.transform.parent.gameObject.SetActive(false);
+            //GameManager.instance.Resume();
+            GameManager.instance.isLive = true;
         }
     }
 }
