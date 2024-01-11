@@ -45,6 +45,11 @@ public class BackgroundUI : MonoBehaviour
             if (!buttons[selectedId].enabled) return;
             Confirm(false);
         }
+        
+        if (SettingUI.instance.settingPanel.activeSelf)
+        {
+            SettingUI.instance.Back();
+        }
     }
 
     private void OnDestroy()
@@ -63,6 +68,9 @@ public class BackgroundUI : MonoBehaviour
 
     private void Update()
     {
+
+        if (SettingUI.instance.settingPanel.activeSelf) return;
+
         if (buttonClickedIndex != -1 && !confirm.activeSelf)
         {
             EventSystem.current.SetSelectedGameObject(buttons[selectedId].gameObject);
@@ -70,7 +78,6 @@ public class BackgroundUI : MonoBehaviour
 
         GameObject selectedButton = EventSystem.current.currentSelectedGameObject;
         if (selectedButton == null) return;
-
         if (buttons[selectedId].gameObject != selectedButton)
         {
             int nextId = buttons.IndexOf(selectedButton.GetComponent<Button>());
@@ -150,22 +157,24 @@ public class BackgroundUI : MonoBehaviour
         if (buttonClickedIndex == 0) return;
         AudioManager.instance.PlaySfx(AudioManager.Sfx.MenuSelect);
         buttonClickedIndex = 0;
-        confirm.GetComponent<RectTransform>().sizeDelta = newGameSize;
-        confirm.GetComponentInChildren<Text>().text = "정말로 새 게임을 시작하시겠습니까?\n<color=red>(저장된 데이터가 모두 삭제됩니다.)</color>";
-        confirm.SetActive(true);
-        // 아니오 선택
-        EventSystem.current.SetSelectedGameObject(confirm.GetComponentsInChildren<Button>()[1].gameObject);
+        if (!PlayerPrefs.HasKey("maxInventory"))
+        {
+            StartCoroutine(Press());
 
-
-        //StartCoroutine(Press());
-        //AudioManager.instance.PlaySfx(AudioManager.Sfx.MenuSelect);
-
-        //SaveManager.ResetSave();
-        //GameManager.instance.InfoInit();
-
-        //GameManager.instance.sceneName = "Stage_0";
-        //GameManager.instance.FadeOut();
-        
+            AudioManager.instance.PlaySfx(AudioManager.Sfx.MenuSelect);
+            SaveManager.ResetSave();
+            GameManager.instance.InfoInit();
+            GameManager.instance.sceneName = "Stage_0";
+            GameManager.instance.FadeOut();
+        }
+        else
+        {
+            confirm.GetComponent<RectTransform>().sizeDelta = newGameSize;
+            confirm.GetComponentInChildren<Text>().text = "정말로 새 게임을 시작하시겠습니까?\n<color=red>(저장된 데이터가 모두 삭제됩니다.)</color>";
+            confirm.SetActive(true);
+            // 아니오 선택
+            EventSystem.current.SetSelectedGameObject(confirm.GetComponentsInChildren<Button>()[1].gameObject);
+        }
     }
 
     public void Confirm(bool positive)
@@ -215,25 +224,17 @@ public class BackgroundUI : MonoBehaviour
         GameManager.instance.FadeOut();
     }
 
+    public void Setting()
+    {
+        AudioManager.instance.PlaySfx(AudioManager.Sfx.MenuSelect);
+        SettingUI.instance.settingPanel.SetActive(true);
+    }
+
     IEnumerator Press()
     {
         yield return null;
         buttons[selectedId].GetComponent<Animator>().SetBool("PressedByScript", false);
     }
-
-    //IEnumerator ToLoading()
-    //{
-    //    Color color = new Color(0f, 0f, 0f, 0f);
-    //    float timer = 0f;
-    //    while (timer < 1f)
-    //    {
-    //        yield return null;
-    //        timer += Time.unscaledDeltaTime;
-    //        color.a = timer;
-    //        fadeOut.color = color;
-    //    }
-    //    SceneManager.LoadScene("Loading");
-    //}
 
     public void Exit()
     {

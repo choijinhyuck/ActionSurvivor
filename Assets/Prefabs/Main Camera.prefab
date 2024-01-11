@@ -15,7 +15,6 @@ GameObject:
   - component: {fileID: 6664586035342977491}
   - component: {fileID: 3050587656487392545}
   - component: {fileID: 2574100686940980346}
-  - component: {fileID: 6102893269792393944}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -209,15 +208,3 @@ AudioHighPassFilter:
   m_Enabled: 0
   m_CutoffFrequency: 1700
   m_HighpassResonanceQ: 4
---- !u!114 &6102893269792393944
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2564582011177107155}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 697a5a1d88202054d9a1fb8249845612, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 

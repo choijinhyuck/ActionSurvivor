@@ -53,7 +53,6 @@ public class AudioManager : MonoBehaviour
         bgmPlayer.loop = true;
         bgmPlayer.volume = bgmVolume;
         bgmPlayer.clip = null;
-        bgmEffect = Camera.main.GetComponent<AudioHighPassFilter>();
 
         //효과음 플레이어 초기화
         GameObject sfxObject = new("SfxPlayer");
@@ -103,7 +102,7 @@ public class AudioManager : MonoBehaviour
 
     public void EffectBgm(bool isPlay)
     {
-        bgmEffect.enabled = isPlay;
+        Camera.main.GetComponent<AudioHighPassFilter>().enabled = isPlay;
     }
 
     public void PlaySfx(Sfx sfx)

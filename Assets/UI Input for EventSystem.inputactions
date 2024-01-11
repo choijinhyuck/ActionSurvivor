@@ -1,5 +1,5 @@
 {
-    "name": "UI Input",
+    "name": "UI Input for EventSystem",
     "maps": [
         {
             "name": "Player",
@@ -679,6 +679,17 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Gamepad",
+                    "action": "Cancel",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "8e923d17-0a1c-4564-b435-0c30542505cf",
+                    "path": "<Keyboard>/escape",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard&Mouse",
                     "action": "Cancel",
                     "isComposite": false,
                     "isPartOfComposite": false

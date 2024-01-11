@@ -751,11 +751,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6eff8eefee613e640a838ed70cdc2cee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!4 &708849800 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 8116372295632165146, guid: 3f2417d026e214948acacff3c14f399b, type: 3}
-  m_PrefabInstance: {fileID: 5889173651021957685}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &985293955
 GameObject:
   m_ObjectHideFlags: 0
@@ -1541,10 +1536,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Virtual Camera
       objectReference: {fileID: 0}
-    - target: {fileID: 6786510082922082988, guid: fe21b54fd16353246b78dbc97dd7d5a8, type: 3}
-      propertyPath: m_Follow
-      value: 
-      objectReference: {fileID: 708849800}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

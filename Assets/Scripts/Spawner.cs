@@ -7,39 +7,36 @@ public class Spawner : MonoBehaviour
     public Transform RightUp;
     public EnemyData[] enemyData;
 
-    int currentStageId;
     int wave;
     float[] timer;
 
-    private void Start()
+    private void Awake()
     {
-        if (GameManager.instance.stageId == -1)
-        {
-            stage = null;
-            wave = -1;
-            timer = new float[] { };
-        }
-        else
-        {
-            stage = StageManager.instance.stageDataArr[GameManager.instance.stageId];
-            wave = 0;
-            timer = new float[stage.waveData[0].enemyInfos.Length];
-        }
-        currentStageId = GameManager.instance.stageId;
+        wave = -1;
+    }
+
+    private void OnEnable()
+    {
+        if (GameManager.instance == null || StageManager.instance == null) return;
+        if (GameManager.instance.stageId == -1) return;
+
+        stage = StageManager.instance.stageDataArr[GameManager.instance.stageId];
+        wave = 0;
+        timer = new float[stage.waveData[0].enemyInfos.Length];
     }
 
     private void Update()
     {
-        if (GameManager.instance.stageId == -1) return;
-        if (!GameManager.instance.isLive) return;
-        if (GameManager.instance.gameTime > GameManager.instance.maxGameTime) return;
-        if (currentStageId != GameManager.instance.stageId)
+        //초기화에 실패한 경우
+        if (wave == -1)
         {
             stage = StageManager.instance.stageDataArr[GameManager.instance.stageId];
-            currentStageId = GameManager.instance.stageId;
             wave = 0;
             timer = new float[stage.waveData[0].enemyInfos.Length];
         }
+        if (GameManager.instance.stageId == -1) return;
+        if (!GameManager.instance.isLive) return;
+        if (GameManager.instance.gameTime > GameManager.instance.maxGameTime) return;
 
         if (wave < stage.waveData.Length - 1 && GameManager.instance.gameTime > stage.waveData[wave + 1].startTime)
         {

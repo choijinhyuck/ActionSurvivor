@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Threading;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.PlayerLoop;
 using UnityEngine.SceneManagement;
@@ -45,6 +46,7 @@ public class LoadingUI : MonoBehaviour
         loadingPercentage.text = string.Format("{0}%", 0);
 
         GameManager.instance.player.gameObject.SetActive(false);
+
     }
 
     IEnumerator Loading()

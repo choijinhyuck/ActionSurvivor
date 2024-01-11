@@ -50,16 +50,21 @@ public class Player : MonoBehaviour
     Rigidbody2D target;
     bool canRangeFire;
     bool isImmune;
+    float originSpeed;
+    bool isStarted;
 
+    bool isDestroying;
 
     private void Awake()
     {
+        isDestroying = false;
         if (instance == null)
         {
             instance = this;
         }
         else
         {
+            isDestroying = true;
             Destroy(gameObject);
         }
         DontDestroyOnLoad(gameObject);
@@ -80,7 +85,7 @@ public class Player : MonoBehaviour
         waitSec = new WaitForSeconds(.01f);
         waitFix = new WaitForFixedUpdate();
 
-        PlayerActionAdd();
+        actions.Enable();
     }
 
     private void OnEnable()
@@ -90,16 +95,13 @@ public class Player : MonoBehaviour
         spriteRenderer.material.SetFloat("_FlashAmount", 0f);
         if (GameManager.instance != null) dodgeEffects[GameManager.instance.playerId].gameObject.SetActive(false);
 
-        Scene scene = SceneManager.GetActiveScene();
-        if (scene.name == "Title" || scene.name == "Loading") gameObject.SetActive(false);
-
+        
         readyDodge = true;
         isDodge = false;
         isAttack = false;
         isHit = false;
         isImmune = false;
-
-        actions.Enable();
+        isStarted = false;
 
         for (int i = 0; i < chargeEffects.Length; i++)
         {
@@ -118,10 +120,17 @@ public class Player : MonoBehaviour
         {
             shadow.gameObject.SetActive(true);
         }
+
+        PlayerActionAdd();
+
+        Scene scene = SceneManager.GetActiveScene();
+        if (scene.name == "Title" || scene.name == "Loading") gameObject.SetActive(false);
+
     }
 
-    private void OnDestroy()
+    private void OnDisable()
     {
+        if (isDestroying) return;
         PlayerActionRemove();
     }
 
@@ -462,10 +471,10 @@ public class Player : MonoBehaviour
         if (anim.GetCurrentAnimatorStateInfo(0).IsName("Attack") || anim.GetCurrentAnimatorStateInfo(0).IsName("SkillMotion") || anim.GetCurrentAnimatorStateInfo(0).IsName("Dead") || isHit)
             return;
 
+        isStarted = true;
         StartCoroutine("StartCharge");
     }
 
-    float originSpeed;
     IEnumerator StartCharge()
     {
         float chargeStartTimer = 0f;
@@ -487,7 +496,7 @@ public class Player : MonoBehaviour
         chargeEffects[0].gameObject.SetActive(true);
         originSpeed = GameManager.instance.playerSpeed;
         // 이동속도 변경
-        GameManager.instance.playerSpeed = originSpeed * .8f;
+        GameManager.instance.playerSpeed = originSpeed * .7f;
 
         // 기 모으는 Effect 추가
         StartCoroutine("Charging");
@@ -532,24 +541,25 @@ public class Player : MonoBehaviour
         {
             // 차징 중 interrupt로 인해 cancel 된 경우? performed와 동일한 작업
             if (!isCharging) StopCoroutine("StartCharge");
-            if (GameManager.instance.isLive) Fire();
+            if (GameManager.instance.isLive && isStarted) Fire();
             // 0.2 - 0.5 초 사이의 키 입력을 시도한 경우 - 한 번의 공격 나가도록
+            isStarted = false;
             return;
         }
 
         if (!isCharging)
         {
             StopCoroutine("StartCharge");
+            isStarted = false;
             return;   // 공격중 차징을 시도하고 키를 뗐을 때 공격 한 번 나가는 것 방지,
         }
 
-        if (!isHit && GameManager.instance.isLive)
+        if (!isHit && GameManager.instance.isLive && isStarted)
         {
             // 총 3 칸으로 구성된 기 카운트 사용
             switch (chargeCount)
             {
                 case 0:
-
                     Fire();
                     break;
                 case 1:
@@ -575,7 +585,7 @@ public class Player : MonoBehaviour
 
 
         //기 되돌리기
-
+        isStarted = false;
         chargeEffects[Mathf.Min(chargeCount, 2)].gameObject.SetActive(false);
         isCharging = false;
         chargeTimer = 0;
@@ -621,7 +631,7 @@ public class Player : MonoBehaviour
 
             if (chargeCount == 1)
             {
-                GameManager.instance.playerSpeed = originSpeed * 0.6f;
+                GameManager.instance.playerSpeed = originSpeed * 0.55f;
             }
             else if (chargeCount == 2)
             {

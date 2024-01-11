@@ -15,6 +15,8 @@ public class StageSelect : MonoBehaviour
     [SerializeField] Image rightArrow;
     [SerializeField] GameObject confirm;
     [SerializeField] Text stageNameConfirm;
+    [SerializeField] Sprite[] controlIcons;
+    [SerializeField] GameObject help;
     public GameObject stageSelectPanel;
 
     Vector2 lastPressedMove;
@@ -66,10 +68,26 @@ public class StageSelect : MonoBehaviour
     {
         if (stageSelectPanel.activeSelf) stageSelectPanel.SetActive(false);
         if (confirm.activeSelf) confirm.SetActive(false);
+        if (help.activeSelf) help.SetActive(false);
     }
 
     private void Update()
     {
+        if (help.activeSelf)
+        {
+            switch (ControllerManager.instance.CurrentScheme)
+            {
+                case ControllerManager.scheme.Keyboard:
+                    help.GetComponentsInChildren<Image>()[0].sprite = controlIcons[0];
+                    help.GetComponentsInChildren<Image>()[1].sprite = controlIcons[1];
+                    break;
+                case ControllerManager.scheme.Gamepad:
+                    help.GetComponentsInChildren<Image>()[0].sprite = controlIcons[2];
+                    help.GetComponentsInChildren<Image>()[1].sprite = controlIcons[3];
+                    break;
+            }
+        }
+
         if (input == null)
         {
             input = (InputSystemUIInputModule)EventSystem.current.currentInputModule;
@@ -112,7 +130,10 @@ public class StageSelect : MonoBehaviour
             {
                 stageNameConfirm.text = "<" + StageManager.instance.stageDataArr[selectedId].stageName + ">\r\n<size=35><color=black>(으)로 떠나시겠습니까?</color></size>";
 
+                help.GetComponentsInChildren<Text>()[0].text = "선택";
+                help.GetComponentsInChildren<Text>()[1].text = "취소";
                 confirm.SetActive(true);
+                
                 AudioManager.instance.PlaySfx(AudioManager.Sfx.ButtonPress);
                 EventSystem.current.SetSelectedGameObject(confirm.GetComponentsInChildren<Button>()[1].gameObject);
                 confirmOn = true;
@@ -216,6 +237,9 @@ public class StageSelect : MonoBehaviour
         if (collision.CompareTag("Player"))
         {
             if (!stageSelectPanel.activeSelf) stageSelectPanel.SetActive(true);
+            help.GetComponentsInChildren<Text>()[0].text = "출발";
+            help.GetComponentsInChildren<Text>()[1].text = "닫기";
+            if (!help.activeSelf) help.SetActive(true);
             GameManager.instance.isLive = false;
         }
     }
@@ -251,6 +275,8 @@ public class StageSelect : MonoBehaviour
         {
             AudioManager.instance.PlaySfx(AudioManager.Sfx.Cancel);
             EventSystem.current.SetSelectedGameObject(null);
+            help.GetComponentsInChildren<Text>()[0].text = "출발";
+            help.GetComponentsInChildren<Text>()[1].text = "닫기";
             confirm.SetActive(false);
             lastSelected = null;
         }

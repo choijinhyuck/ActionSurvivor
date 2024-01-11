@@ -399,22 +399,22 @@ public class LevelUp : MonoBehaviour
                 {
                     case 5:
                         texts[0] = string.Format("기술 <size=9><color=blue>Lv.{0}</color> <color=red>(Max)</color></size>", GameManager.instance.playerSkillLevel + 1);
-                        texts[1] = string.Format("<size=7><color=red>3단계</color></size> 차지 기술 개방");
+                        texts[1] = string.Format("<size=7><color=red>3단계</color></size> 충전 기술 개방");
                         break;
                     case 4:
                         texts[1] = string.Format("최대 기술 사용 횟수 <size=7><color=red>2</color></size> 증가");
                         break;
                     case 3:
-                        texts[1] = string.Format("기술 차지 소요 시간 <size=7><color=red>30%</color></size> 감소");
+                        texts[1] = string.Format("기 충전 소요 시간 <size=7><color=red>30%</color></size> 감소");
                         break;
                     case 2:
-                        texts[1] = string.Format("<size=7><color=red>2단계</color></size> 차지 기술 개방");
+                        texts[1] = string.Format("<size=7><color=red>2단계</color></size> 충전 기술 개방");
                         break;
                     case 1:
                         texts[1] = string.Format("최대 기술 사용 횟수 <size=7><color=red>1</color></size> 증가");
                         break;
                     default:
-                        texts[1] = string.Format("기술 차지 소요 시간 <size=7><color=red>20%</color></size> 감소");
+                        texts[1] = string.Format("기술 충전 소요 시간 <size=7><color=red>20%</color></size> 감소");
                         break;
                 }
                 break;

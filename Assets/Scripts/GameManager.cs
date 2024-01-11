@@ -218,7 +218,7 @@ public class GameManager : MonoBehaviour
                 if (timer.activeSelf) timer.SetActive(false);
                 if (killText.activeSelf) killText.SetActive(false);
                 player.transform.position = new Vector3(0, -2.5f, 0);
-                BGMInit(AudioManager.Bgm.Camp, .3f);
+                BGMInit(AudioManager.Bgm.Camp, .5f);
                 ZoomCamera();
                 GameStart();
                 break;
@@ -231,7 +231,7 @@ public class GameManager : MonoBehaviour
                 if (!stageName.activeSelf) stageName.SetActive(true);
                 if (!timer.activeSelf) timer.SetActive(true);
                 if (!killText.activeSelf) killText.SetActive(true);
-                BGMInit(AudioManager.Bgm.Stage0, .5f);
+                BGMInit(AudioManager.Bgm.Stage0, .4f);
                 if (!PlayerPrefs.HasKey("maxInventory"))
                 {
                     AudioManager.instance.PlayBgm(false);
@@ -316,7 +316,7 @@ public class GameManager : MonoBehaviour
 
     public void CameraDamping(float value = 1f)
     {
-        var transposer = VirtualCamera.instance.GetComponent<CinemachineVirtualCamera>().GetCinemachineComponent<CinemachineTransposer>();
+        var transposer = FindObjectOfType<VirtualCamera>().vCam.GetCinemachineComponent<CinemachineTransposer>();
         transposer.m_XDamping = value;
         transposer.m_YDamping = value;
     }
@@ -327,12 +327,6 @@ public class GameManager : MonoBehaviour
             return;
 
         gameTime += Time.deltaTime;
-
-        var test = (InputSystemUIInputModule)EventSystem.current.currentInputModule;
-        if (test.cancel.action.WasPerformedThisFrame())
-        {
-        }
-        //FindObjectOfType<StageSelect>() != null
     }
 
     public void StatusUpdate()
@@ -425,7 +419,7 @@ public class GameManager : MonoBehaviour
 
         playerImmuneTime = .15f;
 
-        chargeCooltime = 6f;
+        chargeCooltime = 7f;
         chargeTime = 1f;
         dodgeTime = 2f;
         dodgeSpeed = 7f;
@@ -435,6 +429,7 @@ public class GameManager : MonoBehaviour
 
         level = 0;
         exp = 0;
+        kill = 0;
 
         playerDamageLevel = 0;
         playerSpeedLevel = 0;
@@ -550,8 +545,8 @@ public class GameManager : MonoBehaviour
 
     void OnMenu()
     {
-        if (InventoryUI.instance == null) return;
-        InventoryUI.instance.OnMenu();
+        if (MenuUI.instance == null) return;
+        MenuUI.instance.OnMenu();
     }
 
     void OnCancel()

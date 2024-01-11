@@ -59,6 +59,7 @@ public class BaseUI : MonoBehaviour
     private void OnEnable()
     {
         SceneManager.sceneLoaded += OnSceneLoaded;
+        SceneManager.sceneUnloaded += OnSceneUnloaded;
     }
 
     void OnSceneLoaded(Scene scene, LoadSceneMode mode)
@@ -82,6 +83,11 @@ public class BaseUI : MonoBehaviour
         remainTime.gameObject.SetActive(false);
 
         currentSelected = null;
+    }
+
+    void OnSceneUnloaded(Scene scene)
+    {
+        StopAllCoroutines();
     }
 
     private void Update()
@@ -252,8 +258,6 @@ public class BaseUI : MonoBehaviour
             timer += Time.unscaledDeltaTime;
         }
         victory.gameObject.SetActive(false);
-        victoryTitle.gameObject.SetActive(false);
-        victoryMessage.gameObject.SetActive(false);
         
         EventSystem.current.SetSelectedGameObject(null);
         AudioManager.instance.PauseBGM(false);
