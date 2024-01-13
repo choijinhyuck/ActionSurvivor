@@ -7,7 +7,8 @@ public class ItemData : ScriptableObject
 {
     public enum ItemType { Melee, Range, Shoes, Necklace, Magic, Potion, Gold }
     public enum Items { BronzeSword, SilverSword, GoldenSword, BronzeHammer, SilverHammer, GoldenHammer, Kunai, Shuriken, Arrow, MiniPotion, NormalPotion, BigPotion,
-                        Gold5, Gold19, Gold49, FireMagic, IceMagic, LightningMagic, BronzeShoes, SilverShoes, GoldenShoes, KunaiPlus, ShurikenPlus, ArrowPlus}
+                        Gold5, Gold19, Gold49, FireMagic, IceMagic, LightningMagic, BronzeShoes, SilverShoes, GoldenShoes, KunaiPlus, ShurikenPlus, ArrowPlus,
+                        RevivalNecklace, SkillNecklace, HealthNecklace}
 
 
     [Header("# Main Info")]

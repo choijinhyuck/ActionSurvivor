@@ -48,6 +48,10 @@ public class BackgroundUI : MonoBehaviour
         
         if (SettingUI.instance.settingPanel.activeSelf)
         {
+            if (SettingUI.instance.DropdownOpened())
+            {
+                return;
+            }
             SettingUI.instance.Back();
         }
     }

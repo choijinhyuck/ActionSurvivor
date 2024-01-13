@@ -69,6 +69,7 @@ public class GameManager : MonoBehaviour
     public float[] playerBasicMaxHealth;
     public float[] playerBasicDamage;
     public float[] playerBasicSpeed;
+    int basicMaxChargeCount;
 
     [Header("# Inventory")]
     public InventoryUI inventoryUI;
@@ -118,6 +119,8 @@ public class GameManager : MonoBehaviour
 
         //커서 잠금
         //Cursor.lockState = CursorLockMode.Locked;
+
+        basicMaxChargeCount = 2;
 
         InfoInit();
 
@@ -198,7 +201,7 @@ public class GameManager : MonoBehaviour
                 player.transform.position = new Vector3(0, 0, 0);
                 player.gameObject.SetActive(true);
                 if (hud.activeSelf) hud.SetActive(false);
-                BGMInit(AudioManager.Bgm.Title, .3f);
+                BGMInit(AudioManager.Bgm.Title, .6f);
                 ZoomCamera();
                 break;
 
@@ -218,7 +221,7 @@ public class GameManager : MonoBehaviour
                 if (timer.activeSelf) timer.SetActive(false);
                 if (killText.activeSelf) killText.SetActive(false);
                 player.transform.position = new Vector3(0, -2.5f, 0);
-                BGMInit(AudioManager.Bgm.Camp, .5f);
+                BGMInit(AudioManager.Bgm.Camp, 1f);
                 ZoomCamera();
                 GameStart();
                 break;
@@ -231,7 +234,7 @@ public class GameManager : MonoBehaviour
                 if (!stageName.activeSelf) stageName.SetActive(true);
                 if (!timer.activeSelf) timer.SetActive(true);
                 if (!killText.activeSelf) killText.SetActive(true);
-                BGMInit(AudioManager.Bgm.Stage0, .4f);
+                BGMInit(AudioManager.Bgm.Stage0, .8f);
                 if (!PlayerPrefs.HasKey("maxInventory"))
                 {
                     AudioManager.instance.PlayBgm(false);
@@ -249,7 +252,7 @@ public class GameManager : MonoBehaviour
                 if (stageName.activeSelf) stageName.SetActive(true);
                 if (!timer.activeSelf) timer.SetActive(true);
                 if (!killText.activeSelf) killText.SetActive(true);
-                BGMInit(AudioManager.Bgm.Stage1, .5f);
+                BGMInit(AudioManager.Bgm.Stage1, 1f);
                 ZoomCamera();
                 GameStart();
                 break;
@@ -261,7 +264,7 @@ public class GameManager : MonoBehaviour
         while (true)
         {
             SaveManager.Save();
-            yield return new WaitForSecondsRealtime(1f);
+            yield return new WaitForSecondsRealtime(0.5f);
         }
     }
 
@@ -327,6 +330,8 @@ public class GameManager : MonoBehaviour
             return;
 
         gameTime += Time.deltaTime;
+
+        if (SceneManager.GetActiveScene().name == "Camp" && health > maxHealth) { health = maxHealth; }
     }
 
     public void StatusUpdate()
@@ -342,14 +347,32 @@ public class GameManager : MonoBehaviour
         }
         if (necklaceItem[playerId] == -1)
         {
-            maxHealth = playerBasicMaxHealth[playerId] + MathF.Min(playerHealthLevel, 3);
+            InitHealth();
+            maxChargeCount = GetChargeCount();
+            ClampChargeCount();
         }
         else
         {
-            // 체력을 올려주는 목걸이 종류에 한해서 작동하도록 로직 추후 세우기.
-            maxHealth = playerBasicMaxHealth[playerId] + MathF.Min(playerHealthLevel, 3) + ItemManager.Instance.itemDataArr[necklaceItem[playerId]].baseAmount;
-            // 체력 증가 아이템을 해제했을 때, 최대체력보다 현재체력이 넘어가는 현상을 방지하기 위해 MaxHeath로 현재 체력을 제한
-            health = Mathf.Clamp(health, 0, maxHealth);
+            switch ((ItemData.Items)necklaceItem[playerId])
+            {
+                case ItemData.Items.RevivalNecklace:
+                    InitHealth();
+                    maxChargeCount = GetChargeCount();
+                    ClampChargeCount();
+                    break;
+                case ItemData.Items.SkillNecklace:
+                    InitHealth();
+                    maxChargeCount = GetChargeCount() + Mathf.FloorToInt(ItemManager.Instance.itemDataArr[necklaceItem[playerId]].baseAmount);
+                    break;
+                case ItemData.Items.HealthNecklace:
+                    maxHealth = playerBasicMaxHealth[playerId] + MathF.Min(playerHealthLevel, 3) + ItemManager.Instance.itemDataArr[necklaceItem[playerId]].baseAmount;
+                    maxChargeCount = GetChargeCount();
+                    ClampChargeCount();
+                    break;
+                default:
+                    Debug.Log($"잘못된 [목걸이] Index 입니다.  Id: {necklaceItem[playerId]}");
+                    break;
+            }
         }
 
         if (shoesItem[playerId] == -1)
@@ -361,6 +384,40 @@ public class GameManager : MonoBehaviour
             playerSpeed = (playerBasicSpeed[playerId] + playerSpeedLevel) * (1 + ItemManager.Instance.itemDataArr[shoesItem[playerId]].baseAmount / 100);
         }
 
+    }
+
+    void InitHealth()
+    {
+        float tempMaxHealth = playerBasicMaxHealth[playerId] + MathF.Min(playerHealthLevel, 3);
+        if (Mathf.FloorToInt(health) > Mathf.FloorToInt(tempMaxHealth))
+        {
+            health = tempMaxHealth;
+        }
+        maxHealth = tempMaxHealth;
+    }
+
+    int GetChargeCount()
+    {
+        int countFromSkill;
+        if (playerSkillLevel < 2)
+        {
+            countFromSkill = 0;
+        }
+        else if (playerSkillLevel < 5)
+        {
+            countFromSkill = 1;
+        }
+        else
+        {
+            countFromSkill = 2;
+        }
+        
+        return (basicMaxChargeCount + countFromSkill);
+    }
+
+    void ClampChargeCount()
+    {
+        chargeCount = chargeCount > maxChargeCount ? maxChargeCount : chargeCount;
     }
 
     public void OnInventory()
@@ -425,7 +482,7 @@ public class GameManager : MonoBehaviour
         dodgeSpeed = 7f;
 
         maxChargibleCount = 1;
-        maxChargeCount = 2;
+        maxChargeCount = basicMaxChargeCount;
 
         level = 0;
         exp = 0;
@@ -458,16 +515,16 @@ public class GameManager : MonoBehaviour
         Stop();
         BaseUI.Instance.Death();
 
-        BGMInit(AudioManager.Bgm.Death, .5f, false);
+        BGMInit(AudioManager.Bgm.Death, 1f, false);
     }
 
     public void GameVictory()
     {
         Stop();
 
-        BGMInit(AudioManager.Bgm.Victory, .3f, false);
+        BGMInit(AudioManager.Bgm.Victory, 0.6f, false);
         BaseUI.Instance.Victory();
-        switch (sceneName)
+        switch (SceneManager.GetActiveScene().name)
         {
             case "Stage_0":
                 stage0_ClearCount++;

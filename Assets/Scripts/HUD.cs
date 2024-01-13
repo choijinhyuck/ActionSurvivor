@@ -179,7 +179,8 @@ public class HUD : MonoBehaviour
         else if (transform.childCount < intMaxHealth)
         {
             heartMold.GetComponent<Image>().sprite = heartImages[0];
-            for (int i = 0; i < intMaxHealth - transform.childCount; i++)
+            int countToAdd = intMaxHealth - transform.childCount;
+            for (int i = 0; i < countToAdd; i++)
             {
                 GameObject newHeart = Instantiate(heartMold, transform);
                 newHeart.GetComponent<Image>().sprite = heartImages[0];

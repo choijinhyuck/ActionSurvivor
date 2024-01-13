@@ -355,7 +355,7 @@ MonoBehaviour:
   m_MinValue: 0
   m_MaxValue: 1
   m_WholeNumbers: 0
-  m_Value: 0.315
+  m_Value: 0.5
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -1011,7 +1011,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 1
     m_LineSpacing: 1.23
-  m_Text: 100
+  m_Text: 50
 --- !u!1 &2340379507002216134
 GameObject:
   m_ObjectHideFlags: 0
@@ -1540,11 +1540,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Navigation:
-    m_Mode: 3
+    m_Mode: 4
     m_WrapAround: 0
-    m_SelectOnUp: {fileID: 0}
-    m_SelectOnDown: {fileID: 0}
-    m_SelectOnLeft: {fileID: 0}
+    m_SelectOnUp: {fileID: 744055286345379540}
+    m_SelectOnDown: {fileID: 2887606730033495992}
+    m_SelectOnLeft: {fileID: 3562619611220048830}
     m_SelectOnRight: {fileID: 0}
   m_Transition: 1
   m_Colors:
@@ -1930,10 +1930,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Navigation:
-    m_Mode: 3
+    m_Mode: 4
     m_WrapAround: 0
-    m_SelectOnUp: {fileID: 0}
-    m_SelectOnDown: {fileID: 0}
+    m_SelectOnUp: {fileID: 4458155195541546825}
+    m_SelectOnDown: {fileID: 744055286345379540}
     m_SelectOnLeft: {fileID: 0}
     m_SelectOnRight: {fileID: 0}
   m_Transition: 1
@@ -1961,9 +1961,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: BackgroundUI, Assembly-CSharp
-        m_MethodName: Confirm
+      - m_Target: {fileID: 5442986019787329269}
+        m_TargetAssemblyTypeName: SettingUI, Assembly-CSharp
+        m_MethodName: Back
         m_Mode: 6
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1971,7 +1971,7 @@ MonoBehaviour:
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
-          m_BoolArgument: 0
+          m_BoolArgument: 1
         m_CallState: 2
 --- !u!1 &4819415535713458847
 GameObject:
@@ -2064,7 +2064,7 @@ GameObject:
   - component: {fileID: 1455909843078541796}
   - component: {fileID: 2270512354107132349}
   m_Layer: 5
-  m_Name: Confirm Window
+  m_Name: Setting Window
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2430,12 +2430,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Navigation:
-    m_Mode: 3
+    m_Mode: 4
     m_WrapAround: 0
-    m_SelectOnUp: {fileID: 0}
-    m_SelectOnDown: {fileID: 0}
+    m_SelectOnUp: {fileID: 744055286345379540}
+    m_SelectOnDown: {fileID: 2887606730033495992}
     m_SelectOnLeft: {fileID: 0}
-    m_SelectOnRight: {fileID: 0}
+    m_SelectOnRight: {fileID: 3562619611220048830}
   m_Transition: 1
   m_Colors:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 0}
@@ -2858,6 +2858,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 881aef5592d5f9e4fbac0adf4fd46335, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  resolutionDropdown: {fileID: 744055286345379540}
+  screenTypes:
+  - {fileID: 8650872780891144621}
+  - {fileID: 3562619611220048830}
+  - {fileID: 864147617306224931}
+  settingPanel: {fileID: 4872485792331470955}
+  bgmVolume: {fileID: 7026738126513882579}
+  sfxVolume: {fileID: 38254166599960127}
+  bgmSlider: {fileID: 2887606730033495992}
+  sfxSlider: {fileID: 4458155195541546825}
 --- !u!1 &7187871744292913417
 GameObject:
   m_ObjectHideFlags: 0
@@ -3015,7 +3025,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 1
     m_LineSpacing: 1.23
-  m_Text: 100
+  m_Text: 50
 --- !u!1 &8009063743567169926
 GameObject:
   m_ObjectHideFlags: 0
@@ -3102,7 +3112,7 @@ MonoBehaviour:
   m_MinValue: 0
   m_MaxValue: 1
   m_WholeNumbers: 0
-  m_Value: 0.455
+  m_Value: 0.5
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []

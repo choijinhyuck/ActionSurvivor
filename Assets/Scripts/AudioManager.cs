@@ -1,3 +1,4 @@
+using System.Xml.Linq;
 using UnityEngine;
 
 public class AudioManager : MonoBehaviour
@@ -7,8 +8,10 @@ public class AudioManager : MonoBehaviour
     [Header("#BGM")]
     public AudioClip[] bgmClip;
     public float bgmVolume;
+
     AudioSource bgmPlayer;
-    AudioHighPassFilter bgmEffect;
+    float currSelectedBgmVol;
+
 
     public enum Bgm
     {
@@ -36,10 +39,12 @@ public class AudioManager : MonoBehaviour
         }
         else if (instance != this)
         {
-            Destroy(this.gameObject);
+            Destroy(gameObject);
         }
 
-        DontDestroyOnLoad(this.gameObject);
+        DontDestroyOnLoad(gameObject);
+
+        currSelectedBgmVol = 1f;
         Init();
     }
 
@@ -51,7 +56,7 @@ public class AudioManager : MonoBehaviour
         bgmPlayer = bgmObject.AddComponent<AudioSource>();
         bgmPlayer.playOnAwake = false;
         bgmPlayer.loop = true;
-        bgmPlayer.volume = bgmVolume;
+        bgmPlayer.volume = currSelectedBgmVol;
         bgmPlayer.clip = null;
 
         //효과음 플레이어 초기화
@@ -64,7 +69,20 @@ public class AudioManager : MonoBehaviour
             sfxPlayers[i] = sfxObject.AddComponent<AudioSource>();
             sfxPlayers[i].playOnAwake = false;
             sfxPlayers[i].bypassListenerEffects = true;
-            sfxPlayers[i].volume = sfxVolume;
+            sfxPlayers[i].volume = PlayerPrefs.HasKey("sfxVolume") ? PlayerPrefs.GetFloat("sfxVolume") : 0.5f;
+        }
+    }
+
+    public void SetBgmVolume()
+    {
+        bgmPlayer.volume = currSelectedBgmVol * PlayerPrefs.GetFloat("bgmVolume");
+    }
+
+    public void SetSfxVolume()
+    {
+        for (int i = 0; i < channels; i++)
+        {
+            sfxPlayers[i].volume = PlayerPrefs.GetFloat("sfxVolume");
         }
     }
 
@@ -83,7 +101,10 @@ public class AudioManager : MonoBehaviour
     public void ChangeBGM(Bgm bgmType, float bgmVol, bool isLoop)
     {
         bgmPlayer.clip = bgmClip[(int)bgmType];
-        bgmPlayer.volume = bgmVol;
+
+        float bgmVolumeSet = PlayerPrefs.HasKey("bgmVolume") ? PlayerPrefs.GetFloat("bgmVolume") : 0.5f;
+        currSelectedBgmVol = bgmVol;
+        bgmPlayer.volume = currSelectedBgmVol * bgmVolumeSet;
 
         bgmPlayer.loop = isLoop;
     }

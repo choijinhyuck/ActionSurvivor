@@ -40,7 +40,7 @@ public class ShopUI : MonoBehaviour
 
         shopItems = new int[24] {   0,  1,  2,
                                     3,  4,  5,
-                                    -1, -1, -1,
+                                    24, 25, 26,
                                     18, 19, 20,
                                     6,  7,  8,
                                     21, 22, 23,

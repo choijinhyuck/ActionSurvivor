@@ -27,6 +27,10 @@ public class Spawner : MonoBehaviour
 
     private void Update()
     {
+        if (GameManager.instance.stageId == -1) return;
+        if (!GameManager.instance.isLive) return;
+        if (GameManager.instance.gameTime > GameManager.instance.maxGameTime) return;
+
         //초기화에 실패한 경우
         if (wave == -1)
         {
@@ -34,9 +38,6 @@ public class Spawner : MonoBehaviour
             wave = 0;
             timer = new float[stage.waveData[0].enemyInfos.Length];
         }
-        if (GameManager.instance.stageId == -1) return;
-        if (!GameManager.instance.isLive) return;
-        if (GameManager.instance.gameTime > GameManager.instance.maxGameTime) return;
 
         if (wave < stage.waveData.Length - 1 && GameManager.instance.gameTime > stage.waveData[wave + 1].startTime)
         {

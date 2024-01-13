@@ -14,6 +14,9 @@ public class MenuUI : MonoBehaviour
 {
     public static MenuUI instance;
     [SerializeField] GameObject confirm;
+    [SerializeField] GameObject helpPanel;
+    [SerializeField] Sprite[] keySprites;
+    [SerializeField] Image[] keyImages;
 
     GameObject menuPanel;
 
@@ -59,6 +62,7 @@ public class MenuUI : MonoBehaviour
 
     void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
+        if (helpPanel.activeSelf) helpPanel.SetActive(false);
         if (confirm.activeSelf) confirm.SetActive(false);
         if (menuPanel.activeSelf) menuPanel.SetActive(false);
 
@@ -75,6 +79,28 @@ public class MenuUI : MonoBehaviour
 
     private void Update()
     {
+        if (helpPanel.activeSelf)
+        {
+            switch (ControllerManager.instance.CurrentScheme)
+            {
+                case ControllerManager.scheme.Keyboard:
+                    keyImages[0].sprite = keySprites[0];
+                    keyImages[1].sprite = keySprites[1];
+                    break;
+
+                case ControllerManager.scheme.Gamepad:
+                    keyImages[0].sprite = keySprites[2];
+                    keyImages[1].sprite = keySprites[3];
+                    break;
+            }
+
+            if (((InputSystemUIInputModule)EventSystem.current.currentInputModule).cancel.action.WasPerformedThisFrame())
+            {
+                HelpClose();
+                return;
+            }
+        }
+
         if (menuPanel.activeSelf)
         {
             if (SceneManager.GetActiveScene().name == "Camp" && GameManager.instance.stage1_ClearCount > 0)
@@ -144,6 +170,21 @@ public class MenuUI : MonoBehaviour
             if (!confirm.GetComponentInChildren<Button>().enabled) return;
             ConfirmClose();
         }
+        else if (SettingUI.instance.settingPanel.activeSelf)
+        {
+            if (SettingUI.instance.DropdownOpened())
+            {
+                return;
+            }
+            else
+            {
+                SettingUI.instance.Back();
+            }
+        }
+        else if (helpPanel.activeSelf)
+        {
+            HelpClose();
+        }
         else if (!menuPanel.activeSelf)
         {
             GameManager.instance.workingInventory = true;
@@ -180,14 +221,28 @@ public class MenuUI : MonoBehaviour
         // 캐릭터 교체 UI;
     }
 
-    public void Option()
+    public void Setting()
     {
-        // 옵션 창
+        Close();
+        GameManager.instance.workingInventory = true;
+        GameManager.instance.Stop();
+
+        AudioManager.instance.PlaySfx(AudioManager.Sfx.ButtonPress);
+        SettingUI.instance.settingPanel.SetActive(true);
     }
 
     public void Help()
     {
-        // 도움말 창
+        AudioManager.instance.PlaySfx(AudioManager.Sfx.ButtonPress);
+        EventSystem.current.SetSelectedGameObject(null);
+        helpPanel.SetActive(true);
+    }
+
+    void HelpClose()
+    {
+        helpPanel.SetActive(false);
+        AudioManager.instance.PlaySfx(AudioManager.Sfx.Cancel);
+        EventSystem.current.SetSelectedGameObject(menuButtons[selectedId].gameObject);
     }
 
     public void MainTitle()

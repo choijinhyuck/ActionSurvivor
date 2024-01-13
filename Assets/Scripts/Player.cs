@@ -141,7 +141,7 @@ public class Player : MonoBehaviour
             inputVector = Vector2.zero;
             return;
         }
-        if (GameManager.instance.health < .1f)
+        if (GameManager.instance.health < 0.1f)
         {
             inputVector = Vector2.zero;
             return;
@@ -206,7 +206,7 @@ public class Player : MonoBehaviour
     {
         GameManager.instance.CameraDamping(0f);
 
-        int targetPPU = 66;
+        int targetPPU = 58;
         float timer = 0f;
         Time.timeScale = 0f;
 
@@ -214,7 +214,7 @@ public class Player : MonoBehaviour
 
         while (timer < 1.5f)
         {
-            GameManager.instance.ZoomCamera(GameManager.instance.originPPU + Mathf.FloorToInt((targetPPU - GameManager.instance.originPPU) * timer / 2));
+            GameManager.instance.ZoomCamera(GameManager.instance.originPPU + Mathf.FloorToInt((targetPPU - GameManager.instance.originPPU) * timer / 1.5f));
             yield return null;
             timer += Time.unscaledDeltaTime;
         }
@@ -223,15 +223,60 @@ public class Player : MonoBehaviour
 
         GameManager.instance.CameraDamping();
 
-        // 부활의 목걸이 착용 시 목걸이는 파괴되고 죽지 않고 체력 +2 획득
-        // 깜빡이면서 그동안 무적이 되는 코루틴 생성
-
-        //GameManager.Instance.health += 2;
-        //GameManager.Instance.ZoomCamera(GameManager.Instance.originPPU);
-        //AudioManager.instance.PauseBGM(false);
-        //yield break;
+        if (GameManager.instance.necklaceItem[GameManager.instance.playerId] == (int)ItemData.Items.RevivalNecklace)
+        {
+            AudioManager.instance.PlaySfx(AudioManager.Sfx.Destroy);
+            GameManager.instance.necklaceItem[GameManager.instance.playerId] = -1;
+            GameManager.instance.health += 2;
+            GameObject.FindGameObjectWithTag("Light").GetComponent<GlobalLight>().WarningToTrue();
+            isImmune = true;
+            StartCoroutine(RevivalBlinkCoroutine());
+            timer = 0f;
+            while (timer < 3f)
+            {
+                if (timer < 0.5f)
+                {
+                    GameManager.instance.ZoomCamera(targetPPU - Mathf.FloorToInt((targetPPU - GameManager.instance.originPPU) * timer / 0.5f));
+                }
+                else
+                {
+                    GameManager.instance.ZoomCamera();
+                }
+                yield return null;
+                timer += Time.deltaTime;
+                spriteRenderer.color = new(1f, 1f, 1f, 0.7f);
+            }
+            spriteRenderer.color = Color.white;
+            isImmune = false;
+            yield break;
+        }
 
         anim.SetTrigger("Dead");
+    }
+
+    IEnumerator RevivalBlinkCoroutine()
+    {
+        WaitForSeconds waitSec2 = new WaitForSeconds(0.07f);
+
+        spriteRenderer.color = new Color(1f, 1f, 1f, .7f);
+        spriteRenderer.material.SetColor("_FlashColor", new Color(1, 1, 1, 0));
+        for (int i = 0; i < 3; i++)
+        {
+            yield return waitSec2;
+            spriteRenderer.material.SetFloat("_FlashAmount", 0.25f);
+            yield return waitSec2;
+            spriteRenderer.material.SetFloat("_FlashAmount", 0.5f);
+            yield return waitSec2;
+            spriteRenderer.material.SetFloat("_FlashAmount", 0.75f);
+            yield return waitSec2;
+            spriteRenderer.material.SetFloat("_FlashAmount", 1.0f);
+            yield return waitSec2;
+            spriteRenderer.material.SetFloat("_FlashAmount", 0.75f);
+            yield return waitSec2;
+            spriteRenderer.material.SetFloat("_FlashAmount", 0.5f);
+            yield return waitSec2;
+            spriteRenderer.material.SetFloat("_FlashAmount", 0f);
+        }
     }
 
     public void DeadEnd()
@@ -467,7 +512,7 @@ public class Player : MonoBehaviour
     void StartCharging()
     {
         if (!GameManager.instance.isLive) return;
-        if (GameManager.instance.health < .1) return;
+        if (GameManager.instance.health < 0.1f) return;
         if (anim.GetCurrentAnimatorStateInfo(0).IsName("Attack") || anim.GetCurrentAnimatorStateInfo(0).IsName("SkillMotion") || anim.GetCurrentAnimatorStateInfo(0).IsName("Dead") || isHit)
             return;
 
@@ -535,8 +580,6 @@ public class Player : MonoBehaviour
     /// </summary>
     void ChargedFire(int status)
     {
-        if (GameManager.instance.health < .1) return;
-
         if (status == 1)
         {
             // 차징 중 interrupt로 인해 cancel 된 경우? performed와 동일한 작업
@@ -554,7 +597,7 @@ public class Player : MonoBehaviour
             return;   // 공격중 차징을 시도하고 키를 뗐을 때 공격 한 번 나가는 것 방지,
         }
 
-        if (!isHit && GameManager.instance.isLive && isStarted)
+        if (!isHit && GameManager.instance.isLive && isStarted && GameManager.instance.health > 0.1f)
         {
             // 총 3 칸으로 구성된 기 카운트 사용
             switch (chargeCount)
@@ -612,7 +655,7 @@ public class Player : MonoBehaviour
         chargeTimer = 0;
         while (true)
         {
-            if (isHit || (!GameManager.instance.isLive))
+            if (isHit || (!GameManager.instance.isLive) || GameManager.instance.health < 0.1f)
             {
                 ChargedFire(0);
                 break;

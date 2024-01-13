@@ -46,7 +46,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   bgmClip:
   - {fileID: 8300000, guid: 429aecbf55d22ca478eb7b55f87985ee, type: 3}
-  - {fileID: 8300000, guid: 178996e32882e2a48b89fde52c14e757, type: 3}
+  - {fileID: 8300000, guid: a7be1ff53517c464b821f5a698879574, type: 3}
   - {fileID: 8300000, guid: f449617225d023f4d8b852316072ad04, type: 3}
   - {fileID: 8300000, guid: 2119992a03eb27240a6cd4c54d473b61, type: 3}
   - {fileID: 8300000, guid: 099a8d0314308b549b57fe6d4c2a4236, type: 3}

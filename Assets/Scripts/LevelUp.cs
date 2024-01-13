@@ -304,32 +304,6 @@ public class LevelUp : MonoBehaviour
     {
         StatUp(levelIndex);
 
-        //switch (levelIndex)
-        //{
-        //    case 0:
-        //        GameManager.Instance.playerDamageLevel++;
-        //        break;
-
-        //    case 1:
-        //        GameManager.Instance.playerSpeedLevel++;
-        //        break;
-
-        //    case 2:
-        //        GameManager.Instance.playerHealthLevel++;
-        //        if (GameManager.Instance.playerHealthLevel < 4)
-        //        {
-        //            GameManager.Instance.health++;
-        //        }
-        //        break;
-
-        //    case 3:
-        //        GameManager.Instance.playerSkillLevel++;
-        //        break;
-
-        //    case 4:
-        //        GameManager.Instance.playerDashLevel++;
-        //        break;
-        //}
         GameManager.instance.StatusUpdate();
 
         AudioManager.instance.PlaySfx(AudioManager.Sfx.ButtonPress);
@@ -405,7 +379,7 @@ public class LevelUp : MonoBehaviour
                         texts[1] = string.Format("최대 기술 사용 횟수 <size=7><color=red>2</color></size> 증가");
                         break;
                     case 3:
-                        texts[1] = string.Format("기 충전 소요 시간 <size=7><color=red>30%</color></size> 감소");
+                        texts[1] = string.Format("기 1회 충전 소요 시간 <size=7><color=red>20%</color></size> 단축");
                         break;
                     case 2:
                         texts[1] = string.Format("<size=7><color=red>2단계</color></size> 충전 기술 개방");
@@ -414,7 +388,7 @@ public class LevelUp : MonoBehaviour
                         texts[1] = string.Format("최대 기술 사용 횟수 <size=7><color=red>1</color></size> 증가");
                         break;
                     default:
-                        texts[1] = string.Format("기술 충전 소요 시간 <size=7><color=red>20%</color></size> 감소");
+                        texts[1] = string.Format("기 1회 충전 소요 시간 <size=7><color=red>20%</color></size> 단축");
                         break;
                 }
                 break;
@@ -478,7 +452,7 @@ public class LevelUp : MonoBehaviour
                         GameManager.instance.maxChargeCount += 2;
                         break;
                     case 3:
-                        GameManager.instance.chargeTime *= .7f;
+                        GameManager.instance.chargeTime *= .8f;
                         break;
                     case 2:
                         GameManager.instance.maxChargibleCount = 2;

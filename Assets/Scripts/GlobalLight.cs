@@ -67,4 +67,9 @@ public class GlobalLight : MonoBehaviour
             }
         }
     }
+
+    public void WarningToTrue()
+    {
+        isWarning = true;
+    }
 }
