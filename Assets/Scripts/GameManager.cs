@@ -23,7 +23,7 @@ public class GameManager : MonoBehaviour
     public int newCharacterUnlock;
     Coroutine saveCoroutine;
 
-    [Header("Loading Info")]
+    [Header("#Loading Info")]
     public string sceneName;
 
     [Header("# Input System")]
@@ -33,6 +33,9 @@ public class GameManager : MonoBehaviour
     public int originPPU;
     public GameObject fadeInPrefab;
     public GameObject fadeOutPrefab;
+
+    [Header("#Notice")]
+    public GameObject noticePrefab;
 
     [Header("# Game Control")]
     public int stageId;
@@ -331,7 +334,7 @@ public class GameManager : MonoBehaviour
 
         gameTime += Time.deltaTime;
 
-        if (SceneManager.GetActiveScene().name == "Camp" && health > maxHealth) { health = maxHealth; }
+        if (SceneManager.GetActiveScene().name == "Camp" && health < maxHealth) { health = maxHealth; }
     }
 
     public void StatusUpdate()
@@ -536,6 +539,21 @@ public class GameManager : MonoBehaviour
                 stage2_ClearCount++;
                 break;
         }
+
+        if (stageId == 0)
+        {
+            if (stage0_ClearCount == 1)
+            {
+                Instantiate(noticePrefab, transform.parent);
+            }
+        }
+        else if (stageId == 1)
+        {
+            if (stage1_ClearCount == 1)
+            {
+                Instantiate(noticePrefab, transform.parent);
+            }
+        }
     }
 
     public void GameQuit()
@@ -618,8 +636,10 @@ public class GameManager : MonoBehaviour
         InventoryUI.instance.EquipUnequip();
     }
 
-    void DestroyItem()
+    void DestroyItemAndCharacterChange()
     {
+        OpenChangeUI();
+
         if (InventoryUI.instance == null) return;
         InventoryUI.instance.DestroyItem();
     }
@@ -660,6 +680,26 @@ public class GameManager : MonoBehaviour
     }
     void DestroyHandler(InputAction.CallbackContext context)
     {
-        DestroyItem();
+        DestroyItemAndCharacterChange();
+    }
+
+    public void OpenChangeUI()
+    {
+        if (SceneManager.GetActiveScene().name != "Camp") return;
+        if (FindAnyObjectByType<StageSelect>() != null)
+        {
+            if (FindAnyObjectByType<StageSelect>().stageSelectPanel.activeSelf) return;
+        }
+        if (workingInventory)
+        {
+            if (FindAnyObjectByType<ChangeUI>().IsChangePanelActive())
+            {
+                FindAnyObjectByType<ChangeUI>().CloseChangePanel();
+            }
+        }
+        else
+        {
+            FindAnyObjectByType<ChangeUI>().OpenChangePanel();
+        }
     }
 }

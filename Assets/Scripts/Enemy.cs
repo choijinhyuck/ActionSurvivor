@@ -153,10 +153,13 @@ public class Enemy : MonoBehaviour
         if (!isLive) return;
         if (!collision.CompareTag("Projectile") && !collision.CompareTag("Skill"))
             return;
-
-
+        if (collision.CompareTag("Projectile") && !collision.GetComponent<Projectile>().StillLive())
+            return;
+        
         if (collision.CompareTag("Projectile"))
         {
+            collision.GetComponent<Projectile>().Pierce(transform);
+
             health -= collision.GetComponent<Projectile>().damage;
             HitDamageText(collision.GetComponent<Projectile>().damage);
         }

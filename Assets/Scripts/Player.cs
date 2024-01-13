@@ -90,11 +90,11 @@ public class Player : MonoBehaviour
 
     private void OnEnable()
     {
+        PlayerActionAdd();
+
         spriteRenderer.color = new Color(1f, 1f, 1f, 1f);
         spriteRenderer.material.SetColor("_FlashColor", new Color(1, 1, 1, 0));
         spriteRenderer.material.SetFloat("_FlashAmount", 0f);
-        if (GameManager.instance != null) dodgeEffects[GameManager.instance.playerId].gameObject.SetActive(false);
-
         
         readyDodge = true;
         isDodge = false;
@@ -103,6 +103,27 @@ public class Player : MonoBehaviour
         isImmune = false;
         isStarted = false;
 
+        for (int i = 0; i < attackColl.Length; i++)
+        {
+            attackColl[i].gameObject.SetActive(false);
+        }
+
+        for (int i = 0; i < skills.Length; i++)
+        {
+            for (int j = 0; j < skills[i].transform.childCount; j++)
+            {
+                skills[i].transform.GetChild(j).gameObject.SetActive(false);
+            }
+        }
+
+        rightBash.gameObject.SetActive(false);
+        leftBash.gameObject.SetActive(false);
+
+        for (int i = 0; i < dodgeEffects.Length; i++)
+        {
+            dodgeEffects[i].gameObject.SetActive(false);
+        }
+
         for (int i = 0; i < chargeEffects.Length; i++)
         {
             chargeEffects[i].gameObject.SetActive(false);
@@ -110,6 +131,8 @@ public class Player : MonoBehaviour
 
 
         if (GameManager.instance == null) return;
+
+        GameManager.instance.StatusUpdate();
 
         anim.runtimeAnimatorController = animCon[GameManager.instance.playerId];
         if (GameManager.instance.playerId == 0)
@@ -120,8 +143,6 @@ public class Player : MonoBehaviour
         {
             shadow.gameObject.SetActive(true);
         }
-
-        PlayerActionAdd();
 
         Scene scene = SceneManager.GetActiveScene();
         if (scene.name == "Title" || scene.name == "Loading") gameObject.SetActive(false);
@@ -223,11 +244,14 @@ public class Player : MonoBehaviour
 
         GameManager.instance.CameraDamping();
 
+        //부활의 목걸이를 착용한 경우 부활
         if (GameManager.instance.necklaceItem[GameManager.instance.playerId] == (int)ItemData.Items.RevivalNecklace)
         {
             AudioManager.instance.PlaySfx(AudioManager.Sfx.Destroy);
+            AudioManager.instance.PlaySfx(AudioManager.Sfx.Revival);
             GameManager.instance.necklaceItem[GameManager.instance.playerId] = -1;
             GameManager.instance.health += 2;
+            GameManager.instance.StatusUpdate();
             GameObject.FindGameObjectWithTag("Light").GetComponent<GlobalLight>().WarningToTrue();
             isImmune = true;
             StartCoroutine(RevivalBlinkCoroutine());
@@ -245,6 +269,7 @@ public class Player : MonoBehaviour
                 yield return null;
                 timer += Time.deltaTime;
                 spriteRenderer.color = new(1f, 1f, 1f, 0.7f);
+                isImmune = true;
             }
             spriteRenderer.color = Color.white;
             isImmune = false;
@@ -618,6 +643,8 @@ public class Player : MonoBehaviour
                     GameManager.instance.chargeCount -= 2;
                     break;
                 case 3:
+                    anim.SetTrigger("SkillMotion");
+                    AttackSkill(2);
                     AudioManager.instance.PlaySfx(AudioManager.Sfx.WarriorSkill);
                     GameManager.instance.chargeCount -= 3;
                     break;
@@ -678,7 +705,7 @@ public class Player : MonoBehaviour
             }
             else if (chargeCount == 2)
             {
-                GameManager.instance.playerSpeed = originSpeed * 0.4f;
+                GameManager.instance.playerSpeed = originSpeed * 0.45f;
             }
 
 
@@ -828,6 +855,7 @@ public class Player : MonoBehaviour
                 break;
 
             case 1:
+            case 2:
                 Rigidbody2D skillRigid;
                 skillRigid = skills[GameManager.instance.playerId].transform.GetChild(level).GetComponentsInChildren<Rigidbody2D>(true)[0];
                 skillRigid.transform.parent.localRotation = Quaternion.FromToRotation(Vector3.right, skillDir);

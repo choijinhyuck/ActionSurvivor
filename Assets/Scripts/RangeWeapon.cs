@@ -1,7 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Drawing;
 using Unity.Mathematics;
 using UnityEditor.Build.Content;
+using UnityEditor.Rendering;
 using UnityEngine;
 using UnityEngine.InputSystem.Controls;
 
@@ -79,15 +81,33 @@ public class RangeWeapon : MonoBehaviour
     IEnumerator Shoot(int rangeId, int prefabId, Vector3 rangeDir)
     {
         int count;
-        if (rangeId == 6)
+        if (rangeId == (int)ItemData.Items.Kunai || rangeId == (int)ItemData.Items.KunaiPlus)
         {
-            count = 3;
+            switch (rangeId)
+            {
+                case (int)ItemData.Items.Kunai:
+                    count = 3;
+                    break;
+                case (int)ItemData.Items.KunaiPlus:
+                    count = 6;
+                    break;
+                default:
+                    count = 0;
+                    Debug.Log($"알 수 없는 수리검 정보입니다. item Id:{rangeId}");
+                    break;
+            }
             GameObject[] projectiles = new GameObject[count];
             Vector3 deltaPos = GameManager.instance.player.rangeArrow.transform.GetChild(0).position - GameManager.instance.player.transform.position;
             Vector3 arrowSpritePos;
             Vector3 arrowAngle = GameManager.instance.player.rangeArrow.transform.localEulerAngles;
-            Vector3 newDir = rangeDir;
-            float rotAngle = 15f;
+            Vector3 newDir;
+            //float rotAngle = 15f;
+            float[] rotAngles = new float[count];
+            rotAngles[0] = 15f * (count - 1) / 2f;
+            for (int i = 1; i < count; i++)
+            {
+                rotAngles[i] = rotAngles[i - 1] - 15f;
+            }
 
             for (int i = 0; i < count; i++)
             {
@@ -95,39 +115,57 @@ public class RangeWeapon : MonoBehaviour
                 projectiles[i].transform.parent = PoolManager.instance.transform.GetChild(1);
                 arrowSpritePos = GameManager.instance.player.transform.position + deltaPos;
 
-                switch (i)
-                {
-                    case 0:
-                        projectiles[i].transform.position = Quaternion.AngleAxis(rotAngle, Vector3.forward)
+                projectiles[i].transform.position = Quaternion.AngleAxis(rotAngles[i], Vector3.forward)
                                                        * (arrowSpritePos - GameManager.instance.player.rangeArrow.transform.position)
                                                        + GameManager.instance.player.rangeArrow.transform.position;
-                        projectiles[i].transform.localEulerAngles = arrowAngle + new Vector3(0, 0, rotAngle);
-                        newDir = Quaternion.AngleAxis(rotAngle, Vector3.forward) * rangeDir;
-                        break;
+                projectiles[i].transform.localEulerAngles = arrowAngle + new Vector3(0, 0, rotAngles[i]);
+                newDir = Quaternion.AngleAxis(rotAngles[i], Vector3.forward) * rangeDir;
 
-                    case 1:
-                        projectiles[i].transform.position = arrowSpritePos;
-                        projectiles[i].transform.localEulerAngles = arrowAngle;
-                        newDir = rangeDir;
-                        break;
+                //switch (i)
+                //{
+                //    case 0:
+                //        projectiles[i].transform.position = Quaternion.AngleAxis(rotAngle, Vector3.forward)
+                //                                       * (arrowSpritePos - GameManager.instance.player.rangeArrow.transform.position)
+                //                                       + GameManager.instance.player.rangeArrow.transform.position;
+                //        projectiles[i].transform.localEulerAngles = arrowAngle + new Vector3(0, 0, rotAngle);
+                //        newDir = Quaternion.AngleAxis(rotAngle, Vector3.forward) * rangeDir;
+                //        break;
 
-                    case 2:
-                        projectiles[i].transform.position = Quaternion.AngleAxis(-rotAngle, Vector3.forward)
-                                                       * (arrowSpritePos - GameManager.instance.player.rangeArrow.transform.position)
-                                                       + GameManager.instance.player.rangeArrow.transform.position;
-                        projectiles[i].transform.localEulerAngles = arrowAngle + new Vector3(0, 0, -rotAngle);
-                        newDir = Quaternion.AngleAxis(-rotAngle, Vector3.forward) * rangeDir;
-                        break;
-                }
+                //    case 1:
+                //        projectiles[i].transform.position = arrowSpritePos;
+                //        projectiles[i].transform.localEulerAngles = arrowAngle;
+                //        newDir = rangeDir;
+                //        break;
+
+                //    case 2:
+                //        projectiles[i].transform.position = Quaternion.AngleAxis(-rotAngle, Vector3.forward)
+                //                                       * (arrowSpritePos - GameManager.instance.player.rangeArrow.transform.position)
+                //                                       + GameManager.instance.player.rangeArrow.transform.position;
+                //        projectiles[i].transform.localEulerAngles = arrowAngle + new Vector3(0, 0, -rotAngle);
+                //        newDir = Quaternion.AngleAxis(-rotAngle, Vector3.forward) * rangeDir;
+                //        break;
+                //}
 
                 projectiles[i].GetComponent<Projectile>().Init(rangeData.baseAmount, rangeData.pierceCount, newDir, rangeData.speed, rangeId);
                 AudioManager.instance.PlaySfx(AudioManager.Sfx.Kunai);
             }
             yield break;
         }
-        else if (rangeId == 7)
+        else if (rangeId == (int)ItemData.Items.Shuriken || rangeId == (int)ItemData.Items.ShurikenPlus)
         {
-            count = 2;
+            switch (rangeId)
+            {
+                case (int)ItemData.Items.Shuriken:
+                    count = 2;
+                    break;
+                case (int)ItemData.Items.ShurikenPlus:
+                    count = 4;
+                    break;
+                default:
+                    count = 0;
+                    Debug.Log($"알 수 없는 표창 정보입니다. item Id:{rangeId}");
+                    break;
+            }
             GameObject[] projectiles = new GameObject[count];
             Vector3 deltaPos = GameManager.instance.player.rangeArrow.transform.GetChild(0).position - GameManager.instance.player.transform.position;
             Vector3 arrowSpritePos;
@@ -149,7 +187,7 @@ public class RangeWeapon : MonoBehaviour
             }
             yield break;
         }
-        else if (rangeId == 8)
+        else if (rangeId == (int)ItemData.Items.Arrow || rangeId == (int)ItemData.Items.ArrowPlus)
         {
             count = 1;
             GameObject[] projectiles = new GameObject[count];

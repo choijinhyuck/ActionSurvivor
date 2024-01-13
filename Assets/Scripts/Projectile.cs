@@ -7,8 +7,8 @@ public class Projectile : MonoBehaviour
     public TrailRenderer trail;
     public LayerMask targetLayer;
     public float damage;
-    int itemId;
     int pierceCount;
+    int itemId;
     float speed;
     
 
@@ -29,13 +29,12 @@ public class Projectile : MonoBehaviour
 
         switch(itemId)
         {
-            case 6:
-                // 쿠나이
-
-            case 7:
-                // 표창
-            case 8:
-                // 화살
+            case (int)ItemData.Items.Kunai:
+            case (int)ItemData.Items.KunaiPlus:
+            case (int)ItemData.Items.Shuriken:
+            case (int)ItemData.Items.ShurikenPlus:
+            case (int)ItemData.Items.Arrow:
+            case (int)ItemData.Items.ArrowPlus:
                 if (pierceCount >= 0)
                 {
                     rigid.velocity = dir * speed;
@@ -49,13 +48,62 @@ public class Projectile : MonoBehaviour
     }
     
 
-    private void OnTriggerEnter2D(Collider2D collision)
+    //private void OnTriggerEnter2D(Collider2D collision)
+    //{
+    //    if (!collision.CompareTag("Enemy"))
+    //        return;
+
+        
+    //    pierceCount--;
+    //    Debug.Log(pierceCount);
+    //    if (pierceCount < 0)
+    //    {
+    //        rigid.velocity = Vector3.zero;
+    //        trail.Clear();
+    //        gameObject.SetActive(false);
+    //    }
+    //    else if (itemId == (int)ItemData.Items.Shuriken || itemId == (int)ItemData.Items.ShurikenPlus)
+    //    {
+    //        RaycastHit2D[] targets = Physics2D.CircleCastAll(transform.position, 1f, Vector2.zero, 0f, targetLayer);
+    //        Transform nearestTarget = null;
+    //        float distance = 2f;
+    //        foreach (var target in targets)
+    //        {
+    //            if (((target.transform.position - transform.position).magnitude < distance) && (target.transform.gameObject != collision.gameObject))
+    //            {
+    //                distance = (target.transform.position - transform.position).magnitude;
+    //                nearestTarget = target.transform;
+    //            }
+    //        }
+    //        if (nearestTarget != null)
+    //        {
+    //            rigid.velocity = (nearestTarget.transform.position - transform.position).normalized * speed;
+    //        }
+    //        else
+    //        {
+    //            rigid.velocity = Quaternion.AngleAxis(Random.Range(-70f, 70f), Vector3.forward) * rigid.velocity;
+    //        }
+    //    }
+    //}
+
+    private void OnTriggerExit2D(Collider2D collision)
     {
-        if (!collision.CompareTag("Enemy"))
+        if (!collision.CompareTag("Area"))
             return;
 
+        rigid.velocity = Vector3.zero;
+        trail.Clear();
+        gameObject.SetActive(false);
+    }
+
+    public bool StillLive()
+    {
+        return pierceCount >= 0;
+    }
+
+    public void Pierce(Transform collision)
+    {
         pierceCount--;
-        
 
         if (pierceCount < 0)
         {
@@ -63,7 +111,7 @@ public class Projectile : MonoBehaviour
             trail.Clear();
             gameObject.SetActive(false);
         }
-        else if (itemId == 7)
+        else if (itemId == (int)ItemData.Items.Shuriken || itemId == (int)ItemData.Items.ShurikenPlus)
         {
             RaycastHit2D[] targets = Physics2D.CircleCastAll(transform.position, 1f, Vector2.zero, 0f, targetLayer);
             Transform nearestTarget = null;
@@ -85,15 +133,5 @@ public class Projectile : MonoBehaviour
                 rigid.velocity = Quaternion.AngleAxis(Random.Range(-70f, 70f), Vector3.forward) * rigid.velocity;
             }
         }
-    }
-
-    private void OnTriggerExit2D(Collider2D collision)
-    {
-        if (!collision.CompareTag("Area"))
-            return;
-
-        rigid.velocity = Vector3.zero;
-        trail.Clear();
-        gameObject.SetActive(false);
     }
 }

@@ -7,7 +7,6 @@ public class AudioManager : MonoBehaviour
 
     [Header("#BGM")]
     public AudioClip[] bgmClip;
-    public float bgmVolume;
 
     AudioSource bgmPlayer;
     float currSelectedBgmVol;
@@ -20,7 +19,6 @@ public class AudioManager : MonoBehaviour
 
     [Header("#SFC")]
     public AudioClip[] sfxClip;
-    public float sfxVolume;
     public int channels;
     AudioSource[] sfxPlayers;
     int channelIndex;
@@ -28,7 +26,8 @@ public class AudioManager : MonoBehaviour
     public enum Sfx
     {
         Dead, Hit, LevelUp = 3, Lose, Melee, Range = 7, Select, Win, WarriorSkill = 11, WarriorAttack, PlayerHit, Dodge = 14, Fail, Kunai, Arrow, Healthy,
-        ButtonChange, ButtonPress, Cancel, Equip, Unequip, Destroy, Gold, AcquireItem, HeartBeat, Success, Upgrade, ChestOpen, MenuSelect, MenuChange
+        ButtonChange, ButtonPress, Cancel, Equip, Unequip, Destroy, Gold, AcquireItem, HeartBeat, Success, Upgrade, ChestOpen, MenuSelect, MenuChange,
+        Revival, Notice
     }
 
     private void Awake()

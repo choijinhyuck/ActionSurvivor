@@ -103,7 +103,7 @@ public class MenuUI : MonoBehaviour
 
         if (menuPanel.activeSelf)
         {
-            if (SceneManager.GetActiveScene().name == "Camp" && GameManager.instance.stage1_ClearCount > 0)
+            if (SceneManager.GetActiveScene().name == "Camp" && GameManager.instance.newCharacterUnlock > 0)
             {
                 menuButtons[2].enabled = true;
                 menuButtons[2].GetComponent<Image>().color = Color.white;
@@ -185,6 +185,18 @@ public class MenuUI : MonoBehaviour
         {
             HelpClose();
         }
+        else if (FindAnyObjectByType<ChangeUI>() && FindAnyObjectByType<ChangeUI>().IsChangePanelActive())
+        {
+            ChangeUI changeUI = FindAnyObjectByType<ChangeUI>();
+            if (changeUI.IsConfirmPanelActive())
+            {
+                changeUI.Confirm(false);
+            }
+            else
+            {
+                changeUI.CloseChangePanel();
+            }
+        }
         else if (!menuPanel.activeSelf)
         {
             GameManager.instance.workingInventory = true;
@@ -218,7 +230,7 @@ public class MenuUI : MonoBehaviour
     {
         Close();
         AudioManager.instance.PlaySfx(AudioManager.Sfx.ButtonPress);
-        // 캐릭터 교체 UI;
+        FindAnyObjectByType<ChangeUI>().OpenChangePanel();
     }
 
     public void Setting()

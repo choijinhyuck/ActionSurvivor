@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemyName: Mushroom
   anim: {fileID: 9100000, guid: 225dc93e007474d45bc3253facb2246f, type: 2}
-  health: 15
+  health: 16
   speed: 8
   exp: 3
   mass: 1.5
