@@ -1,4 +1,5 @@
 using Cinemachine;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -7,6 +8,7 @@ using UnityEngine.InputSystem;
 using UnityEngine.Rendering.Universal;
 using UnityEngine.SceneManagement;
 using UnityEngine.UIElements;
+using UnityEngine.Windows;
 
 public class Player : MonoBehaviour
 {
@@ -103,32 +105,7 @@ public class Player : MonoBehaviour
         isImmune = false;
         isStarted = false;
 
-        for (int i = 0; i < attackColl.Length; i++)
-        {
-            attackColl[i].gameObject.SetActive(false);
-        }
-
-        for (int i = 0; i < skills.Length; i++)
-        {
-            for (int j = 0; j < skills[i].transform.childCount; j++)
-            {
-                skills[i].transform.GetChild(j).gameObject.SetActive(false);
-            }
-        }
-
-        rightBash.gameObject.SetActive(false);
-        leftBash.gameObject.SetActive(false);
-
-        for (int i = 0; i < dodgeEffects.Length; i++)
-        {
-            dodgeEffects[i].gameObject.SetActive(false);
-        }
-
-        for (int i = 0; i < chargeEffects.Length; i++)
-        {
-            chargeEffects[i].gameObject.SetActive(false);
-        }
-
+        RemoveObjects();
 
         if (GameManager.instance == null) return;
 
@@ -155,6 +132,42 @@ public class Player : MonoBehaviour
         PlayerActionRemove();
     }
 
+    void RemoveObjects()
+    {
+        for (int i = 0; i < attackColl.Length; i++)
+        {
+            attackColl[i].gameObject.SetActive(false);
+        }
+
+        for (int i = 0; i < skills.Length; i++)
+        {
+            for (int j = 0; j < skills[i].transform.childCount; j++)
+            {
+                skills[i].transform.GetChild(j).gameObject.SetActive(false);
+                if (i == 1)
+                {
+                    for (int k = 0; k < skills[i].transform.GetChild(j).childCount; k++)
+                    {
+                        skills[i].transform.GetChild(j).GetChild(k).gameObject.SetActive(false);
+                    }
+                }
+            }
+        }
+
+        rightBash.SetActive(false);
+        leftBash.SetActive(false);
+
+        for (int i = 0; i < dodgeEffects.Length; i++)
+        {
+            dodgeEffects[i].gameObject.SetActive(false);
+        }
+
+        for (int i = 0; i < chargeEffects.Length; i++)
+        {
+            chargeEffects[i].gameObject.SetActive(false);
+        }
+    }
+
     private void FixedUpdate()
     {
         if (!GameManager.instance.isLive || isHit)
@@ -179,6 +192,9 @@ public class Player : MonoBehaviour
         if (!GameManager.instance.isLive || isHit) return;
 
         anim.SetFloat("Speed", inputVector.magnitude);
+
+        if (anim.GetCurrentAnimatorStateInfo(0).IsName("Barbarian_Skill_Lv2") ||
+            anim.GetCurrentAnimatorStateInfo(0).IsName("Barbarian_Skill_Lv3")) return;
 
         if (inputVector.x != 0)
         {
@@ -276,6 +292,7 @@ public class Player : MonoBehaviour
             yield break;
         }
 
+        RemoveObjects();
         anim.SetTrigger("Dead");
     }
 
@@ -458,7 +475,12 @@ public class Player : MonoBehaviour
         if (!GameManager.instance.isLive) return;
         if (GameManager.instance.health < .1) return;
         if (inputVector.magnitude == 0) return;
-        if (anim.GetCurrentAnimatorStateInfo(0).IsName("Attack") || anim.GetCurrentAnimatorStateInfo(0).IsName("SkillMotion") || anim.GetCurrentAnimatorStateInfo(0).IsName("Dead") || isHit || isDodge)
+        if (anim.GetCurrentAnimatorStateInfo(0).IsName("Attack") || 
+            anim.GetCurrentAnimatorStateInfo(0).IsName("SkillMotion") || 
+            anim.GetCurrentAnimatorStateInfo(0).IsName("Dead") || 
+            anim.GetCurrentAnimatorStateInfo(0).IsName("Barbarian_Skill_Lv2") ||
+            anim.GetCurrentAnimatorStateInfo(0).IsName("Barbarian_Skill_Lv3") ||
+            isHit || isDodge)
             return;
         //if (anim.GetCurrentAnimatorStateInfo(0).IsName("Dead") || isHit || isDodge)
         //return;
@@ -538,7 +560,12 @@ public class Player : MonoBehaviour
     {
         if (!GameManager.instance.isLive) return;
         if (GameManager.instance.health < 0.1f) return;
-        if (anim.GetCurrentAnimatorStateInfo(0).IsName("Attack") || anim.GetCurrentAnimatorStateInfo(0).IsName("SkillMotion") || anim.GetCurrentAnimatorStateInfo(0).IsName("Dead") || isHit)
+        if (anim.GetCurrentAnimatorStateInfo(0).IsName("Attack") || 
+            anim.GetCurrentAnimatorStateInfo(0).IsName("SkillMotion") || 
+            anim.GetCurrentAnimatorStateInfo(0).IsName("Dead") ||
+            anim.GetCurrentAnimatorStateInfo(0).IsName("Barbarian_Skill_Lv2") || 
+            anim.GetCurrentAnimatorStateInfo(0).IsName("Barbarian_Skill_Lv3") ||
+            isHit)
             return;
 
         isStarted = true;
@@ -631,22 +658,10 @@ public class Player : MonoBehaviour
                     Fire();
                     break;
                 case 1:
-                    AttackSkill(0);
-                    anim.SetTrigger("SkillMotion");
-                    AudioManager.instance.PlaySfx(AudioManager.Sfx.WarriorSkill);
-                    GameManager.instance.chargeCount--;
-                    break;
                 case 2:
-                    anim.SetTrigger("SkillMotion");
-                    AttackSkill(1);
-                    AudioManager.instance.PlaySfx(AudioManager.Sfx.WarriorSkill);
-                    GameManager.instance.chargeCount -= 2;
-                    break;
                 case 3:
-                    anim.SetTrigger("SkillMotion");
-                    AttackSkill(2);
-                    AudioManager.instance.PlaySfx(AudioManager.Sfx.WarriorSkill);
-                    GameManager.instance.chargeCount -= 3;
+                    GameManager.instance.chargeCount -= chargeCount;
+                    AttackSkill(chargeCount);
                     break;
             }
             StopCoroutine("Charging");
@@ -670,7 +685,12 @@ public class Player : MonoBehaviour
 
     void Fire()
     {
-        if (anim.GetCurrentAnimatorStateInfo(0).IsName("Attack") || anim.GetCurrentAnimatorStateInfo(0).IsName("SkillMotion") || anim.GetCurrentAnimatorStateInfo(0).IsName("Dead") || isHit)
+        if (anim.GetCurrentAnimatorStateInfo(0).IsName("Attack") || 
+            anim.GetCurrentAnimatorStateInfo(0).IsName("SkillMotion") || 
+            anim.GetCurrentAnimatorStateInfo(0).IsName("Dead") ||
+            anim.GetCurrentAnimatorStateInfo(0).IsName("Barbarian_Skill_Lv2") || 
+            anim.GetCurrentAnimatorStateInfo(0).IsName("Barbarian_Skill_Lv3") ||
+            isHit)
             return;
 
         anim.SetTrigger("Attack");
@@ -838,11 +858,13 @@ public class Player : MonoBehaviour
     }
 
 
-    void AttackSkill(int level)
+    void AttackSkill(int chargeCount)
     {
-        switch (level)
+        switch (chargeCount)
         {
-            case 0:
+            case 1:
+                anim.SetTrigger("SkillMotion");
+                AudioManager.instance.PlaySfx(AudioManager.Sfx.WarriorSkill);
                 rightBash.transform.parent.gameObject.SetActive(true);
                 if (!spriteRenderer.flipX)
                 {
@@ -854,15 +876,90 @@ public class Player : MonoBehaviour
                 }
                 break;
 
-            case 1:
             case 2:
-                Rigidbody2D skillRigid;
-                skillRigid = skills[GameManager.instance.playerId].transform.GetChild(level).GetComponentsInChildren<Rigidbody2D>(true)[0];
-                skillRigid.transform.parent.localRotation = Quaternion.FromToRotation(Vector3.right, skillDir);
-                skillRigid.transform.parent.gameObject.SetActive(true);
-                skillRigid.velocity = skillDir * 15;
-                StartCoroutine(StopSkill(skillRigid));
+            case 3:
+                if (GameManager.instance.playerId == 0)
+                {
+                    anim.SetTrigger("SkillMotion");
+                    AudioManager.instance.PlaySfx(AudioManager.Sfx.WarriorSkill);
+                    Rigidbody2D skillRigid;
+                    skillRigid = skills[GameManager.instance.playerId].transform.GetChild(chargeCount - 1).GetComponentsInChildren<Rigidbody2D>(true)[0];
+                    skillRigid.transform.parent.localRotation = Quaternion.FromToRotation(Vector3.right, skillDir);
+                    skillRigid.transform.parent.gameObject.SetActive(true);
+                    skillRigid.velocity = skillDir * 15;
+                    StartCoroutine(StopSkill(skillRigid));
+                }
+                else if (GameManager.instance.playerId == 1)
+                {
+                    anim.SetTrigger("Skill_Lv" + chargeCount.ToString());
+                }
                 break;
+        }
+    }
+
+    // Barbarian Animator의 Baribarian_Skill_Lv2 or 3 State에서 사용
+    void WhirlWind(string level_Dir_OnOff)
+    {
+        string[] words = level_Dir_OnOff.Split('_');
+        if (words.Length != 3)
+        {
+            Debug.Log($"잘못된 문자열 입력 방식이 감지! Words Length Splitted: {words.Length}");
+            return;
+        }
+
+        int level;
+        try
+        {
+            level = Convert.ToInt32(words[0]);
+        }
+        catch (FormatException)
+        {
+            Console.WriteLine("level 문자열에 올바른 정수 형식이 입력되지 않았습니다.");
+            return;
+        }
+        catch (OverflowException)
+        {
+            Console.WriteLine("level 문자열에 입력된 숫자가 너무 큽니다.");
+            return;
+        }
+        string dir = words[1];
+        bool isActive = words[2] == "true";
+        int colliderId;
+        switch (dir)
+        {
+            case "Right":
+                colliderId = spriteRenderer.flipX ? 2 : 0;
+                break;
+            case "Up":
+                colliderId = 1;
+                break;
+            case "Left":
+                colliderId = spriteRenderer.flipX ? 0 : 2;
+                break;
+            case "Down":
+                colliderId = 3;
+                break;
+            default:
+                Debug.Log($"정의되지 않은 방향 입력! dir: {dir}");
+                return;
+        }
+
+        if (isActive)
+        {
+            if (colliderId == 0 || colliderId == 2)
+            {
+                if (!skills[GameManager.instance.playerId].transform.GetChild(level - 2).gameObject.activeSelf)
+                {
+                    skills[GameManager.instance.playerId].transform.GetChild(level - 2).gameObject.SetActive(true);
+                }
+            }
+            skills[GameManager.instance.playerId].transform.GetChild(level - 2).GetChild(colliderId).gameObject.SetActive(true);
+            AudioManager.instance.PlaySfx(AudioManager.Sfx.WarriorAttack);
+        }
+        else
+        {
+            if (colliderId == 3) { skills[GameManager.instance.playerId].transform.GetChild(level - 2).gameObject.SetActive(false); }
+            skills[GameManager.instance.playerId].transform.GetChild(level - 2).GetChild(colliderId).gameObject.SetActive(false);
         }
     }
 
@@ -885,7 +982,12 @@ public class Player : MonoBehaviour
 
     void StartRangeWeapon()
     {
-        if (anim.GetCurrentAnimatorStateInfo(0).IsName("Attack") || anim.GetCurrentAnimatorStateInfo(0).IsName("SkillMotion") || anim.GetCurrentAnimatorStateInfo(0).IsName("Dead") || isHit)
+        if (anim.GetCurrentAnimatorStateInfo(0).IsName("Attack") || 
+            anim.GetCurrentAnimatorStateInfo(0).IsName("SkillMotion") || 
+            anim.GetCurrentAnimatorStateInfo(0).IsName("Dead") ||
+            anim.GetCurrentAnimatorStateInfo(0).IsName("Barbarian_Skill_Lv2") || 
+            anim.GetCurrentAnimatorStateInfo(0).IsName("Barbarian_Skill_Lv3") || 
+            isHit)
             return;
         //if (anim.GetCurrentAnimatorStateInfo(0).IsName("Dead") || isHit)
         //    return;

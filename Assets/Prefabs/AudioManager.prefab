@@ -89,4 +89,5 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 6b300ea5452354c4a926647d30b92ffd, type: 3}
   - {fileID: 8300000, guid: 4878d4e803ab2d5498da4fcda102f992, type: 3}
   - {fileID: 8300000, guid: 8dc8fa10636890f4da669d073ffa2f0d, type: 3}
+  - {fileID: 8300000, guid: 35e38ad3bce86304284eeb056d57fa71, type: 3}
   channels: 32

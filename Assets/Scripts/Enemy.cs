@@ -165,10 +165,7 @@ public class Enemy : MonoBehaviour
         }
         else if (collision.CompareTag("Skill"))
         {
-            if (GameManager.instance.playerId == 0)
-            {
-                if (collision.GetComponent<Skill>().hitList.Contains(gameObject)) return;
-            }
+            if (collision.GetComponent<Skill>().hitList.Contains(gameObject)) return;
 
             health -= collision.GetComponent<Skill>().damageRate * GameManager.instance.playerDamage;
             HitDamageText(collision.GetComponent<Skill>().damageRate * GameManager.instance.playerDamage);

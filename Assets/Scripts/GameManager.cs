@@ -225,6 +225,10 @@ public class GameManager : MonoBehaviour
                 if (killText.activeSelf) killText.SetActive(false);
                 player.transform.position = new Vector3(0, -2.5f, 0);
                 BGMInit(AudioManager.Bgm.Camp, 1f);
+                if (stage1_ClearCount == 1 && newCharacterUnlock == 0)
+                {
+                    FindAnyObjectByType<TutorialUI>(FindObjectsInactive.Include).gameObject.SetActive(true);
+                }
                 ZoomCamera();
                 GameStart();
                 break;

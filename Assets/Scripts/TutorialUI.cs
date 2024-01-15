@@ -32,7 +32,14 @@ public class TutorialUI : MonoBehaviour
     private void Start()
     {
         //AudioManager.instance.PlayBgm(false);
-        GameManager.instance.Stop();
+        if (SceneManager.GetActiveScene().name == "Camp")
+        {
+            GameManager.instance.isLive = false;
+        }
+        else
+        {
+            GameManager.instance.Stop();
+        }
     }
 
     private void OnDestroy()
@@ -60,9 +67,18 @@ public class TutorialUI : MonoBehaviour
     void Close()
     {
         if (!gameObject.activeSelf) return;
-        GameManager.instance.Resume();
-        AudioManager.instance.PlayBgm(true);
+
+        if (SceneManager.GetActiveScene().name == "Camp")
+        {
+            GameManager.instance.newCharacterUnlock = 1;
+            GameManager.instance.isLive = true;
+        }
+        else
+        {
+            GameManager.instance.Resume();
+            AudioManager.instance.PlayBgm(true);
+
+        }
         Destroy(gameObject);
-        //gameObject.SetActive(false);
     }
 }

@@ -9,6 +9,7 @@ using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.UI;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using UnityEngine.Windows;
 
 public class MenuUI : MonoBehaviour
 {
@@ -17,6 +18,10 @@ public class MenuUI : MonoBehaviour
     [SerializeField] GameObject helpPanel;
     [SerializeField] Sprite[] keySprites;
     [SerializeField] Image[] keyImages;
+    [SerializeField] GameObject defaultHelpPanel;
+    [SerializeField] GameObject changeHelpPanel;
+    [SerializeField] GameObject rightArrow;
+    [SerializeField] GameObject leftArrow;
 
     GameObject menuPanel;
 
@@ -29,6 +34,7 @@ public class MenuUI : MonoBehaviour
     List<Button> menuButtons;
     int selectedId;
     GameObject selectedObjectOnConfirm;
+    Vector2 lastPressedMove;
 
     private void Awake()
     {
@@ -62,6 +68,10 @@ public class MenuUI : MonoBehaviour
 
     void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
+        if (rightArrow.activeSelf) rightArrow.SetActive(false);
+        if (leftArrow.activeSelf) leftArrow.SetActive(false);
+        if (changeHelpPanel.activeSelf) changeHelpPanel.SetActive(false);
+        if (!defaultHelpPanel.activeSelf) changeHelpPanel.SetActive(true);
         if (helpPanel.activeSelf) helpPanel.SetActive(false);
         if (confirm.activeSelf) confirm.SetActive(false);
         if (menuPanel.activeSelf) menuPanel.SetActive(false);
@@ -75,6 +85,7 @@ public class MenuUI : MonoBehaviour
         selectedId = -1;
         selectedObjectOnConfirm = null;
 
+        lastPressedMove = Vector2.zero;
     }
 
     private void Update()
@@ -99,7 +110,51 @@ public class MenuUI : MonoBehaviour
                 HelpClose();
                 return;
             }
+
+            if (GameManager.instance.newCharacterUnlock > 0)
+            {
+                if (defaultHelpPanel.activeSelf)
+                {
+                    rightArrow.SetActive(true);
+                    if (leftArrow.activeSelf) leftArrow.SetActive(false);
+                }
+                else if (changeHelpPanel.activeSelf)
+                {
+                    leftArrow.SetActive(true);
+                    if (rightArrow.activeSelf) rightArrow.SetActive(false);
+                }
+
+                InputSystemUIInputModule input = (InputSystemUIInputModule)EventSystem.current.currentInputModule;
+
+                if (input.move.action.ReadValue<Vector2>() != lastPressedMove)
+                {
+                    if (input.move.action.ReadValue<Vector2>().x > 0)
+                    {
+                        if (defaultHelpPanel.activeSelf)
+                        {
+                            defaultHelpPanel.SetActive(false);
+                            changeHelpPanel.SetActive(true);
+                            AudioManager.instance.PlaySfx(AudioManager.Sfx.ButtonChange);
+                        }
+                    }
+                    else if (input.move.action.ReadValue<Vector2>().x < 0)
+                    {
+                        if (changeHelpPanel.activeSelf)
+                        {
+                            defaultHelpPanel.SetActive(true);
+                            changeHelpPanel.SetActive(false);
+                            AudioManager.instance.PlaySfx(AudioManager.Sfx.ButtonChange);
+                        }
+                    }
+                    lastPressedMove = input.move.action.ReadValue<Vector2>();
+                }
+            }
         }
+        else
+        {
+            lastPressedMove = Vector2.zero;
+        }
+        
 
         if (menuPanel.activeSelf)
         {
@@ -252,6 +307,10 @@ public class MenuUI : MonoBehaviour
 
     void HelpClose()
     {
+        if (rightArrow.activeSelf) rightArrow.SetActive(false);
+        if (leftArrow.activeSelf) leftArrow.SetActive(false);
+        if (changeHelpPanel.activeSelf) changeHelpPanel.SetActive(false);
+        if (!defaultHelpPanel.activeSelf) defaultHelpPanel.SetActive(true);
         helpPanel.SetActive(false);
         AudioManager.instance.PlaySfx(AudioManager.Sfx.Cancel);
         EventSystem.current.SetSelectedGameObject(menuButtons[selectedId].gameObject);
