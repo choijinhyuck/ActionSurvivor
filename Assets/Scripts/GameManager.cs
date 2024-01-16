@@ -263,6 +263,19 @@ public class GameManager : MonoBehaviour
                 ZoomCamera();
                 GameStart();
                 break;
+
+            case "Stage_2":
+                stageId = 2;
+                FadeIn();
+                player.transform.position = new Vector3(0, 0, 0);
+                player.gameObject.SetActive(false);
+                if (stageName.activeSelf) stageName.SetActive(true);
+                if (!timer.activeSelf) timer.SetActive(true);
+                if (!killText.activeSelf) killText.SetActive(true);
+                BGMInit(AudioManager.Bgm.Stage2, 1f);
+                ZoomCamera();
+                GameStart();
+                break;
         }
     }
 

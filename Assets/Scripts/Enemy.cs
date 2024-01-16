@@ -23,6 +23,9 @@ public class Enemy : MonoBehaviour
     float hitTextPosXrange;
     float hitTextPosYstart;
     float hitTextPosYend;
+    float fireTimer;
+    float fireInterval;
+    float fireDistance;
     int exp;
     DropItems[] dropItems;
     Vector2 shadowOrigin;
@@ -52,6 +55,10 @@ public class Enemy : MonoBehaviour
         waitFix = new WaitForFixedUpdate();
         isHit = false;
         hitText = new List<GameObject>() {hitDamage.gameObject};
+
+        fireTimer = 0f;
+        fireInterval = 4f;
+        fireDistance = 3.5f;
     }
 
     private void FixedUpdate()
@@ -61,10 +68,52 @@ public class Enemy : MonoBehaviour
         if (!isLive || isHit)
             return;
 
+        if (enemyName == "Plant")
+        {
+            Debug.Log((target.position - rigid.position).magnitude);
+            if (anim.GetCurrentAnimatorStateInfo(0).IsName("Attack"))
+            {
+                rigid.velocity = Vector2.zero;
+                return;
+            }
+            else
+            {
+                fireTimer += Time.fixedDeltaTime;
+                if (fireTimer > fireInterval && (target.position - rigid.position).magnitude < fireDistance)
+                {
+                    anim.SetTrigger("Attack");
+                    fireTimer = 0f;
+                    return;
+                }
+            }
+        }
+
         Vector2 dirVec = target.position - rigid.position;
         Vector2 nextVec = dirVec.normalized * speed / 5 * Time.fixedDeltaTime;
         rigid.MovePosition(rigid.position + nextVec);
         rigid.velocity = Vector2.zero;
+    }
+
+    void Fire()
+    {
+        GameObject selectedObject = null;
+        for (int i = 0; i < PoolManager.instance.prefabs.Length; i++)
+        {
+            if (LayerMask.LayerToName(PoolManager.instance.prefabs[i].layer) == "EnemyProjectile")
+            {
+                selectedObject = PoolManager.instance.Get(i);
+            }
+        }
+        if (selectedObject == null)
+        {
+            Debug.Log("EnemyProjectile 레이어를 갖는 Prefab을 Pool에서 찾을 수 없습니다.");
+            return;
+        }
+        selectedObject.transform.parent = PoolManager.instance.transform.GetChild(1);
+        float deltaX = spriter.flipX ? 0.5f : -0.5f;
+        selectedObject.transform.SetPositionAndRotation(transform.position + new Vector3(deltaX, 0.46f, 0), Quaternion.identity);
+        Vector3 dir = (Vector3)target.position + new Vector3(0, 0.25f, 0) - selectedObject.transform.position;
+        selectedObject.GetComponent<EnemyProjectile>().Init(EnemyProjectile.projectileType.Seed, dir.normalized, 3f);
     }
 
     private void LateUpdate()
@@ -128,6 +177,7 @@ public class Enemy : MonoBehaviour
                 hit.SetActive(false);
             }
         }
+        fireTimer = 0f;
     }
 
     public void Init(EnemyData data)

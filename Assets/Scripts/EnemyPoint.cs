@@ -1,8 +1,9 @@
 using UnityEngine;
+using UnityEngine.UI;
 
 public class EnemyPoint : MonoBehaviour
 {
-    public Renderer enemyPoint;
+    public Image enemyPoint;
     public LayerMask targetLayer;
 
     Renderer enemy;
@@ -19,7 +20,7 @@ public class EnemyPoint : MonoBehaviour
         player = GameManager.instance.player.transform;
     }
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
         if (enemy.isVisible)
         {
@@ -54,7 +55,7 @@ public class EnemyPoint : MonoBehaviour
             }
 
             enemyPoint.transform.localRotation = Quaternion.FromToRotation(Vector3.up, transform.position - pivot);
-            enemyPoint.transform.position = hit.point;
+            enemyPoint.transform.position = Camera.main.WorldToScreenPoint(hit.point);
         }
     }
 }

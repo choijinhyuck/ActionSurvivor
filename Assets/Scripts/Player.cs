@@ -2,6 +2,7 @@ using Cinemachine;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Experimental.Rendering.Universal;
 using UnityEngine.InputSystem;
@@ -49,7 +50,7 @@ public class Player : MonoBehaviour
     //Hit 관련 변수
     public bool isHit;
     public bool readyDodge;
-    Rigidbody2D target;
+    Vector2 targetPos;
     bool canRangeFire;
     bool isImmune;
     float originSpeed;
@@ -175,6 +176,12 @@ public class Player : MonoBehaviour
             inputVector = Vector2.zero;
             return;
         }
+        if (anim.GetCurrentAnimatorStateInfo(0).IsName("Dead"))
+        {
+            inputVector = Vector2.zero;
+            rigid.velocity = Vector2.zero;
+            return;
+        }
         if (GameManager.instance.health < 0.1f)
         {
             inputVector = Vector2.zero;
@@ -210,11 +217,11 @@ public class Player : MonoBehaviour
         if (!GameManager.instance.isLive || isHit || isDodge || GameManager.instance.health < 0.1f) return;
         // 피해면역인 상태면?
         if (isImmune) return;
-
+        
         // Layer 6: Enemy
-        if (collision.gameObject.layer == 6)
+        if (LayerMask.LayerToName(collision.gameObject.layer) == "Enemy")
         {
-            target = collision.rigidbody;
+            targetPos = collision.rigidbody.position;
             // Player Mass 5 -> 1000 으로 변경
             // 적을 적당히 밀어낼 수 있도록? 현재 난이도 너무 어려움
             // Knockback에 사용되는 force는 Mass 의 10배가 적당 (Player 한정)
@@ -225,19 +232,25 @@ public class Player : MonoBehaviour
 
         if (GameManager.instance.health < 0.1f)
         {
-            //for (int i = 2; i < transform.childCount; i++)
-            //{
-            //    transform.GetChild(i).gameObject.SetActive(false);
-            //}
-
-            //Time.timeScale = .5f;
-            //anim.SetTrigger("Dead");
-
             StartCoroutine(DeadCoroutine());
-
-            //GameManager.Instance.GameOver();
         }
     }
+
+    // 적 투사체에 맞는 경우
+    public void HitByProjectile(EnemyProjectile.projectileType projectileName, Collider2D collision)
+    {
+        if (!GameManager.instance.isLive || isHit || isDodge || GameManager.instance.health < 0.1f) return;
+        if (isImmune) return;
+
+        targetPos = collision.GetComponent<Rigidbody2D>().position;
+        collision.GetComponent<EnemyProjectile>().Done();
+        StartCoroutine(KnockBack(7000));
+        AudioManager.instance.PlaySfx(AudioManager.Sfx.PlayerHit);
+        GameManager.instance.health -= 0.5f;
+
+        if (GameManager.instance.health < 0.1f) StartCoroutine(DeadCoroutine());
+    }
+
 
     IEnumerator DeadCoroutine()
     {
@@ -408,7 +421,7 @@ public class Player : MonoBehaviour
         spriteRenderer.material.SetFloat("_FlashAmount", 0.25f);
         yield return waitSec;
         rigid.velocity = Vector2.zero;
-        Vector2 dirVec = rigid.position - target.position;
+        Vector2 dirVec = rigid.position - targetPos;
         rigid.AddForce(dirVec.normalized * force, ForceMode2D.Impulse);
         spriteRenderer.material.SetFloat("_FlashAmount", 0.5f);
         yield return waitSec;
