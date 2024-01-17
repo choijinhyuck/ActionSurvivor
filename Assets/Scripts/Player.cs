@@ -251,6 +251,25 @@ public class Player : MonoBehaviour
         if (GameManager.instance.health < 0.1f) StartCoroutine(DeadCoroutine());
     }
 
+    // 함정에 당한 경우
+    public void HitByTrap(Collider2D collision)
+    {
+        if (!GameManager.instance.isLive || isHit || isDodge || GameManager.instance.health < 0.1f) return;
+        if (isImmune) return;
+
+        targetPos = collision.transform.position;
+        StartCoroutine(KnockBack(5000));
+        AudioManager.instance.PlaySfx(AudioManager.Sfx.PlayerHit);
+        GameManager.instance.health -= 0.5f;
+
+        if (GameManager.instance.health < 0.1f) StartCoroutine(DeadCoroutine());
+    }
+
+    public bool IsDodge()
+    {
+        return isDodge;
+    }
+
 
     IEnumerator DeadCoroutine()
     {
@@ -281,7 +300,8 @@ public class Player : MonoBehaviour
             GameManager.instance.necklaceItem[GameManager.instance.playerId] = -1;
             GameManager.instance.health += 2;
             GameManager.instance.StatusUpdate();
-            GameObject.FindGameObjectWithTag("Light").GetComponent<GlobalLight>().WarningToTrue();
+            FindAnyObjectByType<WarningUI>().WarningToTrue();
+            //GameObject.FindGameObjectWithTag("Light").GetComponent<GlobalLight>().WarningToTrue();
             isImmune = true;
             StartCoroutine(RevivalBlinkCoroutine());
             timer = 0f;

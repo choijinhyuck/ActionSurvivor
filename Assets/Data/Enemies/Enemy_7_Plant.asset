@@ -19,8 +19,8 @@ MonoBehaviour:
   exp: 1
   mass: 1
   dropItems: []
-  collPos: {x: 0, y: 0.33}
-  collSize: {x: 0.37, y: 0.65}
+  collPos: {x: 0, y: 0.19}
+  collSize: {x: 0.37, y: 0.37}
   shadowScale: 0.48
   shadowOrigin: {x: 0, y: 0.003}
   shadowFlip: {x: 0, y: 0.003}

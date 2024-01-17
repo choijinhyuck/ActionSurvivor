@@ -18,6 +18,6 @@ MonoBehaviour:
   waveData:
   - startTime: 0
     enemyInfos:
-    - enemyType: 7
+    - enemyType: 0
       enemyCount: 1
       spawnTime: 5

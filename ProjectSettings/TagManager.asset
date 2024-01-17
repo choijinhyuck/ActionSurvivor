@@ -15,6 +15,9 @@ TagManager:
   - VirtualCamera
   - Lock
   - EnemyProjectileArea
+  - OnlyFlyingPass
+  - PierceTrap
+  - AltarArea
   layers:
   - Default
   - TransparentFX
@@ -28,7 +31,7 @@ TagManager:
   - EnemyPoint
   - DropItem
   - EnemyProjectile
-  - 
+  - BlockTileExceptFlying
   - 
   - 
   - 

@@ -610,7 +610,7 @@ Rigidbody2D:
     serializedVersion: 2
     m_Bits: 0
   m_Interpolate: 0
-  m_SleepingMode: 1
+  m_SleepingMode: 0
   m_CollisionDetection: 0
   m_Constraints: 4
 --- !u!70 &64773527674332939
@@ -645,8 +645,8 @@ CapsuleCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0.33}
-  m_Size: {x: 0.37, y: 0.65}
+  m_Offset: {x: 0, y: 0.19}
+  m_Size: {x: 0.37, y: 0.37}
   m_Direction: 0
 --- !u!212 &282673981076508720
 SpriteRenderer:

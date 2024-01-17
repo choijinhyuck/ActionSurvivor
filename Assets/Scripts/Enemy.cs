@@ -1,7 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.Threading;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -20,6 +18,7 @@ public class Enemy : MonoBehaviour
     bool isLive;
     bool lookLeft;
     bool isHit;
+    bool isInit;
     float hitTextPosXrange;
     float hitTextPosYstart;
     float hitTextPosYend;
@@ -41,7 +40,7 @@ public class Enemy : MonoBehaviour
     WaitForFixedUpdate waitFix;
     Coroutine knockbackCoroutine;
     List<GameObject> hitText;
-    
+
 
     private void Awake()
     {
@@ -54,7 +53,8 @@ public class Enemy : MonoBehaviour
         waitShortTime = new WaitForSeconds(.01f);
         waitFix = new WaitForFixedUpdate();
         isHit = false;
-        hitText = new List<GameObject>() {hitDamage.gameObject};
+        hitText = new List<GameObject>() { hitDamage.gameObject };
+        isInit = false;
 
         fireTimer = 0f;
         fireInterval = 4f;
@@ -70,7 +70,6 @@ public class Enemy : MonoBehaviour
 
         if (enemyName == "Plant")
         {
-            Debug.Log((target.position - rigid.position).magnitude);
             if (anim.GetCurrentAnimatorStateInfo(0).IsName("Attack"))
             {
                 rigid.velocity = Vector2.zero;
@@ -112,7 +111,7 @@ public class Enemy : MonoBehaviour
         selectedObject.transform.parent = PoolManager.instance.transform.GetChild(1);
         float deltaX = spriter.flipX ? 0.5f : -0.5f;
         selectedObject.transform.SetPositionAndRotation(transform.position + new Vector3(deltaX, 0.46f, 0), Quaternion.identity);
-        Vector3 dir = (Vector3)target.position + new Vector3(0, 0.25f, 0) - selectedObject.transform.position;
+        Vector3 dir = (Vector3)target.position + new Vector3(0, 0.5f, 0) - selectedObject.transform.position;
         selectedObject.GetComponent<EnemyProjectile>().Init(EnemyProjectile.projectileType.Seed, dir.normalized, 3f);
     }
 
@@ -121,7 +120,7 @@ public class Enemy : MonoBehaviour
         if (!GameManager.instance.isLive) return;
 
         if (!isLive) return;
-        
+
         if (lookLeft)
         {
             spriter.flipX = target.position.x > rigid.position.x;
@@ -152,7 +151,7 @@ public class Enemy : MonoBehaviour
         {
             barImage.sprite = barSprites[2];
         }
-        else if (hpBar.value  < .6f)
+        else if (hpBar.value < .6f)
         {
             barImage.sprite = barSprites[1];
         }
@@ -196,16 +195,93 @@ public class Enemy : MonoBehaviour
         hitTextPosXrange = data.hpBarSize.x / 4;
         hitTextPosYstart = data.hpBarPos.y * .9f;
         hitTextPosYend = data.hpBarPos.y * 1.25f;
+
+        isInit = true;
+        StartCoroutine(IsInitOffCoroutine());
+
+        if (enemyName == "Bat" || enemyName == "BlueBird")
+        {
+            CollisionIgnore(true);
+        }
+        else
+        {
+            CollisionIgnore(false);
+        }
+    }
+
+    IEnumerator IsInitOffCoroutine()
+    {
+        yield return new WaitForFixedUpdate();
+        yield return new WaitForFixedUpdate();
+        if (isInit) { isInit = false; }
+    }
+
+    void CollisionIgnore(bool ignore)
+    {
+        Grid[] allGrids = GameObject.FindWithTag("Ground").transform.parent.parent.GetComponentsInChildren<Grid>();
+        foreach (var allGrid in allGrids)
+        {
+            if (allGrid.CompareTag("OnlyFlyingPass"))
+            {
+                var colliders = allGrid.GetComponentsInChildren<Collider2D>();
+                foreach (var item in colliders)
+                {
+                    Physics2D.IgnoreCollision(coll, item, ignore);
+                }
+            }
+        }
+    }
+
+    private void OnTriggerStay2D(Collider2D collision)
+    {
+        if (!isLive) return;
+        if (!collision.CompareTag("PierceTrap")) return;
+        if (isHit) return;
+        if (!collision.GetComponent<Trap>().IsOn()) return;
+        health -= 5f;
+        HitDamageText(5f);
+
+        if (!hpBar.gameObject.activeSelf) hpBar.gameObject.SetActive(true);
+
+        knockbackCoroutine = StartCoroutine(KnockBack(10));
+
+        if (health > 0)
+        {
+            AudioManager.instance.PlaySfx(AudioManager.Sfx.Hit);
+        }
+        else
+        {
+            hpBar.value = 0f;
+            isLive = false;
+            coll.enabled = false;
+            rigid.simulated = false;
+            spriter.sortingOrder = 1;
+            StartCoroutine(Dead());
+
+            if (GameManager.instance.isLive)
+            {
+                AudioManager.instance.PlaySfx(AudioManager.Sfx.Dead);
+            }
+        }
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
+        if (isInit)
+        {
+            if (!collision.CompareTag("AltarArea")) return;
+            var spawnPoints = collision.GetComponentsInChildren<Transform>();
+            transform.position = spawnPoints[UnityEngine.Random.Range(0, spawnPoints.Length)].position;
+            isInit = false;
+            return;
+        }
+
         if (!isLive) return;
         if (!collision.CompareTag("Projectile") && !collision.CompareTag("Skill"))
             return;
         if (collision.CompareTag("Projectile") && !collision.GetComponent<Projectile>().StillLive())
             return;
-        
+
         if (collision.CompareTag("Projectile"))
         {
             collision.GetComponent<Projectile>().Pierce(transform);
@@ -220,6 +296,7 @@ public class Enemy : MonoBehaviour
             health -= collision.GetComponent<Skill>().damageRate * GameManager.instance.playerDamage;
             HitDamageText(collision.GetComponent<Skill>().damageRate * GameManager.instance.playerDamage);
         }
+
 
         if (!hpBar.gameObject.activeSelf) hpBar.gameObject.SetActive(true);
 
@@ -247,7 +324,7 @@ public class Enemy : MonoBehaviour
             rigid.simulated = false;
             spriter.sortingOrder = 1;
             StartCoroutine(Dead());
-            
+
 
             if (GameManager.instance.isLive)
             {
@@ -375,10 +452,10 @@ public class Enemy : MonoBehaviour
             totalProbability += dropItem.probability;
         }
 
-        float randValue = Random.Range(0,Mathf.Max(1f, totalProbability));
+        float randValue = Random.Range(0, Mathf.Max(1f, totalProbability));
         float accumulatedValue = 0f;
         int selectedItemId = -1;
-        for (int i = 0;  i < dropItems.Length; i++)
+        for (int i = 0; i < dropItems.Length; i++)
         {
             accumulatedValue += dropItems[i].probability;
             if (randValue < accumulatedValue)
