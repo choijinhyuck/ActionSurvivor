@@ -54,7 +54,7 @@ public bool IsOn()
         trapRenderer.sprite = trapOn;
         // 효과음 추가
         AudioManager.instance.PlaySfx(AudioManager.Sfx.TrapOn);
-        yield return new WaitForSeconds(1.5f);
+        yield return new WaitForSeconds(1f);
         isOn = false;
         trapRenderer.sprite = trapOff;
         // 효과음 추가
