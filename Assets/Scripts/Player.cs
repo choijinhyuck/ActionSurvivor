@@ -984,6 +984,7 @@ public class Player : MonoBehaviour
                 if (!skills[GameManager.instance.playerId].transform.GetChild(level - 2).gameObject.activeSelf)
                 {
                     skills[GameManager.instance.playerId].transform.GetChild(level - 2).gameObject.SetActive(true);
+                    if (!isImmune) isImmune = true;
                 }
             }
             skills[GameManager.instance.playerId].transform.GetChild(level - 2).GetChild(colliderId).gameObject.SetActive(true);
@@ -991,9 +992,17 @@ public class Player : MonoBehaviour
         }
         else
         {
-            if (colliderId == 3) { skills[GameManager.instance.playerId].transform.GetChild(level - 2).gameObject.SetActive(false); }
+            if (colliderId == 3)
+            {
+                skills[GameManager.instance.playerId].transform.GetChild(level - 2).gameObject.SetActive(false);
+            }
             skills[GameManager.instance.playerId].transform.GetChild(level - 2).GetChild(colliderId).gameObject.SetActive(false);
         }
+    }
+
+    public void WhirlWindFinished()
+    {
+        isImmune = false;
     }
 
     public void StopBash()

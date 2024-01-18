@@ -93,6 +93,7 @@ public class Enemy : MonoBehaviour
         rigid.velocity = Vector2.zero;
     }
 
+    // Attack Animation에서 사용
     void Fire()
     {
         GameObject selectedObject = null;
@@ -189,7 +190,14 @@ public class Enemy : MonoBehaviour
         exp = data.exp;
         rigid.mass = data.mass;
         Positioning(data);
-        dropItems = data.dropItems;
+
+        dropItems = new DropItems[data.dropItems.Length];
+        for (int i = 0; i < data.dropItems.Length; i++)
+        {
+            dropItems[i] = data.dropItems[i];
+            dropItems[i].probability /= 100f;
+        }
+
         hpBar.GetComponent<RectTransform>().anchoredPosition = data.hpBarPos;
         hpBar.GetComponent<RectTransform>().sizeDelta = data.hpBarSize;
         hitTextPosXrange = data.hpBarSize.x / 4;
@@ -346,7 +354,7 @@ public class Enemy : MonoBehaviour
         }
         if (selectId == -1)
         {
-            var newTextObject = Instantiate<GameObject>(hitText[0], hpBar.transform.parent);
+            var newTextObject = Instantiate(hitText[0], hpBar.transform.parent);
             hitText.Add(newTextObject);
             //newTextObject.transform.parent = hpBar.transform.parent;
             selectId = hitText.Count - 1;
@@ -355,7 +363,7 @@ public class Enemy : MonoBehaviour
         hitText[selectId].GetComponent<Text>().text = damage.ToString("N0") + "<size=12> 피해</size>";
         hitText[selectId].GetComponent<Text>().color = Color.red;
         //hitText[selectId].transform.localScale = new Vector3(1f, 1f, 1f);
-        Vector2 textPos = new Vector2(Random.Range(-hitTextPosXrange, hitTextPosXrange), hitTextPosYstart);
+        Vector2 textPos = new (Random.Range(-hitTextPosXrange, hitTextPosXrange), hitTextPosYstart);
         hitText[selectId].GetComponent<RectTransform>().anchoredPosition = textPos;
         StartCoroutine(MoveText(hitText[selectId]));
     }
@@ -447,6 +455,7 @@ public class Enemy : MonoBehaviour
         if (dropItems.Length == 0) return;
 
         float totalProbability = 0f;
+
         foreach (var dropItem in dropItems)
         {
             totalProbability += dropItem.probability;

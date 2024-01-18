@@ -6,7 +6,7 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "Stage", menuName = "Scriptable Object/StageData")]
 public class StageData : ScriptableObject
 {
-    public enum EnemyType { Snail, Bat, Chicken, Rock, Mushroom, Rhino, BlueBird, Plant }
+    public enum EnemyType { Snail, Bat, Chicken, Rock, Mushroom, Rhino, BlueBird, Plant, Pig, AngryPig }
 
     [Header("# Stage Info")]
     public int stageNumber;

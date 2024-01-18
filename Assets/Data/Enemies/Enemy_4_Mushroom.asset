@@ -15,26 +15,26 @@ MonoBehaviour:
   enemyName: Mushroom
   anim: {fileID: 9100000, guid: 225dc93e007474d45bc3253facb2246f, type: 2}
   health: 16
-  speed: 8
+  speed: 7
   exp: 3
   mass: 1.5
   dropItems:
   - itemType: 12
-    probability: 0.7
+    probability: 70
   - itemType: 0
-    probability: 0.012
+    probability: 1.2
   - itemType: 3
-    probability: 0.0085
+    probability: 0.85
   - itemType: 6
-    probability: 0.0085
+    probability: 0.85
   - itemType: 7
-    probability: 0.0085
+    probability: 0.85
   - itemType: 8
-    probability: 0.0085
+    probability: 0.85
   - itemType: 18
-    probability: 0.0085
+    probability: 0.85
   - itemType: 9
-    probability: 0.025
+    probability: 2.5
   collPos: {x: 0, y: 0.3}
   collSize: {x: 0.64, y: 0.5}
   shadowScale: 0.8

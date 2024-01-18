@@ -20,19 +20,19 @@ MonoBehaviour:
   mass: 2
   dropItems:
   - itemType: 12
-    probability: 0.6
+    probability: 60
   - itemType: 0
-    probability: 0.01
+    probability: 1
   - itemType: 6
-    probability: 0.007
+    probability: 0.7
   - itemType: 7
-    probability: 0.007
+    probability: 0.7
   - itemType: 8
-    probability: 0.007
+    probability: 0.7
   - itemType: 18
-    probability: 0.007
+    probability: 0.7
   - itemType: 9
-    probability: 0.02
+    probability: 2
   collPos: {x: 0, y: 0.3}
   collSize: {x: 0.64, y: 0.5}
   shadowScale: 0.8

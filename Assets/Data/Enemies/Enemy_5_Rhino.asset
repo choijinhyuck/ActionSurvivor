@@ -14,11 +14,43 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemyName: Rhino
   anim: {fileID: 9100000, guid: e3d67c126615d5441815c0d32b98a3e6, type: 2}
-  health: 0
-  speed: 0
-  exp: 0
-  mass: 1
-  dropItems: []
+  health: 60
+  speed: 6.5
+  exp: 10
+  mass: 3
+  dropItems:
+  - itemType: 13
+    probability: 15
+  - itemType: 14
+    probability: 45
+  - itemType: 0
+    probability: 3
+  - itemType: 1
+    probability: 1.6
+  - itemType: 3
+    probability: 2
+  - itemType: 4
+    probability: 1
+  - itemType: 6
+    probability: 2
+  - itemType: 7
+    probability: 2
+  - itemType: 8
+    probability: 2
+  - itemType: 18
+    probability: 2
+  - itemType: 19
+    probability: 1
+  - itemType: 10
+    probability: 2.5
+  - itemType: 11
+    probability: 1
+  - itemType: 24
+    probability: 0.2
+  - itemType: 25
+    probability: 0.2
+  - itemType: 26
+    probability: 0.2
   collPos: {x: 0, y: 0.4}
   collSize: {x: 0.97, y: 0.58}
   shadowScale: 1

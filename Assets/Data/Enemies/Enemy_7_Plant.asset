@@ -14,11 +14,37 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemyName: Plant
   anim: {fileID: 9100000, guid: e259e0ce9be587f4d99d42525ebabd20, type: 2}
-  health: 10
-  speed: 5
-  exp: 1
-  mass: 1
-  dropItems: []
+  health: 16
+  speed: 6.5
+  exp: 8
+  mass: 1.5
+  dropItems:
+  - itemType: 12
+    probability: 50
+  - itemType: 13
+    probability: 20
+  - itemType: 0
+    probability: 1.5
+  - itemType: 1
+    probability: 0.5
+  - itemType: 3
+    probability: 1
+  - itemType: 4
+    probability: 0.3
+  - itemType: 6
+    probability: 1
+  - itemType: 7
+    probability: 1
+  - itemType: 8
+    probability: 1
+  - itemType: 18
+    probability: 1
+  - itemType: 19
+    probability: 0.3
+  - itemType: 9
+    probability: 3
+  - itemType: 10
+    probability: 1.5
   collPos: {x: 0, y: 0.19}
   collSize: {x: 0.37, y: 0.37}
   shadowScale: 0.48

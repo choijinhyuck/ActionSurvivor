@@ -1,0 +1,57 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e98d9e62846565046b1b6b440c26e3b2, type: 3}
+  m_Name: Enemy_8_Pig
+  m_EditorClassIdentifier: 
+  enemyName: Pig
+  anim: {fileID: 9100000, guid: 21597d22db57f4844aad533e01956cca, type: 2}
+  health: 30
+  speed: 8
+  exp: 7
+  mass: 2
+  dropItems:
+  - itemType: 13
+    probability: 40
+  - itemType: 14
+    probability: 30
+  - itemType: 0
+    probability: 2.5
+  - itemType: 1
+    probability: 1.5
+  - itemType: 3
+    probability: 2
+  - itemType: 4
+    probability: 0.75
+  - itemType: 6
+    probability: 2
+  - itemType: 7
+    probability: 2
+  - itemType: 8
+    probability: 2
+  - itemType: 18
+    probability: 2
+  - itemType: 19
+    probability: 0.75
+  - itemType: 9
+    probability: 3
+  - itemType: 10
+    probability: 1
+  - itemType: 11
+    probability: 0.2
+  collPos: {x: 0, y: 0.336}
+  collSize: {x: 0.62, y: 0.62}
+  shadowScale: 0.85
+  shadowOrigin: {x: 0.025, y: 0.04}
+  shadowFlip: {x: -0.025, y: 0.04}
+  lookLeft: 1
+  hpBarPos: {x: 0, y: 95}
+  hpBarSize: {x: 60, y: 10}

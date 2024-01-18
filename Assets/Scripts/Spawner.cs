@@ -9,10 +9,12 @@ public class Spawner : MonoBehaviour
 
     int wave;
     float[] timer;
+    float timerCalibrator;
 
     private void Awake()
     {
         wave = -1;
+        timerCalibrator = 0.03f;
     }
 
     private void OnEnable()
@@ -48,7 +50,7 @@ public class Spawner : MonoBehaviour
         for (int i = 0; i < stage.waveData[wave].enemyInfos.Length; i++)
         {
             timer[i] += Time.deltaTime;
-            if (timer[i] > stage.waveData[wave].enemyInfos[i].spawnTime)
+            if (timer[i] > stage.waveData[wave].enemyInfos[i].spawnTime - timerCalibrator)
             {
                 timer[i] = 0;
 

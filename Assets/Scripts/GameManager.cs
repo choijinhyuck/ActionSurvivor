@@ -594,7 +594,7 @@ public class GameManager : MonoBehaviour
                 yield return null;
                 continue;
             }
-            else if (level == 21)
+            else if (level == 20)
             {
                 exp = 0;
                 yield break;

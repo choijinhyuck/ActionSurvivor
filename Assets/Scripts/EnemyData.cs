@@ -14,7 +14,7 @@ public class EnemyData : ScriptableObject
     public int exp;
     public float mass = 1;
 
-    [Header("# Drop Items")]
+    [Header("# Drop Items (% probability)")]
     public DropItems[] dropItems;
 
     [Header("# Collider Info")]

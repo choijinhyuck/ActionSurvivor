@@ -15,28 +15,28 @@ MonoBehaviour:
   enemyName: Chicken
   anim: {fileID: 9100000, guid: 446c478a29b934043b0d6e8011544343, type: 2}
   health: 18
-  speed: 9
+  speed: 8
   exp: 4
   mass: 1.5
   dropItems:
   - itemType: 12
-    probability: 0.8
+    probability: 80
   - itemType: 0
-    probability: 0.015
+    probability: 1.5
   - itemType: 3
-    probability: 0.01
+    probability: 1
   - itemType: 6
-    probability: 0.01
+    probability: 1
   - itemType: 7
-    probability: 0.01
+    probability: 1
   - itemType: 8
-    probability: 0.01
+    probability: 1
   - itemType: 18
-    probability: 0.01
+    probability: 1
   - itemType: 9
-    probability: 0.03
+    probability: 3
   - itemType: 10
-    probability: 0.01
+    probability: 1
   collPos: {x: 0, y: 0.34}
   collSize: {x: 0.5, y: 0.5}
   shadowScale: 0.655

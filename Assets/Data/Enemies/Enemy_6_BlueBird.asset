@@ -14,11 +14,37 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemyName: BlueBird
   anim: {fileID: 9100000, guid: f2ea8de455b851943a9dd65e83e46090, type: 2}
-  health: 0
-  speed: 0
-  exp: 0
+  health: 12
+  speed: 10
+  exp: 4
   mass: 1
-  dropItems: []
+  dropItems:
+  - itemType: 12
+    probability: 60
+  - itemType: 13
+    probability: 10
+  - itemType: 0
+    probability: 0.4
+  - itemType: 1
+    probability: 0.14
+  - itemType: 3
+    probability: 0.3
+  - itemType: 4
+    probability: 0.1
+  - itemType: 6
+    probability: 0.3
+  - itemType: 7
+    probability: 0.3
+  - itemType: 8
+    probability: 0.3
+  - itemType: 18
+    probability: 0.3
+  - itemType: 19
+    probability: 0.1
+  - itemType: 9
+    probability: 4
+  - itemType: 10
+    probability: 2
   collPos: {x: 0, y: 0.33}
   collSize: {x: 0.4, y: 0.5}
   shadowScale: 0.4

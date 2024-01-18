@@ -15,14 +15,14 @@ MonoBehaviour:
   enemyName: Bat
   anim: {fileID: 9100000, guid: dd2a788db3d08d74fb87644630eff200, type: 2}
   health: 5
-  speed: 10
+  speed: 9
   exp: 1
-  mass: 1
+  mass: 0.5
   dropItems:
   - itemType: 12
-    probability: 0.7
+    probability: 70
   - itemType: 9
-    probability: 0.02
+    probability: 2
   collPos: {x: 0, y: 0.12}
   collSize: {x: 0.23, y: 0.29}
   shadowScale: 0.24
