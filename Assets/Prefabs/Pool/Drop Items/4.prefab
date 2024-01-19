@@ -96,6 +96,7 @@ GameObject:
   - component: {fileID: 5448259496991152550}
   - component: {fileID: -2927935834028262136}
   - component: {fileID: -2236906286902212555}
+  - component: {fileID: -4696079474540731861}
   m_Layer: 10
   m_Name: 4
   m_TagString: DropItem
@@ -184,6 +185,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   shadow: {fileID: 7785161572942118606}
+  itemId: 0
+  isDropping: 0
 --- !u!61 &-2236906286902212555
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -229,3 +232,15 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
+--- !u!114 &-4696079474540731861
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5194805828060018888}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e973e3a5af9ee2b4e9b86a2c43948a0c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

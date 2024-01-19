@@ -246,8 +246,8 @@ public class Enemy : MonoBehaviour
         if (!collision.CompareTag("PierceTrap")) return;
         if (isHit) return;
         if (!collision.GetComponent<Trap>().IsOn()) return;
-        health -= 3f;
-        HitDamageText(3f);
+        health -= 5f;
+        HitDamageText(5f);
 
         if (!hpBar.gameObject.activeSelf) hpBar.gameObject.SetActive(true);
 

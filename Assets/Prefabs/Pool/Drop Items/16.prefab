@@ -96,6 +96,7 @@ GameObject:
   - component: {fileID: 6959606949647429751}
   - component: {fileID: -1312850398789731563}
   - component: {fileID: -5620953273314887448}
+  - component: {fileID: -4907036223741788501}
   m_Layer: 10
   m_Name: 16
   m_TagString: DropItem
@@ -218,7 +219,7 @@ BoxCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
+  m_Offset: {x: -0.000000059604645, y: 0}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -229,5 +230,17 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 1.0699354, y: 1.0664389}
   m_EdgeRadius: 0
+--- !u!114 &-4907036223741788501
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4028297425782732125}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e973e3a5af9ee2b4e9b86a2c43948a0c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
