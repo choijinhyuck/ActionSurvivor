@@ -99,14 +99,14 @@ public class Enemy : MonoBehaviour
         GameObject selectedObject = null;
         for (int i = 0; i < PoolManager.instance.prefabs.Length; i++)
         {
-            if (LayerMask.LayerToName(PoolManager.instance.prefabs[i].layer) == "EnemyProjectile")
+            if (PoolManager.instance.prefabs[i].CompareTag("Seed"))
             {
                 selectedObject = PoolManager.instance.Get(i);
             }
         }
         if (selectedObject == null)
         {
-            Debug.Log("EnemyProjectile 레이어를 갖는 Prefab을 Pool에서 찾을 수 없습니다.");
+            Debug.Log($"Seed Tag를 갖는 Prefab을 Pool에서 찾을 수 없습니다.");
             return;
         }
         selectedObject.transform.parent = PoolManager.instance.transform.GetChild(1);
@@ -300,6 +300,7 @@ public class Enemy : MonoBehaviour
         else if (collision.CompareTag("Skill"))
         {
             if (collision.GetComponent<Skill>().hitList.Contains(gameObject)) return;
+            collision.GetComponent<Skill>().SetHitList(gameObject);
 
             health -= collision.GetComponent<Skill>().damageRate * GameManager.instance.playerDamage;
             HitDamageText(collision.GetComponent<Skill>().damageRate * GameManager.instance.playerDamage);
@@ -390,20 +391,20 @@ public class Enemy : MonoBehaviour
     {
         isHit = true;
         spriter.material.SetFloat("_FlashAmount", 0.25f);
-        yield return waitShortTime;
+        yield return new WaitForFixedUpdate();
         rigid.velocity = Vector2.zero;
         Vector2 dirVec = rigid.position - target.position;
         rigid.AddForce(dirVec.normalized * force, ForceMode2D.Impulse);
         spriter.material.SetFloat("_FlashAmount", 0.5f);
-        yield return waitShortTime;
+        yield return new WaitForFixedUpdate();
         spriter.material.SetFloat("_FlashAmount", 0.75f);
-        yield return waitShortTime;
+        yield return new WaitForFixedUpdate();
         spriter.material.SetFloat("_FlashAmount", 1.0f);
-        yield return waitShortTime;
+        yield return new WaitForFixedUpdate();
         spriter.material.SetFloat("_FlashAmount", 0.75f);
-        yield return waitShortTime;
+        yield return new WaitForFixedUpdate();
         spriter.material.SetFloat("_FlashAmount", 0.5f);
-        yield return waitShortTime;
+        yield return new WaitForFixedUpdate();
         spriter.material.SetFloat("_FlashAmount", 0f);
         rigid.velocity = Vector2.zero;
         yield return waitSec;

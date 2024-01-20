@@ -1,0 +1,55 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e98d9e62846565046b1b6b440c26e3b2, type: 3}
+  m_Name: Goblin
+  m_EditorClassIdentifier: 
+  enemyName: Goblin
+  anim: {fileID: 9100000, guid: 551ae068b0da34c42ab0735435b4f41a, type: 2}
+  health: 100
+  speed: 10
+  exp: 0
+  mass: 5
+  dropItems:
+  - itemType: 11
+    probability: 30
+  - itemType: 1
+    probability: 20
+  - itemType: 4
+    probability: 20
+  - itemType: 19
+    probability: 20
+  - itemType: 2
+    probability: 15
+  - itemType: 5
+    probability: 10
+  - itemType: 20
+    probability: 10
+  - itemType: 21
+    probability: 10
+  - itemType: 22
+    probability: 10
+  - itemType: 23
+    probability: 10
+  - itemType: 24
+    probability: 10
+  - itemType: 25
+    probability: 10
+  - itemType: 26
+    probability: 10
+  collPos: {x: 0, y: 0}
+  collSize: {x: 0, y: 0}
+  shadowScale: 0
+  shadowOrigin: {x: 0, y: 0}
+  shadowFlip: {x: 0, y: 0}
+  lookLeft: 0
+  hpBarPos: {x: 0, y: 0}
+  hpBarSize: {x: 0, y: 0}

@@ -218,7 +218,6 @@ public class Player : MonoBehaviour
         // 피해면역인 상태면?
         if (isImmune) return;
         
-        // Layer 6: Enemy
         if (LayerMask.LayerToName(collision.gameObject.layer) == "Enemy")
         {
             targetPos = collision.rigidbody.position;
@@ -242,11 +241,24 @@ public class Player : MonoBehaviour
         if (!GameManager.instance.isLive || isHit || isDodge || GameManager.instance.health < 0.1f) return;
         if (isImmune) return;
 
-        targetPos = collision.GetComponent<Rigidbody2D>().position;
-        collision.GetComponent<EnemyProjectile>().Done();
+        targetPos = collision.transform.position;
         StartCoroutine(KnockBack(7000));
         AudioManager.instance.PlaySfx(AudioManager.Sfx.PlayerHit);
-        GameManager.instance.health -= 0.5f;
+        if (projectileName == EnemyProjectile.projectileType.Seed)
+        {
+            collision.GetComponent<EnemyProjectile>().Done();
+            GameManager.instance.health -= 0.5f;
+        }
+        else if (projectileName == EnemyProjectile.projectileType.FireBall)
+        {
+            collision.GetComponent<EnemyProjectile>().Done();
+            GameManager.instance.health -= 1f;
+        }
+        else if (projectileName == EnemyProjectile.projectileType.GoblinMelee)
+        {
+            GameManager.instance.health -= 1f;
+        }
+
 
         if (GameManager.instance.health < 0.1f) StartCoroutine(DeadCoroutine());
     }
@@ -273,6 +285,8 @@ public class Player : MonoBehaviour
 
     IEnumerator DeadCoroutine()
     {
+        GameManager.instance.health = 0f;
+
         GameManager.instance.CameraDamping(0f);
 
         int targetPPU = 58;

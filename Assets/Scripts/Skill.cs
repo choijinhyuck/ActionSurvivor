@@ -11,13 +11,18 @@ public class Skill : MonoBehaviour
         hitList = new List<GameObject>();
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
+    //private void OnTriggerEnter2D(Collider2D collision)
+    //{
+    //    if (collision.CompareTag("Enemy"))
+    //    {
+    //        if (hitList.Contains(collision.gameObject)) return;
+    //        hitList.Add(collision.gameObject);
+    //    }
+    //}
+    
+    public void SetHitList(GameObject targetObject)
     {
-        if (collision.CompareTag("Enemy"))
-        {
-            if (hitList.Contains(collision.gameObject)) return;
-            hitList.Add(collision.gameObject);
-        }
+        hitList.Add(targetObject);
     }
 
 }

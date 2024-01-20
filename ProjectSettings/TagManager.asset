@@ -18,6 +18,10 @@ TagManager:
   - OnlyFlyingPass
   - PierceTrap
   - AltarArea
+  - GoblinMelee
+  - Seed
+  - FireBall
+  - GoblinMeleeDown
   layers:
   - Default
   - TransparentFX

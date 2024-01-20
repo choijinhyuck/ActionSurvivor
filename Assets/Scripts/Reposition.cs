@@ -1,3 +1,4 @@
+using System.Net;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -42,6 +43,7 @@ public class Reposition : MonoBehaviour
                 if (coll.enabled)
                 {
                     Vector3 dist = playerPos - myPos;
+                    if (Mathf.Abs(dist.x) * 2 <= areaSize.x && Mathf.Abs(dist.y) * 2 <= areaSize.y) return;
                     Vector3 ran = new Vector3(Random.Range(-2, 2), Random.Range(-2, 2), 0);
                     transform.Translate(ran + dist * 2);
                 }
