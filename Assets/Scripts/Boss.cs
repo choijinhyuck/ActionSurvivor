@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -22,6 +21,14 @@ public class Boss : MonoBehaviour
     [SerializeField] GameObject goblinDashEffect;
     [SerializeField] GameObject dashTextBox;
     [SerializeField] GameObject fireTextBox;
+    [SerializeField] GameObject howlingTextBox;
+    [SerializeField] Slider bossHpBar;
+    [SerializeField] Text bossName;
+    [SerializeField] Image phase1;
+    [SerializeField] Image phase2;
+    [SerializeField] Image phase3;
+    [SerializeField] GameObject goblinHouse;
+    [SerializeField] Transform[] spawnPoints;
 
     bool isLive;
     bool lookLeft;
@@ -29,6 +36,8 @@ public class Boss : MonoBehaviour
     bool isInit;
     bool isFire;
     bool isDash;
+    bool isCutScene;
+    bool onAltar;
     float hitTextPosXrange;
     float hitTextPosYstart;
     float hitTextPosYend;
@@ -50,11 +59,12 @@ public class Boss : MonoBehaviour
     Animator anim;
     SpriteRenderer spriter;
     WaitForSeconds waitSec;
-    WaitForSeconds waitShortTime;
     WaitForFixedUpdate waitFix;
     Coroutine knockbackCoroutine;
     List<GameObject> hitText;
     GameObject selectedObject;
+    Coroutine howlingCoroutine;
+
 
     private void Awake()
     {
@@ -63,13 +73,13 @@ public class Boss : MonoBehaviour
         anim = GetComponent<Animator>();
         spriter = GetComponent<SpriteRenderer>();
         waitSec = new WaitForSeconds(.1f);
-        waitShortTime = new WaitForSeconds(.01f);
         waitFix = new WaitForFixedUpdate();
         isHit = false;
         hitText = new List<GameObject>() { hitDamage.gameObject };
         isInit = false;
         isFire = false;
         isDash = false;
+        isCutScene = false;
 
         fireTimer = 0f;
         fireInterval = 10f;
@@ -80,14 +90,44 @@ public class Boss : MonoBehaviour
         dashTimer = 0f;
         dashInterval = 5f;
 
-        phase = 3;
+        phase = 0;
         attackDistance = 1.3f;
 
         selectedObject = null;
+
+        spriter.color = new(1, 1, 1, 0);
+
+        onAltar = false;
+        Vector3 nearestSpawnPos = Player.instance.transform.position + new Vector3(1000f, 1000f, 1000f);
+        int spawnIndex = -1;
+        for (int i = 0; i < spawnPoints.Length; i++)
+        {
+            if ((spawnPoints[i].position - Player.instance.transform.position).magnitude > 15)
+            {
+                if ((spawnPoints[i].position - Player.instance.transform.position).magnitude
+                    < (nearestSpawnPos - Player.instance.transform.position).magnitude)
+                {
+                    nearestSpawnPos = spawnPoints[i].position;
+                    spawnIndex = i;
+                }
+            }
+        }
+        if (spawnIndex == 0)
+        {
+            onAltar = true;
+        }
+
+        if (onAltar)
+        {
+            GameObject.FindWithTag("AltarArea").transform.parent.gameObject.SetActive(false);
+        }
+        goblinHouse.transform.position = nearestSpawnPos;
+        goblinHouse.SetActive(true);
     }
 
     private void FixedUpdate()
     {
+        if (isCutScene) return;
         if (!GameManager.instance.isLive) return;
 
         if (!isLive || isHit)
@@ -147,6 +187,7 @@ public class Boss : MonoBehaviour
                 anim.speed = 1f;
             }
             if (!anim.GetCurrentAnimatorStateInfo(0).IsName("Attack")) anim.SetTrigger("Attack");
+            AudioManager.instance.PlaySfx(AudioManager.Sfx.GoblinMelee);
             rigid.velocity = Vector2.zero;
             return;
         }
@@ -164,6 +205,7 @@ public class Boss : MonoBehaviour
     {
         isFire = true;
         fireCount = 1;
+        AudioManager.instance.PlaySfx(AudioManager.Sfx.GoblinFireBall);
         fireTextBox.SetActive(true);
         if (phase > 2)
         {
@@ -228,6 +270,7 @@ public class Boss : MonoBehaviour
     IEnumerator DashCoroutine()
     {
         isDash = true;
+        AudioManager.instance.PlaySfx(AudioManager.Sfx.GoblinDash);
         dashTextBox.SetActive(true);
         float boost;
         if (phase > 2)
@@ -247,6 +290,7 @@ public class Boss : MonoBehaviour
         
         dashTextBox.GetComponent<Animator>().SetTrigger("Out");
         goblinDashEffect.SetActive(true);
+        AudioManager.instance.PlaySfx(AudioManager.Sfx.Dodge);
         anim.SetTrigger("Move");
         while (true)
         {
@@ -291,6 +335,8 @@ public class Boss : MonoBehaviour
             float angleY = spriter.flipX ? 180f : 0f;
             selectedObject.transform.SetPositionAndRotation(transform.position, Quaternion.Euler(0f, angleY, 0f));
             selectedObject.GetComponent<EnemyProjectile>().Init(EnemyProjectile.projectileType.GoblinMelee, Vector3.zero, 0f);
+
+            AudioManager.instance.PlaySfx(AudioManager.Sfx.WarriorAttack);
         }
         else if (turnOnIndex == 2)
         {
@@ -334,7 +380,7 @@ public class Boss : MonoBehaviour
     {
         anim.speed = 1f;
         anim.SetTrigger("Idle");
-        StartCoroutine(DelayAfterAttackCoroutine());
+        if (!isCutScene) StartCoroutine(DelayAfterAttackCoroutine());
     }
 
     IEnumerator DelayAfterAttackCoroutine()
@@ -373,13 +419,41 @@ public class Boss : MonoBehaviour
 
         Vector3 dir = (Vector3)target.position + new Vector3(0, 0.5f, 0) - selectedObject.transform.position;
         selectedObject.GetComponent<EnemyProjectile>().Init(EnemyProjectile.projectileType.FireBall, dir.normalized, 7f);
+
+        AudioManager.instance.PlaySfx(AudioManager.Sfx.FireBall);
     }
 
     private void LateUpdate()
     {
+        if (isCutScene) return;
         if (!GameManager.instance.isLive) return;
 
         if (!isLive) return;
+
+        hpBar.value = health / maxHealth;
+        bossHpBar.value = hpBar.value;
+
+        if (bossHpBar.value < 0.25f)
+        {
+            if (phase < 3)
+            {
+                if (phase == 0) PhaseChange(1);
+                if (phase == 1) PhaseChange(2);
+                PhaseChange(3);
+            }
+        }
+        else if (bossHpBar.value < 0.5f)
+        {
+            if (phase < 2)
+            {
+                if (phase == 0) PhaseChange(1);
+                PhaseChange(2);
+            }
+        }
+        else if (bossHpBar.value < 0.75f)
+        {
+            if (phase == 0) PhaseChange(1);
+        }
 
         if (phase > 2)
         {
@@ -396,8 +470,58 @@ public class Boss : MonoBehaviour
         {
             spriter.flipX = target.position.x < rigid.position.x;
         }
+    }
 
-        hpBar.value = health / maxHealth;
+    IEnumerator Howling()
+    {
+        if (howlingTextBox.activeSelf) howlingTextBox.SetActive(false);
+        anim.SetTrigger("Idle");
+        yield return new WaitForSeconds(0.3f);
+        AudioManager.instance.PlaySfx(AudioManager.Sfx.GoblinHowling);
+        howlingTextBox.SetActive(true);
+        yield return new WaitForSeconds(2.5f);
+        anim.SetTrigger("Move");
+        howlingTextBox.GetComponent<Animator>().SetTrigger("Out");
+        yield return new WaitForSeconds(0.5f);
+        howlingTextBox.SetActive(false);
+        howlingCoroutine = null;
+    }
+
+    void PhaseChange(int toPhase)
+    {
+        Image[] images;
+        switch (toPhase)
+        {
+            case 1:
+                images = phase1.GetComponentsInChildren<Image>();
+                Drop(10);
+                break;
+            case 2:
+                images = phase2.GetComponentsInChildren<Image>();
+                Drop(10);
+                break;
+            case 3:
+                Drop(11);
+                images = phase3.GetComponentsInChildren<Image>();
+                break;
+            default:
+                Debug.Log($"잘못된 phase가 입력되었습니다. : {toPhase}");
+                return;
+        }
+        phase = toPhase;
+
+        foreach (Image image in images)
+        {
+            Color originColor = image.color;
+            originColor.a = 0.1f;
+            image.color = originColor;
+        }
+
+        if (howlingCoroutine != null)
+        {
+            StopCoroutine(howlingCoroutine);
+        }
+        howlingCoroutine = StartCoroutine(Howling());
     }
 
     private void OnEnable()
@@ -427,10 +551,88 @@ public class Boss : MonoBehaviour
         if (dashTextBox.activeSelf) dashTextBox.SetActive(false);
         if (fireTextBox.activeSelf) fireTextBox.SetActive(false);
         if (goblinDashEffect.activeSelf) goblinDashEffect.SetActive(false);
+        if (bossHpBar.gameObject.activeSelf) bossHpBar.gameObject.SetActive(false);
+        if (bossName.gameObject.activeSelf) bossName.gameObject.SetActive(false);
+        if (phase1.gameObject.activeSelf) phase1.gameObject.SetActive(false);
+        if (phase2.gameObject.activeSelf) phase2.gameObject.SetActive(false);
+        if (phase3.gameObject.activeSelf) phase3.gameObject.SetActive(false);
 
         Init(enemyData);
 
+        hpBar.value = health / maxHealth;
+        bossHpBar.value = hpBar.value;
+
+        transform.position = goblinHouse.transform.position + new Vector3(0, -2.5f, 0);
+
+        StartCoroutine(CutScene());
+    }
+
+    IEnumerator CutScene()
+    {
+        isCutScene = true;
+        float timer = 0f;
+        while (true)
+        {
+            if (timer > 1f)
+            {
+                spriter.color = Color.white;
+                break;
+            }
+            yield return new WaitForFixedUpdate();
+            timer += Time.fixedDeltaTime;
+            spriter.color = new Color(1, 1, 1, timer);
+        }
+
+        // Altar area에 GoblinHouse가 Spawn 되지 않은 경우
+        if (!onAltar)
+        {
+            GameObject.FindWithTag("AltarArea").transform.parent.gameObject.SetActive(false);
+        }
+
         anim.SetTrigger("Move");
+        float totalTimer = 0f;
+        timer = 0.2f;
+        while (true)
+        {
+            yield return new WaitForFixedUpdate();
+            totalTimer += Time.fixedDeltaTime;
+            timer += Time.fixedDeltaTime;
+            if (totalTimer > 1f) break;
+            if (timer > 0.4f)
+            {
+                AudioManager.instance.PlaySfx(AudioManager.Sfx.FootWalk);
+                timer = 0f;
+            }
+            rigid.MovePosition(rigid.position + new Vector2(0, -1.5f * Time.fixedDeltaTime));
+        }
+        anim.SetTrigger("Idle");
+        yield return new WaitForSeconds(0.5f);
+        howlingTextBox.SetActive(true);
+        AudioManager.instance.PlaySfx(AudioManager.Sfx.GoblinHowling);
+        yield return new WaitForFixedUpdate();
+        yield return new WaitForFixedUpdate();
+        bossHpBar.gameObject.SetActive(true);
+        bossName.gameObject.SetActive(true);
+        phase1.gameObject.SetActive(true);
+        phase2.gameObject.SetActive(true);
+        phase3.gameObject.SetActive(true);
+        yield return new WaitForFixedUpdate();
+        yield return new WaitForFixedUpdate();
+        anim.SetTrigger("Attack");
+        while (true)
+        {
+            yield return new WaitForFixedUpdate();
+            if (CheckAnim(AnimType.Idle)) break;
+        }
+        yield return new WaitForSeconds(1.5f);
+        howlingTextBox.GetComponent<Animator>().SetTrigger("Out");
+        anim.SetTrigger("Move");
+        isCutScene = false;
+    }
+
+    public bool IsCutScene()
+    {
+        return isCutScene;
     }
 
     void Init(EnemyData data)
@@ -711,10 +913,16 @@ public class Boss : MonoBehaviour
             }
         }
         if (selectedItemId == -1) return;
+
+        Drop(selectedItemId);
+    }
+
+    void Drop(int itemId)
+    {
         int prefabId = -1;
         for (int i = 0; i < PoolManager.instance.prefabs.Length; i++)
         {
-            if (PoolManager.instance.prefabs[i] == ItemManager.Instance.itemDataArr[selectedItemId].dropItem)
+            if (PoolManager.instance.prefabs[i] == ItemManager.Instance.itemDataArr[itemId].dropItem)
             {
                 prefabId = i;
                 break;
@@ -729,7 +937,9 @@ public class Boss : MonoBehaviour
         GameObject selectedItem = PoolManager.instance.Get(prefabId);
         selectedItem.transform.parent = PoolManager.instance.transform.GetChild(2);
         selectedItem.transform.position = transform.position;
-        selectedItem.GetComponent<DropItem>().itemId = selectedItemId;
+        selectedItem.GetComponent<DropItem>().itemId = itemId;
         selectedItem.GetComponent<DropItem>().Init();
     }
 }
+
+

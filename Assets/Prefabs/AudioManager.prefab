@@ -92,4 +92,10 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 35e38ad3bce86304284eeb056d57fa71, type: 3}
   - {fileID: 8300000, guid: 7d5f3204b4f76a34bb6c30aa48e212b4, type: 3}
   - {fileID: 8300000, guid: fdaf67dd24aa08a40a27c20c99d5d41f, type: 3}
+  - {fileID: 8300000, guid: c8cbc8189247bc941947ee01cf2aaabd, type: 3}
+  - {fileID: 8300000, guid: e4e560ce5a94e904bb974244c3499f8a, type: 3}
+  - {fileID: 8300000, guid: 52dcb9c8f660d9343b6a7aa0648fc3a7, type: 3}
+  - {fileID: 8300000, guid: ac02a4655b03e9343838271bffd21b09, type: 3}
+  - {fileID: 8300000, guid: 34b3e3ef1410fdd4ebe97b41e8e55000, type: 3}
+  - {fileID: 8300000, guid: 3869f8255b62f754da84ed4718896f7a, type: 3}
   channels: 32

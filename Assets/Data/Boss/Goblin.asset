@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemyName: Goblin
   anim: {fileID: 9100000, guid: 551ae068b0da34c42ab0735435b4f41a, type: 2}
-  health: 100
+  health: 25
   speed: 10
   exp: 0
   mass: 5

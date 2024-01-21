@@ -235,7 +235,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a2d14980905b68d4db358b7b75135983, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damageRate: 2
+  damageRate: 1.7
   hitList: []
 --- !u!1 &358749975002565267
 GameObject:
@@ -5225,7 +5225,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a2d14980905b68d4db358b7b75135983, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damageRate: 2.5
+  damageRate: 1.3
   hitList: []
 --- !u!1 &906484546404799509
 GameObject:
@@ -10263,7 +10263,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a2d14980905b68d4db358b7b75135983, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damageRate: 2.5
+  damageRate: 1.3
   hitList: []
 --- !u!1 &1408063541255359388
 GameObject:
@@ -10572,7 +10572,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a2d14980905b68d4db358b7b75135983, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damageRate: 2.5
+  damageRate: 1.3
   hitList: []
 --- !u!1 &2128260247877068040
 GameObject:
@@ -15918,7 +15918,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a2d14980905b68d4db358b7b75135983, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damageRate: 2
+  damageRate: 1.1
   hitList: []
 --- !u!1 &3925265495672719832
 GameObject:
@@ -20899,7 +20899,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a2d14980905b68d4db358b7b75135983, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damageRate: 2
+  damageRate: 1.1
   hitList: []
 --- !u!1 &4671178022740233024
 GameObject:
@@ -26005,7 +26005,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a2d14980905b68d4db358b7b75135983, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damageRate: 2
+  damageRate: 1.1
   hitList: []
 --- !u!1 &5351753841004033692
 GameObject:
@@ -26402,7 +26402,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a2d14980905b68d4db358b7b75135983, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damageRate: 1.5
+  damageRate: 1.25
   hitList: []
 --- !u!1 &5972372787491421347
 GameObject:
@@ -26649,12 +26649,12 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 5
-  m_Sprite: {fileID: -1021419272, guid: ecf60ae1512c4ad41ace7e924686bc95, type: 3}
+  m_Sprite: {fileID: 7423084524211000465, guid: 11e2ea94bf9b162409e4e668ef9a1da3, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 0.96, y: 1.01}
+  m_Size: {x: 0.78, y: 0.91}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -26670,7 +26670,7 @@ Animator:
   m_GameObject: {fileID: 6706167564352726105}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: cf25eb0acbfe9984791568013977d004, type: 2}
+  m_Controller: {fileID: 9100000, guid: d0a784bd810cdda4586a54d6f5eb6db7, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -26880,7 +26880,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a2d14980905b68d4db358b7b75135983, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damageRate: 2
+  damageRate: 1.1
   hitList: []
 --- !u!1 &8080920773827408205
 GameObject:
@@ -27193,7 +27193,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a2d14980905b68d4db358b7b75135983, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damageRate: 2.5
+  damageRate: 1.3
   hitList: []
 --- !u!1 &8549043069905472868
 GameObject:

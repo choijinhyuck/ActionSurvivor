@@ -14,8 +14,10 @@ public class Reposition : MonoBehaviour
     {
         if (!collision.CompareTag("Area")) return;
 
+        Debug.Log("ok");
         Vector2 areaSize = collision.GetComponent<BoxCollider2D>().size;
-        Vector3 playerPos = GameManager.instance.player.transform.position;
+        //Vector3 playerPos = GameManager.instance.player.transform.position;
+        Vector3 cameraPos = GameObject.FindWithTag("VirtualCamera").transform.position;
         Vector3 myPos = transform.position;
 
 
@@ -23,8 +25,8 @@ public class Reposition : MonoBehaviour
         {
             case "Ground":
                 myPos += new Vector3(7.5f, 7.5f, 0f);
-                float diffX = playerPos.x - myPos.x;
-                float diffY = playerPos.y - myPos.y;
+                float diffX = cameraPos.x - myPos.x;
+                float diffY = cameraPos.y - myPos.y;
                 float dirX = diffX < 0 ? -1 : 1;
                 float dirY = diffY < 0 ? -1 : 1;
                 diffX = Mathf.Abs(diffX);
@@ -42,15 +44,15 @@ public class Reposition : MonoBehaviour
             case "Enemy":
                 if (coll.enabled)
                 {
-                    Vector3 dist = playerPos - myPos;
+                    Vector3 dist = cameraPos - myPos;
                     if (Mathf.Abs(dist.x) * 2 <= areaSize.x && Mathf.Abs(dist.y) * 2 <= areaSize.y) return;
                     Vector3 ran = new Vector3(Random.Range(-2, 2), Random.Range(-2, 2), 0);
                     transform.Translate(ran + dist * 2);
                 }
                 break;
             case "DropItem":
-                diffX = playerPos.x - myPos.x;
-                diffY = playerPos.y - myPos.y;
+                diffX = cameraPos.x - myPos.x;
+                diffY = cameraPos.y - myPos.y;
                 dirX = diffX < 0 ? -1 : 1;
                 dirY = diffY < 0 ? -1 : 1;
                 diffX = Mathf.Abs(diffX);

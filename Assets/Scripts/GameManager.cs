@@ -542,6 +542,8 @@ public class GameManager : MonoBehaviour
     {
         Stop();
 
+        health = maxHealth;
+
         BGMInit(AudioManager.Bgm.Victory, 0.6f, false);
         BaseUI.Instance.Victory();
         switch (SceneManager.GetActiveScene().name)

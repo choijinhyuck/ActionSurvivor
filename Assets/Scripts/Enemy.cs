@@ -36,7 +36,6 @@ public class Enemy : MonoBehaviour
     SpriteRenderer spriter;
     Transform shadow;
     WaitForSeconds waitSec;
-    WaitForSeconds waitShortTime;
     WaitForFixedUpdate waitFix;
     Coroutine knockbackCoroutine;
     List<GameObject> hitText;
@@ -50,7 +49,6 @@ public class Enemy : MonoBehaviour
         spriter = GetComponent<SpriteRenderer>();
         shadow = GetComponentsInChildren<Transform>()[1];
         waitSec = new WaitForSeconds(.1f);
-        waitShortTime = new WaitForSeconds(.01f);
         waitFix = new WaitForFixedUpdate();
         isHit = false;
         hitText = new List<GameObject>() { hitDamage.gameObject };
@@ -114,6 +112,8 @@ public class Enemy : MonoBehaviour
         selectedObject.transform.SetPositionAndRotation(transform.position + new Vector3(deltaX, 0.46f, 0), Quaternion.identity);
         Vector3 dir = (Vector3)target.position + new Vector3(0, 0.5f, 0) - selectedObject.transform.position;
         selectedObject.GetComponent<EnemyProjectile>().Init(EnemyProjectile.projectileType.Seed, dir.normalized, 3f);
+
+        AudioManager.instance.PlaySfx(AudioManager.Sfx.Range);
     }
 
     private void LateUpdate()
