@@ -14,9 +14,7 @@ public class Reposition : MonoBehaviour
     {
         if (!collision.CompareTag("Area")) return;
 
-        Debug.Log("ok");
         Vector2 areaSize = collision.GetComponent<BoxCollider2D>().size;
-        //Vector3 playerPos = GameManager.instance.player.transform.position;
         Vector3 cameraPos = GameObject.FindWithTag("VirtualCamera").transform.position;
         Vector3 myPos = transform.position;
 
@@ -44,10 +42,10 @@ public class Reposition : MonoBehaviour
             case "Enemy":
                 if (coll.enabled)
                 {
-                    Vector3 dist = cameraPos - myPos;
+                    Vector2 dist = (Vector2)cameraPos - (Vector2)myPos;
                     if (Mathf.Abs(dist.x) * 2 <= areaSize.x && Mathf.Abs(dist.y) * 2 <= areaSize.y) return;
                     Vector3 ran = new Vector3(Random.Range(-2, 2), Random.Range(-2, 2), 0);
-                    transform.Translate(ran + dist * 2);
+                    transform.Translate(ran + (Vector3)dist * 2);
                 }
                 break;
             case "DropItem":

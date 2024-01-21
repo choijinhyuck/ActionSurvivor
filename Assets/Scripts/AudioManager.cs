@@ -108,6 +108,17 @@ public class AudioManager : MonoBehaviour
         bgmPlayer.loop = isLoop;
     }
 
+    public float GetBgmVolume()
+    {
+        return currSelectedBgmVol;
+    }
+    public void SetBgmVolume(float bgmVol)
+    {
+        float bgmVolumeSet = PlayerPrefs.HasKey("bgmVolume") ? PlayerPrefs.GetFloat("bgmVolume") : 0.5f;
+        currSelectedBgmVol = bgmVol;
+        bgmPlayer.volume = currSelectedBgmVol * bgmVolumeSet;
+    }
+
     public void PauseBGM(bool pause)
     {
         if (pause)

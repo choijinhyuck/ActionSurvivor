@@ -17,7 +17,7 @@ MonoBehaviour:
   health: 25
   speed: 10
   exp: 0
-  mass: 5
+  mass: 1000
   dropItems:
   - itemType: 11
     probability: 30

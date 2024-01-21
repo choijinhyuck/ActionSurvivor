@@ -101,7 +101,7 @@ GameObject:
   - component: {fileID: 333259489273108203}
   - component: {fileID: 6977422330261789951}
   - component: {fileID: 5226595831654358851}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Potion
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -192,7 +192,7 @@ GameObject:
   - component: {fileID: 2534360244405207887}
   - component: {fileID: 6797750389932070140}
   - component: {fileID: 5954629883765249588}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Boss Name
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -287,7 +287,7 @@ GameObject:
   - component: {fileID: 393917671239602440}
   - component: {fileID: 4654128853522292043}
   - component: {fileID: 2525978273149121187}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Background
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -555,7 +555,7 @@ GameObject:
   - component: {fileID: 5793806647456028655}
   - component: {fileID: 6030456688197944930}
   - component: {fileID: 5801596820508744385}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Dash
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -661,7 +661,7 @@ GameObject:
   - component: {fileID: 18092710204241506}
   - component: {fileID: 5441162390637891828}
   - component: {fileID: 2401599644497824777}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Fire
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -767,7 +767,7 @@ GameObject:
   - component: {fileID: 7565722736895531752}
   - component: {fileID: 8902029714027016506}
   - component: {fileID: 4190711866449673674}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Fill
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -789,7 +789,7 @@ RectTransform:
   m_Father: {fileID: 3880766054239359320}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -840,7 +840,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5508746077330275770}
-  m_Layer: 3
+  m_Layer: 0
   m_Name: DodgeEffect
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -875,7 +875,7 @@ GameObject:
   - component: {fileID: 6948166725591424404}
   - component: {fileID: 7358428075844882793}
   - component: {fileID: 3157645992045028063}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Potion
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -966,8 +966,8 @@ GameObject:
   - component: {fileID: 44405568431379062}
   - component: {fileID: 3117664714790921244}
   - component: {fileID: 6018957324302953647}
-  m_Layer: 6
-  m_Name: Canvas
+  m_Layer: 0
+  m_Name: Boss Info
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1093,7 +1093,7 @@ RectTransform:
   m_Father: {fileID: 1653287786487580576}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMax: {x: 0.525, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -1282,7 +1282,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3880766054239359320}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Fill Area
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6240,7 +6240,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &3752988650151157229
 Transform:
   m_ObjectHideFlags: 0
@@ -6427,6 +6427,7 @@ MonoBehaviour:
   fireTextBox: {fileID: 2375344905708134449}
   howlingTextBox: {fileID: 6058090932187244373}
   bossHpBar: {fileID: 3776110209020513206}
+  bossName: {fileID: 6797750389932070140}
   phase1: {fileID: 4202046038828182136}
   phase2: {fileID: 8582512958152498389}
   phase3: {fileID: 5015708976658364580}
@@ -6481,7 +6482,7 @@ GameObject:
   - component: {fileID: 4017914422836729146}
   - component: {fileID: 8504269661929573929}
   - component: {fileID: 1542696804464506563}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Howling
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6549,7 +6550,7 @@ SpriteRenderer:
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 1.4166666, y: 0.6666667}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -6586,7 +6587,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5360417897944486296}
   - component: {fileID: 3776110209020513206}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Boss Hp Bar
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6676,7 +6677,7 @@ GameObject:
   - component: {fileID: 3900914398697146811}
   - component: {fileID: 3320983418518306292}
   - component: {fileID: 5015708976658364580}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Phase3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6833,7 +6834,7 @@ GameObject:
   - component: {fileID: 7902251867698973509}
   - component: {fileID: 1211659328248792277}
   - component: {fileID: 8582512958152498389}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Phase2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6909,7 +6910,7 @@ GameObject:
   - component: {fileID: 7079452745350406086}
   - component: {fileID: 3317001467307621198}
   - component: {fileID: 4202046038828182136}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Phase1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6983,7 +6984,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 171209397844726208}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Diaglogue Boxes
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -7020,7 +7021,7 @@ GameObject:
   - component: {fileID: 3895823629385461624}
   - component: {fileID: 2908753524376717573}
   - component: {fileID: 8968638441131953661}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Potion
   m_TagString: Untagged
   m_Icon: {fileID: 0}

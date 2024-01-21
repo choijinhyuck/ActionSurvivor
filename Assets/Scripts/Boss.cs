@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Rendering.Universal;
 using UnityEngine.UI;
 
 public class Boss : MonoBehaviour
@@ -38,6 +39,7 @@ public class Boss : MonoBehaviour
     bool isDash;
     bool isCutScene;
     bool onAltar;
+    bool pierced;
     float hitTextPosXrange;
     float hitTextPosYstart;
     float hitTextPosYend;
@@ -135,7 +137,7 @@ public class Boss : MonoBehaviour
 
         if (enemyName == "Goblin")
         {
-            if (!CheckAnim(AnimType.Move) || isDash || isFire)
+            if (!CheckAnim(AnimType.Move) || isDash || isFire || howlingCoroutine != null)
             {
                 if (!isDash && !isFire)
                 {
@@ -418,7 +420,7 @@ public class Boss : MonoBehaviour
         selectedObject.transform.rotation = rot;
 
         Vector3 dir = (Vector3)target.position + new Vector3(0, 0.5f, 0) - selectedObject.transform.position;
-        selectedObject.GetComponent<EnemyProjectile>().Init(EnemyProjectile.projectileType.FireBall, dir.normalized, 7f);
+        selectedObject.GetComponent<EnemyProjectile>().Init(EnemyProjectile.projectileType.FireBall, dir.normalized, 7.5f);
 
         AudioManager.instance.PlaySfx(AudioManager.Sfx.FireBall);
     }
@@ -433,6 +435,16 @@ public class Boss : MonoBehaviour
         hpBar.value = health / maxHealth;
         bossHpBar.value = hpBar.value;
 
+        if (lookLeft)
+        {
+            spriter.flipX = target.position.x > rigid.position.x;
+        }
+        else
+        {
+            spriter.flipX = target.position.x < rigid.position.x;
+        }
+
+        if (!CheckAnim(AnimType.Move) || isDash || isFire) return;
         if (bossHpBar.value < 0.25f)
         {
             if (phase < 3)
@@ -461,29 +473,20 @@ public class Boss : MonoBehaviour
             fireInterval = 6f;
             fireMaxCount = 5;
         }
-
-        if (lookLeft)
-        {
-            spriter.flipX = target.position.x > rigid.position.x;
-        }
-        else
-        {
-            spriter.flipX = target.position.x < rigid.position.x;
-        }
     }
 
     IEnumerator Howling()
     {
         if (howlingTextBox.activeSelf) howlingTextBox.SetActive(false);
         anim.SetTrigger("Idle");
-        yield return new WaitForSeconds(0.3f);
+        yield return new WaitForSeconds(0.2f);
         AudioManager.instance.PlaySfx(AudioManager.Sfx.GoblinHowling);
         howlingTextBox.SetActive(true);
-        yield return new WaitForSeconds(2.5f);
-        anim.SetTrigger("Move");
+        yield return new WaitForSeconds(1.5f);
         howlingTextBox.GetComponent<Animator>().SetTrigger("Out");
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(0.2f);
         howlingTextBox.SetActive(false);
+        anim.SetTrigger("Move");
         howlingCoroutine = null;
     }
 
@@ -526,6 +529,7 @@ public class Boss : MonoBehaviour
 
     private void OnEnable()
     {
+        pierced = false;
         isHit = false;
         target = GameManager.instance.player.GetComponent<Rigidbody2D>();
         isLive = true;
@@ -569,6 +573,7 @@ public class Boss : MonoBehaviour
 
     IEnumerator CutScene()
     {
+        spriter.flipX = target.position.x < transform.position.x;
         isCutScene = true;
         float timer = 0f;
         while (true)
@@ -697,10 +702,14 @@ public class Boss : MonoBehaviour
     {
         if (!isLive) return;
         if (!collision.CompareTag("PierceTrap")) return;
+        if (goblinDashEffect.activeSelf) return;
+        if (pierced) return;
         if (isHit) return;
         if (!collision.GetComponent<Trap>().IsOn()) return;
-        health -= 5f;
-        HitDamageText(5f);
+        health -= 1f;
+        HitDamageText(1f);
+
+        StartCoroutine(BossPierced());
 
         if (!hpBar.gameObject.activeSelf) hpBar.gameObject.SetActive(true);
 
@@ -724,6 +733,13 @@ public class Boss : MonoBehaviour
                 AudioManager.instance.PlaySfx(AudioManager.Sfx.Dead);
             }
         }
+    }
+
+    IEnumerator BossPierced()
+    {
+        pierced = true;
+        yield return new WaitForSeconds(1f);
+        pierced = false;
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -866,25 +882,101 @@ public class Boss : MonoBehaviour
 
     IEnumerator Dead()
     {
-        Color currColor = spriter.color;
-        currColor.a = .8f;
-        spriter.color = currColor;
-        yield return waitSec;
-        currColor.a = .6f;
-        spriter.color = currColor;
-        yield return waitSec;
+        List<Image[]> imageList = new List<Image[]>();
+        switch (phase)
+        {
+            case 2:
+                imageList.Add(phase3.GetComponentsInChildren<Image>());
+                Drop(11);
+                break;
+            case 1:
+                imageList.Add(phase3.GetComponentsInChildren<Image>());
+                imageList.Add(phase2.GetComponentsInChildren<Image>());
+                Drop(11);
+                Drop(10);
+                break;
+            case 0:
+                imageList.Add(phase3.GetComponentsInChildren<Image>());
+                imageList.Add(phase2.GetComponentsInChildren<Image>());
+                imageList.Add(phase1.GetComponentsInChildren<Image>());
+                Drop(11);
+                Drop(10);
+                Drop(10);
+                break;
+        }
 
-        DropItem();
-        GameManager.instance.kill++;
-        GameManager.instance.GetExp(exp);
-        currColor.a = .4f;
-        spriter.color = currColor;
-        yield return waitSec;
-        currColor.a = .2f;
-        spriter.color = currColor;
-        yield return waitSec;
-        currColor.a = 1f;
-        spriter.color = currColor;
+        foreach (var images in imageList)
+        {
+            foreach (Image image in images)
+            {
+                Color originColor = image.color;
+                originColor.a = 0.1f;
+                image.color = originColor;
+            }
+        }
+        
+
+
+        bossHpBar.value = 0f;
+        isLive = false;
+        isCutScene = true;
+        Player.instance.SetImmune();
+        GameManager.instance.CameraDamping(0f);
+
+        int targetPPU = 58;
+        float timer = 0f;
+        anim.speed = 0f;
+        if (selectedObject != null) selectedObject.GetComponent<EnemyProjectile>().Done();
+        Time.timeScale = 0f;
+
+        float currVol = AudioManager.instance.GetBgmVolume();
+
+        while (timer < 1.5f)
+        {
+            AudioManager.instance.SetBgmVolume(currVol * (1.5f - timer) / 1.5f);
+            GameManager.instance.ZoomCamera(GameManager.instance.originPPU + Mathf.FloorToInt((targetPPU - GameManager.instance.originPPU) * timer / 1.5f));
+            yield return null;
+            timer += Time.unscaledDeltaTime;
+        }
+        AudioManager.instance.PlayBgm(false);
+
+        Time.timeScale = 1f;
+
+        while (timer < 0.5f)
+        {
+            GameManager.instance.ZoomCamera(targetPPU - Mathf.FloorToInt((targetPPU - GameManager.instance.originPPU) * timer / 0.5f));
+            yield return null;
+            timer += Time.deltaTime;
+        }
+
+        GameManager.instance.ZoomCamera();
+        GameManager.instance.CameraDamping();
+
+        Color currColor = spriter.color;
+        float endTimer = 0f;
+        bool isDropped = false;
+        while (true)
+        {
+            yield return null;
+            endTimer += Time.deltaTime;
+            if (endTimer > 2f)
+            {
+                break;
+            }
+            else if (endTimer > 1f && !isDropped)
+            {
+                isDropped = true;
+                DropItem();
+                GameManager.instance.kill++;
+                GameManager.instance.GetExp(exp);
+            }
+            currColor.a -= Time.deltaTime / 2;
+            spriter.color = currColor;
+        }
+        isCutScene = false;
+
+        yield return new WaitForSeconds(3f);
+        GameManager.instance.GameVictory();
         gameObject.SetActive(false);
 
     }

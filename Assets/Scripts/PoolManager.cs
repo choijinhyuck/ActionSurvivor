@@ -44,7 +44,14 @@ public class PoolManager : MonoBehaviour
         if (!isVictory && GameManager.instance.stageId != -1 && GameManager.instance.gameTime > GameManager.instance.maxGameTime && EnemyCount() == 0)
         {
             isVictory = true;
-            GameManager.instance.GameVictory();
+            if (SceneManager.GetActiveScene().name == "Stage_2")
+            {
+                GameManager.instance.Boss();
+            }
+            else
+            {
+                GameManager.instance.GameVictory();
+            }
         }
     }
 

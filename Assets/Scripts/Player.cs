@@ -282,6 +282,10 @@ public class Player : MonoBehaviour
         return isDodge;
     }
 
+    public void SetImmune()
+    {
+        isImmune = true;
+    }
 
     IEnumerator DeadCoroutine()
     {

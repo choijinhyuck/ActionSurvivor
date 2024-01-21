@@ -13,12 +13,34 @@ public class VirtualCamera : MonoBehaviour
         vCam = GetComponent<CinemachineVirtualCamera>();
     }
 
-    private void LateUpdate()
+    private void Start()
     {
-        if (vCam.Follow == Player.instance.transform) return;
-        if (Player.instance != null)
+        StartCoroutine(InitFollow());
+    }
+
+    IEnumerator InitFollow()
+    {
+        while (true)
         {
-            vCam.Follow = Player.instance.transform;
+            if (Player.instance != null)
+            {
+                vCam.Follow = Player.instance.transform;
+                yield break;
+            }
+            else
+            {
+                yield return null;
+            }
         }
+    }
+
+    public void FollowTarget(Transform target)
+    {
+        if (target == null)
+        {
+            Debug.Log("찾을 수 없는 객체입니다. Null reference");
+            return;
+        }
+        vCam.Follow = target;
     }
 }

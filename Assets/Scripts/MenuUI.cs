@@ -203,6 +203,7 @@ public class MenuUI : MonoBehaviour
     // 인벤토리 창에서 아무 버튼도 선택되지 않은 경우에 Menu키 (키보드: Esc, 게임패드: Start)로 빠져나올 수 있도록.
     public void OnMenu()
     {
+        if (FindAnyObjectByType<Boss>() != null && FindAnyObjectByType<Boss>().IsCutScene()) return;
         if (isUpgrading || isShopping || isStoring || isStageSelecting || isTutoriaring) return;
         if (new List<string> { "Title", "Loading" }.Contains(SceneManager.GetActiveScene().name)) return;
         if (LevelUp.instance.isLevelUp) return;

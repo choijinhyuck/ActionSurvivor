@@ -442,6 +442,7 @@ public class GameManager : MonoBehaviour
 
     public void OnInventory()
     {
+        if (FindAnyObjectByType<Boss>() != null && FindAnyObjectByType<Boss>().IsCutScene()) return;
         if (new List<string> { "Title", "Loading" }.Contains(SceneManager.GetActiveScene().name)) return;
         if (FindAnyObjectByType<StageSelect>() != null)
         {
@@ -538,11 +539,53 @@ public class GameManager : MonoBehaviour
         BGMInit(AudioManager.Bgm.Death, 1f, false);
     }
 
+    public void Boss()
+    {
+        StartCoroutine(SpawnBoss());
+    }
+
+    IEnumerator SpawnBoss()
+    {
+        float currVol = AudioManager.instance.GetBgmVolume();
+        for (int i = 1; i < 6; i++)
+        {
+            float nextVol = currVol / 5f * (5 - i);
+            AudioManager.instance.SetBgmVolume(nextVol);
+            yield return new WaitForSeconds(0.5f);
+        }
+        AudioManager.instance.PlayBgm(false);
+        yield return new WaitForSeconds(2f);
+        isLive = false;
+        Boss boss = FindAnyObjectByType<Boss>(FindObjectsInactive.Include);
+        boss.gameObject.SetActive(true);
+        float tempHealth = health;
+        health = maxHealth;
+        yield return new WaitForFixedUpdate();
+        GameObject.FindWithTag("VirtualCamera").GetComponent<VirtualCamera>().FollowTarget(boss.transform);
+        while (true)
+        {
+            if (boss.IsCutScene())
+            {
+                yield return null;
+            }
+            else
+            {
+                isLive = true;
+                break;
+            }
+        }
+        yield return new WaitForSeconds(0.5f);
+        GameObject.FindWithTag("VirtualCamera").GetComponent<VirtualCamera>().FollowTarget(Player.instance.transform);
+        
+        BGMInit(AudioManager.Bgm.Boss, 1f);
+        health = tempHealth;
+    }
+
     public void GameVictory()
     {
         Stop();
 
-        health = maxHealth;
+        Player.instance.SetImmune();
 
         BGMInit(AudioManager.Bgm.Victory, 0.6f, false);
         BaseUI.Instance.Victory();
