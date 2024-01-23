@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -15,7 +13,7 @@ public class Portrait : MonoBehaviour
     }
     private void Start()
     {
-        GetPortrait();        
+        GetPortrait();
     }
 
     private void LateUpdate()

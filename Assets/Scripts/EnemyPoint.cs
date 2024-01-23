@@ -42,9 +42,9 @@ public class EnemyPoint : MonoBehaviour
             Vector3 pivot = player.position;
             Vector3 deltaVec = new Vector3(0, 10f, 0);
 
-            if (Mathf.Abs(hitLocalPos.x) * 2 < 12.89f)
+            if (Mathf.Abs(hitLocalPos.x) * 2f < hit.collider.GetComponent<BoxCollider2D>().size.x * 0.98f)
             {
-                if(hitLocalPos.y > 0)
+                if (hitLocalPos.y > 0)
                 {
                     pivot -= deltaVec;
                 }
@@ -54,7 +54,9 @@ public class EnemyPoint : MonoBehaviour
                 }
             }
 
-            enemyPoint.transform.localRotation = Quaternion.FromToRotation(Vector3.up, transform.position - pivot);
+            float rot = Vector2.SignedAngle(Vector2.up, transform.position - pivot);
+            enemyPoint.transform.localEulerAngles = new Vector3(0, 0, rot);
+            //enemyPoint.transform.localRotation = Quaternion.FromToRotation(Vector3.up, transform.position - pivot);
             enemyPoint.transform.position = Camera.main.WorldToScreenPoint(hit.point);
         }
     }

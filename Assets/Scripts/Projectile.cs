@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Projectile : MonoBehaviour
@@ -10,11 +8,11 @@ public class Projectile : MonoBehaviour
     int pierceCount;
     int itemId;
     float speed;
-    
+
 
     Rigidbody2D rigid;
-    
-    
+
+
     private void Awake()
     {
         rigid = GetComponent<Rigidbody2D>();
@@ -27,7 +25,7 @@ public class Projectile : MonoBehaviour
         this.itemId = itemId;
         this.speed = speed;
 
-        switch(itemId)
+        switch (itemId)
         {
             case (int)ItemData.Items.Kunai:
             case (int)ItemData.Items.KunaiPlus:
@@ -46,14 +44,14 @@ public class Projectile : MonoBehaviour
                 break;
         }
     }
-    
+
 
     //private void OnTriggerEnter2D(Collider2D collision)
     //{
     //    if (!collision.CompareTag("Enemy"))
     //        return;
 
-        
+
     //    pierceCount--;
     //    Debug.Log(pierceCount);
     //    if (pierceCount < 0)

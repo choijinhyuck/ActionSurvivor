@@ -1,7 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using Unity.PlasticSCM.Editor.WebApi;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -42,6 +38,6 @@ public class ControllerManager : MonoBehaviour
         if (playerInput != null)
         {
             CurrentScheme = playerInput.currentControlScheme == "Keyboard&Mouse" ? scheme.Keyboard : scheme.Gamepad;
-        }        
+        }
     }
 }

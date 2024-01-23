@@ -3,10 +3,8 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.EventSystems;
 using UnityEngine.Experimental.Rendering.Universal;
 using UnityEngine.InputSystem;
-using UnityEngine.InputSystem.UI;
 using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
@@ -21,6 +19,7 @@ public class GameManager : MonoBehaviour
     // 플레이어 교체는 Camp 에서만 가능
     // 캐릭터는 순서대로 해금되고 마지막으로 해금한 Id가 할당
     public int newCharacterUnlock;
+    public int gameClear;
     Coroutine saveCoroutine;
 
     [Header("#Loading Info")]
@@ -105,7 +104,6 @@ public class GameManager : MonoBehaviour
     InputAction destroyAction;
 
 
-
     private void Awake()
     {
         if (instance == null)
@@ -118,10 +116,12 @@ public class GameManager : MonoBehaviour
         }
 
         DontDestroyOnLoad(this.gameObject);
-        Application.targetFrameRate = 60;
+        //Application.targetFrameRate = 60;
 
         //커서 잠금
         //Cursor.lockState = CursorLockMode.Locked;
+        //커서 숨기기
+        Cursor.visible = false;
 
         basicMaxChargeCount = 2;
 
@@ -173,6 +173,8 @@ public class GameManager : MonoBehaviour
         stage1_ClearCount = 0;
         stage2_ClearCount = 0;
         newCharacterUnlock = 0;
+
+        gameClear = 0;
     }
 
     private void OnEnable()
@@ -227,7 +229,25 @@ public class GameManager : MonoBehaviour
                 BGMInit(AudioManager.Bgm.Camp, 1f);
                 if (stage1_ClearCount == 1 && newCharacterUnlock == 0)
                 {
-                    FindAnyObjectByType<TutorialUI>(FindObjectsInactive.Include).gameObject.SetActive(true);
+                    foreach (var ui in FindObjectsOfType<TutorialUI>(true))
+                    {
+                        if (ui.CompareTag("ChangeTutorialUI"))
+                        {
+                            ui.gameObject.SetActive(true);
+                            break;
+                        }
+                    }
+                }
+                else if (stage2_ClearCount == 1 && gameClear == 0)
+                {
+                    foreach (var ui in FindObjectsOfType<TutorialUI>(true))
+                    {
+                        if (ui.CompareTag("EndingUI"))
+                        {
+                            ui.gameObject.SetActive(true);
+                            break;
+                        }
+                    }
                 }
                 ZoomCamera();
                 GameStart();
@@ -329,6 +349,7 @@ public class GameManager : MonoBehaviour
 
     public void ZoomCamera(int targetPPU)
     {
+        if ((targetPPU % 2) != 0) targetPPU++;
         Camera.main.transform.GetComponent<PixelPerfectCamera>().assetsPPU = targetPPU;
     }
 
@@ -431,7 +452,7 @@ public class GameManager : MonoBehaviour
         {
             countFromSkill = 2;
         }
-        
+
         return (basicMaxChargeCount + countFromSkill);
     }
 
@@ -576,7 +597,7 @@ public class GameManager : MonoBehaviour
         }
         yield return new WaitForSeconds(0.5f);
         GameObject.FindWithTag("VirtualCamera").GetComponent<VirtualCamera>().FollowTarget(Player.instance.transform);
-        
+
         BGMInit(AudioManager.Bgm.Boss, 1f);
         health = tempHealth;
     }

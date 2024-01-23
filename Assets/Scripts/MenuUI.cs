@@ -1,15 +1,10 @@
-using System.Collections;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Linq;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.UI;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
-using UnityEngine.Windows;
 
 public class MenuUI : MonoBehaviour
 {
@@ -154,7 +149,7 @@ public class MenuUI : MonoBehaviour
         {
             lastPressedMove = Vector2.zero;
         }
-        
+
 
         if (menuPanel.activeSelf)
         {

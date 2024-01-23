@@ -17,10 +17,10 @@ MonoBehaviour:
   itemDesc: "\uC801\uC744 \uD5A5\uD574 \uC2E0\uC18D\uD788 \uB358\uC9C8 \uC218 \uC788\uB294
     \uBFB0\uC871\uD55C \uD615\uD0DC\uC758 \uC554\uAE30\uB2E4.\n<color=red>\uD55C
     \uBC88\uC5D0 \uB354 \uB9CE\uC740, \uAC15\uB825\uD55C \uC554\uAE30\uB97C \uB358\uC9C4\uB2E4.</color>\n"
-  itemEffect: "\uD22C\uCC99 \uACF5\uACA9\uB825 <color=red>10</color>    \uC7AC\uC0AC\uC6A9\uC2DC\uAC04
+  itemEffect: "\uD22C\uCC99 \uACF5\uACA9\uB825 <color=red>12</color>    \uC7AC\uC0AC\uC6A9\uC2DC\uAC04
     <color=red>5\uCD08</color>"
   itemIcon: {fileID: 21300000, guid: 20b6f163610ed2047b73b996a70615ba, type: 3}
-  baseAmount: 10
+  baseAmount: 12
   coolTime: 5
   pierceCount: 0
   speed: 10

@@ -1,15 +1,10 @@
-using Cinemachine;
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.Experimental.Rendering.Universal;
 using UnityEngine.InputSystem;
 using UnityEngine.Rendering.Universal;
 using UnityEngine.SceneManagement;
-using UnityEngine.UIElements;
-using UnityEngine.Windows;
 
 public class Player : MonoBehaviour
 {
@@ -85,7 +80,7 @@ public class Player : MonoBehaviour
         rigid = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
         spriteRenderer = GetComponent<SpriteRenderer>();
-        waitSec = new WaitForSeconds(.01f);
+        waitSec = new WaitForSeconds(.02f);
         waitFix = new WaitForFixedUpdate();
 
         actions.Enable();
@@ -98,7 +93,7 @@ public class Player : MonoBehaviour
         spriteRenderer.color = new Color(1f, 1f, 1f, 1f);
         spriteRenderer.material.SetColor("_FlashColor", new Color(1, 1, 1, 0));
         spriteRenderer.material.SetFloat("_FlashAmount", 0f);
-        
+
         readyDodge = true;
         isDodge = false;
         isAttack = false;
@@ -217,7 +212,7 @@ public class Player : MonoBehaviour
         if (!GameManager.instance.isLive || isHit || isDodge || GameManager.instance.health < 0.1f) return;
         // 피해면역인 상태면?
         if (isImmune) return;
-        
+
         if (LayerMask.LayerToName(collision.gameObject.layer) == "Enemy")
         {
             targetPos = collision.rigidbody.position;
@@ -293,7 +288,8 @@ public class Player : MonoBehaviour
 
         GameManager.instance.CameraDamping(0f);
 
-        int targetPPU = 58;
+        int targetPPU = Mathf.FloorToInt(GameManager.instance.originPPU * 1.61f);
+        if (targetPPU % 2 != 0) { targetPPU++; }
         float timer = 0f;
         Time.timeScale = 0f;
 
@@ -457,20 +453,20 @@ public class Player : MonoBehaviour
         spriteRenderer.color = new Color(1f, 1f, 1f, .7f);
         spriteRenderer.material.SetColor("_FlashColor", new Color(1, 1, 1, 0));
         spriteRenderer.material.SetFloat("_FlashAmount", 0.25f);
-        yield return waitSec;
+        yield return new WaitForFixedUpdate();
         rigid.velocity = Vector2.zero;
         Vector2 dirVec = rigid.position - targetPos;
         rigid.AddForce(dirVec.normalized * force, ForceMode2D.Impulse);
         spriteRenderer.material.SetFloat("_FlashAmount", 0.5f);
-        yield return waitSec;
+        yield return new WaitForFixedUpdate();
         spriteRenderer.material.SetFloat("_FlashAmount", 0.75f);
-        yield return waitSec;
+        yield return new WaitForFixedUpdate();
         spriteRenderer.material.SetFloat("_FlashAmount", 1.0f);
-        yield return waitSec;
+        yield return new WaitForFixedUpdate();
         spriteRenderer.material.SetFloat("_FlashAmount", 0.75f);
-        yield return waitSec;
+        yield return new WaitForFixedUpdate();
         spriteRenderer.material.SetFloat("_FlashAmount", 0.5f);
-        yield return waitSec;
+        yield return new WaitForFixedUpdate();
         spriteRenderer.material.SetFloat("_FlashAmount", 0f);
         rigid.velocity = Vector2.zero;
         yield return new WaitForSeconds(.1f);
@@ -526,9 +522,9 @@ public class Player : MonoBehaviour
         if (!GameManager.instance.isLive) return;
         if (GameManager.instance.health < .1) return;
         if (inputVector.magnitude == 0) return;
-        if (anim.GetCurrentAnimatorStateInfo(0).IsName("Attack") || 
-            anim.GetCurrentAnimatorStateInfo(0).IsName("SkillMotion") || 
-            anim.GetCurrentAnimatorStateInfo(0).IsName("Dead") || 
+        if (anim.GetCurrentAnimatorStateInfo(0).IsName("Attack") ||
+            anim.GetCurrentAnimatorStateInfo(0).IsName("SkillMotion") ||
+            anim.GetCurrentAnimatorStateInfo(0).IsName("Dead") ||
             anim.GetCurrentAnimatorStateInfo(0).IsName("Barbarian_Skill_Lv2") ||
             anim.GetCurrentAnimatorStateInfo(0).IsName("Barbarian_Skill_Lv3") ||
             isHit || isDodge)
@@ -611,10 +607,10 @@ public class Player : MonoBehaviour
     {
         if (!GameManager.instance.isLive) return;
         if (GameManager.instance.health < 0.1f) return;
-        if (anim.GetCurrentAnimatorStateInfo(0).IsName("Attack") || 
-            anim.GetCurrentAnimatorStateInfo(0).IsName("SkillMotion") || 
+        if (anim.GetCurrentAnimatorStateInfo(0).IsName("Attack") ||
+            anim.GetCurrentAnimatorStateInfo(0).IsName("SkillMotion") ||
             anim.GetCurrentAnimatorStateInfo(0).IsName("Dead") ||
-            anim.GetCurrentAnimatorStateInfo(0).IsName("Barbarian_Skill_Lv2") || 
+            anim.GetCurrentAnimatorStateInfo(0).IsName("Barbarian_Skill_Lv2") ||
             anim.GetCurrentAnimatorStateInfo(0).IsName("Barbarian_Skill_Lv3") ||
             isHit)
             return;
@@ -736,10 +732,10 @@ public class Player : MonoBehaviour
 
     void Fire()
     {
-        if (anim.GetCurrentAnimatorStateInfo(0).IsName("Attack") || 
-            anim.GetCurrentAnimatorStateInfo(0).IsName("SkillMotion") || 
+        if (anim.GetCurrentAnimatorStateInfo(0).IsName("Attack") ||
+            anim.GetCurrentAnimatorStateInfo(0).IsName("SkillMotion") ||
             anim.GetCurrentAnimatorStateInfo(0).IsName("Dead") ||
-            anim.GetCurrentAnimatorStateInfo(0).IsName("Barbarian_Skill_Lv2") || 
+            anim.GetCurrentAnimatorStateInfo(0).IsName("Barbarian_Skill_Lv2") ||
             anim.GetCurrentAnimatorStateInfo(0).IsName("Barbarian_Skill_Lv3") ||
             isHit)
             return;
@@ -814,8 +810,8 @@ public class Player : MonoBehaviour
             }
 
             yield return null;
-            chargeTimer += Time.fixedDeltaTime;
-            totalTime += Time.fixedDeltaTime;
+            chargeTimer += Time.deltaTime;
+            totalTime += Time.deltaTime;
         }
     }
 
@@ -1042,11 +1038,11 @@ public class Player : MonoBehaviour
 
     void StartRangeWeapon()
     {
-        if (anim.GetCurrentAnimatorStateInfo(0).IsName("Attack") || 
-            anim.GetCurrentAnimatorStateInfo(0).IsName("SkillMotion") || 
+        if (anim.GetCurrentAnimatorStateInfo(0).IsName("Attack") ||
+            anim.GetCurrentAnimatorStateInfo(0).IsName("SkillMotion") ||
             anim.GetCurrentAnimatorStateInfo(0).IsName("Dead") ||
-            anim.GetCurrentAnimatorStateInfo(0).IsName("Barbarian_Skill_Lv2") || 
-            anim.GetCurrentAnimatorStateInfo(0).IsName("Barbarian_Skill_Lv3") || 
+            anim.GetCurrentAnimatorStateInfo(0).IsName("Barbarian_Skill_Lv2") ||
+            anim.GetCurrentAnimatorStateInfo(0).IsName("Barbarian_Skill_Lv3") ||
             isHit)
             return;
         //if (anim.GetCurrentAnimatorStateInfo(0).IsName("Dead") || isHit)

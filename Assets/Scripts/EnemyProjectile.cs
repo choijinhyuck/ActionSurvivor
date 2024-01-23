@@ -1,4 +1,3 @@
-using UnityEditor.UI;
 using UnityEngine;
 
 public class EnemyProjectile : MonoBehaviour
@@ -69,8 +68,8 @@ public class EnemyProjectile : MonoBehaviour
                 rigid.velocity = dir * speed;
             }
         }
-        
-        
+
+
     }
 
     public void Init(projectileType projectileName, Vector3 dir, float speed)

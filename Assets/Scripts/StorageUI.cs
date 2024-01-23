@@ -1,7 +1,5 @@
 using System.Collections.Generic;
 using System.Linq;
-using UnityEditor.Search;
-using UnityEditor.UI;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -99,7 +97,7 @@ public class StorageUI : MonoBehaviour
                 buttons[48].gameObject.SetActive(false);
                 buttons[49].gameObject.SetActive(true);
                 buttons[49].interactable = true;
-                int[] targetInts = new int[] {0, 1};
+                int[] targetInts = new int[] { 0, 1 };
                 foreach (int targetInt in targetInts)
                 {
                     Navigation navigation = buttons[targetInt].navigation;
@@ -111,7 +109,7 @@ public class StorageUI : MonoBehaviour
             case 24:
                 buttons[48].gameObject.SetActive(false);
                 buttons[49].gameObject.SetActive(false);
-                targetInts = new int[] { 0, 1, 8, 9};
+                targetInts = new int[] { 0, 1, 8, 9 };
                 foreach (int targetInt in targetInts)
                 {
                     Navigation navigation = buttons[targetInt].navigation;
@@ -316,7 +314,7 @@ public class StorageUI : MonoBehaviour
         }
         else
         {
-            if(GameManager.instance.storedItemsId[selectedId % 24] == -1) return;
+            if (GameManager.instance.storedItemsId[selectedId % 24] == -1) return;
         }
 
         // 위 조건에 해당되지 않으면 파괴 버튼 도움말 팝업 띄우기
@@ -349,7 +347,7 @@ public class StorageUI : MonoBehaviour
                         GameManager.instance.maxInventory = 16;
                         buttons[48].gameObject.SetActive(false);
                         buttons[49].interactable = true;
-                        int[] targetInts = new int[] { 0, 1};
+                        int[] targetInts = new int[] { 0, 1 };
                         foreach (int targetInt in targetInts)
                         {
                             Navigation navigation = buttons[targetInt].navigation;
@@ -392,7 +390,7 @@ public class StorageUI : MonoBehaviour
                     AudioManager.instance.PlaySfx(AudioManager.Sfx.Destroy);
                 }
             }
-            
+
         }
         else
         {
@@ -551,7 +549,7 @@ public class StorageUI : MonoBehaviour
             OnUnlock();
             return;
         }
-        
+
 
         AudioManager.instance.PlaySfx(AudioManager.Sfx.ButtonPress);
         pressedId = buttonIndex;
@@ -561,7 +559,7 @@ public class StorageUI : MonoBehaviour
         buttons[buttonIndex].GetComponent<Image>().color = grayColor;
     }
 
-    
+
     void OnUnlock()
     {
         if (selectedId == 48)

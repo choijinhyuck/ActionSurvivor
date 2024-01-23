@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 6664586035342977491}
   - component: {fileID: 3050587656487392545}
   - component: {fileID: 2574100686940980346}
+  - component: {fileID: 595774612636849604}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -187,9 +188,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_ComponentVersion: 1
-  m_AssetsPPU: 36
-  m_RefResolutionX: 218
-  m_RefResolutionY: 226
+  m_AssetsPPU: 150
+  m_RefResolutionX: 1920
+  m_RefResolutionY: 1080
   m_CropFrame: 0
   m_GridSnapping: 0
   m_FilterMode: 0
@@ -208,3 +209,15 @@ AudioHighPassFilter:
   m_Enabled: 0
   m_CutoffFrequency: 1700
   m_HighpassResonanceQ: 4
+--- !u!114 &595774612636849604
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2564582011177107155}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: db45f75a518a1bc47abadec78eb25b62, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

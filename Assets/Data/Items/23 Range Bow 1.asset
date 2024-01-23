@@ -20,10 +20,10 @@ MonoBehaviour:
     \uAD00\uD1B5\uD560 \uC218 \uC788\uB2E4.\n<color=red>\uB9E4\uC6B0 \uAC15\uB825\uD55C
     \uD654\uC0B4\uC744 \uB0A0\uB9B0\uB2E4.</color>"
   itemEffect: "\uD22C\uCC99 \uACF5\uACA9\uB825 <color=red>25</color>    \uC7AC\uC0AC\uC6A9\uC2DC\uAC04
-    <color=red>6\uCD08</color>"
+    <color=red>7\uCD08</color>"
   itemIcon: {fileID: -1417500169, guid: b79fa3ff525825c4282b912597f437fa, type: 3}
   baseAmount: 25
-  coolTime: 6
+  coolTime: 7
   pierceCount: 4
   speed: 12
   priceToBuy: 3500

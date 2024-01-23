@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
@@ -7,9 +5,12 @@ using UnityEngine.UI;
 
 public class TutorialUI : MonoBehaviour
 {
+    public enum UIType { FirstTutorial, ChangeTutorial, Ending }
+
     [SerializeField] InputActionAsset actions;
     [SerializeField] Sprite[] keySprites;
     [SerializeField] Image[] keyImages;
+    [SerializeField] UIType uiType;
 
     InputAction closeAction;
     InputAction closeAction2;
@@ -70,8 +71,17 @@ public class TutorialUI : MonoBehaviour
 
         if (SceneManager.GetActiveScene().name == "Camp")
         {
-            GameManager.instance.newCharacterUnlock = 1;
-            GameManager.instance.isLive = true;
+            if (uiType == UIType.ChangeTutorial)
+            {
+                GameManager.instance.newCharacterUnlock = 1;
+                GameManager.instance.isLive = true;
+            }
+            else if (uiType == UIType.Ending)
+            {
+                GameManager.instance.gameClear = 1;
+                GameManager.instance.isLive = true;
+            }
+
         }
         else
         {

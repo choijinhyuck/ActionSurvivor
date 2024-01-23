@@ -58,7 +58,7 @@ public class PoolManager : MonoBehaviour
     void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
         // 새로운 씬 로드 시 잔여 pool 모두 제거
-        for (int i = 0; i < pools.Length; i++ )
+        for (int i = 0; i < pools.Length; i++)
         {
             foreach (var prefab in pools[i])
             {
@@ -84,7 +84,8 @@ public class PoolManager : MonoBehaviour
             }
         }
 
-        if (!select) { 
+        if (!select)
+        {
             select = Instantiate(prefabs[index], transform);
             pools[index].Add(select);
         }

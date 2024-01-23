@@ -1,11 +1,5 @@
 using System.Collections;
-using System.Collections.Generic;
-using System.Drawing;
-using Unity.Mathematics;
-using UnityEditor.Build.Content;
-using UnityEditor.Rendering;
 using UnityEngine;
-using UnityEngine.InputSystem.Controls;
 
 public class RangeWeapon : MonoBehaviour
 {
@@ -89,7 +83,7 @@ public class RangeWeapon : MonoBehaviour
                     count = 3;
                     break;
                 case (int)ItemData.Items.KunaiPlus:
-                    count = 6;
+                    count = 7;
                     break;
                 default:
                     count = 0;
@@ -101,12 +95,12 @@ public class RangeWeapon : MonoBehaviour
             Vector3 arrowSpritePos;
             Vector3 arrowAngle = GameManager.instance.player.rangeArrow.transform.localEulerAngles;
             Vector3 newDir;
-            //float rotAngle = 15f;
+            float unitAngle = count == 3 ? 15f : 10f;
             float[] rotAngles = new float[count];
-            rotAngles[0] = 15f * (count - 1) / 2f;
+            rotAngles[0] = unitAngle * (count - 1) / 2f;
             for (int i = 1; i < count; i++)
             {
-                rotAngles[i] = rotAngles[i - 1] - 15f;
+                rotAngles[i] = rotAngles[i - 1] - unitAngle;
             }
 
             for (int i = 0; i < count; i++)

@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -83,8 +81,8 @@ public class Status : MonoBehaviour
                 skillLevel.text = string.Format("기술: Lv.{0} / Lv.6", GameManager.instance.playerSkillLevel);
                 break;
         }
-        
-        switch(GameManager.instance.playerDashLevel)
+
+        switch (GameManager.instance.playerDashLevel)
         {
             case 4:
                 dashLevel.text = string.Format("대시:   <color=red>Lv.Max</color>", GameManager.instance.playerDashLevel);
@@ -97,7 +95,7 @@ public class Status : MonoBehaviour
                 break;
         }
     }
-      
+
 
     string GetClassName()
     {

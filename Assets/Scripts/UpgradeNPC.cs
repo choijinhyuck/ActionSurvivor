@@ -32,7 +32,7 @@ public class UpgradeNPC : MonoBehaviour
         cancelAction.performed += CancelHandler;
         menuAction.performed += MenuHandler;
     }
-    
+
     void OpenHandler(InputAction.CallbackContext context)
     {
         Open(ActionType.Open);

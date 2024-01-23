@@ -1,5 +1,5 @@
 using System.Collections;
-using System.Runtime.CompilerServices;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -9,6 +9,7 @@ public class ChargeCount : MonoBehaviour
     public Sprite skillReady;
 
     WaitForFixedUpdate waitFix;
+    Vector3 originScale;
 
     int maxChargeCount;
     float chargeTimer;
@@ -20,6 +21,8 @@ public class ChargeCount : MonoBehaviour
 
     private void Start()
     {
+        originScale = transform.GetChild(0).GetComponent<RectTransform>().localScale;
+        InitSize();
         Init();
         chargeTimer = 0f;
     }
@@ -46,6 +49,14 @@ public class ChargeCount : MonoBehaviour
                 }
                 transform.GetChild(i).GetComponent<Image>().sprite = skillReady;
             }
+        }
+    }
+    
+    void InitSize()
+    {
+        for (int i = 0; i < transform.childCount; i++)
+        {
+            transform.GetChild(i).GetComponent<RectTransform>().localScale = originScale;
         }
     }
 
@@ -89,10 +100,15 @@ public class ChargeCount : MonoBehaviour
         }
     }
 
+    private void OnDisable()
+    {
+        StopAllCoroutines();
+        InitSize();
+    }
+
+
     IEnumerator ReadyCharge(RectTransform readyChargeRect)
     {
-        Vector3 originScale = readyChargeRect.localScale;
-
         readyChargeRect.localScale = originScale * 1.1f;
         yield return waitFix;
         readyChargeRect.localScale = originScale * 1.2f;

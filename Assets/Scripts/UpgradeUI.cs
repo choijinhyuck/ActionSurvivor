@@ -2,7 +2,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -264,7 +263,7 @@ public class UpgradeUI : MonoBehaviour
         }
         Debug.Log("Try to get an Upgrade Index that can't be upgraded");
         return -1;
-        
+
     }
 
     void OnPress(int buttonIndex)
@@ -410,12 +409,12 @@ public class UpgradeUI : MonoBehaviour
     {
         for (int i = 0; i < buttons.Count; i++)
         {
-                if (GameManager.instance.inventoryItemsId[i] == -1)
-                {
-                    itemImages[i].color = blankAlpha;
-                    continue;
-                }
-                else
+            if (GameManager.instance.inventoryItemsId[i] == -1)
+            {
+                itemImages[i].color = blankAlpha;
+                continue;
+            }
+            else
             {
                 itemImages[i].color = originAlpha;
             }

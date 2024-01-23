@@ -56,7 +56,7 @@ public class Enemy : MonoBehaviour
 
         fireTimer = 0f;
         fireInterval = 4f;
-        fireDistance = 3.5f;
+        fireDistance = 5f;
     }
 
     private void FixedUpdate()
@@ -364,7 +364,7 @@ public class Enemy : MonoBehaviour
         hitText[selectId].GetComponent<Text>().text = damage.ToString("N0") + "<size=12> ÇÇÇØ</size>";
         hitText[selectId].GetComponent<Text>().color = Color.red;
         //hitText[selectId].transform.localScale = new Vector3(1f, 1f, 1f);
-        Vector2 textPos = new (Random.Range(-hitTextPosXrange, hitTextPosXrange), hitTextPosYstart);
+        Vector2 textPos = new(Random.Range(-hitTextPosXrange, hitTextPosXrange), hitTextPosYstart);
         hitText[selectId].GetComponent<RectTransform>().anchoredPosition = textPos;
         StartCoroutine(MoveText(hitText[selectId]));
     }

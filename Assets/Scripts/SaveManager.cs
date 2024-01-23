@@ -1,6 +1,4 @@
-using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class SaveManager : MonoBehaviour
@@ -10,7 +8,7 @@ public class SaveManager : MonoBehaviour
         Prefs("lastPlayerId", GameManager.instance.playerId);
         Prefs("maxInventory", GameManager.instance.maxInventory);
         Prefs("gold", GameManager.instance.gold);
-        
+
         for (int i = 0; i < GameManager.instance.inventoryItemsId.Length; i++)
         {
             string key = "inventory" + i.ToString();
@@ -40,6 +38,8 @@ public class SaveManager : MonoBehaviour
         Prefs("stage2_ClearCount", GameManager.instance.stage2_ClearCount);
 
         Prefs("newCharacterUnlock", GameManager.instance.newCharacterUnlock);
+
+        Prefs("gameClear", GameManager.instance.gameClear);
 
         PlayerPrefs.Save();
     }
@@ -86,6 +86,7 @@ public class SaveManager : MonoBehaviour
         keys.Add("stage1_ClearCount");
         keys.Add("stage2_ClearCount");
         keys.Add("newCharacterUnlock");
+        keys.Add("gameClear");
 
 
         foreach (string key in keys)
@@ -131,6 +132,7 @@ public class SaveManager : MonoBehaviour
         GameManager.instance.stage2_ClearCount = GetInt("stage2_ClearCount");
 
         GameManager.instance.newCharacterUnlock = GetInt("newCharacterUnlock");
+        GameManager.instance.gameClear = GetInt("gameClear");
 
         PlayerPrefs.Save();
     }
@@ -143,7 +145,7 @@ public class SaveManager : MonoBehaviour
     {
         PlayerPrefs.SetFloat(key, value);
     }
-    
+
     static int GetInt(string key)
     {
         if (!PlayerPrefs.HasKey(key))

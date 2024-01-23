@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
@@ -11,7 +9,7 @@ public class StorageChest : MonoBehaviour
     public StorageUI storageUI;
     public LayerMask playerLayer;
     public Sprite[] equipSprites;
-    
+
 
     [SerializeField]
     Image buttonImage;
@@ -136,7 +134,7 @@ public class StorageChest : MonoBehaviour
                 break;
         }
     }
-    
+
     public void CloseSound()
     {
         AudioManager.instance.PlaySfx(AudioManager.Sfx.ChestOpen);

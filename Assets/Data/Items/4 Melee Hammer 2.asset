@@ -17,7 +17,7 @@ MonoBehaviour:
     \uC804\uC6A9)</size>"
   itemDesc: "\uC720\uBA85 \uB300\uC7A5\uC7A5\uC774\uAC00 \uC740\uC73C\uB85C \uC81C\uC791\uD55C
     \uAC15\uB825\uD55C \uB9DD\uCE58\uB2E4."
-  itemEffect: "\uACF5\uACA9\uB825 <color=red>+5</color>"
+  itemEffect: "\uACF5\uACA9\uB825 <color=red>+6</color>"
   itemIcon: {fileID: 1307765856, guid: 13f6535ee6958b54188a2f5095516d88, type: 3}
   baseAmount: 6
   coolTime: 0

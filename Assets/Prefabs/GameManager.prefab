@@ -48,9 +48,10 @@ MonoBehaviour:
   stage1_ClearCount: 0
   stage2_ClearCount: 0
   newCharacterUnlock: 0
+  gameClear: 0
   sceneName: 
   actions: {fileID: -944628639613478452, guid: 7a8bf57f548517145a5d5008f25a86ca, type: 3}
-  originPPU: 36
+  originPPU: 150
   fadeInPrefab: {fileID: 3589323735817737528, guid: fd278161f4afbee4facaa1381b830939, type: 3}
   fadeOutPrefab: {fileID: 3589323735817737528, guid: 2df77333cac141f4cabc883d69857a51, type: 3}
   noticePrefab: {fileID: 7326843536388543888, guid: ee44db883d4163948a8d3a7229641c53, type: 3}

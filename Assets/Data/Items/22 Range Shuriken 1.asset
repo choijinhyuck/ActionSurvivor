@@ -19,10 +19,10 @@ MonoBehaviour:
     \uBC18\uACBD \uC774\uB0B4 \uC801\uC5D0\uAC8C <color=red>2\uD68C</color> \uD295\uACA8\uB098\uAC08
     \uC218 \uC788\uB2E4.\n<color=red>\uD55C \uBC88\uC5D0 \uB354 \uB9CE\uC740, \uAC15\uB825\uD55C
     \uC554\uAE30\uB97C \uB358\uC9C4\uB2E4.</color>\n"
-  itemEffect: "\uD22C\uCC99 \uACF5\uACA9\uB825 <color=red>5</color>    \uC7AC\uC0AC\uC6A9\uC2DC\uAC04
+  itemEffect: "\uD22C\uCC99 \uACF5\uACA9\uB825 <color=red>7</color>    \uC7AC\uC0AC\uC6A9\uC2DC\uAC04
     <color=red>5\uCD08</color>"
   itemIcon: {fileID: 21300000, guid: 48637ff4014f92b4aa320212be3303ca, type: 3}
-  baseAmount: 5
+  baseAmount: 7
   coolTime: 5
   pierceCount: 2
   speed: 8

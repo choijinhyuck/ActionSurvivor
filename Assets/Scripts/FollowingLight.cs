@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class FollowingLight : MonoBehaviour
@@ -15,6 +13,6 @@ public class FollowingLight : MonoBehaviour
     {
         if (Player.instance == null) return;
         transform.position = Player.instance.transform.position + calibration;
-        
+
     }
 }

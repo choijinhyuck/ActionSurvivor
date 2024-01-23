@@ -1,17 +1,16 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
-using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class BackgroundUI : MonoBehaviour
 {
     [SerializeField] InputActionAsset actions;
     [SerializeField] GameObject confirm;
+    [SerializeField] GameObject creditUI;
 
     InputAction cancelAction;
     InputAction menuAction;
@@ -20,7 +19,7 @@ public class BackgroundUI : MonoBehaviour
     int buttonClickedIndex;
     int selectedId;
     List<Button> buttons;
-    
+
 
     private void Awake()
     {
@@ -45,7 +44,7 @@ public class BackgroundUI : MonoBehaviour
             if (!buttons[selectedId].enabled) return;
             Confirm(false);
         }
-        
+
         if (SettingUI.instance.settingPanel.activeSelf)
         {
             if (SettingUI.instance.DropdownOpened())
@@ -97,63 +96,63 @@ public class BackgroundUI : MonoBehaviour
 
 
 
-        for (int i = 0; buttons.Count > i; i++)
-        {
-            if (i > 4) continue;
-            string replaceText = "";
-            if (selectedButton == buttons[i].gameObject)
-            {
-                switch (i)
-                {
-                    case 0:
-                        replaceText = "> 새 게임 <";
-                        break;
+        //for (int i = 0; buttons.Count > i; i++)
+        //{
+        //    if (i > 4) continue;
+        //    string replaceText = "";
+        //    if (selectedButton == buttons[i].gameObject)
+        //    {
+        //        switch (i)
+        //        {
+        //            case 0:
+        //                replaceText = "> 새 게임 <";
+        //                break;
 
-                    case 1:
-                        replaceText = "> 이어하기 <";
-                        break;
+        //            case 1:
+        //                replaceText = "> 이어하기 <";
+        //                break;
 
-                    case 2:
-                        replaceText = "> 설정 <";
-                        break;
+        //            case 2:
+        //                replaceText = "> 설정 <";
+        //                break;
 
-                    case 3:
-                        replaceText = "> 크레딧 <";
-                        break;
+        //            case 3:
+        //                replaceText = "> 크레딧 <";
+        //                break;
 
-                    case 4:
-                        replaceText = "> 종료 <";
-                        break;
-                }
-            }
-            else
-            {
-                switch (i)
-                {
-                    case 0:
-                        replaceText = "새 게임";
-                        break;
+        //            case 4:
+        //                replaceText = "> 종료 <";
+        //                break;
+        //        }
+        //    }
+        //    else
+        //    {
+        //        switch (i)
+        //        {
+        //            case 0:
+        //                replaceText = "새 게임";
+        //                break;
 
-                    case 1:
-                        replaceText = "이어하기";
-                        break;
+        //            case 1:
+        //                replaceText = "이어하기";
+        //                break;
 
-                    case 2:
-                        replaceText = "설정";
-                        break;
+        //            case 2:
+        //                replaceText = "설정";
+        //                break;
 
-                    case 3:
-                        replaceText = "크레딧";
-                        break;
+        //            case 3:
+        //                replaceText = "크레딧";
+        //                break;
 
-                    case 4:
-                        replaceText = "종료";
-                        break;
-                }
-            }
+        //            case 4:
+        //                replaceText = "종료";
+        //                break;
+        //        }
+        //    }
 
-            buttons[i].GetComponent<Text>().text = replaceText;
-        }
+        //    buttons[i].GetComponent<Text>().text = replaceText;
+        //}
     }
 
     public void NewGame()
@@ -232,6 +231,12 @@ public class BackgroundUI : MonoBehaviour
     {
         AudioManager.instance.PlaySfx(AudioManager.Sfx.MenuSelect);
         SettingUI.instance.settingPanel.SetActive(true);
+    }
+
+    public void Credit()
+    {
+        AudioManager.instance.PlaySfx(AudioManager.Sfx.MenuSelect);
+        creditUI.SetActive(true);
     }
 
     IEnumerator Press()

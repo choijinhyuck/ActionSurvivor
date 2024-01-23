@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -20,6 +19,7 @@ public class HUD : MonoBehaviour
     List<Image> hearts;
     GameObject heartMold;
     WaitForFixedUpdate waitFix;
+    Vector2 originVec;
 
     float maxHealth;
     int intMaxHealth;
@@ -48,12 +48,19 @@ public class HUD : MonoBehaviour
 
     private void Start()
     {
+        originVec = GetComponent<RectTransform>().anchoredPosition;
         alreadyStarted = true;
         if (type == InfoType.Health)
         {
             heartMold = transform.GetChild(0).gameObject;
             InitHeart();
         }
+    }
+
+    private void OnDisable()
+    {
+        StopAllCoroutines();
+        GetComponent<RectTransform>().anchoredPosition = originVec;
     }
 
     private void LateUpdate()
@@ -150,7 +157,6 @@ public class HUD : MonoBehaviour
     {
         isLosing = true;
         Vector2 deltaVec = new Vector2(1f, 0f);
-        Vector2 originVec = GetComponent<RectTransform>().anchoredPosition;
 
         for (int i = 0; i < 3; i++)
         {

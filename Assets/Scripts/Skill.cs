@@ -5,7 +5,7 @@ public class Skill : MonoBehaviour
 {
     public float damageRate;
     public List<GameObject> hitList;
-    
+
     private void OnEnable()
     {
         hitList = new List<GameObject>();
@@ -19,7 +19,7 @@ public class Skill : MonoBehaviour
     //        hitList.Add(collision.gameObject);
     //    }
     //}
-    
+
     public void SetHitList(GameObject targetObject)
     {
         hitList.Add(targetObject);

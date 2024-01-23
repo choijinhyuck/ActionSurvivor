@@ -1,12 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Rendering.Universal;
 using UnityEngine.UI;
 
 public class Boss : MonoBehaviour
 {
-    public enum AnimType { Idle, Move, Attack, Fire}
+    public enum AnimType { Idle, Move, Attack, Fire }
 
     public string enemyName;
     public float speed;
@@ -84,7 +83,7 @@ public class Boss : MonoBehaviour
         isCutScene = false;
 
         fireTimer = 0f;
-        fireInterval = 10f;
+        fireInterval = 8f;
         fireDistance = 5f;
         fireCount = 0;
         fireMaxCount = 1;
@@ -244,7 +243,7 @@ public class Boss : MonoBehaviour
             anim.SetTrigger("Fire");
         }
     }
-    
+
     bool CheckAnim(AnimType animType)
     {
         string state;
@@ -289,7 +288,7 @@ public class Boss : MonoBehaviour
             yield return new WaitForSeconds(1f);
             boost = 5f;
         }
-        
+
         dashTextBox.GetComponent<Animator>().SetTrigger("Out");
         goblinDashEffect.SetActive(true);
         AudioManager.instance.PlaySfx(AudioManager.Sfx.Dodge);
@@ -470,8 +469,9 @@ public class Boss : MonoBehaviour
         if (phase > 2)
         {
             dashInterval = 3f;
-            fireInterval = 6f;
+            fireInterval = 5f;
             fireMaxCount = 5;
+            speed = enemyData.speed * 1.3f;
         }
     }
 
@@ -914,16 +914,17 @@ public class Boss : MonoBehaviour
                 image.color = originColor;
             }
         }
-        
-
 
         bossHpBar.value = 0f;
         isLive = false;
         isCutScene = true;
         Player.instance.SetImmune();
+
+        GameObject.FindWithTag("VirtualCamera").GetComponent<VirtualCamera>().FollowTarget(transform);
         GameManager.instance.CameraDamping(0f);
 
-        int targetPPU = 58;
+        int targetPPU = Mathf.FloorToInt(GameManager.instance.originPPU * 1.61f);
+        if (targetPPU % 2 != 0) { targetPPU++; }
         float timer = 0f;
         anim.speed = 0f;
         if (selectedObject != null) selectedObject.GetComponent<EnemyProjectile>().Done();
@@ -952,6 +953,8 @@ public class Boss : MonoBehaviour
         GameManager.instance.ZoomCamera();
         GameManager.instance.CameraDamping();
 
+        if (goblinDashEffect.activeSelf) { goblinDashEffect.SetActive(false); }
+
         Color currColor = spriter.color;
         float endTimer = 0f;
         bool isDropped = false;
@@ -959,7 +962,7 @@ public class Boss : MonoBehaviour
         {
             yield return null;
             endTimer += Time.deltaTime;
-            if (endTimer > 2f)
+            if (endTimer > 4f)
             {
                 break;
             }
@@ -970,12 +973,13 @@ public class Boss : MonoBehaviour
                 GameManager.instance.kill++;
                 GameManager.instance.GetExp(exp);
             }
-            currColor.a -= Time.deltaTime / 2;
+            currColor.a -= Time.deltaTime / 4;
             spriter.color = currColor;
         }
+        GameObject.FindWithTag("VirtualCamera").GetComponent<VirtualCamera>().FollowTarget(Player.instance.transform);
         isCutScene = false;
 
-        yield return new WaitForSeconds(3f);
+        yield return new WaitForSeconds(1f);
         GameManager.instance.GameVictory();
         gameObject.SetActive(false);
 

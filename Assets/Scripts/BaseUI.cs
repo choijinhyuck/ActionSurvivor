@@ -1,8 +1,4 @@
-using JetBrains.Annotations;
 using System.Collections;
-using System.Collections.Generic;
-using System.Threading;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
@@ -147,7 +143,7 @@ public class BaseUI : MonoBehaviour
         StartCoroutine(ChangeAlphaCoroutine());
     }
 
-    void ChangeAlpha (float alpha, params MaskableGraphic[] components)
+    void ChangeAlpha(float alpha, params MaskableGraphic[] components)
     {
         foreach (var component in components)
         {
@@ -198,7 +194,7 @@ public class BaseUI : MonoBehaviour
         float endSecond = 3f;
         float targetAlpha = .7f;
 
-        while (timer <  endSecond)
+        while (timer < endSecond)
         {
             ChangeAlpha(timer / endSecond * targetAlpha, victory, victoryTitle, victoryMessage);
             yield return null;
@@ -258,7 +254,7 @@ public class BaseUI : MonoBehaviour
             timer += Time.unscaledDeltaTime;
         }
         victory.gameObject.SetActive(false);
-        
+
         EventSystem.current.SetSelectedGameObject(null);
         AudioManager.instance.PauseBGM(false);
 

@@ -173,7 +173,7 @@ public class ShopUI : MonoBehaviour
     {
         // 컨트롤 도움말
         int itemId;
-        
+
         //판매
         if (selectedId < 24)
         {
@@ -355,18 +355,18 @@ public class ShopUI : MonoBehaviour
         if (GameManager.instance.workingInventory)
         {
 
-                if (isBuySell)
-                {
-                    isBuySell = false;
-                    buySellConfirm.transform.parent.gameObject.SetActive(false);
-                    EventSystem.current.SetSelectedGameObject(buttons[selectedId].gameObject);
-                    AudioManager.instance.PlaySfx(AudioManager.Sfx.Cancel);
-                }
-                else
-                {
-                    shopNPC.Open(ShopNPC.ActionType.Inventory);
-                }
-            
+            if (isBuySell)
+            {
+                isBuySell = false;
+                buySellConfirm.transform.parent.gameObject.SetActive(false);
+                EventSystem.current.SetSelectedGameObject(buttons[selectedId].gameObject);
+                AudioManager.instance.PlaySfx(AudioManager.Sfx.Cancel);
+            }
+            else
+            {
+                shopNPC.Open(ShopNPC.ActionType.Inventory);
+            }
+
         }
     }
 

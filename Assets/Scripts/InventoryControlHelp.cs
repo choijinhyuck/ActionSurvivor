@@ -5,9 +5,12 @@ using UnityEngine.UI;
 
 public class InventoryControlHelp : MonoBehaviour
 {
-    public enum ActionType { Empty, Equip, UnEquip, Pressed, Destroy, Use, FullMsg, FullHeart, NotEquippable, WrongPosition, WrongItem, 
-                             ToStorage, ToInventory, ToFullStorageMsg, ToFullInventory, Unlock, NotEnoughMoney, Buy, Sell, Upgrade, NotUpgradable,
-                             WrongClass, }
+    public enum ActionType
+    {
+        Empty, Equip, UnEquip, Pressed, Destroy, Use, FullMsg, FullHeart, NotEquippable, WrongPosition, WrongItem,
+        ToStorage, ToInventory, ToFullStorageMsg, ToFullInventory, Unlock, NotEnoughMoney, Buy, Sell, Upgrade, NotUpgradable,
+        WrongClass,
+    }
 
     public GameObject message;
     public GameObject changeSlot;

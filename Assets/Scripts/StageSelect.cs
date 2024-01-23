@@ -1,4 +1,3 @@
-using System.Collections;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
@@ -133,7 +132,7 @@ public class StageSelect : MonoBehaviour
                 help.GetComponentsInChildren<Text>()[0].text = "선택";
                 help.GetComponentsInChildren<Text>()[1].text = "취소";
                 confirm.SetActive(true);
-                
+
                 AudioManager.instance.PlaySfx(AudioManager.Sfx.ButtonPress);
                 EventSystem.current.SetSelectedGameObject(confirm.GetComponentsInChildren<Button>()[1].gameObject);
                 confirmOn = true;
@@ -161,7 +160,7 @@ public class StageSelect : MonoBehaviour
             }
             lastPressedMove = input.move.action.ReadValue<Vector2>();
         }
-        
+
 
         if (selectedId < StageManager.instance.stageDataArr.Length - 1)
         {

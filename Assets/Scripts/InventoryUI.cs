@@ -1,11 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
-using UnityEditor.Experimental.GraphView;
-using UnityEditor.Search;
-using UnityEditor.UI;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class InventoryUI : MonoBehaviour
@@ -19,7 +15,7 @@ public class InventoryUI : MonoBehaviour
     public Text destroyDesc;
     public Button confirmNo;
     public InventoryControlHelp help;
-    
+
     List<Button> buttons;
     Canvas[] canvases;
     Image[] itemImages;
@@ -91,7 +87,7 @@ public class InventoryUI : MonoBehaviour
             isPressed = false;
             selectedId = pressedId;
         }
-        
+
 
         for (int i = 0; i < GameManager.instance.maxInventory; i++)
         {
@@ -113,7 +109,7 @@ public class InventoryUI : MonoBehaviour
 
     private void LateUpdate()
     {
-        
+
         if (isDestroying)
         {
             if (selectedObejctOnDestroy != EventSystem.current.currentSelectedGameObject)
@@ -138,11 +134,11 @@ public class InventoryUI : MonoBehaviour
         if (currentSelect is null) return;
         currentSelect.GetComponentInParent<Canvas>().sortingOrder = 2;
         baseUI.sortingOrder = 0;
-                
+
         selectedId = buttons.IndexOf(currentSelect.GetComponent<Button>());
 
         ShowHelp();
-        
+
         Init();
         if (isPressed) return;
 
@@ -319,9 +315,9 @@ public class InventoryUI : MonoBehaviour
         destroyDesc.transform.parent.gameObject.SetActive(true);
         destroyDesc.text = string.Format("<color=green>{0}</color>\r\n을(를) 정말 <color=red>파괴</color>하시겠습니까?",
             ItemManager.Instance.itemDataArr[GameManager.instance.inventoryItemsId[selectedId]].itemName);
-        
+
     }
-    
+
     public void OnConfirm(bool confirm)
     {
         if (confirm)
@@ -697,7 +693,7 @@ public class InventoryUI : MonoBehaviour
                             {
                                 if (GameManager.instance.inventoryItemsId[pressedId] < 3)
                                 {
-                                    (GameManager.instance.mainWeaponItem[GameManager.instance.playerId], GameManager.instance.inventoryItemsId[pressedId]) 
+                                    (GameManager.instance.mainWeaponItem[GameManager.instance.playerId], GameManager.instance.inventoryItemsId[pressedId])
                                         = (GameManager.instance.inventoryItemsId[pressedId], GameManager.instance.mainWeaponItem[GameManager.instance.playerId]);
                                     isPressed = false;
                                     GameManager.instance.StatusUpdate();
@@ -976,7 +972,7 @@ public class InventoryUI : MonoBehaviour
                             // 인벤토리 내 물품이 Magic 타입인 경우
                             else if (ItemManager.Instance.itemDataArr[GameManager.instance.inventoryItemsId[buttonIndex]].itemType == ItemData.ItemType.Magic)
                             {
-                                (GameManager.instance.inventoryItemsId[buttonIndex], GameManager.instance.magicItem) 
+                                (GameManager.instance.inventoryItemsId[buttonIndex], GameManager.instance.magicItem)
                                     = (GameManager.instance.magicItem, GameManager.instance.inventoryItemsId[buttonIndex]);
                                 isPressed = false;
                                 GameManager.instance.StatusUpdate();
@@ -1230,8 +1226,8 @@ public class InventoryUI : MonoBehaviour
                 help.Show(InventoryControlHelp.ActionType.FullMsg);
                 return;
             }
-            
-            switch(selectedId)
+
+            switch (selectedId)
             {
                 case 24:
                     GameManager.instance.inventoryItemsId[selectedSlot] = GameManager.instance.mainWeaponItem[GameManager.instance.playerId];

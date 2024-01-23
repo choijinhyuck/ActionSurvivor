@@ -1,6 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
-using System.Runtime.InteropServices.WindowsRuntime;
 using UnityEngine;
 
 public class DropItem : MonoBehaviour
@@ -94,7 +92,7 @@ public class DropItem : MonoBehaviour
         transform.localScale = Vector3.zero;
         float timer = 0f;
         float endTime = .3f;
-        
+
         while (true)
         {
             if (!isDropping)
