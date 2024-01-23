@@ -915,6 +915,11 @@ public class Boss : MonoBehaviour
             }
         }
 
+        if (goblinDashEffect.activeSelf) { goblinDashEffect.SetActive(false); }
+        if (dashTextBox.activeSelf) {  dashTextBox.SetActive(false); }
+        if (fireTextBox.activeSelf) {  fireTextBox.SetActive(false); }
+        if (howlingTextBox.activeSelf) { howlingTextBox.SetActive(false); }
+
         bossHpBar.value = 0f;
         isLive = false;
         isCutScene = true;
@@ -953,7 +958,7 @@ public class Boss : MonoBehaviour
         GameManager.instance.ZoomCamera();
         GameManager.instance.CameraDamping();
 
-        if (goblinDashEffect.activeSelf) { goblinDashEffect.SetActive(false); }
+        
 
         Color currColor = spriter.color;
         float endTimer = 0f;

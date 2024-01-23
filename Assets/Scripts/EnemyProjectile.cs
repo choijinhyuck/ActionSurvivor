@@ -30,7 +30,7 @@ public class EnemyProjectile : MonoBehaviour
         timer += Time.fixedDeltaTime;
         if (transform.CompareTag("Seed"))
         {
-            if (timer > 3f)
+            if (timer > 6f)
             {
                 Done();
                 return;
