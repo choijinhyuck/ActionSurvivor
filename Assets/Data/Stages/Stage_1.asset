@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   stageNumber: 1
   stageName: "\uAE4A\uC740 \uC232"
+  stageNameEng: Deep Forest
   gameTime: 360
   waveData:
   - startTime: 0

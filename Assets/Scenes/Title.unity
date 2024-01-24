@@ -534,7 +534,7 @@ GameObject:
   - component: {fileID: 113921015}
   - component: {fileID: 113921014}
   m_Layer: 5
-  m_Name: Title
+  m_Name: Credit Title
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1878,7 +1878,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: -12.045013}
-  m_SizeDelta: {x: 0, y: -24.089973}
+  m_SizeDelta: {x: -40, y: -24.09}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1071131228
 MonoBehaviour:
@@ -1913,8 +1913,10 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 1
     m_LineSpacing: 1.23
-  m_Text: "\uC815\uB9D0\uB85C \uC0C8 \uAC8C\uC784\uC744 \uC2DC\uC791\uD558\uC2DC\uACA0\uC2B5\uB2C8\uAE4C?\n<color=red>(\uC800\uC7A5\uB41C
-    \uB370\uC774\uD130\uAC00 \uBAA8\uB450 \uC0AD\uC81C\uB429\uB2C8\uB2E4.)</color>"
+  m_Text: 'Are you sure you want to start a new game?
+
+    <color=red>(All saved
+    data will be deleted.)</color>'
 --- !u!222 &1071131229
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -2946,7 +2948,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2037274066887658309, guid: 296858d15f39a2846b1cdd42b79f01f5, type: 3}
       propertyPath: orthographic size
-      value: 3.6
+      value: 3.75
       objectReference: {fileID: 0}
     - target: {fileID: 2564582011177107155, guid: 296858d15f39a2846b1cdd42b79f01f5, type: 3}
       propertyPath: m_Name
@@ -3569,7 +3571,7 @@ GameObject:
   - component: {fileID: 1995860546}
   - component: {fileID: 1995860545}
   m_Layer: 5
-  m_Name: Content
+  m_Name: Credit Title
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4351,6 +4353,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6297141152130203624, guid: 843c594d0fed0c647873206a750a5cb4, type: 3}
+      propertyPath: m_MoveRepeatRate
+      value: 0.1
+      objectReference: {fileID: 0}
     - target: {fileID: 8524950463752394095, guid: 843c594d0fed0c647873206a750a5cb4, type: 3}
       propertyPath: m_Name
       value: EventSystem
@@ -4398,7 +4404,7 @@ MonoBehaviour:
   actions: {fileID: -944628639613478452, guid: 7a8bf57f548517145a5d5008f25a86ca, type: 3}
   scrollBar: {fileID: 985210005}
   closeHelp: {fileID: 1833527095}
-  scrollSpeed: 0.05
+  scrollSpeed: 3
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

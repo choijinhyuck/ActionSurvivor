@@ -20,13 +20,27 @@ public class LoadingUI : MonoBehaviour
         leftEnd = 0f;
         rightEnd = 1740f;
         posY = 90f;
-        loadingText = new string[4]
+        if (SettingUI.instance.currLanguage == SettingUI.LanguageType.Korean)
+        {
+            loadingText = new string[4]
         {
             "로딩 중",
             "로딩 중.",
             "로딩 중..",
             "로딩 중..."
         };
+        }
+        else
+        {
+            loadingText = new string[4]
+        {
+            "Loading",
+            "Loading.",
+            "Loading..",
+            "Loading..."
+        };
+        }
+        
         loadingPercentage = movingGuy.GetComponentInChildren<Text>();
 
     }

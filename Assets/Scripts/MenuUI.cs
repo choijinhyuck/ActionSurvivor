@@ -1,10 +1,12 @@
 using System.Collections.Generic;
 using System.Linq;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem.UI;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using static SettingUI;
 
 public class MenuUI : MonoBehaviour
 {
@@ -15,6 +17,8 @@ public class MenuUI : MonoBehaviour
     [SerializeField] Image[] keyImages;
     [SerializeField] GameObject defaultHelpPanel;
     [SerializeField] GameObject changeHelpPanel;
+    [SerializeField] GameObject defaultHelpPanelEng;
+    [SerializeField] GameObject changeHelpPanelEng;
     [SerializeField] GameObject rightArrow;
     [SerializeField] GameObject leftArrow;
 
@@ -65,8 +69,10 @@ public class MenuUI : MonoBehaviour
     {
         if (rightArrow.activeSelf) rightArrow.SetActive(false);
         if (leftArrow.activeSelf) leftArrow.SetActive(false);
+        if (defaultHelpPanel.activeSelf) defaultHelpPanel.SetActive(false);
         if (changeHelpPanel.activeSelf) changeHelpPanel.SetActive(false);
-        if (!defaultHelpPanel.activeSelf) changeHelpPanel.SetActive(true);
+        if (defaultHelpPanelEng.activeSelf) defaultHelpPanelEng.SetActive(false);
+        if (changeHelpPanelEng.activeSelf) changeHelpPanelEng.SetActive(false);
         if (helpPanel.activeSelf) helpPanel.SetActive(false);
         if (confirm.activeSelf) confirm.SetActive(false);
         if (menuPanel.activeSelf) menuPanel.SetActive(false);
@@ -85,6 +91,8 @@ public class MenuUI : MonoBehaviour
 
     private void Update()
     {
+        InitLanguage();
+        
         if (helpPanel.activeSelf)
         {
             switch (ControllerManager.instance.CurrentScheme)
@@ -99,6 +107,14 @@ public class MenuUI : MonoBehaviour
                     keyImages[1].sprite = keySprites[3];
                     break;
             }
+            if (SettingUI.instance.currLanguage == LanguageType.Korean)
+            {
+                keyImages[0].transform.parent.GetComponentInChildren<Text>(true).text = "창 닫기";
+            }
+            else
+            {
+                keyImages[0].transform.parent.GetComponentInChildren<Text>(true).text = "Close";
+            }
 
             if (((InputSystemUIInputModule)EventSystem.current.currentInputModule).cancel.action.WasPerformedThisFrame())
             {
@@ -108,12 +124,12 @@ public class MenuUI : MonoBehaviour
 
             if (GameManager.instance.newCharacterUnlock > 0)
             {
-                if (defaultHelpPanel.activeSelf)
+                if (defaultHelpPanel.activeSelf || defaultHelpPanelEng.activeSelf)
                 {
                     rightArrow.SetActive(true);
                     if (leftArrow.activeSelf) leftArrow.SetActive(false);
                 }
-                else if (changeHelpPanel.activeSelf)
+                else if (changeHelpPanel.activeSelf || changeHelpPanelEng.activeSelf)
                 {
                     leftArrow.SetActive(true);
                     if (rightArrow.activeSelf) rightArrow.SetActive(false);
@@ -131,6 +147,12 @@ public class MenuUI : MonoBehaviour
                             changeHelpPanel.SetActive(true);
                             AudioManager.instance.PlaySfx(AudioManager.Sfx.ButtonChange);
                         }
+                        else if (defaultHelpPanelEng.activeSelf)
+                        {
+                            defaultHelpPanelEng.SetActive(false);
+                            changeHelpPanelEng.SetActive(true);
+                            AudioManager.instance.PlaySfx(AudioManager.Sfx.ButtonChange);
+                        }
                     }
                     else if (input.move.action.ReadValue<Vector2>().x < 0)
                     {
@@ -138,6 +160,12 @@ public class MenuUI : MonoBehaviour
                         {
                             defaultHelpPanel.SetActive(true);
                             changeHelpPanel.SetActive(false);
+                            AudioManager.instance.PlaySfx(AudioManager.Sfx.ButtonChange);
+                        }
+                        else if (changeHelpPanelEng.activeSelf)
+                        {
+                            defaultHelpPanelEng.SetActive(true);
+                            changeHelpPanelEng.SetActive(false);
                             AudioManager.instance.PlaySfx(AudioManager.Sfx.ButtonChange);
                         }
                     }
@@ -191,6 +219,28 @@ public class MenuUI : MonoBehaviour
                     selectedId = menuButtons.IndexOf(EventSystem.current.currentSelectedGameObject.GetComponent<Button>());
                 }
 
+            }
+        }
+    }
+
+    void InitLanguage()
+    {
+        Dictionary<string, string[]> nameDic = new();
+        nameDic["Continue Label"] = new string[] { "계속하기", "Continue" };
+        nameDic["Inventory Label"] = new string[] { "인벤토리", "Inventory" };
+        nameDic["Character Change Label"] = new string[] { "캐릭터 변경", "Change Character" };
+        nameDic["Settings Label"] = new string[] { "설정", "Settings" };
+        nameDic["Help Label"] = new string[] { "도움말", "Help" };
+        nameDic["MainTitle Label"] = new string[] { "메인 메뉴", "Main Menu" };
+        nameDic["Exit Label"] = new string[] { "종료", "Exit" };
+
+        var texts = GetComponentsInChildren<Text>(true);
+        int textId = SettingUI.instance.currLanguage == LanguageType.Korean ? 0 : 1;
+        foreach (var text in texts)
+        {
+            if (nameDic.ContainsKey(text.name))
+            {
+                text.text = nameDic[text.name][textId];
             }
         }
     }
@@ -298,6 +348,14 @@ public class MenuUI : MonoBehaviour
     {
         AudioManager.instance.PlaySfx(AudioManager.Sfx.ButtonPress);
         EventSystem.current.SetSelectedGameObject(null);
+        if (SettingUI.instance.currLanguage == LanguageType.Korean)
+        {
+            defaultHelpPanel.SetActive(true);
+        }
+        else
+        {
+            defaultHelpPanelEng.SetActive(true);
+        }
         helpPanel.SetActive(true);
     }
 
@@ -305,8 +363,10 @@ public class MenuUI : MonoBehaviour
     {
         if (rightArrow.activeSelf) rightArrow.SetActive(false);
         if (leftArrow.activeSelf) leftArrow.SetActive(false);
+        if (defaultHelpPanel.activeSelf) defaultHelpPanel.SetActive(false);
         if (changeHelpPanel.activeSelf) changeHelpPanel.SetActive(false);
-        if (!defaultHelpPanel.activeSelf) defaultHelpPanel.SetActive(true);
+        if (defaultHelpPanelEng.activeSelf) defaultHelpPanelEng.SetActive(false);
+        if (changeHelpPanelEng.activeSelf) changeHelpPanelEng.SetActive(false);
         helpPanel.SetActive(false);
         AudioManager.instance.PlaySfx(AudioManager.Sfx.Cancel);
         EventSystem.current.SetSelectedGameObject(menuButtons[selectedId].gameObject);
@@ -316,7 +376,19 @@ public class MenuUI : MonoBehaviour
     {
         AudioManager.instance.PlaySfx(AudioManager.Sfx.ButtonPress);
         confirm.SetActive(true);
-        confirm.GetComponentInChildren<Text>().text = "메인 메뉴로 돌아가시겠습니까?\r\n\r\n<color=red><size=30>주의!\r\n저장은 야영지에서만 이루어집니다. (자동)</size></color>";
+        if (SettingUI.instance.currLanguage == LanguageType.Korean)
+        {
+            confirm.GetComponentInChildren<Text>().text = "메인 메뉴로 돌아가시겠습니까?\r\n\r\n<color=red><size=30>주의!\r\n저장은 야영지에서만 이루어집니다. (자동)</size></color>";
+            confirm.GetComponentsInChildren<Text>(true)[1].text = "예";
+            confirm.GetComponentsInChildren<Text>(true)[2].text = "아니요";
+        }
+        else
+        {
+            confirm.GetComponentInChildren<Text>().text = "Return to the Main Menu?\r\n\r\n<color=red><size=30>Caution!\r\nSaving only occurs at the Camp. (Auto)</size></color>";
+            confirm.GetComponentsInChildren<Text>(true)[1].text = "Yes";
+            confirm.GetComponentsInChildren<Text>(true)[2].text = "No";
+        }
+        
         confirm.GetComponentInChildren<Button>().enabled = true;
         EventSystem.current.SetSelectedGameObject(confirm.GetComponentsInChildren<Button>()[1].gameObject);
         selectedObjectOnConfirm = EventSystem.current.currentSelectedGameObject;
@@ -326,7 +398,19 @@ public class MenuUI : MonoBehaviour
     {
         AudioManager.instance.PlaySfx(AudioManager.Sfx.ButtonPress);
         confirm.SetActive(true);
-        confirm.GetComponentInChildren<Text>().text = "게임을 종료하시겠습니까?\r\n\r\n<color=red><size=30>주의!\r\n저장은 야영지에서만 이루어집니다. (자동)</size></color>";
+        if (SettingUI.instance.currLanguage == LanguageType.Korean)
+        {
+            confirm.GetComponentInChildren<Text>().text = "게임을 종료하시겠습니까?\r\n\r\n<color=red><size=30>주의!\r\n저장은 야영지에서만 이루어집니다. (자동)</size></color>";
+            confirm.GetComponentsInChildren<Text>(true)[1].text = "예";
+            confirm.GetComponentsInChildren<Text>(true)[2].text = "아니요";
+        }
+        else
+        {
+            confirm.GetComponentInChildren<Text>().text = "Want to exit the Game?\r\n\r\n<color=red><size=30>Caution!\r\nSaving only occurs at the Camp. (Auto)</size></color>";
+            confirm.GetComponentsInChildren<Text>(true)[1].text = "Yes";
+            confirm.GetComponentsInChildren<Text>(true)[2].text = "No";
+        }
+        
         confirm.GetComponentInChildren<Button>().enabled = true;
         EventSystem.current.SetSelectedGameObject(confirm.GetComponentsInChildren<Button>()[1].gameObject);
         selectedObjectOnConfirm = EventSystem.current.currentSelectedGameObject;

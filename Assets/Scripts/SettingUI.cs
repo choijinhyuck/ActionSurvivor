@@ -8,6 +8,8 @@ using UnityEngine.UI;
 
 public class SettingUI : MonoBehaviour
 {
+    public enum LanguageType { Korean, English }
+
     public static SettingUI instance;
 
     public Dropdown resolutionDropdown;
@@ -15,9 +17,11 @@ public class SettingUI : MonoBehaviour
     public GameObject settingPanel;
     public Text bgmVolume;
     public Text sfxVolume;
+    public LanguageType currLanguage;
 
     [SerializeField] Slider bgmSlider;
     [SerializeField] Slider sfxSlider;
+    [SerializeField] Toggle[] languageTypes;
 
     bool isOnConfirm;
     int resolutionId;
@@ -36,6 +40,47 @@ public class SettingUI : MonoBehaviour
             Destroy(gameObject);
         }
         DontDestroyOnLoad(gameObject);
+
+        // Language 설정
+        if (PlayerPrefs.HasKey("language"))
+        {
+            switch (PlayerPrefs.GetString("language"))
+            {
+                case "korean":
+                    currLanguage = LanguageType.Korean;
+                    break;
+                case "english":
+                    currLanguage = LanguageType.English;
+                    break;
+            }
+        }
+        else if (Application.systemLanguage == SystemLanguage.Korean)
+        {
+            currLanguage = LanguageType.Korean;
+            languageTypes[0].isOn = true;
+            languageTypes[1].isOn = false;
+            PlayerPrefs.SetString("language", "korean");
+            PlayerPrefs.Save();
+        }
+        else
+        {
+            currLanguage = LanguageType.English;
+            languageTypes[0].isOn = false;
+            languageTypes[1].isOn = true;
+            PlayerPrefs.SetString("language", "english");
+            PlayerPrefs.Save();
+        }
+        if (currLanguage == LanguageType.Korean)
+        {
+            languageTypes[0].isOn = true;
+            languageTypes[1].isOn = false;
+        }
+        else
+        {
+            languageTypes[0].isOn = false;
+            languageTypes[1].isOn = true;
+        }
+        
 
         if (settingPanel.activeSelf) settingPanel.SetActive(false);
         lastSelectedObject = null;
@@ -76,6 +121,37 @@ public class SettingUI : MonoBehaviour
         foreach (var screenType in screenTypes)
         {
             screenType.onValueChanged.AddListener(delegate { OnScreenTypeChanged(); });
+        }
+
+        foreach (var languageType in languageTypes)
+        {
+            languageType.onValueChanged.AddListener(delegate { OnLanguageTypeChanged(); });
+        }
+
+        InitLanguage();
+    }
+
+    void InitLanguage()
+    {
+        Dictionary<string, string[]> nameDic = new();
+        nameDic["Title"] = new string[] { "설정", "Settings" };
+        nameDic["Resolution Title"] = new string[] { "해상도", "Resolution" };
+        nameDic["FullScreen Label"] = new string[] { "전체화면", "FullScreen" };
+        nameDic["Borderless Label"] = new string[] { "테두리 없음", "Borderless" };
+        nameDic["Windowed Label"] = new string[] { "창모드", "Windowed" };
+        nameDic["Volume Desc"] = new string[] { "음량", "Volume" };
+        nameDic["BGM Title"] = new string[] { "배경음", "Music" };
+        nameDic["SFX Title"] = new string[] { "효과음", "Effect" };
+        nameDic["Back Label"] = new string[] { "뒤로 가기", "Back" };
+
+        var texts = GetComponentsInChildren<Text>(true);
+        int textId = currLanguage == LanguageType.Korean ? 0 : 1;
+        foreach (var text in texts)
+        {
+            if (nameDic.ContainsKey(text.name))
+            {
+                text.text = nameDic[text.name][textId];
+            }
         }
     }
 
@@ -238,6 +314,18 @@ public class SettingUI : MonoBehaviour
                     screenType.GetComponentInChildren<Text>().color = new(1, 1, 1, 0.1f);
                 }
             }
+
+            foreach (var languageType in languageTypes)
+            {
+                if (languageType.isOn)
+                {
+                    languageType.GetComponentInChildren<Text>().color = Color.white;
+                }
+                else
+                {
+                    languageType.GetComponentInChildren<Text>().color = new(1, 1, 1, 0.1f);
+                }
+            }
         }
         else
         {
@@ -301,7 +389,7 @@ public class SettingUI : MonoBehaviour
         AudioManager.instance.SetSfxVolume();
     }
 
-    public void OnResolutionChanged()
+    void OnResolutionChanged()
     {
         if (resolutionDropdown.value == resolutionId) return;
         resolutionId = resolutionDropdown.value;
@@ -314,7 +402,7 @@ public class SettingUI : MonoBehaviour
         PlayerPrefs.Save();
     }
 
-    public void OnScreenTypeChanged()
+    void OnScreenTypeChanged()
     {
         for (int i = 0; i < screenTypes.Length; i++)
         {
@@ -348,6 +436,24 @@ public class SettingUI : MonoBehaviour
                     return;
                 }
             }
+        }
+    }
+
+    void OnLanguageTypeChanged()
+    {
+        if (languageTypes[0].isOn)
+        {
+            currLanguage = LanguageType.Korean;
+            InitLanguage();
+            PlayerPrefs.SetString("language", "korean");
+            PlayerPrefs.Save();
+        }
+        else
+        {
+            currLanguage = LanguageType.English;
+            InitLanguage();
+            PlayerPrefs.SetString("language", "english");
+            PlayerPrefs.Save();
         }
     }
 }

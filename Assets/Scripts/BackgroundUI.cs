@@ -19,6 +19,7 @@ public class BackgroundUI : MonoBehaviour
     int buttonClickedIndex;
     int selectedId;
     List<Button> buttons;
+    SettingUI.LanguageType langApplied;
 
 
     private void Awake()
@@ -35,6 +36,43 @@ public class BackgroundUI : MonoBehaviour
 
         cancelAction.performed += CancelHandler;
         menuAction.performed += CancelHandler;
+
+        StartCoroutine(InitLanguageCoroutine());
+    }
+
+    IEnumerator InitLanguageCoroutine()
+    {
+        while (true)
+        {
+            if (SettingUI.instance == null)
+            {
+                yield return null;
+                continue;
+            }
+            switch (SettingUI.instance.currLanguage)
+            {
+                case SettingUI.LanguageType.Korean:
+                    buttons[0].GetComponent<Text>().text = "새 게임";
+                    buttons[1].GetComponent<Text>().text = "이어하기";
+                    buttons[2].GetComponent<Text>().text = "설정";
+                    buttons[3].GetComponent<Text>().text = "크레딧";
+                    buttons[4].GetComponent<Text>().text = "종료";
+                    buttons[buttons.Count - 2].GetComponentInChildren<Text>(true).text = "예";
+                    buttons[buttons.Count - 1].GetComponentInChildren<Text>(true).text = "아니요";
+                    break;
+                case SettingUI.LanguageType.English:
+                    buttons[0].GetComponent<Text>().text = "New Game";
+                    buttons[1].GetComponent<Text>().text = "Continue";
+                    buttons[2].GetComponent<Text>().text = "Settings";
+                    buttons[3].GetComponent<Text>().text = "Credits";
+                    buttons[4].GetComponent<Text>().text = "Exit";
+                    buttons[buttons.Count - 2].GetComponentInChildren<Text>(true).text = "Yes";
+                    buttons[buttons.Count - 1].GetComponentInChildren<Text>(true).text = "No";
+                    break;
+            }
+            langApplied = SettingUI.instance.currLanguage;
+            yield break;
+        }
     }
 
     void CancelHandler(InputAction.CallbackContext context)
@@ -71,6 +109,10 @@ public class BackgroundUI : MonoBehaviour
 
     private void Update()
     {
+        if (SettingUI.instance.currLanguage != langApplied)
+        {
+            StartCoroutine(InitLanguageCoroutine());
+        }
 
         if (SettingUI.instance.settingPanel.activeSelf) return;
 
@@ -173,7 +215,14 @@ public class BackgroundUI : MonoBehaviour
         else
         {
             confirm.GetComponent<RectTransform>().sizeDelta = newGameSize;
-            confirm.GetComponentInChildren<Text>().text = "정말로 새 게임을 시작하시겠습니까?\n<color=red>(저장된 데이터가 모두 삭제됩니다.)</color>";
+            if (SettingUI.instance.currLanguage == SettingUI.LanguageType.Korean)
+            {
+                confirm.GetComponentInChildren<Text>().text = "정말로 새 게임을 시작하시겠습니까?\n<color=red>(저장된 데이터가 모두 삭제됩니다.)</color>";
+            }
+            else
+            {
+                confirm.GetComponentInChildren<Text>().text = "Are you sure you want to start a new game?\r\n<color=red>(All saved data will be deleted.)</color>";
+            }
             confirm.SetActive(true);
             // 아니오 선택
             EventSystem.current.SetSelectedGameObject(confirm.GetComponentsInChildren<Button>()[1].gameObject);
@@ -251,7 +300,15 @@ public class BackgroundUI : MonoBehaviour
         AudioManager.instance.PlaySfx(AudioManager.Sfx.MenuSelect);
         buttonClickedIndex = 4;
         confirm.GetComponent<RectTransform>().sizeDelta = exitSize;
-        confirm.GetComponentInChildren<Text>().text = "정말로 게임을 종료하시겠습니까?";
+        if (SettingUI.instance.currLanguage == SettingUI.LanguageType.Korean)
+        {
+            confirm.GetComponentInChildren<Text>().text = "정말로 게임을 종료하시겠습니까?";
+        }
+        else
+        {
+            confirm.GetComponentInChildren<Text>().text = "Are you sure you want to exit the game?";
+        }
+        
         confirm.SetActive(true);
         // 아니오 선택
         EventSystem.current.SetSelectedGameObject(confirm.GetComponentsInChildren<Button>()[1].gameObject);

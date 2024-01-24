@@ -140,16 +140,35 @@ public class HUD : MonoBehaviour
             case InfoType.StageName:
                 if (SceneManager.GetActiveScene().name == "Camp")
                 {
-                    if (GetComponent<Text>().text != "야영지")
+                    if (SettingUI.instance.currLanguage == SettingUI.LanguageType.Korean)
                     {
-                        GetComponent<Text>().text = "야영지";
+                        if (GetComponent<Text>().text != "야영지")
+                        {
+                            GetComponent<Text>().text = "야영지";
+                        }
+                    }
+                    else
+                    {
+                        if (GetComponent<Text>().text != "Camp")
+                        {
+                            GetComponent<Text>().text = "Camp";
+                        }
                     }
                     return;
                 }
 
-                if (GetComponent<Text>().text == StageManager.instance.stageDataArr[GameManager.instance.stageId].stageName) return;
-                GetComponent<Text>().text = StageManager.instance.stageDataArr[GameManager.instance.stageId].stageName;
+                if (SettingUI.instance.currLanguage == SettingUI.LanguageType.Korean)
+                {
+                    if (GetComponent<Text>().text == StageManager.instance.stageDataArr[GameManager.instance.stageId].stageName) return;
+                    GetComponent<Text>().text = StageManager.instance.stageDataArr[GameManager.instance.stageId].stageName;
+                }
+                else
+                {
+                    if (GetComponent<Text>().text == StageManager.instance.stageDataArr[GameManager.instance.stageId].stageNameEng) return;
+                    GetComponent<Text>().text = StageManager.instance.stageDataArr[GameManager.instance.stageId].stageNameEng;
+                }
                 break;
+
         }
     }
 

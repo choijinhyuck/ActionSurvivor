@@ -127,10 +127,28 @@ public class StageSelect : MonoBehaviour
                 || (selectedId == 1 && GameManager.instance.stage0_ClearCount > 0)
                 || (selectedId == 2 && GameManager.instance.stage1_ClearCount > 0))
             {
-                stageNameConfirm.text = "<" + StageManager.instance.stageDataArr[selectedId].stageName + ">\r\n<size=35><color=black>(으)로 떠나시겠습니까?</color></size>";
+                if (SettingUI.instance.currLanguage == SettingUI.LanguageType.Korean)
+                {
+                    stageNameConfirm.text = "<" + StageManager.instance.stageDataArr[selectedId].stageName +
+                                            ">\r\n<size=35><color=black>(으)로 떠나시겠습니까?</color></size>";
+                    stageNameConfirm.transform.parent.GetComponentsInChildren<Text>(true)[1].text = "예";
+                    stageNameConfirm.transform.parent.GetComponentsInChildren<Text>(true)[2].text = "아니요";
+                    help.GetComponentsInChildren<Text>()[0].text = "선택";
+                    help.GetComponentsInChildren<Text>()[1].text = "취소";
+                }
+                else
+                {
+                    stageNameConfirm.text = "<size=35><color=black>Leave for </color></size>\r\n"+
+                                            "<" + StageManager.instance.stageDataArr[selectedId].stageNameEng +
+                                            "><size=35><color=black>?</color></size>";
+                    stageNameConfirm.transform.parent.GetComponentsInChildren<Text>(true)[1].text = "Yes";
+                    stageNameConfirm.transform.parent.GetComponentsInChildren<Text>(true)[2].text = "No";
+                    help.GetComponentsInChildren<Text>()[0].text = "Select";
+                    help.GetComponentsInChildren<Text>()[1].text = "Cancel";
+                }
+                
 
-                help.GetComponentsInChildren<Text>()[0].text = "선택";
-                help.GetComponentsInChildren<Text>()[1].text = "취소";
+                
                 confirm.SetActive(true);
 
                 AudioManager.instance.PlaySfx(AudioManager.Sfx.ButtonPress);
@@ -190,7 +208,14 @@ public class StageSelect : MonoBehaviour
                     }
                     else
                     {
-                        stageName.text = StageManager.instance.stageDataArr[selectedId].stageName;
+                        if (SettingUI.instance.currLanguage == SettingUI.LanguageType.Korean)
+                        {
+                            stageName.text = StageManager.instance.stageDataArr[selectedId].stageName;
+                        }
+                        else
+                        {
+                            stageName.text = StageManager.instance.stageDataArr[selectedId].stageNameEng;
+                        }
                     }
                     break;
                 case 1:
@@ -200,35 +225,82 @@ public class StageSelect : MonoBehaviour
                     }
                     else
                     {
-                        stageName.text = StageManager.instance.stageDataArr[selectedId].stageName;
+                        if (SettingUI.instance.currLanguage == SettingUI.LanguageType.Korean)
+                        {
+                            stageName.text = StageManager.instance.stageDataArr[selectedId].stageName;
+                        }
+                        else
+                        {
+                            stageName.text = StageManager.instance.stageDataArr[selectedId].stageNameEng;
+                        }
                     }
                     break;
             }
         }
         else
         {
-            stageName.text = StageManager.instance.stageDataArr[0].stageName;
+            if (SettingUI.instance.currLanguage == SettingUI.LanguageType.Korean)
+            {
+                stageName.text = StageManager.instance.stageDataArr[0].stageName;
+            }
+            else
+            {
+                stageName.text = StageManager.instance.stageDataArr[0].stageNameEng;
+            }
         }
 
 
-        string difficulty = selectedId switch
+        if (SettingUI.instance.currLanguage == SettingUI.LanguageType.Korean)
         {
-            0 => "<color=grey>쉬움</color>",
-            1 => "보통",
-            2 => "<color=red>어려움</color>",
-            _ => "알 수 없음",
-        };
-        string time = Mathf.FloorToInt(StageManager.instance.stageDataArr[selectedId].gameTime / 60).ToString() + "분";
+            string difficulty = selectedId switch
+            {
+                0 => "<color=grey>쉬움</color>",
+                1 => "보통",
+                2 => "<color=red>어려움</color>",
+                _ => "알 수 없음",
+            };
+            string time = Mathf.FloorToInt(StageManager.instance.stageDataArr[selectedId].gameTime / 60).ToString() + "분";
 
-        difficultyAndTime.text = difficulty + " " + time;
+            difficultyAndTime.text = difficulty + "    " + time;
 
-        clearCount.text = selectedId switch
+            clearCount.text = selectedId switch
+            {
+                0 => GameManager.instance.stage0_ClearCount.ToString(),
+                1 => GameManager.instance.stage1_ClearCount.ToString(),
+                2 => GameManager.instance.stage2_ClearCount.ToString(),
+                _ => "알 수 없음",
+            } + "회 클리어";
+        }
+        else
         {
-            0 => GameManager.instance.stage0_ClearCount.ToString(),
-            1 => GameManager.instance.stage1_ClearCount.ToString(),
-            2 => GameManager.instance.stage2_ClearCount.ToString(),
-            _ => "알 수 없음",
-        } + "회 클리어";
+            string difficulty = selectedId switch
+            {
+                0 => "<color=grey>Easy</color>",
+                1 => "Normal",
+                2 => "<color=red>Hard</color>",
+                _ => "Unknown",
+            };
+            string time = Mathf.FloorToInt(StageManager.instance.stageDataArr[selectedId].gameTime / 60).ToString() + "mins";
+
+            difficultyAndTime.text = difficulty + "    " + time;
+
+            clearCount.text = selectedId switch
+            {
+                0 => GameManager.instance.stage0_ClearCount.ToString(),
+                1 => GameManager.instance.stage1_ClearCount.ToString(),
+                2 => GameManager.instance.stage2_ClearCount.ToString(),
+                _ => "Unknown",
+            };
+            if (clearCount.text == "0" || clearCount.text == "1")
+            {
+                clearCount.text += " time Clear";
+            }
+            else
+            {
+                clearCount.text += " times Clear";
+            }
+        }
+        
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -236,8 +308,20 @@ public class StageSelect : MonoBehaviour
         if (collision.CompareTag("Player"))
         {
             if (!stageSelectPanel.activeSelf) stageSelectPanel.SetActive(true);
-            help.GetComponentsInChildren<Text>()[0].text = "출발";
-            help.GetComponentsInChildren<Text>()[1].text = "닫기";
+
+            if (SettingUI.instance.currLanguage == SettingUI.LanguageType.Korean)
+            {
+                GetComponentsInChildren<Text>(true)[^1].text = "모험 장소 선택";
+                help.GetComponentsInChildren<Text>()[0].text = "출발";
+                help.GetComponentsInChildren<Text>()[1].text = "닫기";
+            }
+            else
+            {
+                GetComponentsInChildren<Text>(true)[^1].text = "Choose Your Destination";
+                help.GetComponentsInChildren<Text>()[0].text = "Leave";
+                help.GetComponentsInChildren<Text>()[1].text = "Close";
+            }
+            
             if (!help.activeSelf) help.SetActive(true);
             GameManager.instance.isLive = false;
         }
@@ -274,8 +358,18 @@ public class StageSelect : MonoBehaviour
         {
             AudioManager.instance.PlaySfx(AudioManager.Sfx.Cancel);
             EventSystem.current.SetSelectedGameObject(null);
-            help.GetComponentsInChildren<Text>()[0].text = "출발";
-            help.GetComponentsInChildren<Text>()[1].text = "닫기";
+
+            if (SettingUI.instance.currLanguage == SettingUI.LanguageType.Korean)
+            {
+                help.GetComponentsInChildren<Text>()[0].text = "출발";
+                help.GetComponentsInChildren<Text>()[1].text = "닫기";
+            }
+            else
+            {
+                help.GetComponentsInChildren<Text>()[0].text = "Leave";
+                help.GetComponentsInChildren<Text>()[1].text = "Close";
+            }
+
             confirm.SetActive(false);
             lastSelected = null;
         }

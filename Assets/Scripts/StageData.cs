@@ -9,6 +9,7 @@ public class StageData : ScriptableObject
     [Header("# Stage Info")]
     public int stageNumber;
     public string stageName;
+    public string stageNameEng;
     public int gameTime;
 
     public WaveData[] waveData;
