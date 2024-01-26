@@ -16,6 +16,18 @@ public class ResolutionList : MonoBehaviour
         return false;
     }
 
+    public static int GetAppropriateHeight(int width)
+    {
+        for (int i = 0; i < widths.Length; i++)
+        {
+            if (widths[i] == width)
+            {
+                return heights[i];
+            }
+        }
+        return 0;
+    }
+
     public static int[] widths = new int[] {640,
                                             800,
                                             864,

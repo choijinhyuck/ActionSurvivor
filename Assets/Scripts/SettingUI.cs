@@ -1,6 +1,5 @@
-using System.Collections;
 using System.Collections.Generic;
-using UnityEditor;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
@@ -13,6 +12,7 @@ public class SettingUI : MonoBehaviour
     public static SettingUI instance;
 
     public Dropdown resolutionDropdown;
+    public RectTransform dropdownTemplate;
     public Toggle[] screenTypes;
     public GameObject settingPanel;
     public Text bgmVolume;
@@ -28,6 +28,8 @@ public class SettingUI : MonoBehaviour
     FullScreenMode screenMode;
     GameObject lastSelectedObject;
     GameObject currentSelectedObject;
+    List<int> widths;
+    List<int> heights;
 
     private void Awake()
     {
@@ -80,14 +82,14 @@ public class SettingUI : MonoBehaviour
             languageTypes[0].isOn = false;
             languageTypes[1].isOn = true;
         }
-        
+
 
         if (settingPanel.activeSelf) settingPanel.SetActive(false);
         lastSelectedObject = null;
         currentSelectedObject = null;
         isOnConfirm = false;
 
-        
+
         InitResolution();
         LoadResolution();
 
@@ -181,45 +183,71 @@ public class SettingUI : MonoBehaviour
 
         resolutionDropdown.options = new List<Dropdown.OptionData>();
         var resolutions = Screen.resolutions;
-        int correctSizeId = 0;
+        widths = new();
+        heights = new();
+
         for (int i = 0; i < resolutions.Length; i++)
         {
-            if (screenMode == FullScreenMode.Windowed)
+            if (resolutions[i].width * 9 == resolutions[i].height * 16 ||
+                ResolutionList.IsAppropriateResolution(resolutions[i].width, resolutions[i].height))
             {
-
-                if ((resolutions[i].width == Screen.width && resolutions[i].height == Screen.height) ||
-                     resolutions[i].width * 9 == resolutions[i].height * 16 ||
-                     ResolutionList.IsAppropriateResolution(resolutions[i].width, resolutions[i].height))
-                {
-                    Dropdown.OptionData optionData = new()
-                    {
-                        text = $"{resolutions[i].width}x{resolutions[i].height}"
-                    };
-                    resolutionDropdown.options.Add(optionData);
-                    correctSizeId++;
-                }
-            }
-            else
-            {
-                if ((resolutions[i].width == Screen.currentResolution.width && resolutions[i].height == Screen.currentResolution.height) ||
-                     resolutions[i].width * 9 == resolutions[i].height * 16 ||
-                     ResolutionList.IsAppropriateResolution(resolutions[i].width, resolutions[i].height))
-                {
-                    Dropdown.OptionData optionData = new()
-                    {
-                        text = $"{resolutions[i].width}x{resolutions[i].height}"
-                    };
-                    resolutionDropdown.options.Add(optionData);
-                    correctSizeId++;
-                }
-            }
-            if (resolutions[i].width == Screen.currentResolution.width && resolutions[i].height == Screen.currentResolution.height)
-            {
-                resolutionId = correctSizeId - 1;
-                resolutionDropdown.value = correctSizeId - 1;
-                
+                widths.Add(resolutions[i].width);
+                heights.Add(resolutions[i].height);
             }
         }
+        widths = widths.Distinct().ToList();
+        heights = heights.Distinct().ToList();
+        widths = widths.OrderByDescending(x => x).ToList();
+        heights = heights.OrderByDescending(x => x).ToList();
+
+        for (int i = 0; i < widths.Count; i++)
+        {
+            Dropdown.OptionData optionData = new()
+            {
+                text = $"{widths[i]}x{heights[i]}"
+            };
+            resolutionDropdown.options.Add(optionData);
+        }
+
+        int currWidth;
+        if (screenMode == FullScreenMode.Windowed)
+        {
+            Screen.SetResolution(Screen.width, ResolutionList.GetAppropriateHeight(Screen.width), FullScreenMode.Windowed);
+            currWidth = Screen.width;
+        }   
+        else if (screenMode == FullScreenMode.FullScreenWindow)
+        {
+            Screen.SetResolution(Screen.currentResolution.width, ResolutionList.GetAppropriateHeight(Screen.currentResolution.width), FullScreenMode.FullScreenWindow);
+            currWidth = Screen.currentResolution.width;
+        }
+        else
+        {
+            Screen.SetResolution(Screen.currentResolution.width, ResolutionList.GetAppropriateHeight(Screen.currentResolution.width), FullScreenMode.ExclusiveFullScreen);
+            currWidth = Screen.currentResolution.width;
+        }
+
+        if (GetResolutionId(currWidth) == -1)
+        {
+            resolutionId = 0;
+            resolutionDropdown.value = 0;
+            FitScreen();
+        }
+        else
+        {
+            resolutionId = GetResolutionId(currWidth);
+            resolutionDropdown.value = GetResolutionId(currWidth);
+        }
+
+        if (resolutionDropdown.options.Count > 10)
+        {
+            dropdownTemplate.sizeDelta = new Vector2(dropdownTemplate.sizeDelta.x, 30);
+        }
+        else
+        {
+            dropdownTemplate.sizeDelta = new Vector2(dropdownTemplate.sizeDelta.x, 50);
+        }
+
+        FitScreen();
     }
 
     public void LoadResolution()
@@ -236,6 +264,8 @@ public class SettingUI : MonoBehaviour
             screenTypes[GetScreenTypeId(screenMode)].isOn = true;
 
             Screen.SetResolution(PlayerPrefs.GetInt("screenWidth"), PlayerPrefs.GetInt("screenHeight"), screenMode);
+
+            FitScreen();
         }
         else
         {
@@ -252,6 +282,76 @@ public class SettingUI : MonoBehaviour
             PlayerPrefs.SetInt("screenMode", (int)screenMode);
             PlayerPrefs.Save();
         }
+    }
+
+    void FitScreen()
+    {
+        if (CheckScreen()) return;
+        screenMode = FullScreenMode.ExclusiveFullScreen;
+        resolutionId = 0;
+        resolutionDropdown.value = 0;
+        Screen.SetResolution(widths[resolutionId], heights[resolutionId], screenMode);
+        PlayerPrefs.SetInt("screenWidth", widths[resolutionId]);
+        PlayerPrefs.SetInt("screenHeight", heights[resolutionId]);
+        PlayerPrefs.SetInt("screenMode", (int)screenMode);
+    }
+
+    bool CheckScreen()
+    {
+        if (screenMode == FullScreenMode.ExclusiveFullScreen) return true;
+
+        if (screenMode == FullScreenMode.Windowed)
+        {
+            while (true)
+            {
+                if (widths[resolutionId] > Screen.currentResolution.width)
+                {
+                    if (resolutionId == widths.Count - 1) return false;
+                    resolutionId++;
+                    resolutionDropdown.value = resolutionId;
+                    Screen.SetResolution(widths[resolutionId], heights[resolutionId], screenMode);
+                    continue;
+                }
+                else if (heights[resolutionId] > Screen.currentResolution.height)
+                {
+                    if (resolutionId == widths.Count - 1) return false;
+                    resolutionId++;
+                    resolutionDropdown.value = resolutionId;
+                    Screen.SetResolution(widths[resolutionId], heights[resolutionId], screenMode);
+                    continue;
+                }
+                break;
+            }
+        }
+        else if (screenMode == FullScreenMode.FullScreenWindow)
+        {
+            while (true)
+            {
+                if (widths[resolutionId] > Display.main.systemWidth)
+                {
+                    if (resolutionId == widths.Count - 1) return false;
+                    resolutionId++;
+                    resolutionDropdown.value = resolutionId;
+                    Screen.SetResolution(widths[resolutionId], heights[resolutionId], screenMode);
+                    continue;
+                }
+                else if (heights[resolutionId] > Display.main.systemWidth)
+                {
+                    if (resolutionId == widths.Count - 1) return false;
+                    resolutionId++;
+                    resolutionDropdown.value = resolutionId;
+                    Screen.SetResolution(widths[resolutionId], heights[resolutionId], screenMode);
+                    continue;
+                }
+                break;
+            }
+        }
+
+        PlayerPrefs.SetInt("screenWidth", widths[resolutionId]);
+        PlayerPrefs.SetInt("screenHeight", heights[resolutionId]);
+        PlayerPrefs.SetInt("screenMode", (int)screenMode);
+        PlayerPrefs.Save();
+        return true;
     }
 
     int GetResolutionId(int width)
@@ -396,10 +496,11 @@ public class SettingUI : MonoBehaviour
         var screenSize = resolutionDropdown.options[resolutionId].text.Split('x');
         int width = int.Parse(screenSize[0]);
         int height = int.Parse(screenSize[1]);
-        Screen.SetResolution(width, height, screenMode);
+        //Screen.SetResolution(width, height, screenMode);
         PlayerPrefs.SetInt("screenWidth", width);
         PlayerPrefs.SetInt("screenHeight", height);
         PlayerPrefs.Save();
+        LoadResolution();
     }
 
     void OnScreenTypeChanged()
@@ -425,16 +526,17 @@ public class SettingUI : MonoBehaviour
                 }
                 PlayerPrefs.SetInt("screenMode", (int)screenMode);
                 PlayerPrefs.Save();
-                if (Screen.fullScreenMode == FullScreenMode.Windowed)
-                {
-                    Screen.SetResolution(Screen.width, Screen.height, screenMode);
-                    return;
-                }
-                else
-                {
-                    Screen.SetResolution(Screen.currentResolution.width, Screen.currentResolution.height, screenMode);
-                    return;
-                }
+                LoadResolution();
+                //if (Screen.fullScreenMode == FullScreenMode.Windowed)
+                //{
+                //    Screen.SetResolution(Screen.width, Screen.height, screenMode);
+                //    return;
+                //}
+                //else
+                //{
+                //    Screen.SetResolution(Screen.currentResolution.width, Screen.currentResolution.height, screenMode);
+                //    return;
+                //}
             }
         }
     }

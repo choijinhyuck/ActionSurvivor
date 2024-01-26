@@ -2944,7 +2944,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2037274066887658309, guid: 296858d15f39a2846b1cdd42b79f01f5, type: 3}
       propertyPath: orthographic size
-      value: 3.75
+      value: 3.6
       objectReference: {fileID: 0}
     - target: {fileID: 2564582011177107155, guid: 296858d15f39a2846b1cdd42b79f01f5, type: 3}
       propertyPath: m_Name
@@ -3151,6 +3151,11 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1648250293}
   m_CullTransparentMesh: 1
+--- !u!224 &1716284208 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 3665338087621298194, guid: f73fd92df158cff4e94222e430ad5f2d, type: 3}
+  m_PrefabInstance: {fileID: 5546270850198842044}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1772595772
 GameObject:
   m_ObjectHideFlags: 0
@@ -4189,6 +4194,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5442986019787329269, guid: f73fd92df158cff4e94222e430ad5f2d, type: 3}
+      propertyPath: dropdownTemplate
+      value: 
+      objectReference: {fileID: 1716284208}
     - target: {fileID: 6975826997033807954, guid: f73fd92df158cff4e94222e430ad5f2d, type: 3}
       propertyPath: m_Name
       value: Setting UI

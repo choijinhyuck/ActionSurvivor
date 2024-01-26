@@ -968,6 +968,11 @@ public class Boss : MonoBehaviour
 
         while (timer < 0.5f)
         {
+            if (goblinDashEffect.activeSelf) { goblinDashEffect.SetActive(false); }
+            if (dashTextBox.activeSelf) { dashTextBox.SetActive(false); }
+            if (fireTextBox.activeSelf) { fireTextBox.SetActive(false); }
+            if (howlingTextBox.activeSelf) { howlingTextBox.SetActive(false); }
+
             GameManager.instance.ZoomCamera(targetPPU - Mathf.FloorToInt((targetPPU - GameManager.instance.originPPU) * timer / 0.5f));
             yield return null;
             timer += Time.deltaTime;
@@ -983,6 +988,11 @@ public class Boss : MonoBehaviour
         bool isDropped = false;
         while (true)
         {
+            if (goblinDashEffect.activeSelf) { goblinDashEffect.SetActive(false); }
+            if (dashTextBox.activeSelf) { dashTextBox.SetActive(false); }
+            if (fireTextBox.activeSelf) { fireTextBox.SetActive(false); }
+            if (howlingTextBox.activeSelf) { howlingTextBox.SetActive(false); }
+
             yield return null;
             endTimer += Time.deltaTime;
             if (endTimer > 4f)
