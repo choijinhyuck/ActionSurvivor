@@ -426,6 +426,15 @@ public class Boss : MonoBehaviour
 
     private void LateUpdate()
     {
+        if (SettingUI.instance.currLanguage == SettingUI.LanguageType.Korean)
+        {
+            bossName.text = "고블린";
+        }
+        else
+        {
+            bossName.text = "Goblin";
+        }
+
         if (isCutScene) return;
         if (!GameManager.instance.isLive) return;
 
@@ -569,6 +578,15 @@ public class Boss : MonoBehaviour
         transform.position = goblinHouse.transform.position + new Vector3(0, -2.5f, 0);
 
         StartCoroutine(CutScene());
+
+        if (SettingUI.instance.currLanguage == SettingUI.LanguageType.Korean)
+        {
+            bossName.text = "고블린";
+        }
+        else
+        {
+            bossName.text = "Goblin";
+        }
     }
 
     IEnumerator CutScene()
@@ -916,8 +934,8 @@ public class Boss : MonoBehaviour
         }
 
         if (goblinDashEffect.activeSelf) { goblinDashEffect.SetActive(false); }
-        if (dashTextBox.activeSelf) {  dashTextBox.SetActive(false); }
-        if (fireTextBox.activeSelf) {  fireTextBox.SetActive(false); }
+        if (dashTextBox.activeSelf) { dashTextBox.SetActive(false); }
+        if (fireTextBox.activeSelf) { fireTextBox.SetActive(false); }
         if (howlingTextBox.activeSelf) { howlingTextBox.SetActive(false); }
 
         bossHpBar.value = 0f;
@@ -958,7 +976,7 @@ public class Boss : MonoBehaviour
         GameManager.instance.ZoomCamera();
         GameManager.instance.CameraDamping();
 
-        
+
 
         Color currColor = spriter.color;
         float endTimer = 0f;

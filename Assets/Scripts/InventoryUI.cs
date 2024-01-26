@@ -76,6 +76,8 @@ public class InventoryUI : MonoBehaviour
 
     void OnEnable()
     {
+        InitLanguage();
+
         isDestroying = false;
 
         if (destroyDesc.transform.parent.gameObject.activeSelf)
@@ -152,9 +154,19 @@ public class InventoryUI : MonoBehaviour
             }
             else
             {
-                itemName.text = ItemManager.Instance.itemDataArr[GameManager.instance.inventoryItemsId[selectedId]].itemName;
-                itemDesc.text = ItemManager.Instance.itemDataArr[GameManager.instance.inventoryItemsId[selectedId]].itemDesc;
-                itemEffect.text = ItemManager.Instance.itemDataArr[GameManager.instance.inventoryItemsId[selectedId]].itemEffect;
+                if (SettingUI.instance.currLanguage == SettingUI.LanguageType.Korean)
+                {
+                    itemName.text = ItemManager.Instance.itemDataArr[GameManager.instance.inventoryItemsId[selectedId]].itemName;
+                    itemDesc.text = ItemManager.Instance.itemDataArr[GameManager.instance.inventoryItemsId[selectedId]].itemDesc;
+                    itemEffect.text = ItemManager.Instance.itemDataArr[GameManager.instance.inventoryItemsId[selectedId]].itemEffect;
+                }
+                else
+                {
+                    itemName.text = ItemManager.Instance.itemDataArr[GameManager.instance.inventoryItemsId[selectedId]].itemNameEng;
+                    itemDesc.text = ItemManager.Instance.itemDataArr[GameManager.instance.inventoryItemsId[selectedId]].itemDescEng;
+                    itemEffect.text = ItemManager.Instance.itemDataArr[GameManager.instance.inventoryItemsId[selectedId]].itemEffectEng;
+                }
+                
             }
         }
         else
@@ -170,9 +182,19 @@ public class InventoryUI : MonoBehaviour
                     }
                     else
                     {
-                        itemName.text = ItemManager.Instance.itemDataArr[GameManager.instance.mainWeaponItem[GameManager.instance.playerId]].itemName;
-                        itemDesc.text = ItemManager.Instance.itemDataArr[GameManager.instance.mainWeaponItem[GameManager.instance.playerId]].itemDesc;
-                        itemEffect.text = ItemManager.Instance.itemDataArr[GameManager.instance.mainWeaponItem[GameManager.instance.playerId]].itemEffect;
+                        if (SettingUI.instance.currLanguage == SettingUI.LanguageType.Korean)
+                        {
+                            itemName.text = ItemManager.Instance.itemDataArr[GameManager.instance.mainWeaponItem[GameManager.instance.playerId]].itemName;
+                            itemDesc.text = ItemManager.Instance.itemDataArr[GameManager.instance.mainWeaponItem[GameManager.instance.playerId]].itemDesc;
+                            itemEffect.text = ItemManager.Instance.itemDataArr[GameManager.instance.mainWeaponItem[GameManager.instance.playerId]].itemEffect;
+                        }
+                        else
+                        {
+                            itemName.text = ItemManager.Instance.itemDataArr[GameManager.instance.mainWeaponItem[GameManager.instance.playerId]].itemNameEng;
+                            itemDesc.text = ItemManager.Instance.itemDataArr[GameManager.instance.mainWeaponItem[GameManager.instance.playerId]].itemDescEng;
+                            itemEffect.text = ItemManager.Instance.itemDataArr[GameManager.instance.mainWeaponItem[GameManager.instance.playerId]].itemEffectEng;
+                        }
+                        
                     }
                     break;
                 case 25:
@@ -184,9 +206,18 @@ public class InventoryUI : MonoBehaviour
                     }
                     else
                     {
-                        itemName.text = ItemManager.Instance.itemDataArr[GameManager.instance.necklaceItem[GameManager.instance.playerId]].itemName;
-                        itemDesc.text = ItemManager.Instance.itemDataArr[GameManager.instance.necklaceItem[GameManager.instance.playerId]].itemDesc;
-                        itemEffect.text = ItemManager.Instance.itemDataArr[GameManager.instance.necklaceItem[GameManager.instance.playerId]].itemEffect;
+                        if (SettingUI.instance.currLanguage == SettingUI.LanguageType.Korean)
+                        {
+                            itemName.text = ItemManager.Instance.itemDataArr[GameManager.instance.necklaceItem[GameManager.instance.playerId]].itemName;
+                            itemDesc.text = ItemManager.Instance.itemDataArr[GameManager.instance.necklaceItem[GameManager.instance.playerId]].itemDesc;
+                            itemEffect.text = ItemManager.Instance.itemDataArr[GameManager.instance.necklaceItem[GameManager.instance.playerId]].itemEffect;
+                        }
+                        else
+                        {
+                            itemName.text = ItemManager.Instance.itemDataArr[GameManager.instance.necklaceItem[GameManager.instance.playerId]].itemNameEng;
+                            itemDesc.text = ItemManager.Instance.itemDataArr[GameManager.instance.necklaceItem[GameManager.instance.playerId]].itemDescEng;
+                            itemEffect.text = ItemManager.Instance.itemDataArr[GameManager.instance.necklaceItem[GameManager.instance.playerId]].itemEffectEng;
+                        }
                     }
                     break;
                 case 26:
@@ -198,9 +229,18 @@ public class InventoryUI : MonoBehaviour
                     }
                     else
                     {
-                        itemName.text = ItemManager.Instance.itemDataArr[GameManager.instance.shoesItem[GameManager.instance.playerId]].itemName;
-                        itemDesc.text = ItemManager.Instance.itemDataArr[GameManager.instance.shoesItem[GameManager.instance.playerId]].itemDesc;
-                        itemEffect.text = ItemManager.Instance.itemDataArr[GameManager.instance.shoesItem[GameManager.instance.playerId]].itemEffect;
+                        if (SettingUI.instance.currLanguage == SettingUI.LanguageType.Korean)
+                        {
+                            itemName.text = ItemManager.Instance.itemDataArr[GameManager.instance.shoesItem[GameManager.instance.playerId]].itemName;
+                            itemDesc.text = ItemManager.Instance.itemDataArr[GameManager.instance.shoesItem[GameManager.instance.playerId]].itemDesc;
+                            itemEffect.text = ItemManager.Instance.itemDataArr[GameManager.instance.shoesItem[GameManager.instance.playerId]].itemEffect;
+                        }
+                        else
+                        {
+                            itemName.text = ItemManager.Instance.itemDataArr[GameManager.instance.shoesItem[GameManager.instance.playerId]].itemNameEng;
+                            itemDesc.text = ItemManager.Instance.itemDataArr[GameManager.instance.shoesItem[GameManager.instance.playerId]].itemDescEng;
+                            itemEffect.text = ItemManager.Instance.itemDataArr[GameManager.instance.shoesItem[GameManager.instance.playerId]].itemEffectEng;
+                        }
                     }
                     break;
                 case 27:
@@ -212,9 +252,18 @@ public class InventoryUI : MonoBehaviour
                     }
                     else
                     {
-                        itemName.text = ItemManager.Instance.itemDataArr[GameManager.instance.rangeWeaponItem].itemName;
-                        itemDesc.text = ItemManager.Instance.itemDataArr[GameManager.instance.rangeWeaponItem].itemDesc;
-                        itemEffect.text = ItemManager.Instance.itemDataArr[GameManager.instance.rangeWeaponItem].itemEffect;
+                        if (SettingUI.instance.currLanguage == SettingUI.LanguageType.Korean)
+                        {
+                            itemName.text = ItemManager.Instance.itemDataArr[GameManager.instance.rangeWeaponItem].itemName;
+                            itemDesc.text = ItemManager.Instance.itemDataArr[GameManager.instance.rangeWeaponItem].itemDesc;
+                            itemEffect.text = ItemManager.Instance.itemDataArr[GameManager.instance.rangeWeaponItem].itemEffect;
+                        }
+                        else
+                        {
+                            itemName.text = ItemManager.Instance.itemDataArr[GameManager.instance.rangeWeaponItem].itemNameEng;
+                            itemDesc.text = ItemManager.Instance.itemDataArr[GameManager.instance.rangeWeaponItem].itemDescEng;
+                            itemEffect.text = ItemManager.Instance.itemDataArr[GameManager.instance.rangeWeaponItem].itemEffectEng;
+                        }
                     }
                     break;
                 case 28:
@@ -226,9 +275,18 @@ public class InventoryUI : MonoBehaviour
                     }
                     else
                     {
-                        itemName.text = ItemManager.Instance.itemDataArr[GameManager.instance.magicItem].itemName;
-                        itemDesc.text = ItemManager.Instance.itemDataArr[GameManager.instance.magicItem].itemDesc;
-                        itemEffect.text = ItemManager.Instance.itemDataArr[GameManager.instance.magicItem].itemEffect;
+                        if (SettingUI.instance.currLanguage == SettingUI.LanguageType.Korean)
+                        {
+                            itemName.text = ItemManager.Instance.itemDataArr[GameManager.instance.magicItem].itemName;
+                            itemDesc.text = ItemManager.Instance.itemDataArr[GameManager.instance.magicItem].itemDesc;
+                            itemEffect.text = ItemManager.Instance.itemDataArr[GameManager.instance.magicItem].itemEffect;
+                        }
+                        else
+                        {
+                            itemName.text = ItemManager.Instance.itemDataArr[GameManager.instance.magicItem].itemNameEng;
+                            itemDesc.text = ItemManager.Instance.itemDataArr[GameManager.instance.magicItem].itemDescEng;
+                            itemEffect.text = ItemManager.Instance.itemDataArr[GameManager.instance.magicItem].itemEffectEng;
+                        }
                     }
                     break;
             }
@@ -313,8 +371,17 @@ public class InventoryUI : MonoBehaviour
         selectedObejctOnDestroy = confirmNo.gameObject;
         isDestroying = true;
         destroyDesc.transform.parent.gameObject.SetActive(true);
-        destroyDesc.text = string.Format("<color=green>{0}</color>\r\n을(를) 정말 <color=red>파괴</color>하시겠습니까?",
+        if (SettingUI.instance.currLanguage == SettingUI.LanguageType.Korean)
+        {
+            destroyDesc.text = string.Format("<color=green>{0}</color>\r\n을(를) 정말 <color=red>파괴</color>하시겠습니까?",
             ItemManager.Instance.itemDataArr[GameManager.instance.inventoryItemsId[selectedId]].itemName);
+        }
+        else
+        {
+            destroyDesc.text = string.Format("Are you sure you want to <color=red>Destroy</color>\r\n<color=green>{0}</color>?",
+            ItemManager.Instance.itemDataArr[GameManager.instance.inventoryItemsId[selectedId]].itemNameEng);
+        }
+
 
     }
 
@@ -1260,6 +1327,36 @@ public class InventoryUI : MonoBehaviour
                     break;
             }
             GameManager.instance.StatusUpdate();
+        }
+    }
+
+    void InitLanguage()
+    {
+        Dictionary<string, string[]> nameDic = new();
+        nameDic["Change Slot"] = new string[] { "자리 바꿀 슬롯 선택", "Choose Slot to Swap" };
+        nameDic["Unlock2"] = new string[] { "<color=blue>창고</color>에서 잠금 해제 : <color=yellow>1000</color>   ", " Unlock in <color=blue>Storage</color> : <color=yellow>1000</color>   " };
+        nameDic["Unlock3"] = new string[] { "<color=blue>창고</color>에서 잠금 해제 : <color=yellow>3000</color>   ", " Unlock in <color=blue>Storage</color> : <color=yellow>3000</color>   " };
+        nameDic["Destroy Yes Label"] = new string[] { "예", "Yes" };
+        nameDic["Destroy No Label"] = new string[] { "아니요", "No" };
+        nameDic["Destroy Text"] = new string[] { "파괴", "Destroy" };
+        nameDic["Close Text"] = new string[] { "창 닫기", "Close" };
+        nameDic["Cancel Text"] = new string[] { "취소", "Cancel" };
+        nameDic["Equipment Text"] = new string[] { "장비", "Equipment" };
+        nameDic["Weapon Text"] = new string[] { "주무기", "Weapon" };
+        nameDic["Necklace Text"] = new string[] { "목걸이", "Necklace" };
+        nameDic["Shoes Text"] = new string[] { "신발", "Shoes" };
+        nameDic["Range Text"] = new string[] { "투척", "Range" };
+        nameDic["Magic Text"] = new string[] { "마법", "Magic" };
+
+
+        var texts = transform.parent.GetComponentsInChildren<Text>(true);
+        int textId = SettingUI.instance.currLanguage == SettingUI.LanguageType.Korean ? 0 : 1;
+        foreach (var text in texts)
+        {
+            if (nameDic.ContainsKey(text.name))
+            {
+                text.text = nameDic[text.name][textId];
+            }
         }
     }
 }

@@ -1,4 +1,6 @@
+using System.Collections;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class FollowingLight : MonoBehaviour
 {
@@ -9,10 +11,9 @@ public class FollowingLight : MonoBehaviour
         calibration = new(0, 0.5f, 0f);
     }
 
-    private void FixedUpdate()
+    private void Update()
     {
         if (Player.instance == null) return;
         transform.position = Player.instance.transform.position + calibration;
-
     }
 }

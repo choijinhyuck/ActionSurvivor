@@ -93,10 +93,12 @@ public class ShopUI : MonoBehaviour
         shopCanvas.sortingOrder = 0;
 
         Init();
+        InitLanguage();
     }
 
     private void LateUpdate()
     {
+        InitLanguage();
         if (isBuySell)
         {
             if (selectedObjectOnDestroy != EventSystem.current.currentSelectedGameObject)
@@ -137,15 +139,26 @@ public class ShopUI : MonoBehaviour
                 itemDesc.text = "";
                 itemEffect.text = "";
 
-                npcDialogue.text = "먼 템 팔 거임?";
+                npcDialogue.text = SettingUI.instance.currLanguage == SettingUI.LanguageType.Korean ? "먼 템 팔 거임?" : "Sell What?";
             }
             else
             {
-                itemName.text = ItemManager.Instance.itemDataArr[GameManager.instance.inventoryItemsId[selectedId]].itemName;
-                itemDesc.text = ItemManager.Instance.itemDataArr[GameManager.instance.inventoryItemsId[selectedId]].itemDesc;
-                itemEffect.text = ItemManager.Instance.itemDataArr[GameManager.instance.inventoryItemsId[selectedId]].itemEffect;
+                if (SettingUI.instance.currLanguage == SettingUI.LanguageType.Korean)
+                {
+                    itemName.text = ItemManager.Instance.itemDataArr[GameManager.instance.inventoryItemsId[selectedId]].itemName;
+                    itemDesc.text = ItemManager.Instance.itemDataArr[GameManager.instance.inventoryItemsId[selectedId]].itemDesc;
+                    itemEffect.text = ItemManager.Instance.itemDataArr[GameManager.instance.inventoryItemsId[selectedId]].itemEffect;
+                }
+                else
+                {
+                    itemName.text = ItemManager.Instance.itemDataArr[GameManager.instance.inventoryItemsId[selectedId]].itemNameEng;
+                    itemDesc.text = ItemManager.Instance.itemDataArr[GameManager.instance.inventoryItemsId[selectedId]].itemDescEng;
+                    itemEffect.text = ItemManager.Instance.itemDataArr[GameManager.instance.inventoryItemsId[selectedId]].itemEffectEng;
+                }
 
-                npcDialogue.text = $"<color=blue>{Mathf.FloorToInt(ItemManager.Instance.itemDataArr[GameManager.instance.inventoryItemsId[selectedId]].priceToBuy / 5)} 골드</color>에 삼~\r\n팔 거임?";
+                npcDialogue.text = SettingUI.instance.currLanguage == SettingUI.LanguageType.Korean ?
+                    $"<color=blue>{Mathf.FloorToInt(ItemManager.Instance.itemDataArr[GameManager.instance.inventoryItemsId[selectedId]].priceToBuy / 5)} 골드</color>에 삼~\r\n팔 거임?" :
+                    $"<color=blue>{Mathf.FloorToInt(ItemManager.Instance.itemDataArr[GameManager.instance.inventoryItemsId[selectedId]].priceToBuy / 5)} gold</color>\r\nSell?";
             }
         }
         else if (selectedId < buttons.Count)
@@ -156,15 +169,26 @@ public class ShopUI : MonoBehaviour
                 itemDesc.text = "";
                 itemEffect.text = "";
 
-                npcDialogue.text = "먼 템 살 거임?";
+                npcDialogue.text = SettingUI.instance.currLanguage == SettingUI.LanguageType.Korean ? "먼 템 살 거임?" : "Buy What?";
             }
             else
             {
-                itemName.text = ItemManager.Instance.itemDataArr[shopItems[selectedId - 24]].itemName;
-                itemDesc.text = ItemManager.Instance.itemDataArr[shopItems[selectedId - 24]].itemDesc;
-                itemEffect.text = ItemManager.Instance.itemDataArr[shopItems[selectedId - 24]].itemEffect;
+                if (SettingUI.instance.currLanguage == SettingUI.LanguageType.Korean)
+                {
+                    itemName.text = ItemManager.Instance.itemDataArr[shopItems[selectedId - 24]].itemName;
+                    itemDesc.text = ItemManager.Instance.itemDataArr[shopItems[selectedId - 24]].itemDesc;
+                    itemEffect.text = ItemManager.Instance.itemDataArr[shopItems[selectedId - 24]].itemEffect;
+                }
+                else
+                {
+                    itemName.text = ItemManager.Instance.itemDataArr[shopItems[selectedId - 24]].itemNameEng;
+                    itemDesc.text = ItemManager.Instance.itemDataArr[shopItems[selectedId - 24]].itemDescEng;
+                    itemEffect.text = ItemManager.Instance.itemDataArr[shopItems[selectedId - 24]].itemEffectEng;
+                }
 
-                npcDialogue.text = $"<color=blue>{ItemManager.Instance.itemDataArr[shopItems[selectedId - 24]].priceToBuy} 골드</color>에 팜~\r\n살 거임?";
+                npcDialogue.text = SettingUI.instance.currLanguage == SettingUI.LanguageType.Korean ? 
+                    $"<color=blue>{ItemManager.Instance.itemDataArr[shopItems[selectedId - 24]].priceToBuy} 골드</color>에 팜~\r\n살 거임?" :
+                    $"<color=blue>{ItemManager.Instance.itemDataArr[shopItems[selectedId - 24]].priceToBuy} gold</color>\r\nBuy?";
             }
         }
     }
@@ -283,15 +307,23 @@ public class ShopUI : MonoBehaviour
         buySellConfirm.transform.parent.gameObject.SetActive(true);
         if (selectedId < 24)
         {
-            buySellConfirm.text = string.Format("<color=green>{0}</color> 을(를)\r\n<color=red>{1:N0} 골드</color>에 {2}하시겠습니까?",
+            buySellConfirm.text = SettingUI.instance.currLanguage == SettingUI.LanguageType.Korean ?
+                string.Format("<color=green>{0}</color> 을(를)\r\n<color=red>{1:N0} 골드</color>에 {2}하시겠습니까?",
             ItemManager.Instance.itemDataArr[GameManager.instance.inventoryItemsId[selectedId]].itemName,
-            Mathf.FloorToInt(ItemManager.Instance.itemDataArr[GameManager.instance.inventoryItemsId[selectedId]].priceToBuy / 5), "판매");
+            Mathf.FloorToInt(ItemManager.Instance.itemDataArr[GameManager.instance.inventoryItemsId[selectedId]].priceToBuy / 5), "판매") :
+            string.Format("Want to {2} for <color=red>{1:N0} gold</color>?\r\n<color=green>{0}</color>",
+            ItemManager.Instance.itemDataArr[GameManager.instance.inventoryItemsId[selectedId]].itemNameEng,
+            Mathf.FloorToInt(ItemManager.Instance.itemDataArr[GameManager.instance.inventoryItemsId[selectedId]].priceToBuy / 5), "Sell");
         }
         else
         {
-            buySellConfirm.text = string.Format("<color=green>{0}</color> 을(를)\r\n<color=red>{1:N0} 골드</color>에 {2}하시겠습니까",
+            buySellConfirm.text = SettingUI.instance.currLanguage == SettingUI.LanguageType.Korean ? 
+                string.Format("<color=green>{0}</color> 을(를)\r\n<color=red>{1:N0} 골드</color>에 {2}하시겠습니까",
             ItemManager.Instance.itemDataArr[shopItems[selectedId - 24]].itemName,
-            ItemManager.Instance.itemDataArr[shopItems[selectedId - 24]].priceToBuy, "구매");
+            ItemManager.Instance.itemDataArr[shopItems[selectedId - 24]].priceToBuy, "구매") :
+                string.Format("Want to {2} for <color=red>{1:N0} gold</color>?\r\n<color=green>{0}</color>",
+            ItemManager.Instance.itemDataArr[shopItems[selectedId - 24]].itemNameEng,
+            ItemManager.Instance.itemDataArr[shopItems[selectedId - 24]].priceToBuy, "Buy");
         }
     }
 
@@ -411,6 +443,27 @@ public class ShopUI : MonoBehaviour
                 }
             }
             itemImages[i].color = targetColor;
+        }
+    }
+
+    void InitLanguage()
+    {
+        Dictionary<string, string[]> nameDic = new();
+        nameDic["Shop Title"] = new string[] { "상점", "Shop" };
+        nameDic["Close Text"] = new string[] { "창 닫기", "Close" };
+        nameDic["Unlock2"] = new string[] { "<color=blue>창고</color>에서 잠금 해제 : <color=yellow>1000</color>   ", " Unlock in <color=blue>Storage</color> : <color=yellow>1000</color>   " };
+        nameDic["Unlock3"] = new string[] { "<color=blue>창고</color>에서 잠금 해제 : <color=yellow>3000</color>   ", " Unlock in <color=blue>Storage</color> : <color=yellow>3000</color>   " };
+        nameDic["Yes Label"] = new string[] { "예", "Yes" };
+        nameDic["No Label"] = new string[] { "아니요", "No" };
+
+        var texts = transform.parent.GetComponentsInChildren<Text>(true);
+        int textId = SettingUI.instance.currLanguage == SettingUI.LanguageType.Korean ? 0 : 1;
+        foreach (var text in texts)
+        {
+            if (nameDic.ContainsKey(text.name))
+            {
+                text.text = nameDic[text.name][textId];
+            }
         }
     }
 }

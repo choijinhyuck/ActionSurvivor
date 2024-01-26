@@ -14,9 +14,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemType: 3
   itemName: "\uAC74\uAC15\uC758 \uBAA9\uAC78\uC774"
+  itemNameEng: Necklace of Health
   itemDesc: "\uBCF4\uC11D\uC5D0 \uB2F4\uAE34 \uAC15\uB825\uD55C \uD798\uC73C\uB85C
     \uCD5C\uB300 \uD558\uD2B8 \uC218\uAC00 <color=red>2\uAC1C</color> \uC99D\uAC00\uD55C\uB2E4."
+  itemDescEng: The powerful force contained within the gem increases the maximum
+    heart count by <color=red>2</color>.
   itemEffect: "\uCD5C\uB300 \uD558\uD2B8 <color=red>+2\uAC1C</color>"
+  itemEffectEng: Maximum Heart Count <color=red>+2</color>
   itemIcon: {fileID: 21300000, guid: 3cce017b533cdf745b54b89cc775d486, type: 3}
   baseAmount: 2
   coolTime: 0

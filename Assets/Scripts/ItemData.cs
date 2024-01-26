@@ -15,10 +15,15 @@ public class ItemData : ScriptableObject
     [Header("# Main Info")]
     public ItemType itemType;
     public string itemName;
+    public string itemNameEng;
     [TextArea]
     public string itemDesc;
     [TextArea]
+    public string itemDescEng;
+    [TextArea]
     public string itemEffect;
+    [TextArea]
+    public string itemEffectEng;
     public Sprite itemIcon;
 
     [Header("# Item info")]

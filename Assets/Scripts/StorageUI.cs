@@ -67,6 +67,8 @@ public class StorageUI : MonoBehaviour
 
     void OnEnable()
     {
+        InitLanguage();
+
         isDestroying = false;
         isUnlocking = false;
 
@@ -178,9 +180,18 @@ public class StorageUI : MonoBehaviour
             }
             else
             {
-                itemName.text = ItemManager.Instance.itemDataArr[GameManager.instance.inventoryItemsId[selectedId]].itemName;
-                itemDesc.text = ItemManager.Instance.itemDataArr[GameManager.instance.inventoryItemsId[selectedId]].itemDesc;
-                itemEffect.text = ItemManager.Instance.itemDataArr[GameManager.instance.inventoryItemsId[selectedId]].itemEffect;
+                if (SettingUI.instance.currLanguage == SettingUI.LanguageType.Korean)
+                {
+                    itemName.text = ItemManager.Instance.itemDataArr[GameManager.instance.inventoryItemsId[selectedId]].itemName;
+                    itemDesc.text = ItemManager.Instance.itemDataArr[GameManager.instance.inventoryItemsId[selectedId]].itemDesc;
+                    itemEffect.text = ItemManager.Instance.itemDataArr[GameManager.instance.inventoryItemsId[selectedId]].itemEffect;
+                }
+                else
+                {
+                    itemName.text = ItemManager.Instance.itemDataArr[GameManager.instance.inventoryItemsId[selectedId]].itemNameEng;
+                    itemDesc.text = ItemManager.Instance.itemDataArr[GameManager.instance.inventoryItemsId[selectedId]].itemDescEng;
+                    itemEffect.text = ItemManager.Instance.itemDataArr[GameManager.instance.inventoryItemsId[selectedId]].itemEffectEng;
+                }
             }
         }
         else if (selectedId < 48)
@@ -193,9 +204,18 @@ public class StorageUI : MonoBehaviour
             }
             else
             {
-                itemName.text = ItemManager.Instance.itemDataArr[GameManager.instance.storedItemsId[selectedId % 24]].itemName;
-                itemDesc.text = ItemManager.Instance.itemDataArr[GameManager.instance.storedItemsId[selectedId % 24]].itemDesc;
-                itemEffect.text = ItemManager.Instance.itemDataArr[GameManager.instance.storedItemsId[selectedId % 24]].itemEffect;
+                if (SettingUI.instance.currLanguage == SettingUI.LanguageType.Korean)
+                {
+                    itemName.text = ItemManager.Instance.itemDataArr[GameManager.instance.storedItemsId[selectedId % 24]].itemName;
+                    itemDesc.text = ItemManager.Instance.itemDataArr[GameManager.instance.storedItemsId[selectedId % 24]].itemDesc;
+                    itemEffect.text = ItemManager.Instance.itemDataArr[GameManager.instance.storedItemsId[selectedId % 24]].itemEffect;
+                }
+                else
+                {
+                    itemName.text = ItemManager.Instance.itemDataArr[GameManager.instance.storedItemsId[selectedId % 24]].itemNameEng;
+                    itemDesc.text = ItemManager.Instance.itemDataArr[GameManager.instance.storedItemsId[selectedId % 24]].itemDescEng;
+                    itemEffect.text = ItemManager.Instance.itemDataArr[GameManager.instance.storedItemsId[selectedId % 24]].itemEffectEng;
+                }
             }
         }
     }
@@ -325,13 +345,29 @@ public class StorageUI : MonoBehaviour
         destroyDesc.transform.parent.gameObject.SetActive(true);
         if (selectedId < 24)
         {
-            destroyDesc.text = string.Format("<color=green>{0}</color>\r\n을(를) 정말 <color=red>파괴</color>하시겠습니까?",
+            if (SettingUI.instance.currLanguage == SettingUI.LanguageType.Korean)
+            {
+                destroyDesc.text = string.Format("<color=green>{0}</color>\r\n을(를) 정말 <color=red>파괴</color>하시겠습니까?",
             ItemManager.Instance.itemDataArr[GameManager.instance.inventoryItemsId[selectedId]].itemName);
+            }
+            else
+            {
+                destroyDesc.text = string.Format("Are you sure you want to <color=red>Destroy</color>\r\n<color=green>{0}</color>?",
+            ItemManager.Instance.itemDataArr[GameManager.instance.inventoryItemsId[selectedId]].itemNameEng);
+            }
         }
         else
         {
-            destroyDesc.text = string.Format("<color=green>{0}</color>\r\n을(를) 정말 <color=red>파괴</color>하시겠습니까?",
+            if (SettingUI.instance.currLanguage == SettingUI.LanguageType.Korean)
+            {
+                destroyDesc.text = string.Format("<color=green>{0}</color>\r\n을(를) 정말 <color=red>파괴</color>하시겠습니까?",
             ItemManager.Instance.itemDataArr[GameManager.instance.storedItemsId[selectedId % 24]].itemName);
+            }
+            else
+            {
+                destroyDesc.text = string.Format("Are you sure you want to <color=red>Destroy</color>\r\n<color=green>{0}</color>?",
+            ItemManager.Instance.itemDataArr[GameManager.instance.storedItemsId[selectedId % 24]].itemNameEng);
+            }
         }
     }
 
@@ -584,7 +620,15 @@ public class StorageUI : MonoBehaviour
         isUnlocking = true;
         destroyDesc.transform.parent.gameObject.SetActive(true);
 
-        destroyDesc.text = "정말 인벤토리 <color=red>8칸</color>을 확장 하시겠습니까?";
+        if (SettingUI.instance.currLanguage == SettingUI.LanguageType.Korean)
+        {
+            destroyDesc.text = "정말 인벤토리 <color=red>8칸</color>을 확장 하시겠습니까?";
+        }
+        else
+        {
+            destroyDesc.text = "Are you sure you want to expand the Inventory by <color=red>8 Slots</color>?";
+        }
+        
     }
 
     // 인벤토리 창에서 아무 버튼도 선택되지 않은 경우에 Menu키 (키보드: Esc, 게임패드: Start)로 빠져나올 수 있도록.
@@ -666,6 +710,30 @@ public class StorageUI : MonoBehaviour
                 }
             }
             itemImages[i].color = targetColor;
+        }
+    }
+
+    void InitLanguage()
+    {
+        Dictionary<string, string[]> nameDic = new();
+        nameDic["Storage Title"] = new string[] { "창고", "Storage" };
+        nameDic["Change Slot"] = new string[] { "자리 바꿀 슬롯 선택", "Choose Slot to Swap" };
+        nameDic["Unlock2"] = new string[] { "잠금 해제 : <color=yellow>1000</color>", "Unlock  : <color=yellow>1000</color>" };
+        nameDic["Unlock3"] = new string[] { "잠금 해제 : <color=yellow>3000</color>", "Unlock  : <color=yellow>3000</color>" };
+        nameDic["Destroy Yes Label"] = new string[] { "예", "Yes" };
+        nameDic["Destroy No Label"] = new string[] { "아니요", "No" };
+        nameDic["Destroy Text"] = new string[] { "파괴", "Destroy" };
+        nameDic["Close Text"] = new string[] { "창 닫기", "Close" };
+        nameDic["Cancel Text"] = new string[] { "취소", "Cancel" };
+
+        var texts = transform.parent.GetComponentsInChildren<Text>(true);
+        int textId = SettingUI.instance.currLanguage == SettingUI.LanguageType.Korean ? 0 : 1;
+        foreach (var text in texts)
+        {
+            if (nameDic.ContainsKey(text.name))
+            {
+                text.text = nameDic[text.name][textId];
+            }
         }
     }
 }

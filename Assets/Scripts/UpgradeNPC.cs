@@ -73,6 +73,8 @@ public class UpgradeNPC : MonoBehaviour
 
         isNear = true;
 
+        buttonImage.transform.parent.GetComponentInChildren<Text>(true).text = SettingUI.instance.currLanguage == SettingUI.LanguageType.Korean ? "°­È­" : "Upgrade";
+
         switch (ControllerManager.instance.CurrentScheme)
         {
             case ControllerManager.scheme.Keyboard:

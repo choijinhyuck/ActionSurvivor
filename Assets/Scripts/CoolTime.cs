@@ -62,7 +62,14 @@ public class CoolTime : MonoBehaviour
                 {
 
                     if (!range.transform.GetChild(0).gameObject.activeSelf) range.transform.GetChild(0).gameObject.SetActive(true);
-                    range.transform.GetChild(0).gameObject.GetComponent<Text>().text = rangeWeapon.leftTime.ToString() + "段";
+                    if (SettingUI.instance.currLanguage == SettingUI.LanguageType.Korean)
+                    {
+                        range.transform.GetChild(0).gameObject.GetComponent<Text>().text = rangeWeapon.leftTime.ToString() + "段";
+                    }
+                    else
+                    {
+                        range.transform.GetChild(0).gameObject.GetComponent<Text>().text = rangeWeapon.leftTime.ToString() + "sec";
+                    }
 
 
                     range.GetComponent<Image>().color = new Color(1f, 1f, 1f, .3f);
@@ -108,7 +115,14 @@ public class CoolTime : MonoBehaviour
                 {
 
                     if (!magic.transform.GetChild(0).gameObject.activeSelf) magic.transform.GetChild(0).gameObject.SetActive(true);
-                    magic.transform.GetChild(0).gameObject.GetComponent<Text>().text = magicScript.leftTime.ToString() + "段";
+                    if (SettingUI.instance.currLanguage == SettingUI.LanguageType.Korean)
+                    {
+                        magic.transform.GetChild(0).gameObject.GetComponent<Text>().text = magicScript.leftTime.ToString() + "段";
+                    }
+                    else
+                    {
+                        magic.transform.GetChild(0).gameObject.GetComponent<Text>().text = magicScript.leftTime.ToString() + "s";
+                    }
 
 
                     magic.GetComponent<Image>().color = new Color(1f, 1f, 1f, .3f);

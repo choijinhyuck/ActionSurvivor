@@ -94,6 +94,15 @@ public class StorageChest : MonoBehaviour
 
         isNear = true;
 
+        if (SettingUI.instance.currLanguage == SettingUI.LanguageType.Korean)
+        {
+            buttonImage.transform.parent.GetComponentInChildren<Text>(true).text = "Ã¢°í";
+        }
+        else
+        {
+            buttonImage.transform.parent.GetComponentInChildren<Text>(true).text = "Storage";
+        }
+
         switch (ControllerManager.instance.CurrentScheme)
         {
             case ControllerManager.scheme.Keyboard:

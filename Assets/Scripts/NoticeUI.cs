@@ -13,7 +13,14 @@ public class NoticeUI : MonoBehaviour
         {
             if (GameManager.instance.stage0_ClearCount == 1)
             {
-                stageUnlockPanel.GetComponentInChildren<Text>(true).text = "<color=yellow>[깊은 숲]</color>으로\r\n가는 길이 열렸습니다.";
+                if (SettingUI.instance.currLanguage == SettingUI.LanguageType.Korean)
+                {
+                    stageUnlockPanel.GetComponentInChildren<Text>(true).text = "<color=yellow>[깊은 숲]</color>으로\r\n가는 길이 열렸습니다.";
+                }
+                else
+                {
+                    stageUnlockPanel.GetComponentInChildren<Text>(true).text = "The path to\r\n<color=yellow>[Deep Forest]</color> is open.";
+                }
                 stageUnlockPanel.SetActive(true);
             }
         }
@@ -21,9 +28,17 @@ public class NoticeUI : MonoBehaviour
         {
             if (GameManager.instance.stage1_ClearCount == 1)
             {
-                stageUnlockPanel.GetComponentInChildren<Text>(true).text = "<color=yellow>[고블린의 숲]</color>으로\r\n가는 길이 열렸습니다.";
+                if (SettingUI.instance.currLanguage == SettingUI.LanguageType.Korean)
+                {
+                    stageUnlockPanel.GetComponentInChildren<Text>(true).text = "<color=yellow>[고블린의 숲]</color>으로\r\n가는 길이 열렸습니다.";
+                    characterUnlockPanel.GetComponentInChildren<Text>(true).text = "<color=yellow>[야만전사]</color>가\r\n합류했습니다.";
+                }
+                else
+                {
+                    stageUnlockPanel.GetComponentInChildren<Text>(true).text = "The path to\r\n<color=yellow>[Goblin Forest]</color> is open.";
+                    characterUnlockPanel.GetComponentInChildren<Text>(true).text = "<color=yellow>[Barbarian]</color>\r\nhas joined.";
+                }
                 stageUnlockPanel.SetActive(true);
-                characterUnlockPanel.GetComponentInChildren<Text>(true).text = "<color=yellow>[야만전사]</color>가\r\n합류했습니다.";
                 characterUnlockPanel.SetActive(true);
             }
         }

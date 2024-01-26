@@ -13,9 +13,12 @@ MonoBehaviour:
   m_Name: 10 Potion Normal
   m_EditorClassIdentifier: 
   itemType: 5
-  itemName: "\uD790\uB9C1\uD3EC\uC158"
+  itemName: "\uCCB4\uB825 \uBB3C\uC57D"
+  itemNameEng: Healing Potion
   itemDesc: "\uB9C8\uC2DC\uBA74 <color=red>\uD558\uD2B8 2\uAC1C</color> \uB97C \uD68C\uBCF5\uD55C\uB2E4."
+  itemDescEng: Drinking this restores <color=red>2 hearts</color>
   itemEffect: 
+  itemEffectEng: 
   itemIcon: {fileID: -1490006355, guid: 295b2edbe94e7ed4aab5e93688a46348, type: 3}
   baseAmount: 2
   coolTime: 0

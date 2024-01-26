@@ -648,6 +648,8 @@ public class Player : MonoBehaviour
 
     IEnumerator FailMotion()
     {
+        //var light = FindAnyObjectByType<FollowingLight>();
+        //if (light != null) light.Fail();
         Vector3 deltaVec = new Vector3(.05f, 0f, 0f);
 
         AudioManager.instance.PlaySfx(AudioManager.Sfx.Fail);
@@ -663,16 +665,15 @@ public class Player : MonoBehaviour
             //yield return waitSec;
 
             rigid.position += (Vector2)deltaVec;
-            yield return waitSec;
+            yield return waitFix;
             rigid.position -= (Vector2)deltaVec;
-            yield return waitSec;
+            yield return waitFix;
             rigid.position -= (Vector2)deltaVec;
-            yield return waitSec;
+            yield return waitFix;
             rigid.position += (Vector2)deltaVec;
-            yield return waitSec;
+            yield return waitFix;
         }
     }
-
 
     /// <summary>
     /// 0 : performed, 1: canceled

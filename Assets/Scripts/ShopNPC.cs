@@ -72,6 +72,15 @@ public class ShopNPC : MonoBehaviour
 
         isNear = true;
 
+        if (SettingUI.instance.currLanguage == SettingUI.LanguageType.Korean)
+        {
+            buttonImage.transform.parent.GetComponentInChildren<Text>(true).text = "ªÛ¡°";
+        }
+        else
+        {
+            buttonImage.transform.parent.GetComponentInChildren<Text>(true).text = "Shop";
+        }
+
         switch (ControllerManager.instance.CurrentScheme)
         {
             case ControllerManager.scheme.Keyboard:

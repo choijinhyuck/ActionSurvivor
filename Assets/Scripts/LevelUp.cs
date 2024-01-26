@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Dynamic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -83,6 +84,15 @@ public class LevelUp : MonoBehaviour
                 currentEvent = EventSystem.current.currentSelectedGameObject;
                 AudioManager.instance.PlaySfx(AudioManager.Sfx.ButtonChange);
             }
+        }
+
+        if (SettingUI.instance.currLanguage == SettingUI.LanguageType.Korean)
+        {
+            selectKeyImage.transform.parent.GetComponentInChildren<Text>(true).text = "선택";
+        }
+        else
+        {
+            selectKeyImage.transform.parent.GetComponentInChildren<Text>(true).text = "Select";
         }
 
         if (currentScheme == ControllerManager.instance.CurrentScheme) return;
@@ -179,6 +189,14 @@ public class LevelUp : MonoBehaviour
         AudioManager.instance.PauseBGM(true);
         gameObject.SetActive(true);
         AudioManager.instance.PlaySfx(AudioManager.Sfx.LevelUp);
+        if (SettingUI.instance.currLanguage == SettingUI.LanguageType.Korean)
+        {
+            firstText.text = "축하합니다!\r\n레벨이 상승했습니다!";
+        }
+        else
+        {
+            firstText.text = "Congratulations!\r\nYour level has increased!";
+        }
         StartCoroutine(ShowText());
     }
 
@@ -218,6 +236,22 @@ public class LevelUp : MonoBehaviour
             element.gameObject.SetActive(true);
         }
         firstText.gameObject.SetActive(false);
+
+        InitLanguage();
+        if (SettingUI.instance.currLanguage == SettingUI.LanguageType.Korean)
+        {
+            levelUpText[0].text = "레";
+            levelUpText[1].text = "벨";
+            levelUpText[2].text = "업";
+            levelUpText[3].text = "!";
+        }
+        else
+        {
+            levelUpText[0].text = "Le";
+            levelUpText[1].text = "vel";
+            levelUpText[2].text = "Up";
+            levelUpText[3].text = "!";
+        }
 
         StartCoroutine(MoveText());
 
@@ -265,34 +299,6 @@ public class LevelUp : MonoBehaviour
             string[] texts = GetDesc(index);
             statTexts[0].text = texts[0];
             statTexts[1].text = texts[1];
-            //    switch (index)
-            //    {
-            //        case 0:
-            //            statTexts[0].text = string.Format("힘 <size=9><color=blue>Lv.{0}</color></size>", GameManager.Instance.playerDamageLevel + 1);
-            //            statTexts[1].text = string.Format("공격력 <color=red><size=7>{0}</size></color> 증가", 1);
-            //            break;
-
-            //        case 1:
-            //            statTexts[0].text = string.Format("민첩 <size=9><color=blue>Lv.{0}</color></size>", GameManager.Instance.playerSpeedLevel + 1);
-            //            statTexts[1].text = string.Format("이동속도 <color=red><size=7>{0}</size></color> 증가", 1);
-            //            break;
-
-            //        case 2:
-            //            statTexts[0].text = string.Format("건강 <size=9><color=blue>Lv.{0}</color></size>", GameManager.Instance.playerHealthLevel + 1);
-            //            statTexts[1].text = string.Format("최대 하트 <color=red><size=7>{0}</size></color> 증가", 1);
-            //            break; ;
-
-            //        case 3:
-            //            statTexts[0].text = string.Format("기술 <size=9><color=blue>Lv.{0}</color></size>", GameManager.Instance.playerSkillLevel + 1);
-            //            statTexts[1].text = string.Format("기술 재사용 시간 감소");
-            //            break;
-
-            //        case 4:
-            //            statTexts[0].text = string.Format("대시 <size=9><color=blue>Lv.{0}</color></size>", GameManager.Instance.playerDashLevel + 1);
-            //            statTexts[1].text = string.Format("대시 재사용 시간 감소");
-            //            break;
-            //    }
-            //}
         }
         EventSystem.current.SetSelectedGameObject(stats[select[0]]);
         currentEvent = EventSystem.current.currentSelectedGameObject;
@@ -330,64 +336,110 @@ public class LevelUp : MonoBehaviour
             case 0:
                 if (GameManager.instance.playerDamageLevel == 2)
                 {
-                    texts[0] = string.Format("힘 <size=9><color=blue>Lv.{0}</color> <color=red>(Max)</color></size>", GameManager.instance.playerDamageLevel + 1);
+                    texts[0] = SettingUI.instance.currLanguage == SettingUI.LanguageType.Korean ?
+                        string.Format("힘 <size=9><color=blue>Lv.{0}</color> <color=red>(Max)</color></size>", GameManager.instance.playerDamageLevel + 1) :
+                        string.Format("Strength <size=9><color=blue>Lv.{0}</color> <color=red>(Max)</color></size>", GameManager.instance.playerDamageLevel + 1);
                 }
                 else
                 {
-                    texts[0] = string.Format("힘 <size=9><color=blue>Lv.{0}</color></size>", GameManager.instance.playerDamageLevel + 1);
+                    texts[0] = SettingUI.instance.currLanguage == SettingUI.LanguageType.Korean ? 
+                        string.Format("힘 <size=9><color=blue>Lv.{0}</color></size>", GameManager.instance.playerDamageLevel + 1) :
+                        string.Format("Strength <size=9><color=blue>Lv.{0}</color></size>", GameManager.instance.playerDamageLevel + 1);
                 }
-                texts[1] = string.Format("공격력 <color=red><size=7>{0}</size></color> 증가", 1);
+                texts[1] = SettingUI.instance.currLanguage == SettingUI.LanguageType.Korean ? 
+                    string.Format("공격력 <color=red><size=7>{0}</size></color> 증가", 1) :
+                    string.Format("Attack Damage increases by <color=red><size=7>{0}</size></color>", 1);
                 break;
 
             case 1:
                 if (GameManager.instance.playerSpeedLevel == 2)
                 {
-                    texts[0] = string.Format("민첩 <size=9><color=blue>Lv.{0}</color> <color=red>(Max)</color></size>", GameManager.instance.playerSpeedLevel + 1);
+                    texts[0] = SettingUI.instance.currLanguage == SettingUI.LanguageType.Korean ? 
+                        string.Format("민첩 <size=9><color=blue>Lv.{0}</color> <color=red>(Max)</color></size>", GameManager.instance.playerSpeedLevel + 1) :
+                        string.Format("Agility <size=9><color=blue>Lv.{0}</color> <color=red>(Max)</color></size>", GameManager.instance.playerSpeedLevel + 1);
                 }
                 else
                 {
-                    texts[0] = string.Format("민첩 <size=9><color=blue>Lv.{0}</color></size>", GameManager.instance.playerSpeedLevel + 1);
+                    texts[0] = SettingUI.instance.currLanguage == SettingUI.LanguageType.Korean ? 
+                        string.Format("민첩 <size=9><color=blue>Lv.{0}</color></size>", GameManager.instance.playerSpeedLevel + 1) :
+                        string.Format("Agility <size=9><color=blue>Lv.{0}</color></size>", GameManager.instance.playerSpeedLevel + 1);
                 }
-                texts[1] = string.Format("이동속도 <color=red><size=7>{0}</size></color> 증가", 1);
+                texts[1] = SettingUI.instance.currLanguage == SettingUI.LanguageType.Korean ? 
+                    string.Format("이동속도 <color=red><size=7>{0}</size></color> 증가", 1) :
+                    string.Format("Movement Speed increases by <color=red><size=7>{0}</size></color>", 1);
                 break;
 
             case 2:
                 if (GameManager.instance.playerHealthLevel == 3)
                 {
-                    texts[0] = string.Format("건강 <size=9><color=blue>Lv.{0}</color> <color=red>(Max)</color></size>", GameManager.instance.playerHealthLevel + 1);
-                    texts[1] = "피격 시 무적시간 <size=7><color=red>100%</color></size> 증가";
-
+                    if (SettingUI.instance.currLanguage == SettingUI.LanguageType.Korean)
+                    {
+                        texts[0] = string.Format("건강 <size=9><color=blue>Lv.{0}</color> <color=red>(Max)</color></size>", GameManager.instance.playerHealthLevel + 1);
+                        texts[1] = "피격 시 무적시간 <size=7><color=red>100%</color></size> 증가";
+                    }
+                    else
+                    {
+                        texts[0] = string.Format("Health <size=9><color=blue>Lv.{0}</color> <color=red>(Max)</color></size>", GameManager.instance.playerHealthLevel + 1);
+                        texts[1] = "Invincibility duration increases by <size=7><color=red>100%</color></size> upon being hit";
+                    }
                 }
                 else
                 {
-                    texts[0] = string.Format("건강 <size=9><color=blue>Lv.{0}</color></size>", GameManager.instance.playerHealthLevel + 1);
-                    texts[1] = string.Format("최대 하트 <color=red><size=7>{0}</size></color> 증가", 1);
-
+                    if (SettingUI.instance.currLanguage == SettingUI.LanguageType.Korean)
+                    {
+                        texts[0] = string.Format("건강 <size=9><color=blue>Lv.{0}</color></size>", GameManager.instance.playerHealthLevel + 1);
+                        texts[1] = string.Format("최대 하트 <color=red><size=7>{0}</size></color> 증가", 1);
+                    }
+                    else
+                    {
+                        texts[0] = string.Format("Health <size=9><color=blue>Lv.{0}</color></size>", GameManager.instance.playerHealthLevel + 1);
+                        texts[1] = string.Format("Max Heart Count increases by <color=red><size=7>{0}</size></color>", 1);
+                    }
                 }
                 break;
 
             case 3:
-                texts[0] = string.Format("기술 <size=9><color=blue>Lv.{0}</color></size>", GameManager.instance.playerSkillLevel + 1);
+                texts[0] = SettingUI.instance.currLanguage == SettingUI.LanguageType.Korean ?
+                    string.Format("기술 <size=9><color=blue>Lv.{0}</color></size>", GameManager.instance.playerSkillLevel + 1) :
+                    string.Format("Skill <size=9><color=blue>Lv.{0}</color></size>", GameManager.instance.playerSkillLevel + 1);
                 switch (GameManager.instance.playerSkillLevel)
                 {
                     case 5:
-                        texts[0] = string.Format("기술 <size=9><color=blue>Lv.{0}</color> <color=red>(Max)</color></size>", GameManager.instance.playerSkillLevel + 1);
-                        texts[1] = string.Format("<size=7><color=red>3단계</color></size> 충전 기술 개방");
+                        if (SettingUI.instance.currLanguage == SettingUI.LanguageType.Korean)
+                        {
+                            texts[0] = string.Format("기술 <size=9><color=blue>Lv.{0}</color> <color=red>(Max)</color></size>", GameManager.instance.playerSkillLevel + 1);
+                            texts[1] = string.Format("<size=7><color=red>3단계</color></size> 충전 기술 개방");
+                        }
+                        else
+                        {
+                            texts[0] = string.Format("Skill <size=9><color=blue>Lv.{0}</color> <color=red>(Max)</color></size>", GameManager.instance.playerSkillLevel + 1);
+                            texts[1] = string.Format("<size=7><color=red>Tier 3</color></size> Charged Skill is unlocked");
+                        }
                         break;
                     case 4:
-                        texts[1] = string.Format("최대 기술 사용 횟수 <size=7><color=red>2</color></size> 증가");
+                        texts[1] = SettingUI.instance.currLanguage == SettingUI.LanguageType.Korean ?
+                            string.Format("최대 기술 사용 횟수 <size=7><color=red>2</color></size> 증가") :
+                            string.Format("Maximum Skill Usage Count increases by <size=7><color=red>2</color></size>");
                         break;
                     case 3:
-                        texts[1] = string.Format("기 1회 충전 소요 시간 <size=7><color=red>20%</color></size> 단축");
+                        texts[1] = SettingUI.instance.currLanguage == SettingUI.LanguageType.Korean ? 
+                            string.Format("기 1회 충전 소요 시간 <size=7><color=red>20%</color></size> 단축") :
+                            string.Format("Charging time for each cycle is reduced by <size=7><color=red>20%</color></size>");
                         break;
                     case 2:
-                        texts[1] = string.Format("<size=7><color=red>2단계</color></size> 충전 기술 개방");
+                        texts[1] = SettingUI.instance.currLanguage == SettingUI.LanguageType.Korean ? 
+                            string.Format("<size=7><color=red>2단계</color></size> 충전 기술 개방") :
+                            string.Format("<size=7><color=red>Tier 2</color></size> Charged Skill is unlocked");
                         break;
                     case 1:
-                        texts[1] = string.Format("최대 기술 사용 횟수 <size=7><color=red>1</color></size> 증가");
+                        texts[1] = SettingUI.instance.currLanguage == SettingUI.LanguageType.Korean ? 
+                            string.Format("최대 기술 사용 횟수 <size=7><color=red>1</color></size> 증가") :
+                            string.Format("Maximum Skill Usage Count increases by <size=7><color=red>1</color></size>");
                         break;
                     default:
-                        texts[1] = string.Format("기 1회 충전 소요 시간 <size=7><color=red>20%</color></size> 단축");
+                        texts[1] = SettingUI.instance.currLanguage == SettingUI.LanguageType.Korean ? 
+                            string.Format("기 1회 충전 소요 시간 <size=7><color=red>20%</color></size> 단축") :
+                            string.Format("Charging time for each cycle is reduced by <size=7><color=red>20%</color></size>");
                         break;
                 }
                 break;
@@ -396,20 +448,52 @@ public class LevelUp : MonoBehaviour
                 switch (GameManager.instance.playerDashLevel)
                 {
                     case 3:
-                        texts[0] = string.Format("대시 <size=9><color=blue>Lv.{0}</color> <color=red>(Max)</color></size>", GameManager.instance.playerDashLevel + 1);
-                        texts[1] = string.Format("대시 이동거리 <size=7><color=red>30%</color></size> 증가");
+                        if (SettingUI.instance.currLanguage == SettingUI.LanguageType.Korean)
+                        {
+                            texts[0] = string.Format("대시 <size=9><color=blue>Lv.{0}</color> <color=red>(Max)</color></size>", GameManager.instance.playerDashLevel + 1);
+                            texts[1] = string.Format("대시 이동거리 <size=7><color=red>30%</color></size> 증가");
+                        }
+                        else
+                        {
+                            texts[0] = string.Format("Dash <size=9><color=blue>Lv.{0}</color> <color=red>(Max)</color></size>", GameManager.instance.playerDashLevel + 1);
+                            texts[1] = string.Format("Dash Distance increases by <size=7><color=red>30%</color></size>");
+                        }
                         break;
                     case 2:
-                        texts[0] = string.Format("대시 <size=9><color=blue>Lv.{0}</color></size>", GameManager.instance.playerDashLevel + 1);
-                        texts[1] = string.Format("대시 재사용 시간 <size=7><color=red>20%</color></size> 감소");
+                        if (SettingUI.instance.currLanguage == SettingUI.LanguageType.Korean)
+                        {
+                            texts[0] = string.Format("대시 <size=9><color=blue>Lv.{0}</color></size>", GameManager.instance.playerDashLevel + 1);
+                            texts[1] = string.Format("대시 재사용 시간 <size=7><color=red>20%</color></size> 감소");
+                        }
+                        else
+                        {
+                            texts[0] = string.Format("Dash <size=9><color=blue>Lv.{0}</color></size>", GameManager.instance.playerDashLevel + 1);
+                            texts[1] = string.Format("Cooldown time for Dash is reduced by <size=7><color=red>20%</color></size>");
+                        }
                         break;
                     case 1:
-                        texts[0] = string.Format("대시 <size=9><color=blue>Lv.{0}</color></size>", GameManager.instance.playerDashLevel + 1);
-                        texts[1] = string.Format("대시 재사용 시간 <size=7><color=red>15%</color></size> 감소");
+                        if (SettingUI.instance.currLanguage == SettingUI.LanguageType.Korean)
+                        {
+                            texts[0] = string.Format("대시 <size=9><color=blue>Lv.{0}</color></size>", GameManager.instance.playerDashLevel + 1);
+                            texts[1] = string.Format("대시 재사용 시간 <size=7><color=red>15%</color></size> 감소");
+                        }
+                        else
+                        {
+                            texts[0] = string.Format("Dash <size=9><color=blue>Lv.{0}</color></size>", GameManager.instance.playerDashLevel + 1);
+                            texts[1] = string.Format("Cooldown time for Dash is reduced by <size=7><color=red>15%</color></size>");
+                        }
                         break;
                     default:
-                        texts[0] = string.Format("대시 <size=9><color=blue>Lv.{0}</color></size>", GameManager.instance.playerDashLevel + 1);
-                        texts[1] = string.Format("대시 재사용 시간 <size=7><color=red>10%</color></size> 감소");
+                        if (SettingUI.instance.currLanguage == SettingUI.LanguageType.Korean)
+                        {
+                            texts[0] = string.Format("대시 <size=9><color=blue>Lv.{0}</color></size>", GameManager.instance.playerDashLevel + 1);
+                            texts[1] = string.Format("대시 재사용 시간 <size=7><color=red>10%</color></size> 감소");
+                        }
+                        else
+                        {
+                            texts[0] = string.Format("Dash <size=9><color=blue>Lv.{0}</color></size>", GameManager.instance.playerDashLevel + 1);
+                            texts[1] = string.Format("Cooldown time for Dash is reduced by <size=7><color=red>10%</color></size>");
+                        } 
                         break;
                 }
                 break;
@@ -484,6 +568,22 @@ public class LevelUp : MonoBehaviour
                 }
                 GameManager.instance.playerDashLevel++;
                 break;
+        }
+    }
+
+    void InitLanguage()
+    {
+        Dictionary<string, string[]> nameDic = new();
+        nameDic["Select Desc"] = new string[] { "강화할 능력을 선택하세요.", "Choose the ability to enhance." };
+
+        var texts = transform.GetComponentsInChildren<Text>(true);
+        int textId = SettingUI.instance.currLanguage == SettingUI.LanguageType.Korean ? 0 : 1;
+        foreach (var text in texts)
+        {
+            if (nameDic.ContainsKey(text.name))
+            {
+                text.text = nameDic[text.name][textId];
+            }
         }
     }
 }

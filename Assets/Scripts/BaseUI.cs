@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
@@ -137,6 +138,15 @@ public class BaseUI : MonoBehaviour
 
     public void Death()
     {
+        if (SettingUI.instance.currLanguage == SettingUI.LanguageType.Korean)
+        {
+            deathMessage.text = "소지금을 제외한 모든 아이템을 잃었습니다.";
+        }
+        else
+        {
+            deathMessage.text = "You lost all items except for the gold.";
+        }
+
         ChangeAlpha(0f, death, deathTitle, deathMessage);
         resurrection.gameObject.SetActive(false);
         death.gameObject.SetActive(true);
@@ -164,6 +174,14 @@ public class BaseUI : MonoBehaviour
             yield return null;
             timer += Time.unscaledDeltaTime;
         }
+        if (SettingUI.instance.currLanguage == SettingUI.LanguageType.Korean)
+        {
+            resurrection.GetComponentInChildren<Text>(true).text = "야영지에서 부활하기";
+        }
+        else
+        {
+            resurrection.GetComponentInChildren<Text>(true).text = "Respawning at the Camp";
+        }
         resurrection.gameObject.SetActive(true);
         EventSystem.current.SetSelectedGameObject(resurrection.gameObject);
     }
@@ -180,6 +198,7 @@ public class BaseUI : MonoBehaviour
 
     public void Victory()
     {
+        InitLanguage();
         ChangeAlpha(0f, victory, victoryTitle, victoryMessage);
         comeBack.gameObject.SetActive(false);
         later.gameObject.SetActive(false);
@@ -261,17 +280,51 @@ public class BaseUI : MonoBehaviour
         GameManager.instance.Resume();
 
         isComeBack = false;
-        remainTime.text = "10초 후 귀환합니다.";
+        if (SettingUI.instance.currLanguage == SettingUI.LanguageType.Korean)
+        {
+            remainTime.text = "10초 후 귀환합니다.";
+        }
+        else
+        {
+            remainTime.text = "Return in 10 seconds.";
+        }
         remainTime.gameObject.SetActive(true);
         float remainTimer = 10f;
         while (remainTimer > 0f)
         {
-            remainTime.text = $"{Mathf.FloorToInt(remainTimer)}초 후 귀환합니다.";
+            if (SettingUI.instance.currLanguage == SettingUI.LanguageType.Korean)
+            {
+                remainTime.text = $"{Mathf.FloorToInt(remainTimer)}초 후 귀환합니다.";
+            }
+            else
+            {
+                remainTime.text = $"Return in {Mathf.FloorToInt(remainTimer)} seconds.";
+            }
             yield return null;
             remainTimer -= Time.deltaTime;
         }
         GameManager.instance.sceneName = "Camp";
         GameManager.instance.FadeOut();
+    }
+
+    void InitLanguage()
+    {
+        Dictionary<string, string[]> nameDic = new();
+        nameDic["Victory Message"] = new string[] { "대단합니다! 모든 적을 섬멸했습니다.", "Excellent! You have successfully eliminated all enemies." };
+        nameDic["Come Back Text"] = new string[] { "야영지로 돌아갑니다.", "Returning to the Camp." };
+        nameDic["Later Text"] = new string[] { "10초 후 돌아가기", "Return in 10 seconds" };
+        nameDic["Right Now Text"] = new string[] { "즉시 돌아가기", "Return right now" };
+        nameDic["Help Text"] = new string[] { "선택", "Select" };
+
+        var texts = transform.GetComponentsInChildren<Text>(true);
+        int textId = SettingUI.instance.currLanguage == SettingUI.LanguageType.Korean ? 0 : 1;
+        foreach (var text in texts)
+        {
+            if (nameDic.ContainsKey(text.name))
+            {
+                text.text = nameDic[text.name][textId];
+            }
+        }
     }
 }
 

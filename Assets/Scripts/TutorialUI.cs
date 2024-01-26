@@ -41,6 +41,17 @@ public class TutorialUI : MonoBehaviour
         {
             GameManager.instance.Stop();
         }
+
+        if (SettingUI.instance.currLanguage == SettingUI.LanguageType.Korean)
+        {
+            transform.GetChild(0).gameObject.SetActive(true);
+            transform.GetChild(1).gameObject.SetActive(false);
+        }
+        else
+        {
+            transform.GetChild(0).gameObject.SetActive(false);
+            transform.GetChild(1).gameObject.SetActive(true);
+        }
     }
 
     private void OnDestroy()
@@ -56,11 +67,15 @@ public class TutorialUI : MonoBehaviour
             case ControllerManager.scheme.Keyboard:
                 keyImages[0].sprite = keySprites[0];
                 keyImages[1].sprite = keySprites[1];
+                keyImages[2].sprite = keySprites[0];
+                keyImages[3].sprite = keySprites[1];
                 break;
 
             case ControllerManager.scheme.Gamepad:
                 keyImages[0].sprite = keySprites[2];
                 keyImages[1].sprite = keySprites[3];
+                keyImages[2].sprite = keySprites[2];
+                keyImages[3].sprite = keySprites[3];
                 break;
         }
     }

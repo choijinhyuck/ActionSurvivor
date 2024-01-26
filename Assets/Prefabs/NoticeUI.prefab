@@ -35,8 +35,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: -0.000061035156, y: 0}
-  m_SizeDelta: {x: 460, y: 117.3139}
+  m_AnchoredPosition: {x: -19.3422, y: 0}
+  m_SizeDelta: {x: 498.6843, y: 117.3139}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!222 &4575009753100424930
 CanvasRenderer:
@@ -154,8 +154,9 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 1
     m_LineSpacing: 1.2
-  m_Text: "<color=yellow>[\uAE4A\uC740 \uC232]</color>\uC73C\uB85C\n\uAC00\uB294
-    \uAE38\uC774 \uC5F4\uB838\uC2B5\uB2C8\uB2E4."
+  m_Text: 'The path to
+
+    <color=yellow>[Goblin Forest]</color> is open.'
 --- !u!1 &4350482802236853511
 GameObject:
   m_ObjectHideFlags: 0
@@ -191,7 +192,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -170, y: 53}
+  m_AnchoredPosition: {x: -183, y: 53}
   m_SizeDelta: {x: 89.0668, y: 52.6466}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &8550684888581846909
@@ -266,8 +267,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 88.17221, y: 0}
-  m_SizeDelta: {x: -176.3403, y: 0}
+  m_AnchoredPosition: {x: 104.37778, y: 0}
+  m_SizeDelta: {x: -208.7514, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1178195169621113616
 CanvasRenderer:
@@ -310,7 +311,9 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 1
     m_LineSpacing: 1.2
-  m_Text: "<color=yellow>[\uC57C\uB9CC\uC804\uC0AC]</color>\uAC00\n\uD569\uB958\uD588\uC2B5\uB2C8\uB2E4."
+  m_Text: '<color=yellow>[Barbarian]</color>
+
+    has joined.'
 --- !u!1 &7326843536388543888
 GameObject:
   m_ObjectHideFlags: 0
@@ -541,7 +544,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -137.1, y: 0.000011444092}
+  m_AnchoredPosition: {x: -150.1, y: 0.000011444092}
   m_SizeDelta: {x: 131.5741, y: 103.46}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &8732118347830419853
@@ -619,8 +622,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: -0.000061035156, y: -130}
-  m_SizeDelta: {x: 460, y: 117.3139}
+  m_AnchoredPosition: {x: -19.3422, y: -130}
+  m_SizeDelta: {x: 498.6843, y: 117.3139}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!222 &285858482286769983
 CanvasRenderer:

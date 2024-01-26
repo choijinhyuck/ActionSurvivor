@@ -86,19 +86,19 @@ public class InventoryControlHelp : MonoBehaviour
     {
         if (actionType == ActionType.Buy)
         {
-            select.GetComponentInChildren<Text>().text = "구매";
+            select.GetComponentInChildren<Text>().text = SettingUI.instance.currLanguage == SettingUI.LanguageType.Korean ? "구매" : "Buy";
         }
         else if (actionType == ActionType.Sell)
         {
-            select.GetComponentInChildren<Text>().text = "판매";
+            select.GetComponentInChildren<Text>().text = SettingUI.instance.currLanguage == SettingUI.LanguageType.Korean ? "판매" : "Sell";
         }
         else if (actionType == ActionType.Upgrade)
         {
-            select.GetComponentInChildren<Text>().text = "강화";
+            select.GetComponentInChildren<Text>().text = SettingUI.instance.currLanguage == SettingUI.LanguageType.Korean ? "강화" : "Upgrade";
         }
         else
         {
-            select.GetComponentInChildren<Text>().text = "선택";
+            select.GetComponentInChildren<Text>().text = SettingUI.instance.currLanguage == SettingUI.LanguageType.Korean ? "선택" : "Select";
         }
 
         switch (actionType)
@@ -108,7 +108,7 @@ public class InventoryControlHelp : MonoBehaviour
                 break;
 
             case ActionType.Equip:
-                equipUse.GetComponentInChildren<Text>().text = "착용";
+                equipUse.GetComponentInChildren<Text>().text = SettingUI.instance.currLanguage == SettingUI.LanguageType.Korean ? "착용" : "Equip";
                 Filter(new List<GameObject> { close, select, equipUse, destroy });
                 break;
 
@@ -125,7 +125,7 @@ public class InventoryControlHelp : MonoBehaviour
                 break;
 
             case ActionType.Use:
-                equipUse.GetComponentInChildren<Text>().text = "사용";
+                equipUse.GetComponentInChildren<Text>().text = SettingUI.instance.currLanguage == SettingUI.LanguageType.Korean ? "사용" : "Use";
                 Filter(new List<GameObject> { close, select, equipUse, destroy });
                 break;
 
@@ -180,12 +180,12 @@ public class InventoryControlHelp : MonoBehaviour
                 break;
 
             case ActionType.ToStorage:
-                equipUse.GetComponentInChildren<Text>().text = "보관";
+                equipUse.GetComponentInChildren<Text>().text = SettingUI.instance.currLanguage == SettingUI.LanguageType.Korean ? "보관" : "Store";
                 Filter(new List<GameObject> { close, select, equipUse, destroy });
                 break;
 
             case ActionType.ToInventory:
-                equipUse.GetComponentInChildren<Text>().text = "찾기";
+                equipUse.GetComponentInChildren<Text>().text = SettingUI.instance.currLanguage == SettingUI.LanguageType.Korean ? "찾기" : "Retrieve";
                 Filter(new List<GameObject> { close, select, equipUse, destroy });
                 break;
 
@@ -229,56 +229,56 @@ public class InventoryControlHelp : MonoBehaviour
         {
             case ActionType.FullMsg:
                 if (!message.activeSelf) message.SetActive(true);
-                message.GetComponent<Text>().text = "인벤토리 공간이 부족합니다.";
+                message.GetComponent<Text>().text = SettingUI.instance.currLanguage == SettingUI.LanguageType.Korean ? "인벤토리 공간이 부족합니다." : "Intentory is Full.";
                 break;
 
             case ActionType.FullHeart:
                 if (!message.activeSelf) message.SetActive(true);
-                message.GetComponent<Text>().text = "이미 체력이 가득 차 있습니다.";
+                message.GetComponent<Text>().text = SettingUI.instance.currLanguage == SettingUI.LanguageType.Korean ? "이미 체력이 가득 차 있습니다." : "Heart is already Full.";
                 break;
 
             case ActionType.NotEquippable:
                 if (!message.activeSelf) message.SetActive(true);
-                message.GetComponent<Text>().text = "착용할 수 없는 캐릭터입니다.";
+                message.GetComponent<Text>().text = SettingUI.instance.currLanguage == SettingUI.LanguageType.Korean ? "착용할 수 없는 캐릭터입니다." : "The character is unable to equip the item.";
                 break;
 
             case ActionType.WrongPosition:
                 if (!message.activeSelf) message.SetActive(true);
-                message.GetComponent<Text>().text = "착용할 수 없는 부위입니다.";
+                message.GetComponent<Text>().text = SettingUI.instance.currLanguage == SettingUI.LanguageType.Korean ? "착용할 수 없는 부위입니다." : "Can't be equipped on this slot.";
                 break;
 
             case ActionType.WrongItem:
                 if (!message.activeSelf) message.SetActive(true);
-                message.GetComponent<Text>().text = "착용할 수 없는 장비입니다.";
+                message.GetComponent<Text>().text = SettingUI.instance.currLanguage == SettingUI.LanguageType.Korean ? "착용할 수 없는 장비입니다." : "The Item can't be equipped.";
                 break;
 
             case ActionType.ToFullInventory:
                 if (!message.activeSelf) message.SetActive(true);
-                message.GetComponent<Text>().text = "인벤토리 공간이 부족합니다.";
+                message.GetComponent<Text>().text = SettingUI.instance.currLanguage == SettingUI.LanguageType.Korean ? "인벤토리 공간이 부족합니다." : "Inventory is Full.";
                 AudioManager.instance.PlaySfx(AudioManager.Sfx.Fail);
                 break;
 
             case ActionType.ToFullStorageMsg:
                 if (!message.activeSelf) message.SetActive(true);
-                message.GetComponent<Text>().text = "창고 공간이 부족합니다.";
+                message.GetComponent<Text>().text = SettingUI.instance.currLanguage == SettingUI.LanguageType.Korean ? "창고 공간이 부족합니다." : "Storage is Full.";
                 AudioManager.instance.PlaySfx(AudioManager.Sfx.Fail);
                 break;
 
             case ActionType.NotEnoughMoney:
                 if (!message.activeSelf) message.SetActive(true);
-                message.GetComponent<Text>().text = "소지금이 부족합니다.";
+                message.GetComponent<Text>().text = SettingUI.instance.currLanguage == SettingUI.LanguageType.Korean ? "소지금이 부족합니다." : "Not enough gold";
                 AudioManager.instance.PlaySfx(AudioManager.Sfx.Fail);
                 break;
 
             case ActionType.NotUpgradable:
                 if (!message.activeSelf) message.SetActive(true);
-                message.GetComponent<Text>().text = "강화할 수 없는 아이템입니다";
+                message.GetComponent<Text>().text = SettingUI.instance.currLanguage == SettingUI.LanguageType.Korean ? "강화할 수 없는 아이템입니다" : "The item can't be upgraded.";
                 AudioManager.instance.PlaySfx(AudioManager.Sfx.Fail);
                 break;
 
             case ActionType.WrongClass:
                 if (!message.activeSelf) message.SetActive(true);
-                message.GetComponent<Text>().text = "착용할 수 없는 캐릭터입니다.";
+                message.GetComponent<Text>().text = SettingUI.instance.currLanguage == SettingUI.LanguageType.Korean ? "착용할 수 없는 캐릭터입니다." : "The character is unable to equip the item.";
                 AudioManager.instance.PlaySfx(AudioManager.Sfx.Fail);
                 break;
 

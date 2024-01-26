@@ -14,10 +14,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemType: 2
   itemName: "\uACE8\uB4E0 \uC288\uC988"
+  itemNameEng: Golden Shoes
   itemDesc: "\uBA85\uC7A5\uC774 \uD669\uAE08\uC73C\uB85C \uC81C\uC791\uD558\uACE0
     \uB9C8\uBC95\uC801 \uCC98\uB9AC\uB97C \uD55C \uC544\uC8FC \uAC00\uBCBC\uC6B4
     \uC2E0\uBC1C\uC774\uB2E4."
+  itemDescEng: These are extremely lightweight shoes crafted by a master blacksmith
+    using gold and enchanted with magical enhancements.
   itemEffect: "\uC774\uB3D9\uC18D\uB3C4 <color=red>25%</color> \uC99D\uAC00"
+  itemEffectEng: Movement Speed increased by <color=red>25%</color>
   itemIcon: {fileID: 21300000, guid: 4b110c8b2e13f0f428e5fc89b473401e, type: 3}
   baseAmount: 25
   coolTime: 0

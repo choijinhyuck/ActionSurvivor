@@ -107,10 +107,13 @@ public class UpgradeUI : MonoBehaviour
         upgradeCanvas.sortingOrder = 1;
 
         Init();
+        InitLanguage();
     }
 
     private void LateUpdate()
     {
+        InitLanguage();
+
         if (isUpgrade)
         {
             if (selectedObjectOnDestroy != EventSystem.current.currentSelectedGameObject)
@@ -149,43 +152,77 @@ public class UpgradeUI : MonoBehaviour
             itemDesc.text = "";
             itemEffect.text = "";
 
-            npcDialogue.text = "먼 템 \n\r강화할 거임?";
+            npcDialogue.text = SettingUI.instance.currLanguage == SettingUI.LanguageType.Korean ? "먼 템 \n\r강화할 거임?" : "Upgrade What?";
             beforeItemImg.sprite = null;
             beforeItemImg.color = blankAlpha;
             beforeItemSlotImg.color = originAlpha;
             AfterItemImg.sprite = null;
             AfterItemImg.color = blankAlpha;
 
-            probability.text = string.Format("강화 확률: <color=red>{0}</color> %", "-");
-            goldRequired.text = string.Format("소모 골드: <color=blue>{0}</color> 골드", "-");
+            if (SettingUI.instance.currLanguage == SettingUI.LanguageType.Korean)
+            {
+                probability.text = string.Format("성공 확률: <color=red>{0}</color> %", "-");
+                goldRequired.text = string.Format("비용: <color=blue>{0}</color> 골드", "-");
+            }
+            else
+            {
+                probability.text = string.Format("Success Rate: <color=red>{0}</color> %", "-");
+                goldRequired.text = string.Format("Cost: <color=blue>{0}</color> gold", "-");
+            }
         }
         else
         {
-            itemName.text = ItemManager.Instance.itemDataArr[GameManager.instance.inventoryItemsId[selectedId]].itemName;
-            itemDesc.text = ItemManager.Instance.itemDataArr[GameManager.instance.inventoryItemsId[selectedId]].itemDesc;
-            itemEffect.text = ItemManager.Instance.itemDataArr[GameManager.instance.inventoryItemsId[selectedId]].itemEffect;
+            if (SettingUI.instance.currLanguage == SettingUI.LanguageType.Korean)
+            {
+                itemName.text = ItemManager.Instance.itemDataArr[GameManager.instance.inventoryItemsId[selectedId]].itemName;
+                itemDesc.text = ItemManager.Instance.itemDataArr[GameManager.instance.inventoryItemsId[selectedId]].itemDesc;
+                itemEffect.text = ItemManager.Instance.itemDataArr[GameManager.instance.inventoryItemsId[selectedId]].itemEffect;
+            }
+            else
+            {
+                itemName.text = ItemManager.Instance.itemDataArr[GameManager.instance.inventoryItemsId[selectedId]].itemNameEng;
+                itemDesc.text = ItemManager.Instance.itemDataArr[GameManager.instance.inventoryItemsId[selectedId]].itemDescEng;
+                itemEffect.text = ItemManager.Instance.itemDataArr[GameManager.instance.inventoryItemsId[selectedId]].itemEffectEng;
+            }
+            
 
             if (CanUpgrade())
             {
-                npcDialogue.text = "그 템 \n\r강화할 거임?";
+                npcDialogue.text = SettingUI.instance.currLanguage == SettingUI.LanguageType.Korean ? "그 템 \n\r강화할 거임?" : "Upgrade\n\rthe item?";
                 beforeItemImg.sprite = ItemManager.Instance.itemDataArr[(int)upgradableItems[GetUpgradeIndex()].before].itemIcon;
                 beforeItemImg.color = originAlpha;
                 beforeItemSlotImg.color = greenColor;
                 AfterItemImg.sprite = ItemManager.Instance.itemDataArr[(int)upgradableItems[GetUpgradeIndex()].after].itemIcon;
                 AfterItemImg.color = halfAlpha;
-                probability.text = string.Format("강화 확률: <color=red>{0}</color> %", Mathf.FloorToInt(upgradableItems[GetUpgradeIndex()].probability * 100));
-                goldRequired.text = string.Format("소모 골드: <color=blue>{0}</color> 골드", upgradableItems[GetUpgradeIndex()].goldRequired);
+                if (SettingUI.instance.currLanguage == SettingUI.LanguageType.Korean)
+                {
+                    probability.text = string.Format("성공 확률: <color=red>{0}</color> %", Mathf.FloorToInt(upgradableItems[GetUpgradeIndex()].probability * 100));
+                    goldRequired.text = string.Format("비용: <color=blue>{0}</color> 골드", upgradableItems[GetUpgradeIndex()].goldRequired);
+                }
+                else
+                {
+                    probability.text = string.Format("Success Rate: <color=red>{0}</color> %", Mathf.FloorToInt(upgradableItems[GetUpgradeIndex()].probability * 100));
+                    goldRequired.text = string.Format("Cost: <color=blue>{0}</color> gold", upgradableItems[GetUpgradeIndex()].goldRequired);
+                }
             }
             else
             {
-                npcDialogue.text = "그 템은 \n\r강화 불가임";
+                npcDialogue.text = SettingUI.instance.currLanguage == SettingUI.LanguageType.Korean ? "그 템은 \n\r강화 불가임" : "Can't be\n\rupgraded";
                 beforeItemImg.sprite = ItemManager.Instance.itemDataArr[GameManager.instance.inventoryItemsId[selectedId]].itemIcon;
                 beforeItemImg.color = originAlpha;
                 beforeItemSlotImg.color = redColor;
                 AfterItemImg.sprite = null;
                 AfterItemImg.color = blankAlpha;
-                probability.text = string.Format("강화 확률: <color=red>{0}</color> %", "-");
-                goldRequired.text = string.Format("소모 골드: <color=blue>{0}</color> 골드", "-");
+                if (SettingUI.instance.currLanguage == SettingUI.LanguageType.Korean)
+                {
+                    probability.text = string.Format("성공 확률: <color=red>{0}</color> %", "-");
+                    goldRequired.text = string.Format("비용: <color=blue>{0}</color> 골드", "-");
+                }
+                else
+                {
+                    probability.text = string.Format("Success Rate: <color=red>{0}</color> %", "-");
+                    goldRequired.text = string.Format("Cost: <color=blue>{0}</color> gold", "-");
+                }
             }
         }
     }
@@ -296,9 +333,20 @@ public class UpgradeUI : MonoBehaviour
         isUpgrade = true;
         upgradeConfirm.transform.parent.gameObject.SetActive(true);
 
-        upgradeConfirm.text = string.Format("<color=green>{0}</color> 을(를)\r\n<color=red>{1:N0} 골드</color>에 {2}하시겠습니까?\r\n<color=green><size=6>(실패 시 아이템이 파괴됩니다.)</size></color>",
+        if (SettingUI.instance.currLanguage == SettingUI.LanguageType.Korean)
+        {
+            upgradeConfirm.text = string.Format("<color=green>{0}</color> 을(를)\r\n<color=red>{1:N0} 골드</color>에 {2}하시겠습니까?\r\n<color=red><size=6>(실패 시 아이템이 파괴됩니다.)</size></color>",
         ItemManager.Instance.itemDataArr[GameManager.instance.inventoryItemsId[selectedId]].itemName,
         upgradableItems[GetUpgradeIndex()].goldRequired, "강화");
+        }
+        else
+        {
+            upgradeConfirm.text = string.Format("Want to {2} for <color=red>{1:N0} gold</color>?\r\n<color=green>{0}</color>\r\n<color=red><size=6>(Failure will result in destruction.)</size></color>",
+        ItemManager.Instance.itemDataArr[GameManager.instance.inventoryItemsId[selectedId]].itemNameEng,
+        upgradableItems[GetUpgradeIndex()].goldRequired, "Upgrade");
+            
+        }
+        
     }
 
     public void OnConfirm(bool confirm)
@@ -334,13 +382,29 @@ public class UpgradeUI : MonoBehaviour
         if (UnityEngine.Random.value < upgradableItems[GetUpgradeIndex()].probability)
         {
             GameManager.instance.inventoryItemsId[selectedId] = (int)upgradableItems[GetUpgradeIndex()].after;
-            upgradeResult.GetComponentInChildren<Text>().text = "<color=blue>축하합니다!</color>\r\n\r\n강화에 성공했습니다";
+            if (SettingUI.instance.currLanguage == SettingUI.LanguageType.Korean)
+            {
+                upgradeResult.GetComponentInChildren<Text>().text = "<color=blue>축하합니다!</color>\r\n\r\n강화에 성공했습니다";
+            }
+            else
+            {
+                upgradeResult.GetComponentInChildren<Text>().text = "<color=blue>Congratulations!</color>\r\n\r\nUpgraded Successfully!";
+            }
+            
             AudioManager.instance.PlaySfx(AudioManager.Sfx.Success);
         }
         else
         {
             GameManager.instance.inventoryItemsId[selectedId] = -1;
-            upgradeResult.GetComponentInChildren<Text>().text = "강화에 실패했습니다.\r\n\r\n<color=red>아이템이 파괴됐습니다.</color>";
+            if (SettingUI.instance.currLanguage == SettingUI.LanguageType.Korean)
+            {
+                upgradeResult.GetComponentInChildren<Text>().text = "강화에 실패했습니다.\r\n\r\n<color=red>아이템이 파괴됐습니다.</color>";
+            }
+            else
+            {
+                upgradeResult.GetComponentInChildren<Text>().text = "Failed to Upgrade.\r\n\r\n<color=red>The item has been destroyed.</color>";
+            }
+            
             AudioManager.instance.PlaySfx(AudioManager.Sfx.Destroy);
         }
 
@@ -417,6 +481,31 @@ public class UpgradeUI : MonoBehaviour
             else
             {
                 itemImages[i].color = originAlpha;
+            }
+        }
+    }
+
+    void InitLanguage()
+    {
+        Dictionary<string, string[]> nameDic = new();
+        nameDic["After Label"] = new string[] { "강화", "After" };
+        nameDic["Present Label"] = new string[] { "현재", "Now" };
+        nameDic["Close Text"] = new string[] { "창 닫기", "Close" };
+        nameDic["Unlock2"] = new string[] { "<color=blue>창고</color>에서 잠금 해제 : <color=yellow>1000</color>   ", " Unlock in <color=blue>Storage</color> : <color=yellow>1000</color>   " };
+        nameDic["Unlock3"] = new string[] { "<color=blue>창고</color>에서 잠금 해제 : <color=yellow>3000</color>   ", " Unlock in <color=blue>Storage</color> : <color=yellow>3000</color>   " };
+        nameDic["Upgrade Title"] = new string[] { "강화", "Upgrade" };
+        nameDic["Hammering Text"] = new string[] { "강화 중...", "Upgrading..." };
+        nameDic["Yes Label"] = new string[] { "예", "Yes" };
+        nameDic["No Label"] = new string[] { "아니요", "No" };
+
+
+        var texts = transform.parent.GetComponentsInChildren<Text>(true);
+        int textId = SettingUI.instance.currLanguage == SettingUI.LanguageType.Korean ? 0 : 1;
+        foreach (var text in texts)
+        {
+            if (nameDic.ContainsKey(text.name))
+            {
+                text.text = nameDic[text.name][textId];
             }
         }
     }

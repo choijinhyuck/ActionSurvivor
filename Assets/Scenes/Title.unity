@@ -131,10 +131,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 4332865756140053300, guid: 8246496101504f34f98e79fa4a0d1da9, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 6481920394912404679, guid: 8246496101504f34f98e79fa4a0d1da9, type: 3}
       propertyPath: m_Name
       value: MenuUI
@@ -4352,10 +4348,6 @@ PrefabInstance:
     - target: {fileID: 6034039043754470945, guid: 843c594d0fed0c647873206a750a5cb4, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6297141152130203624, guid: 843c594d0fed0c647873206a750a5cb4, type: 3}
-      propertyPath: m_MoveRepeatRate
-      value: 0.1
       objectReference: {fileID: 0}
     - target: {fileID: 8524950463752394095, guid: 843c594d0fed0c647873206a750a5cb4, type: 3}
       propertyPath: m_Name
