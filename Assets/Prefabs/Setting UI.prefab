@@ -3230,6 +3230,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   resolutionDropdown: {fileID: 744055286345379540}
+  dropdownTemplate: {fileID: 3665338087621298194}
   screenTypes:
   - {fileID: 8650872780891144621}
   - {fileID: 3562619611220048830}

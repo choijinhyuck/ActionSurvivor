@@ -113,6 +113,7 @@ public class InventoryControlHelp : MonoBehaviour
                 break;
 
             case ActionType.UnEquip:
+                unequip.GetComponentInChildren<Text>().text = SettingUI.instance.currLanguage == SettingUI.LanguageType.Korean ? "«ÿ¡¶" : "Unequip";
                 Filter(new List<GameObject> { close, select, unequip });
                 break;
 
