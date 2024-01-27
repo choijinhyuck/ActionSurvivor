@@ -194,6 +194,7 @@ public class SettingUI : MonoBehaviour
                 widths.Add(resolutions[i].width);
                 heights.Add(resolutions[i].height);
             }
+
         }
         widths = widths.Distinct().ToList();
         heights = heights.Distinct().ToList();
