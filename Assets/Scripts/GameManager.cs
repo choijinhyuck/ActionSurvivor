@@ -117,6 +117,7 @@ public class GameManager : MonoBehaviour
 
         DontDestroyOnLoad(this.gameObject);
         //Application.targetFrameRate = 60;
+        QualitySettings.vSyncCount = 1;
 
         //커서 잠금
         //Cursor.lockState = CursorLockMode.Locked;
