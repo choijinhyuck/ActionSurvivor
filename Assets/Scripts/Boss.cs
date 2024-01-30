@@ -847,7 +847,15 @@ public class Boss : MonoBehaviour
             selectId = hitText.Count - 1;
         }
         hitText[selectId].SetActive(true);
-        hitText[selectId].GetComponent<Text>().text = damage.ToString("N0") + "<size=12> 피해</size>";
+        if (SettingUI.instance.currLanguage == SettingUI.LanguageType.Korean)
+        {
+            hitText[selectId].GetComponent<Text>().text = damage.ToString("N0") + "<size=12> 피해</size>";
+        }
+        else
+        {
+            hitText[selectId].GetComponent<Text>().text = damage.ToString("N0") + "<size=15> damage</size>";
+        }
+        
         hitText[selectId].GetComponent<Text>().color = Color.red;
         //hitText[selectId].transform.localScale = new Vector3(1f, 1f, 1f);
         Vector2 textPos = new(Random.Range(-hitTextPosXrange, hitTextPosXrange), hitTextPosYstart);
