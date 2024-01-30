@@ -11,7 +11,7 @@ public class WarningUI : MonoBehaviour
     Color lightRed;
     Color blankRed;
     bool isWarning;
-    float lastBgmVol;
+    //float lastBgmVol;
 
 
     private void Awake()
@@ -35,17 +35,19 @@ public class WarningUI : MonoBehaviour
         if (GameManager.instance.health < 1.1f & GameManager.instance.health > 0.1f & !isWarning)
         {
             StartCoroutine("Warning");
-            //AudioManager.instance.PauseBGM(true);
-            lastBgmVol = AudioManager.instance.GetBgmVolume();
-            AudioManager.instance.SetBgmVolume(0f);
+            //AudioManager.instance.PlayBgm(false);
+            AudioManager.instance.PauseBGM(true);
+            //lastBgmVol = AudioManager.instance.GetBgmVolume();
+            //AudioManager.instance.SetBgmVolume(0.01f);
         }
         else if (GameManager.instance.health > 1.1f & isWarning)
         {
             StopCoroutine("Warning");
             isWarning = false;
             overlayImage.color = blankRed;
-            //AudioManager.instance.PauseBGM(false);
-            AudioManager.instance.SetBgmVolume(lastBgmVol);
+            //AudioManager.instance.PlayBgm(true);
+            AudioManager.instance.PauseBGM(false);
+            //AudioManager.instance.SetBgmVolume(lastBgmVol);
         }
         else if (GameManager.instance.health < 0.1f)
         {

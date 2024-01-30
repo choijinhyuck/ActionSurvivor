@@ -10,7 +10,6 @@ public class AudioManager : MonoBehaviour
     AudioSource bgmPlayer;
     float currSelectedBgmVol;
 
-
     public enum Bgm
     {
         Camp, Stage0, Stage1, Stage2, Title, Boss, Death, Victory
