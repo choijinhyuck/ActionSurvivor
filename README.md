@@ -9,30 +9,29 @@ Action Survivor
 
 이 게임은 "Vampire Survivors" 게임에서 많은 영감을 받아 개발하게 되었습니다.
 
-이 게임은 인벤토리가 존재하며, 레벨을 올려 능력를 강화하는 RPG 요소을 포함하고 있습니다.
+이 게임은 인벤토리가 존재하며, 레벨을 올려 능력를 강화하는 RPG 요소을 포함하고 있습니다.  
 (스테이지가 마무리 되어도 획득한 아이템은 남아 있지만 레벨은 초기화 됩니다.)
 
 모든 공격이 자동으로 이루어지는 뱀서류 장르와 다르게, 모든 공격 방식 (기본 / 차지 / 원거리) 은 수동으로 이루어진다는 점이 가장 큰 차이점이자 특징입니다.
 
 밀려오는 수많은 적들을 대상으로 자신의 운과 컨트롤 실력을 시험해 보세요!
 <br/>
-현재 버전 (1.0.0) 에서 플레이 가능한 캐릭터는 최대 두 종류이며, 세 개의 스테이지가 준비되어 있습니다.
-
+<br/>
+현재 버전 (1.0.0) 에서 플레이 가능한 캐릭터는 최대 두 종류이며, 세 개의 스테이지가 준비되어 있습니다.<br/>
 <br/>
 <br/>
-
 "Action Survivor" is a hack-and-slash game created using the Unity game engine, falling into the defense genre.
 
 The development of this game was heavily inspired by the "Vampire Survivors" game.
 
-This game features an inventory system and incorporates RPG elements where players can level up and enhance their attributes.
+This game features an inventory system and incorporates RPG elements where players can level up and enhance their attributes.  
 (Although items acquired persist after completing a stage, the character level resets.)
 
 Unlike the auto-attack nature of typical so-called "Vampire Survivors-like" games, this game stands out with its manual control of all attack methods (basic, charged, ranged), making it a distinctive feature.
 
 Test your luck and control skills against hordes of incoming enemies!
 <br/>
-As of the current version (1.0.0), there are two playable characters, and three stages are available for play.
+As of the current version (1.0.0), there are two playable characters, and three stages are available for play.<br/>
 
 
 ## 목표 (Objective)
