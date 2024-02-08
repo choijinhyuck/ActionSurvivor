@@ -86,52 +86,52 @@ The sprites, images, and scripts, excluding the resources specified in the credi
 
 - "Pixel Adventure 2" by Pixel Frog from Unity Asset Store
 
-- "Ninja Adventure" by Pixel-Boy is licensed under CC0
+- "Ninja Adventure" by Pixel-Boy is licensed under CC0  
 (https://pixel-boy.itch.io/ninja-adventure-asset-pack)
 
-- "Tiny Swords" by Pixel Frog is licensed under CC0
+- "Tiny Swords" by Pixel Frog is licensed under CC0  
 (https://pixelfrog-assets.itch.io/tiny-swords)
 
-- "Kings and Pigs" by Pixel Frog is licensed under CC0
+- "Kings and Pigs" by Pixel Frog is licensed under CC0  
 (https://pixelfrog-assets.itch.io/kings-and-pigs)
 
-- "Pirate Bomb" by Pixel Frog is licensed under CC0 
+- "Pirate Bomb" by Pixel Frog is licensed under CC0  
 (https://pixelfrog-assets.itch.io/pirate-bomb)
 
-- "Treasure Hunters" by Pixel Frog is licensed under CC0 
+- "Treasure Hunters" by Pixel Frog is licensed under CC0  
 (https://pixelfrog-assets.itch.io/treasure-hunters)
 
-- "GamePad UI / Controller Prompts Pack" by Greatdocbrown is licensed under CC0 
+- "GamePad UI / Controller Prompts Pack" by Greatdocbrown is licensed under CC0  
 (https://greatdocbrown.itch.io/gamepad-ui)
 
-- "Inventory Filter Icons" by Twiswist is licensed under CC0 
+- "Inventory Filter Icons" by Twiswist is licensed under CC0  
 (https://opengameart.org/content/inventory-filter-icons)
 
-- "Gold Treasure Icons 16x16" by Bonsaiheldin is licensed under CC0 
+- "Gold Treasure Icons 16x16" by Bonsaiheldin is licensed under CC0  
 (https://opengameart.org/content/gold-treasure-icons-16x16)
 
-- "16x16_Weapons_rpg_icons" by Shade is licensed under CC0 
+- "16x16_Weapons_rpg_icons" by Shade is licensed under CC0  
 (https://merchant-shade.itch.io/free-16x16-weapon-rpg-icons)
 
-- "16x16 Simple Fantasy RPG FX" by Emcee Flesher is licensed under CC0 
+- "16x16 Simple Fantasy RPG FX" by Emcee Flesher is licensed under CC0  
 (https://opengameart.org/content/16x16-simple-fantasy-rpg-fx)
 
-- "Kyrise's Free 16x16 RPG Icon Pack" by Kyrise is licensed under CC BY 4.0 
+- "Kyrise's Free 16x16 RPG Icon Pack" by Kyrise is licensed under CC BY 4.0  
 (https://kyrise.itch.io/kyrises-free-16x16-rpg-icon-pack)
 
-- "Pixel Art HP Bar UI" by GX310 can be used in both free and commercial projects 
+- "Pixel Art HP Bar UI" by GX310 can be used in both free and commercial projects  
 (https://gx310.itch.io/pixel-art-hp-bar)
 
-- "Dungeon Pack" by Gif can be used for non-commercial and commercial project, and also adapted and/or modified to match any project 
+- "Dungeon Pack" by Gif can be used for non-commercial and commercial project, and also adapted and/or modified to match any project  
 (https://gif-superretroworld.itch.io/dungeon-pack)
 
-- "Free Inventory for Farming RPG" by ELV Games can be freely used on personal or commercial projects, and also edited or modified to fit the projects 
+- "Free Inventory for Farming RPG" by ELV Games can be freely used on personal or commercial projects, and also edited or modified to fit the projects  
 (https://elvgames.itch.io/free-inventory-for-rpg-or-farming-games)
 
 
 #### Photo
 
-- Photo by Sebastian Unrau on Unsplash 
+- Photo by Sebastian Unrau on Unsplash  
 (https://unsplash.com/ko/%EC%82%AC%EC%A7%84/%ED%83%9C%EC%96%91-%EA%B4%91%EC%84%A0%EC%9D%B4-%EC%9E%88%EB%8A%94-%EC%88%B2%EC%9D%98-%EB%82%98%EB%AC%B4-sp-p7uuT0tw)
 
 
@@ -139,7 +139,7 @@ The sprites, images, and scripts, excluding the resources specified in the credi
 
 - "Undead Survivor Assets Pack" by Goldmetal from Unity Asset Store
 
-- "Ninja Adventure" by Pixel-Boy is licensed under CC0 
+- "Ninja Adventure" by Pixel-Boy is licensed under CC0  
 (https://pixel-boy.itch.io/ninja-adventure-asset-pack)
 
 
@@ -147,10 +147,10 @@ The sprites, images, and scripts, excluding the resources specified in the credi
 
 - "Undead Survivor Assets Pack" by Goldmetal from Unity Asset Store
 
-- "Ninja Adventure" by Pixel-Boy is licensed under CC0 
+- "Ninja Adventure" by Pixel-Boy is licensed under CC0  
 (https://pixel-boy.itch.io/ninja-adventure-asset-pack)
 
 - "RPG Essentials Sound Effects - FREE!" by leohpaz from Unity Asset Store
 
-- Sound FXs by Sound Effect Lab 
+- Sound FXs by Sound Effect Lab  
 (https://soundeffect-lab.info)
