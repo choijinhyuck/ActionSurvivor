@@ -3,11 +3,7 @@ Action Survivor
 
 ## 릴리스 (Release)
 - [최신 버전 (Latest Version) 1.0.0](https://github.com/choijinhyuck/ActionSurvivor/releases/tag/1.0.0)  
-  
-  
-  
-
-
+<br/>
 
 ## 게임 소개 (Introduction)
 "Action Survivor" 은 Unity 게임 엔진을 이용해 제작한 핵앤슬래시, 일종의 디펜스 장르의 게임입니다.
