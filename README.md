@@ -73,10 +73,10 @@ The sprites, images, and scripts, excluding the resources specified in the credi
 **I sincerely appreciate all authors licensing their resources for free use!**
 
 ### Types
-1. [Sprites]
-1. [Photo]
-1. [Music]
-1. [Sound Effects]
+1. [Sprites](sprites)
+1. [Photo](photo)
+1. [Music](music)
+1. [Sound Effects](sound-effects)
 
 #### Sprites
 
